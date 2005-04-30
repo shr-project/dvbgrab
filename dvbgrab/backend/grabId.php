@@ -31,7 +31,7 @@ $end_time = $DB->UserTimeStamp($DB->UnixTimeStamp($row[2])+$grab_date_start_shif
 #$end_time = $DB->UserTimeStamp($DB->UnixTimeStamp($row[1])-($grab_date_start_shift-1)*60, "Y-m-d H:i:s");
 $channel = strtolower(strip_diacritics($row[0]));
 $timestamp = $DB->UserTimeStamp($DB->UnixTimeStamp($row[1])-$grab_date_start_shift*60, "Ymd-H");
-$grab_name = "DVB-".$channel."-".$timestamp."-".ereg_replace("[/ ()&]", "_", strip_diacritics($row[3]));
+$grab_name = "DVB-".$timestamp."-".$channel."-".ereg_replace("[/ ()&]", "_", strip_diacritics($row[3]));
         
 // dvbgrab -b BEGIN_TIME -e END_TIME -i INPUT_CHANNEL -o OUTPUT_FILE
 $command = "./dvbgrab -b \"".$begin_time."\" -e \"".$end_time."\" -i ".$channel." -o ".$grab_storage."/".$grab_name.".ts 2>&1 >> $dvbgrab_log";
@@ -40,8 +40,15 @@ if ($fp = fopen($dvbgrab_log, 'a')) {
 }
 $output = system($command);
 echo $output;
-//if (strstr($output, 'Terminated')) {
-if (file_exists($grab_storage."/".$grab_name.".ts")) {
+// if (strstr($output, 'Terminated')) {
+// vymaz cache lstatu
+// clearstatcache();
+// is_file a file_exists neumi soubory vetsi nez 2048 takze misto toho pouziju radsi systemovy ls
+// if (file_exists($grab_storage."/".$grab_name.".ts") || is_file($grab_storage."/".$grab_name.".ts")) {
+
+$test = "/bin/ls -lah $grab_storage/$grab_name.ts; if [ $? -eq 0 ] ; then echo true; else echo false; fi;";
+$outputTest = system($test);
+if (strstr($outputTest, 'true')) {
 // ok
   if ($fp) {
     fwrite($fp, sprintf("\n\nINFO: %s %s saved successfully\n", date("Y-m-d G:i:s"), $grab_name));
@@ -61,7 +68,7 @@ if (file_exists($grab_storage."/".$grab_name.".ts")) {
     // encodovaci smycka si bude vybirat z tabulky encode podle casu zacatku grabu a postupne prevadet a po dokonceni odesilat info uzivatelum
   }
   // posli vsem requestujicim uzivatelum zpravu, ze grab je nekde ke stazeni
-  $msg = "grab $grab_name\n";
+  $msg = "grab: $grab_name id: $grb_id\n";
   $msg .= "od: $begin_time\n";
   $msg .= "do: $end_time\n";
   $msg .= "z: $channel\n";
@@ -108,7 +115,7 @@ if (file_exists($grab_storage."/".$grab_name.".ts")) {
   db_sql($SQL);
   status_update();
   // posli vsem requestujicim uzivatelum zpravu, ze grab se nepovedl
-  $msg = "grab $grab_name\n";
+  $msg = "grab: $grab_name id: $grb_id\n";
   $msg .= "od: $begin_time\n";
   $msg .= "do: $end_time\n";
   $msg .= "z: $channel\n";
