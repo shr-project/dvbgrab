@@ -1,0 +1,20 @@
+#!/bin/bash
+echo "Starting 1st pass"
+mencoder "$1" -ovc frameno -oac mp3lame -lameopts cbr:br=64 -o frameno.avi 2> 1stPass.log
+BitRate=`cat 1stPass.log | grep "Recommended video bitrate for 700MB CD: " | gawk '{ print $7 }'`
+if [ !$BitRate ] ; then
+  BitRate=1000;
+fi
+if [ $BitRate -gt 1500 ] ; then
+  BitRate=1500;
+fi
+if [ $BitRate -lt 500 ] ; then
+  BitRate=500;
+fi
+
+echo "Starting 2nd pass with recommended bitrate $BitRate"
+mencoder "$1" -ovc lavc -lavcopts vcodec=mpeg4:vbitrate=$BitRate:vpass=1 -vf scale=768:576 -oac copy -o "$2"
+echo "Starting 3rd pass with recommended bitrate $BitRate"
+mencoder "$1" -ovc lavc -lavcopts vcodec=mpeg4:vbitrate=$BitRate:vpass=2:vhq -vf scale=768:576 -oac copy -o "$2"
+
+rm frameno.avi 1stPass.log divx2pass.log

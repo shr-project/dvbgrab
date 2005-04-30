@@ -1,0 +1,94 @@
+#!/bin/bash
+
+current_after ()
+{
+	[[ `date "+%s"` -ge `date --date="$*" "+%s"` ]]
+}
+	
+
+# Get default begin time
+BEG_TIME=`date`
+
+# Get default end time
+END_TIME=`date --date="tomorrow 23:59:59"`
+	
+while getopts b:e:i:o: OPT; do
+	case "$OPT" in
+	"b")	BEG_TIME="$OPTARG"
+		;;
+		
+	"e")	END_TIME="$OPTARG"	
+		;;
+		
+	"i")	case "$OPTARG" in
+		"ct1")		INP_CHN="239.194.12.1" ;;
+		"ct2")		INP_CHN="239.194.12.2" ;;
+		"nova")		INP_CHN="239.194.12.3" ;;
+		"prima")	INP_CHN="239.194.12.4" ;;
+		"ocko")		INP_CHN="239.194.12.5" ;;
+		esac
+		;;
+			
+	"o")	OUT_FILE="$OPTARG" 
+		;;
+	
+	*)	echo Invalid option -$OPT
+		echo "Usage: -b BEGIN_TIME -e END_TIME -i INPUT_CHANNEL -o OUTPUT_FILE"
+		echo "   Use BEGIN_TIME and END_TIME to specify grabbing interval."
+		echo "   If a program spans midnight, you need to specify date as well."
+		echo "   INPUT_CHANNEL is one of ct1, ct2, nova, prima, and ocko."
+		exit 1
+		;;
+			
+	esac
+done
+
+# Verify that we have an input channel and output file
+if [ -z "$INP_CHN" -o -z "$OUT_FILE" ]; then
+	echo "Error: input channel or output file not specified!"
+	exit 1
+fi
+
+# Show the start and end times
+if [ `date --date="$BEG_TIME" "+%s"` -gt `date --date="$END_TIME" "+%s"` ]; then
+	echo "Error: cannot set start time after stop time!"
+	exit 1
+fi
+
+echo "Current time is: " `date`
+echo "Grab from: $INP_CHN"
+echo "Grab to file: $OUT_FILE"
+echo "Begin grabbing at: " `date --date="$BEG_TIME"`
+echo "End grabbing at: " `date --date="$END_TIME"`
+
+if current_after $END_TIME; then
+	echo "Error: grab end time has already passed!"
+	exit 1
+fi
+
+# Wait until the grabbing should start
+until current_after $BEG_TIME; do
+	sleep 10
+done
+
+echo "Starting dumprtp...\n"
+
+# Start the grabbing
+(dumprtp "$INP_CHN" 1234 > "$OUT_FILE") &
+
+# Wait until the grabbing should end
+until current_after $END_TIME; do
+	sleep 10
+done
+
+echo "Stopping dumprtp...\n"
+
+#nefunguje pri paraelnim grabovani ... ale jo funguje ;-)
+kill %1
+wait %1
+
+#lol to jsem si dal ;-)
+#PPID=`/bin/ps au | egrep bash.*$OUT_FILE | grep -v egrep | gawk '{ print $2 }'`
+#PID='/bin/ps -F --ppid $PPID | grep dumprtp | gawk '{ print $2 }'`
+#kill $PID
+#wait $PID 

@@ -1,0 +1,183 @@
+#EXTM3U
+#EXTINF:0,CT 1 - SH
+udp://@239.194.10.11:1234
+#EXTINF:0,CT 2 - SH
+udp://@239.194.10.12:1234
+#EXTINF:0,NOVA - SH
+udp://@239.194.10.13:1234
+#EXTINF:0,Prima - SH
+udp://@239.194.10.14:1234
+#EXTINF:0,OCKO - SH
+udp://@239.194.10.15:1234
+#EXTINF:0,Radiozurnal - SH
+udp://@239.194.10.21:1234
+#EXTINF:0,Opera Oberta
+udp://@227.142.142.1:5000
+#EXTINF:0,Vbrick4 Program 1
+#EXTVLCOPT:mtu=4136
+udp://@239.192.168.7:4444
+#EXTINF:0,Vbrick4 Program 2
+#EXTVLCOPT:mtu=4136
+udp://@239.192.168.8:4443
+#EXTINF:0,Vbrick1 Program 2
+#EXTVLCOPT:mtu=4136
+udp://@239.192.168.2:4443
+#EXTINF:0,Vbrick1 Program 1
+#EXTVLCOPT:mtu=4136
+udp://@239.192.168.1:4444
+#EXTINF:0,STV 2
+udp://@233.10.47.72:1234
+#EXTINF:0,STV 1
+udp://@233.10.47.71:1234
+#EXTINF:0,Markiza
+udp://@233.10.47.70:1234
+#EXTINF:0,JOJ
+udp://@233.10.47.14:1234
+#EXTINF:0,TA 3
+udp://@233.10.47.11:1234
+#EXTINF:0,Music Box
+udp://@233.10.47.13:1234
+#EXTINF:0,EuroSport
+udp://@233.10.47.21:1234
+#EXTINF:0,DSF
+udp://@233.10.47.31:1234
+#EXTINF:0,BBC World
+udp://@233.10.47.16:1234
+#EXTINF:0,EuroNews
+udp://@233.10.47.22:1234
+#EXTINF:0,N24
+udp://@233.10.47.30:1234
+#EXTINF:0,CCTV 9
+udp://@233.10.47.40:1234
+#EXTINF:0,Tele 5
+udp://@233.10.47.32:1234
+#EXTINF:0,3 SAT
+udp://@233.10.47.18:1234
+#EXTINF:0,SAT 1
+udp://@233.10.47.27:1234
+#EXTINF:0,Kabel 1
+udp://@233.10.47.29:1234
+#EXTINF:0,PRO 7
+udp://@233.10.47.28:1234
+#EXTINF:0,ZIK
+udp://@233.10.47.26:1234
+#EXTINF:0,VOX
+udp://@233.10.47.36:1234
+#EXTINF:0,ZDF
+udp://@233.10.47.17:1234
+#EXTINF:0,ZDF docu
+udp://@233.10.47.20:1234
+#EXTINF:0,ZDF info
+udp://@233.10.47.23:1234
+#EXTINF:0,ZDF theater
+udp://@233.10.47.24:1234
+#EXTINF:0,RTL
+udp://@233.10.47.33:1234
+#EXTINF:0,RTL 2
+udp://@233.10.47.34:1234
+#EXTINF:0,Super RTL
+udp://@233.10.47.35:1234
+#EXTINF:0,KIKA
+udp://@233.10.47.19:1234
+#EXTINF:0,Sonnenklar TV
+udp://@233.10.47.39:1234
+#EXTINF:0,Neun Live
+udp://@233.10.47.37:1234
+#EXTINF:0,Radio Slovensko 1
+udp://@233.10.47.41:1234
+#EXTINF:0,Radio Devin
+udp://@233.10.47.42:1234
+#EXTINF:0,Radio Rock FM
+udp://@233.10.47.43:1234
+#EXTINF:0,Radio Twist
+udp://@233.10.47.44:1234
+#EXTINF:0,Fun Radio
+udp://@233.10.47.54:1234
+#EXTINF:0,Radio Expres
+udp://@233.10.47.59:1234
+#EXTINF:0,Radio Okey
+udp://@233.10.47.60:1234
+#EXTINF:0,Radio Lumen
+udp://@233.10.47.61:1234
+#EXTINF:0,Radio Regina BA
+udp://@233.10.47.55:1234
+#EXTINF:0,Radio Regina BB
+udp://@233.10.47.56:1234
+#EXTINF:0,Radio Regina KE 
+udp://@233.10.47.57:1234
+#EXTINF:0,Radio Patria ukr.
+udp://@233.10.47.62:1234
+#EXTINF:0,Radio Patria mad.
+udp://@233.10.47.58:1234
+#EXTINF:0,Radiozurnal
+udp://@233.10.47.45:1234
+#EXTINF:0,Radio Praha
+udp://@233.10.47.46:1234
+#EXTINF:0,Radio Vltava
+udp://@233.10.47.47:1234
+#EXTINF:0,Radio Proglas
+udp://@233.10.47.48:1234
+#EXTINF:0,Radia Svobodna Europa / Praha
+udp://@233.10.47.49:1234
+#EXTINF:0,Radio Region
+udp://@233.10.47.50:1234
+#EXTINF:0,Radio BBC
+udp://@233.10.47.63:1234
+#EXTINF:0,DeutschlandRadio Berlin
+udp://@233.10.47.51:1234
+#EXTINF:0,Radio Deutschlandfunk
+udp://@233.10.47.52:1234
+#EXTINF:0,Radio Osterreich 1
+udp://@233.10.47.53:1234
+#EXTINF:0,Astra HDTV (20 Mbps)
+udp://@233.10.47.64:1234
+#EXTINF:0,BELNET RTBF Musique 3
+udp://@233.10.51.9:8018
+#EXTINF:0,Monterey StandCam
+#EXTVLCOPT:mtu=4136
+udp://@233.8.102.5:4005
+#EXTINF:0,Vbrick5 Program 1
+#EXTVLCOPT:mtu=4136
+udp://@239.192.168.11:4444
+#EXTINF:0,Vbrick5 Program 2
+#EXTVLCOPT:mtu=4136
+udp://@239.192.168.12:4443
+#EXTINF:0,Cornell VB 1
+#EXTVLCOPT:mtu=4136
+udp://@239.239.238.11:4444
+#EXTINF:0,Monterey DockCam / ROV cam
+#EXTVLCOPT:mtu=4136
+udp://@233.8.102.4:4004
+#EXTINF:0,Channel-1
+udp://147.136.168.143:11111
+#EXTINF:0,UC3M-TV
+udp://@224.2.153.29:1234
+#EXTINF:0,UMR NE
+#EXTVLCOPT:mtu=4136
+udp://@224.1.1.17:4444
+#EXTINF:0,Vbrick2 Program 2
+#EXTVLCOPT:mtu=4136
+udp://@239.192.168.4:4443
+#EXTINF:0,Vbrick2 Program 1
+#EXTVLCOPT:mtu=4136
+udp://@239.192.168.3:4444
+#EXTINF:0,SURFnet-TV-Vbrick1 Program 1
+udp://@233.4.79.18:5000
+#EXTINF:0,RedIRIS-TV
+udp://@225.32.12.100:1234
+#EXTINF:0,BELNET RTBF La Premiere
+udp://@233.10.51.13:8026
+#EXTINF:0,UC3M-TV2
+udp://@224.2.172.93:1234
+#EXTINF:0,RedIRIS-TV2 (todos.es)
+udp://@225.32.12.101:1234
+#EXTINF:0,ADAMadrid
+udp://@224.2.153.30:1234
+#EXTINF:0,BELNET RTBF pure FM
+udp://@233.10.51.18:8036
+#EXTINF:0,BELNET-RTBF-SAT
+udp://@239.193.254.254:1234
+#EXTINF:0,BELNET-IAD-CRAPS
+udp://@233.10.51.254:1234
+#EXTINF:0,BELNET-GEANT-MOVIE
+udp://@233.10.51.252:1234
