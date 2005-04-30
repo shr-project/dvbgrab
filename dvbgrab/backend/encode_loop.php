@@ -31,7 +31,10 @@ while (true) {
     $grb_id = $row[0];
     $command = "/var/lib/dvbgrab/encode ".$grab_storage."/".$grab_name.".ts ".$grab_storage."/".$grab_name.".avi 2>/dev/null >/dev/null";
     system($command);
-    if (file_exists($grab_storage."/".$grab_name.".avi")) {
+    $test = "/bin/ls -lah $grab_storage/$grab_name.avi; if [ $? -eq 0 ] ; then echo true; else echo false; fi;";
+    $outputTest = system($test);
+    if (strstr($outputTest, 'true')) {
+//    if (file_exists($grab_storage."/".$grab_name.".avi")) {
 //      printf("%s %s encoded from TS to AVI\n", date("Y-m-d G:i:s"), $grab_name);
 
       if ($fp = fopen($dvbgrab_log, 'a')) {
