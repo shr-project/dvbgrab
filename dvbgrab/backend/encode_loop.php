@@ -75,8 +75,8 @@ while (true) {
         }
         $command = "ln -s ".$grab_storage."/".$grab_name.".avi"." ".$grab_root."/".$userDir."/".$randomSeed."_".$grab_name.".avi";
         system($command);
-        $msg .= "http://".$hostname."/".$userDir."/".$randomSeed."_".$grab_name.".avi";
-        mail($row[1], "hotovy zkomprimovany grab", $msg, "From: $error_email\r\n");
+        $msgUser = $msg."http://".$hostname."/".$userDir."/".$randomSeed."_".$grab_name.".avi";
+        mail($row[1], "hotovy zkomprimovany grab", $msgUser, "From: $admin_email\r\n");
       }
     }
     else {

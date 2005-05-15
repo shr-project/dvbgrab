@@ -27,7 +27,7 @@ db_sql($SQL);
 status_update();
 
 $begin_time = $DB->UserTimeStamp($DB->UnixTimeStamp($row[1])-$grab_date_start_shift*60, "Y-m-d H:i:s");
-$end_time = $DB->UserTimeStamp($DB->UnixTimeStamp($row[2])+$grab_date_start_shift*60, "Y-m-d H:i:s");
+$end_time = $DB->UserTimeStamp($DB->UnixTimeStamp($row[2])+10*$grab_date_start_shift*60, "Y-m-d H:i:s");
 #$end_time = $DB->UserTimeStamp($DB->UnixTimeStamp($row[1])-($grab_date_start_shift-1)*60, "Y-m-d H:i:s");
 $channel = strtolower(strip_diacritics($row[0]));
 $timestamp = $DB->UserTimeStamp($DB->UnixTimeStamp($row[1])-$grab_date_start_shift*60, "Ymd-H");
@@ -102,8 +102,8 @@ if (strstr($outputTest, 'true')) {
     }
     $command = "ln -s ".$grab_storage."/".$grab_name.".ts"." ".$grab_root."/".$userDir."/".$randomSeed."_".$grab_name.".ts";
     $system($command);
-    $msg .= "http://".$hostname."/".$userDir."/".$randomSeed."_".$grab_name.".ts";
-    mail($row[1], "hotovy grab", $msg, "From: $error_email\r\n");
+    $msgUser = $msg."http://".$hostname."/".$userDir."/".$randomSeed."_".$grab_name.".ts";
+    mail($row[1], "hotovy grab", $msgUser, "From: $armin_email\r\n");
   }
 } else {
 // bad

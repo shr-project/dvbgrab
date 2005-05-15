@@ -27,7 +27,7 @@ $row = $rs->FetchRow();
 $begin_time = $DB->UserTimeStamp($DB->UnixTimeStamp($row[1])-$grab_date_start_shift*60, "Y-m-d H:i:s");
 $channel = strtolower(strip_diacritics($row[0]));
 $timestamp = $DB->UserTimeStamp($DB->UnixTimeStamp($row[1])-$grab_date_start_shift*60, "Ymd-H");
-$grab_name = "DVB-".$channel."-".$timestamp."-".ereg_replace("[/ ()&]", "_", strip_diacritics($row[3]));
+$grab_name = "DVB-".$timestamp."-".$channel."-".ereg_replace("[/ ()&]", "_", strip_diacritics($row[3]));
 //$grab_name = "DVB-".$timestamp."-".$channel."-".ereg_replace("[/ ()&]", "_", strip_diacritics($row[3]));
 
 $test = "/bin/ls -lah $grab_storage/$grab_name.ts; if [ $? -eq 0 ] ; then echo true; else echo false; fi;";
