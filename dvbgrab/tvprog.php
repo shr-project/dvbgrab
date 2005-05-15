@@ -21,7 +21,7 @@ $tv_year = substr($tv_date, 0, 4);
 global $DB;  // pripojeni do databaze
 
 // nejdrive od ted
-$grab_time_limit = time();
+$grab_time_limit = time()-30*60;
 
 switch ($_GET["action"]) {
 	// zadani noveho grabu
