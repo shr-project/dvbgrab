@@ -52,7 +52,7 @@ BEGIN "dvb0"
   Frequency = "674000000"
   DeviceNumber = "0"                   # /dev/dvb/adapter<i>
   SendMethod   = "1"                   # 0 - Send All Pids, 1 - MPEG2 data only
-  IgnoreTimeout = "0"
+  IgnoreTimeout = "1"
   TrickPlay = "normal"					
 END
 

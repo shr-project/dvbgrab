@@ -78,6 +78,17 @@ while (true) {
         $msgUser = $msg."http://".$hostname."/".$userDir."/".$randomSeed."_".$grab_name.".avi";
         mail($row[1], "hotovy zkomprimovany grab", $msgUser, "From: $admin_email\r\n");
       }
+      $SQL = "select count(*) from request where grb_id=$grb_id and grb_enc=0";
+      db_sql($SQL);
+      $rs = db_sql($SQL);
+      $row = $rs->FetchRow();
+      if ($row[0] == 0) {  // nikdo nechtel TS
+        system("rm -f ".$grab_storage."/".$grab_name.".ts");
+        if ($fp = fopen($dvbgrab_log, 'a')) {
+          fwrite($fp, sprintf("\n\nINFO: %s %s TS deleted because nobody wants it\n", date("Y-m-d G:i:s"), $grab_name));
+          fclose($fp);
+        }
+      }
     }
     else {
       printf("%s %s cannot be encoded from TS to AVI\n", date("Y-m-d G:i:s"), $grab_name);

@@ -90,7 +90,7 @@ if (strstr($outputTest, 'true')) {
     $randomSeed = mt_rand($MAX_RAND/2, $MAX_RAND);
     if (!is_dir($grab_root."/".$userDir)) {
       $command = "mkdir $grab_root/$userDir";
-      $system($command);
+      system($command);
     }
     if (!file_exists($grab_root."/".$userDir."/.htaccess")) {
       if ($fp = fopen($grab_root."/".$userDir."/.htaccess", 'w')) {
@@ -101,9 +101,9 @@ if (strstr($outputTest, 'true')) {
       }
     }
     $command = "ln -s ".$grab_storage."/".$grab_name.".ts"." ".$grab_root."/".$userDir."/".$randomSeed."_".$grab_name.".ts";
-    $system($command);
+    system($command);
     $msgUser = $msg."http://".$hostname."/".$userDir."/".$randomSeed."_".$grab_name.".ts";
-    mail($row[1], "hotovy grab", $msgUser, "From: $armin_email\r\n");
+    mail($row[1], "hotovy grab", $msgUser, "From: $admin_email\r\n");
   }
 } else {
 // bad
