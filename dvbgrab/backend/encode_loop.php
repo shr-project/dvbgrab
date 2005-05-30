@@ -29,6 +29,10 @@ while (true) {
     // encode INPUT_FILE OUTPUT_FILE
     $grab_name = $row[1];
     $grb_id = $row[0];
+    if ($fp = fopen($dvbgrab_log, 'a')) {
+      fwrite($fp, sprintf("\n\nINFO: %s %s starting encoding from TS to AVI\n", date("Y-m-d G:i:s"), $grab_name));
+      fclose($fp);
+    }
     $command = "/var/lib/dvbgrab/encode ".$grab_storage."/".$grab_name.".ts ".$grab_storage."/".$grab_name.".avi 2>/dev/null >/dev/null";
     system($command);
     $test = "/bin/ls -lah $grab_storage/$grab_name.avi; if [ $? -eq 0 ] ; then echo true; else echo false; fi;";
@@ -54,8 +58,9 @@ while (true) {
   //                  grab.grb_enc=1";
       $SQL = "select distinct usr_name, usr_email, usr_ip from user u, grab g, request r where
               r.grb_id=$grb_id and
-              u.usr_id=r.usr_id and
-              r.grb_enc=1";
+              u.usr_id=r.usr_id;
+// zruseno protoze .ts >2G nejde dorucovat pomoci apache tak mozna bude lepsi kdyz pak dorazi alespon encodovana verze
+//            and r.grb_enc=1";
       $rs = db_sql($SQL);
       while ($row = $rs->FetchRow()) {
         $userDir = strtolower(strip_diacritics($row[0]));
@@ -101,9 +106,9 @@ while (true) {
       $msg .= "se nepodarilo prekodovat\n";
       mail($error_email, "nepodarene encodovani", $msg, "From: $error_email\r\n");
       // chyba bude potreba nejdrive odstranit takze spime dele
-      sleep(1200);
+      // sleep(1200);
     }
   }
-  sleep(300);
+  sleep(30);
 }
 ?>

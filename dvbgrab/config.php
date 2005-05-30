@@ -51,6 +51,9 @@ $dvbgrab_log= "/var/log/dvbgrab.log";
 // posun zacatku a konce nahravani v minutach
 $grab_date_start_shift= "2";
 
+// posun zacatku a konce nahravani v minutach
+$grab_date_stop_shift= "15";
+
 // jmeno stroje s http serverem dvbgrabu
 $hostname= "zeus.mk.cvut.cz";
 

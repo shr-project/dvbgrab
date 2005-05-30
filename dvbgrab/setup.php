@@ -32,6 +32,7 @@ switch ($_GET["action"]) {
     $grab_quota=$_POST["v_grab_quota"];
     $dvbgrab_log=$_POST["v_dvbgrab_log"];
     $grab_date_start_shift=$_POST["v_grab_date_start_shift"];
+    $grab_date_stop_shift=$_POST["v_grab_date_stop_shift"];
     $hostname=$_POST["v_hostname"];
     $grab_root=$_POST["v_grab_root"];
     $grab_storage=$_POST["v_grab_storage"];
@@ -138,10 +139,15 @@ adresáøe backend, který se pøesune na grabovací stroj.</p>
 <tr><td class="key" id="dvbgrab_log">dvbgrab_log:</td>
 <td class="value" id="v_dvbgrab_log"><input class="value" type="text" name="v_dvbgrab_log" value="<?php print $dvbgrab_log;?>"></td></tr>
 
-<tr><td colspan="2" class="desc">O kolik minut se má posunout zaèátek a konec nahrávání poøadu</td></tr>
+<tr><td colspan="2" class="desc">O kolik minut se má posunout zaèátek nahrávání poøadu</td></tr>
 <tr><td class="key" id="grab_date_start_shift">grab_date_start_shift:</td>
 <td class="value" id="v_grab_date_start_shift"><input class="value" type="text" name="v_grab_date_start_shift" value="<?php print $grab_date_start_shift;?>"></td></tr>
 
+<tr><td colspan="2" class="desc">O kolik minut se má posunout konec nahrávání poøadu</td></tr>
+<tr><td class="key" id="grab_date_stop_shift">grab_date_stop_shift:</td>
+<td class="value" id="v_grab_date_stop_shift"><input class="value" type="text" name="v_grab_date_stop_shift" value="<?php print $grab_date_stop_shift;?>"></td></tr>
+
+<tr><td colspan="2" class="desc">Název poèítaèe kde se budou poøady nahrávat</td></tr>
 <tr><td colspan="2" class="desc">Název poèítaèe kde se budou poøady nahrávat</td></tr>
 <tr><td class="key" id="hostname">hostname:</td>
 <td class="value" id="v_hostname"><input class="value" type="text" name="v_hostname" value="<?php print $hostname;?>"></td></tr>

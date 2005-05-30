@@ -27,7 +27,7 @@ db_sql($SQL);
 status_update();
 
 $begin_time = $DB->UserTimeStamp($DB->UnixTimeStamp($row[1])-$grab_date_start_shift*60, "Y-m-d H:i:s");
-$end_time = $DB->UserTimeStamp($DB->UnixTimeStamp($row[2])+10*$grab_date_start_shift*60, "Y-m-d H:i:s");
+$end_time = $DB->UserTimeStamp($DB->UnixTimeStamp($row[2])+$grab_date_stop_shift*60, "Y-m-d H:i:s");
 #$end_time = $DB->UserTimeStamp($DB->UnixTimeStamp($row[1])-($grab_date_start_shift-1)*60, "Y-m-d H:i:s");
 $channel = strtolower(strip_diacritics($row[0]));
 $timestamp = $DB->UserTimeStamp($DB->UnixTimeStamp($row[1])-$grab_date_start_shift*60, "Ymd-H");
