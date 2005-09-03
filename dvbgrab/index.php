@@ -164,12 +164,11 @@ stáhnout tak mù¾e být prostì smazán, proto¾e nemáme nekoneènou diskovou kapacitu
 schválnì. Zjednodu¹enì øeèeno, z pohledu zákona k 1 grabu mù¾e mít pøístup pouze 1 èlovìk.
 </p>
 
-<p class="warning">Tak jsme dohnali 2 denní zpo¾dìní v komprimování a tak jsem zkusil vrátit kvalitnìj¹í
-3-prùchodové komprimování. Pokud se to zaène zase extrémnì zpo¾ïovat tak to zase budu muset vratit.</p>
-
 <p class="warning">Nejdou stahovat soubory &gt;2GB. Bohu¾el je to tak webovy server apache s tím asi neumí
 moc dobøe pracovat. Jak to vyøe¹it zatím netu¹ím, pokud si necháte grabovat pouze do TS tak to mo¾ná nepùjde stáhnout.
 </p>
+
+<p class="warning">Opraveno/Pøidáno vyhledávání v plánovaných grabech (Velmi u¾itecné pro grabovaèe seriálù ;-))</p>
 <?php
 
 if ($usr_name != "" && !isset($_GET["msg"])) {

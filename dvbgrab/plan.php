@@ -91,6 +91,10 @@ if ($type == "done") $SQL .= " g.grb_status='done'";
 if ($type == "mygrab") $SQL .= " g.grb_status<>'deleted' and u.usr_id=$usr_id and g.grb_date_start >='$grab_datetime'";
 
 $SQL .= " order by year(g.grb_date_start)".(($type=="sched")?"":" desc").", if(hour(g.grb_date_start)<$midnight, dayofyear(g.grb_date_start)-1, dayofyear(g.grb_date_start))".(($type=="sched")?"":" desc").", if(hour(g.grb_date_start)<$midnight, hour(g.grb_date_start)+24, hour(g.grb_date_start)), minute(g.grb_date_start), c.chn_order";
+
+if ($type == "done") $SQL .= " limit 100";
+if ($type == "mygrab") $SQL .= " limit 100";
+
 $res = db_sql($SQL);
 
 if ($res->RecordCount = 0) {
