@@ -4,9 +4,10 @@
 //	$menu[] ="o èem se hlasuje";
 	$menu[] ="hotové graby";
 	$menu[] ="moje graby";
-//	$menu[] ="nastavení";
+	$menu[] ="nastavení";
 	$menu[] =" ";
 	$menu[] ="napi¹te nám";
+	$menu[] ="novinky";
 //	$menu[] ="dokumentace";
 //	$menu[] ="odhlásit se";
 	
@@ -15,9 +16,10 @@
 //	$link[] ="votes.php?menuitem=3";
 	$link[] ="plan.php?type=done";
 	$link[] ="plan.php?type=mygrab";
-//	$link[] ="settings.php";
+	$link[] ="account.php?action=edit";
 	$link[] ="";
 	$link[] ="mailto:dvbgrab.admin@mk.cvut.cz";
+	$link[] ="news.php";
 //	$link[] ="http://martinja.mk.cvut.cz/tvgrab";
 //	$link[] ="index.php?action=logout";
 ?>

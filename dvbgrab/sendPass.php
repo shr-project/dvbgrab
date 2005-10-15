@@ -215,7 +215,7 @@ switch ($_GET["action"]) {
        <?
           } else {
             $row = $rs->FetchRow();
-            $userId = $row[0];
+            $usr_id = $row[0];
             $user = $row[1];
             $mail = $row[2];
             $newPass=$user."_".get_rand_id(20);

@@ -167,12 +167,7 @@ schválnì. Zjednodu¹enì øeèeno, z pohledu zákona k 1 grabu mù¾e mít pøístup pouze
 <p class="warning">Nejdou stahovat soubory &gt;2GB. Bohu¾el je to tak webovy server apache s tím asi neumí
 moc dobøe pracovat. Jak to vyøe¹it zatím netu¹ím, pokud si necháte grabovat pouze do TS tak to mo¾ná nepùjde stáhnout.
 </p>
-
-<p class="warning">4. 9. 2005 22:00 Opraveno/Pøidáno vyhledávání v plánovaných grabech (Velmi u¾itecné pro grabovaèe seriálù ;-))</p>
-<p class="warning">4. 9. 2005 23:00 Omezeno zobrazovaní hotových grabù na posledních 100 zaznamù, to samé pro zobrazení mých grabù.</p>
-<p class="warning">4. 9. 2005 00:30 Par uprav usbhid.c a zaèátek testování nìkterých stále nefunkèních multimediálních kláves na USB klavesnici (naprosto nesouvisí s DVBgrabem) ;-).</p>
-<p class="warning">4. 9. 2005 01:00 Pøidána mo¾nost nechat si poslat nové vygenerované heslo.</p>
-<p class="warning">4. 9. 2005 02:30 Pøidána volba "Nastavení", pro úpravy u¾ivatelských úètù.</p>
+<center><p class="warning"><a href="news.php">--= Novinky na DVBgrabu =--</a></p></center>
 <?php
 
 if ($usr_name != "" && !isset($_GET["msg"])) {

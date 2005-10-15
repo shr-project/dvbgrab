@@ -85,6 +85,7 @@ function str_match_array_ascii($str, $query_array, $match, $use_diacritics) {
 $query = $_GET["query"];
 $query_array = explode(" ", $query);
 
+require("grabActionsNoRedir.php");
 ?>
 <td valign="top">
 <form method="get" action="<?=$PHP_SELF?>">
@@ -125,7 +126,7 @@ for ($i=0; $i<sizeof($query_array); $i++) {
 }
 
 $SQL = "select c.chn_name, t.tel_id, t.tel_name, t.tel_desc, unix_timestamp(t.tel_date_start) as tel_date_start_unx,
-				g.grb_id, g.grb_status, not isnull(r.usr_id) as my_grab	
+				g.grb_id, g.grb_status, not isnull(r.usr_id) as my_grab, r.grb_enc	
 		from channel c inner join television t on (c.chn_id=t.chn_id)
 			left join grab g on (t.tel_id=g.tel_id)
 			left join request r on (g.grb_id=r.grb_id and r.usr_id=$usr_id)
@@ -141,7 +142,39 @@ if ($res_count > $MAX_SEARCH_RESULTS) {
 	echo "Nalezeno pøíli¹ mnoho záznamù, zobrazuji prvních $MAX_SEARCH_RESULTS";
 }
 ?>
-<br><br><br>
+<br>
+<?php
+if (isset($_GET["msg"])) {
+?>
+<script type="text/javascript">
+<!--
+<?php
+  switch ($_GET["msg"]) {
+    case "grb_add_fail_quota":
+      echo "alert(\"ERROR: tento týden ji¾ nelze zadávat dal¹í graby\");\n";
+      break;
+    case "grb_add_fail_time":
+      echo "alert(\"ERROR: po¾adavek o grab na u¾ odvysílaný poøad\");\n";
+      break;
+    case "grb_add_fail_exist":
+      echo "alert(\"ERROR: grab ji¾ existuje\");\n";
+      break;
+    case "grb_add_fail_tel":
+      echo "alert(\"ERROR: daný poøad neexistuje\");\n";
+      break;
+    case "grb_del_fail_time":
+      echo "alert(\"ERROR: grab u¾ skonèil, nebo probíhá\");\n";
+      break;
+    case "grb_del_fail_exist":
+      echo "alert(\"ERROR: daný grab neexistuje\");\n";
+      break;
+    default:
+} ?>
+//-->
+</script>
+<? } ?>
+
+<br><br>
 
 <?
 if ($res_count > 0) {
@@ -199,6 +232,47 @@ if ($res_count > 0) {
 				</tr>
 				</table>
 				<font size="1"><i><?=str_match_array_ascii($row["tel_desc"], $query_array, "<b><font color=\"red\">$1</font></b>", $use_diacritics)?></i></font>
+        <br>
+        <?php
+#        echo "id=".$row["grb_id"];
+#        echo "my=".$row["my_grab"];
+#        echo "enc=".$row["grb_enc"];
+        // svuj grab s mohu zrusit, pokud ho pozadoval jeste nekdo dalsi tak se stejne nahraje
+        if ($row["grb_id"] && $row["my_grab"]) {
+          echo "<a class=\"program\" href=\"$PHP_SELF?action=grab_del&amp;grb_id=".
+            $row["grb_id"]."&amp;tv_date=$tv_date&amp;query=".$query."\">zru¹it&nbsp;grab</a>&nbsp;...&nbsp;";
+        }
+        // pro svuj grab muzu nastavit, ze se ma komprimovat do MPEG4
+        if ($row["grb_id"] && $row["my_grab"] && !$row["grb_enc"]) {
+          echo "<a onclick=\"return confirm('Chcete poøad ".htmlspecialchars($row["tel_name"])." doopravdy rovnou zkomprimovat do MPEG4?')\" ".
+          "href=\"$PHP_SELF?action=grab_enc&amp;grb_id=".$row["grb_id"]."&amp;tv_date=$tv_date&amp;query=".$query."\"".
+          " title=\"grabnout\" class=\"program\">do MPEG4</a>";
+//          echo "<a class=\"program\" href=\"$PHP_SELF?action=grab_enc&amp;grb_id=".
+//            $row["grb_id"]."&amp;tv_date=$tv_date\">komprimovat</a>";
+        }
+        // pro svuj grab muzu nastavit, ze se nema komprimovat do MPEG4
+        if ($row["grb_id"] && $row["my_grab"] && $row["grb_enc"]) {
+          echo "<a onclick=\"return confirm('Chcete poøad ".htmlspecialchars($row["tel_name"]).
+            " doopravdy jenom nahrát a nechat v transport streamu (.ts)?')\" ".
+            "href=\"$PHP_SELF?action=grab_noenc&amp;grb_id=".$row["grb_id"]."&amp;tv_date=$tv_date&amp;query=".$query."\"".
+            " title=\"grabnout\" class=\"program\">do TS</a>";
+//          echo "<a class=\"program\" href=\"$PHP_SELF?action=grab_noenc&amp;grb_id=".
+//            $row["grb_id"]."&amp;tv_date=$tv_date\">nekomprimovat</a>";
+        }
+        // pokud se nejedna o grab a je mozno ho zadat, tak to umoznim
+        if (!$row["grb_id"] && $DB->UnixTimeStamp($row["tel_date_start"]) >= $grab_time_limit) {
+          echo "<a onclick=\"return confirm('Chcete poøad ".htmlspecialchars($row["tel_name"])." vá¾nì grabnout?')\" ".
+          "href=\"$PHP_SELF?action=grab_add&amp;tel_id=".$row["tel_id"]."&amp;tv_date=$tv_date&amp;query=".$query."\"".
+          " title=\"grabnout\" class=\"program\">".
+          "grabnout</a>";
+        } else if ($row["grb_id"] && $DB->UnixTimeStamp($row["tel_date_start"]) >= $grab_time_limit && !$row["my_grab"]) {
+        // grab existuje, jeste neprobehl a ja jsem ho jeste nerequestoval
+          echo "<a onclick=\"return confirm('Chcete poøad ".htmlspecialchars($row["tel_name"])." vá¾nì taky grabnout?')\" ".
+          "href=\"$PHP_SELF?action=grab_add_me&amp;grb_id=".$row["grb_id"]."&amp;tv_date=$tv_date&amp;query=".$query."\"".
+          " title=\"grabnout\" class=\"program\">".
+          "taky grabnout</a>";
+        }
+        ?>
 				<br><br>
 			</td>
 		</tr>

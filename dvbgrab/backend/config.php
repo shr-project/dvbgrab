@@ -9,7 +9,7 @@ $db_name= "dvbgrab";
 $db_type= "mysql";
 $db_host= "dvbgrab.mk.cvut.cz";
 $db_user= "dvbgrab";
-$db_pass= "heslo";
+$db_pass= "dvbgm6s6rk6";
 
 /*
     * 0 - Any error is written into the page
@@ -52,7 +52,7 @@ $dvbgrab_log= "/var/log/dvbgrab.log";
 $grab_date_start_shift= "2";
 
 // posun zacatku a konce nahravani v minutach
-$grab_date_stop_shift= "15";
+$grab_date_stop_shift= "20";
 
 // jmeno stroje s http serverem dvbgrabu
 $hostname= "zeus.mk.cvut.cz";
