@@ -49,8 +49,10 @@ while (true) {
       $SQL = "delete from encode where grb_id=$grb_id";
       $rs = db_sql($SQL);
       // posli vsem requestujicim uzivatelum zpravu, ze grab je nekde ke stazeni
-      $msg = "grab $grab_name\n";
-      $msg .= "je zkomprimovan a pripraven ke stazeni na:\n";
+      $msg = "grab: $grab_name\n";
+      $msg .= "id: $grb_id\nMD5sum: ";
+      $msg .= md5_file("$grab_storage/$grab_name.avi");
+      $msg .= "\nje zkomprimovan a pripraven ke stazeni na:\n";
   //    $SQL = "select usr_name, usr_email, usr_ip
   //            from user left join request,
   //                 grab left join request
@@ -58,7 +60,7 @@ while (true) {
   //                  grab.grb_enc=1";
       $SQL = "select distinct usr_name, usr_email, usr_ip from user u, grab g, request r where
               r.grb_id=$grb_id and
-              u.usr_id=r.usr_id;
+              u.usr_id=r.usr_id";
 // zruseno protoze .ts >2G nejde dorucovat pomoci apache tak mozna bude lepsi kdyz pak dorazi alespon encodovana verze
 //            and r.grb_enc=1";
       $rs = db_sql($SQL);
@@ -109,7 +111,7 @@ while (true) {
       $msg .= "se nepodarilo prekodovat\n";
       mail($error_email, "nepodarene encodovani", $msg, "From: $error_email\r\n");
       // chyba bude potreba nejdrive odstranit takze spime dele
-      // sleep(1200);
+      sleep(1200);
     }
   }
   sleep(30);

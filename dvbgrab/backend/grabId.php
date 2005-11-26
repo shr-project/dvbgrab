@@ -74,6 +74,8 @@ if (strstr($outputTest, 'true')) {
   $msg .= "od: $begin_time\n";
   $msg .= "do: $end_time\n";
   $msg .= "z: $channel\n";
+  $msg .= "MD5sum: ";
+  $msg .= md5_file("$grab_storage/$grab_name.ts");
   $msg .= "je pripraven ke stazeni na:\n";
 //  $SQL = "select usr_name, usr_email, usr_ip
 //            from user left join request,

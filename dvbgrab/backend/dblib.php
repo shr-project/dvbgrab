@@ -21,15 +21,17 @@ while (!$rs->EOF) {
 // executes a sql query
 function db_sql($sql) {
     global $DB;
-    if (!$DB->IsConnected()) {
+    while (!($rs = $DB->Execute($sql))) {
+      handle_error("SQL: {$sql}[br]".$DB->ErrorMsg().": ".$DB->ErrorNo());
+      print "SQL: {$sql}[br]".$DB->ErrorMsg().": ".$DB->ErrorNo();
+      global $db_host;
+      global $db_user;
+      global $db_pass;
+      global $db_name;
       if (!$DB->Connect($db_host, $db_user, $db_pass, $db_name)) {
         print "Sorry, cannot connect to database";
-        exit;
       }
-    }
-    if (!($rs = $DB->Execute($sql))) {
-      handle_error("SQL: {$sql}[br]".$DB->ErrorMsg().": ".$DB->ErrorNo());
-      exit;
+      sleep(120);
     }
     return $rs;
 }

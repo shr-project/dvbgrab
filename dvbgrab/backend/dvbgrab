@@ -22,10 +22,13 @@ while getopts b:e:i:o: OPT; do
 		
 	"i")	case "$OPTARG" in
 		"ct1")		INP_CHN="239.194.12.1" ;;
+#		"ct1")		INP_CHN="239.194.13.1" ;;
 		"ct2")		INP_CHN="239.194.12.2" ;;
+                "ct24")         INP_CHN="239.194.12.9" ;;
 		"nova")		INP_CHN="239.194.12.3" ;;
-		"prima")	INP_CHN="239.194.12.4" ;;
-		"ocko")		INP_CHN="239.194.12.5" ;;
+#		"nova")		INP_CHN="239.194.13.3" ;;
+		"prima")	INP_CHN="239.194.13.4" ;;
+#		"ocko")		INP_CHN="239.194.12.5" ;;
 		esac
 		;;
 			
