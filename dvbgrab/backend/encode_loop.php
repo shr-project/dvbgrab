@@ -80,7 +80,10 @@ while (true) {
         }
         $command = "ln -s ".$grab_storage."/".$grab_name.".avi"." ".$grab_root."/".$userDir."/".$randomSeed."_".$grab_name.".avi";
         system($command);
-        $msgUser = $msg."http://".$hostname."/".$userDir."/".$randomSeed."_".$grab_name.".avi";
+        $output = "http://".$hostname."/".$userDir."/".$randomSeed."_".$grab_name.".avi";
+        $msgUser = $msg.$output;
+        $update = "update request set req_output=$output where req_id=".$row["req_id"];
+        db_sql($update);
         mail($row[1], "hotovy zkomprimovany grab", $msgUser, "From: $admin_email\r\n");
       }
       $SQL = "select count(*) from request where grb_id=$grb_id and grb_enc=0";

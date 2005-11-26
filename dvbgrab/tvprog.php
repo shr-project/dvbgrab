@@ -28,7 +28,7 @@ $menuitem = 1;
 require("menu.php");
 ?>
 <td>
-<h2 class="planList">Televizní program - <?
+<h2 class="planList"><? echo $msgProgTitle ?> - <?
 $tv_day = substr($tv_date, 6, 2);
 $tv_month = substr($tv_date, 4, 2);
 $tv_year = substr($tv_date, 0, 4);
@@ -311,7 +311,7 @@ if (isset($_GET["msg"])) {
 <table width="100%">
 <tr>
 	<td align="left">
-		<a href="<?=$PHP_SELF?>?tv_date=<?=date("Ymd", mktime(0, 0, 0, $tv_month, $tv_day-1, $tv_year))?>"><? echo $msgProgNextDay ?></a>
+		<a href="<?=$PHP_SELF?>?tv_date=<?=date("Ymd", mktime(0, 0, 0, $tv_month, $tv_day-1, $tv_year))?>"><? echo $msgProgPrevDay ?></a>
 	</td>
 	<td align="right">
 		<a href="<?=$PHP_SELF?>?tv_date=<?=date("Ymd", mktime(0, 0, 0, $tv_month, $tv_day+1, $tv_year))?>"><? echo $msgProgNextDay ?></a>

@@ -13,7 +13,7 @@ function strip_diacritics($str) {
 $grb_id = getenv("GRB_ID");
 // zjisti informace o danem grabu
 $SQL = "select ch.chn_name, g.grb_date_start, g.grb_date_end, t.tel_name
-          from channel ch, television t, grab g, request r
+          from channel ch, television t, grab g
           where ch.chn_id=t.chn_id and
                 t.tel_id=g.tel_id and
                 g.grb_id=r.grb_id and
@@ -80,7 +80,7 @@ if (strstr($outputTest, 'true')) {
 //                 grab left join request
 //            where grab.grb_id=$grb_id and
 //                  grab.grb_enc=0";
-  $SQL = "select distinct usr_name, usr_email, usr_ip from user u, grab g, request r where
+  $SQL = "select distinct usr_name, usr_email, usr_ip, req_id from user u, grab g, request r where
           r.grb_id=$grb_id and
           u.usr_id=r.usr_id and
           r.grb_enc=0";
@@ -104,7 +104,10 @@ if (strstr($outputTest, 'true')) {
     }
     $command = "ln -s ".$grab_storage."/".$grab_name.".ts"." ".$grab_root."/".$userDir."/".$randomSeed."_".$grab_name.".ts";
     system($command);
-    $msgUser = $msg."http://".$hostname."/".$userDir."/".$randomSeed."_".$grab_name.".ts";
+    $output = "http://".$hostname."/".$userDir."/".$randomSeed."_".$grab_name.".ts";
+    $msgUser = $msg.$output;
+    $update = "update request set req_output=$output where req_id=".$row["req_id"];
+    db_sql($update);
     mail($row[1], "hotovy grab", $msgUser, "From: $admin_email\r\n");
   }
 } else {
