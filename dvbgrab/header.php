@@ -3,12 +3,15 @@
 <head>
 <link rel="stylesheet" type="text/css" href="css/tvgrab.css">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-2">
-<title>:: projekt TV grab ::</title>
+<?php
+require_once("language.inc.php");
+?>
+<title><? echo $msgGlobalTitle ?></title>
 </head>
 
 <body>
 <div align="center">
-<a href="index.php" class="h"><img class="top" src="images/top.png" alt=":: TV grab ::"></a>
+<a href="index.php" class="h"><img class="top" src="images/top.png" alt="<? echo $msgGlobalTitle ?>"></a>
 </div>
 <div class="status">
 <span class="value" id="hodiny"><?=date("d.m. G:i")?></span>
@@ -19,9 +22,9 @@ if (authenticated($_COOKIE["usr_id"], $_COOKIE["usr_pass"])) {
     $rs = db_sql($SQL);
     $row = $rs->FetchRow();
     $usr_name = $row[0];
-    echo "<span class=\"item\"> :: Přihlášen: </span><span class=\"value\">$usr_name</span>";
-    echo " <a class=\"item\" href=\"index.php?action=logout\">(Odhlásit)</a>";
-    echo "<span class=\"item\"> :: Zadáno grabů: </span><span class=\"value\">";
+    echo "<span class=\"item\"> :: $msgAccountLogged </span><span class=\"value\">$usr_name</span>";
+    echo " <a class=\"item\" href=\"index.php?action=logout\">($msgAccountLogout)</a>";
+    echo "<span class=\"item\"> :: $msgAccountRecordCount </span><span class=\"value\">";
   if ($menuitem != 1) {
     $tv_day = date("d");
     $tv_month = date("m");
@@ -35,10 +38,11 @@ if (authenticated($_COOKIE["usr_id"], $_COOKIE["usr_pass"])) {
 
   echo " - ".get_user_grab($_COOKIE["usr_id"], $week)."/$grab_quota</span>";
 } else {
-    echo "<span class=\"item\"> :: Nepřihlášen</span>";
+    echo "<span class=\"item\"> :: $msgAccountNoLogged</span>";
 }
 ?>
 </div>
+<div>&nbsp;</div>
 <script language="JavaScript1.2" type="text/javascript">
 <!--
 

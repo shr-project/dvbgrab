@@ -17,15 +17,18 @@ function status_update() {
 		"and ((grb_status='scheduled') or (grb_status='processing'));");
 	*/
 
-	// graby ktere zacaly a nedokoncily se oznac jako 'error'
-	$SQL = "update grab set grb_status='error'
-				where date_add(grb_date_end, interval 10 minute)<now() and
-					grb_status='processing'";
-	db_sql($SQL);
+        global $DB;
+        $grab_stop_limit = $DB->DBTimeStamp(time()+(10+$grab_date_stop_shift)*60);
 
-	// graby ktere se ani nezacaly se oznac jako 'missed'
-	$SQL = "update grab set grb_status='missed'
-				where date_add(grb_date_end, interval 10 minute)<now() and
+        // graby ktere zacaly a nedokoncily se oznac jako 'error'
+        $SQL = "update grab set grb_status='error'
+                                where grb_date_end < $grab_stop_limit and
+                                      grb_status='processing'";
+        db_sql($SQL);
+
+        // graby ktere se ani nezacaly se oznac jako 'missed'
+        $SQL = "update grab set grb_status='missed'
+                                where grb_date_end < $grab_stop_limit and
 					grb_status='scheduled'";
 	db_sql($SQL);
 

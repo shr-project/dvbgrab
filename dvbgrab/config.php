@@ -9,7 +9,7 @@ $db_name= "dvbgrab";
 $db_type= "mysql";
 $db_host= "dvbgrab.mk.cvut.cz";
 $db_user= "dvbgrab";
-$db_pass= "heslo";
+$db_pass= "dvbgm6s6rk6";
 
 /*
     * 0 - Any error is written into the page
@@ -43,7 +43,7 @@ $hour_frac_item= "2";
 
 // kolik grabu za tyden muze uzivatel zadat
 // pokud zada grab, ktery se negrabne nebo ktery pozdeji zrusi, tak muze misto nej zadat dalsi
-$grab_quota= "50";
+$grab_quota= "100";
 
 // logovani udalosti dvb grabu
 $dvbgrab_log= "/var/log/dvbgrab.log";

@@ -1,7 +1,9 @@
 <?php
 
 require("./config.php");
-require("/usr/share/adodb/adodb.inc.php");
+#require("/usr/share/adodb/adodb.inc.php");
+#require("/usr/share/php/adodb/adodb.inc.php");
+require("backend/adodb/adodb.inc.php");
 /*
 if (!($DB = @mysql_connect($db_host, $db_user, $db_pass))) {
     handle_error("Connection failed.");

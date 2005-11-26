@@ -1,6 +1,7 @@
 <?php
 require("authentication.php");
 require("dblib.php");
+require_once("language.inc.php");
 
 switch ($_GET["action"]) {
 
@@ -109,23 +110,23 @@ require("menu.php");
 
 	function checkRegister() {
 		if (document.register.usr_name.value=='') {
-			alert("Vyplòte pøihla¹ovací jméno!");
+			alert("<?echo $msgAccountValidateLogin ?>");
 			ret=false;        
 			document.register.usr_name.focus();
 		} else if (document.register.usr_pass1.value=='') {
-			alert("Vyplòte heslo!");
+			alert("<?echo $msgAccountValidatePass ?>");
 			document.register.usr_pass1.focus();
 			ret=false;
 		} else if (document.register.usr_pass1.value!=document.register.usr_pass2.value) {
-			alert("Hesla se neshodují!"); 
+			alert("<?echo $msgAccountValidatePassNoEql ?>"); 
 			document.register.usr_pass2.focus();
 			ret=false;
 		} else if (document.register.usr_email.value=='') {
-			alert("Vyplòte email!"); 
+			alert("<?echo $msgAccountValidateEmail ?>"); 
 			document.register.usr_email.focus();
 			ret=false;
 		} else if (!emailCheck()) {
-			alert("Neplatný email!");
+			alert("<?echo $msgAccountValidateEmailFormat ?>");
 			document.register.usr_email.focus();
 			ret=false;
 		} else ret=true;
@@ -135,12 +136,12 @@ require("menu.php");
 	function checkLogin() {
 		if (document.login.usr_name.value=='') {
 			ret=false;        
-			alert("Vyplòte pøihla¹ovací jméno!");
+			alert("<?echo $msgAccountValidateLogin ?>");
 			document.login.usr_name.focus();
 		} else
 			if (document.login.usr_pass.value=='') {
 				ret=false;
-				alert("Vyplòte heslo!");
+				alert("<?echo $msgAccountValidatePass ?>");
 				document.login.usr_pass.focus();
 		} else ret=true;
 		return ret;
@@ -148,26 +149,13 @@ require("menu.php");
 //-->
 </script>
 
-<h2>Vítejte na stránkách projektu TV grab.</h2>
-<p>Po pøihlá¹ení máte mo¾nost prohlí¾et televizní program na 14 dní dopøedu a
-oznaèovat v nìm poøady, o které máte zájem. Po nagrabování se zájemci po¹le zpráva 
-(email, icq, jabber) o jeho ulo¾ení (pravdìpodobnì unikátní URI).</p>
-
-<p>Pøi objednání grabu je mo¾nost za¹krtnout kompresi do MPEG4, co¾ zaji¹»uje men¹í
-velikost souboru pøi stejné kvalitì, ale zhor¹uje mo¾nosti úprav (vystøíhávání reklamy, 
-úpravy zaèátku a konce poøadu).</p>
-
-<p>Uchování grabovaného poøadu je zaruèeno pouze 7 dní od nahrání poøadu. Pokud si ho nestihnete
-stáhnout tak mù¾e být prostì smazán, proto¾e nemáme nekoneènou diskovou kapacitu.</p>
-
-<p class="warning">Ke grabu má pøístup pouze ten, kdo ho zadal. Toto omezení je nastaveno
-schválnì. Zjednodu¹enì øeèeno, z pohledu zákona k 1 grabu mù¾e mít pøístup pouze 1 èlovìk.
-</p>
-
-<p class="warning">Nejdou stahovat soubory &gt;2GB. Bohu¾el je to tak webovy server apache s tím asi neumí
-moc dobøe pracovat. Jak to vyøe¹it zatím netu¹ím, pokud si necháte grabovat pouze do TS tak to mo¾ná nepùjde stáhnout.
-</p>
-<center><p class="warning"><a href="news.php">--= Novinky na DVBgrabu =--</a></p></center>
+<h2><?echo $msgIndex ?></h2>
+<p><?echo $msgIndexP1 ?></p>
+<p><?echo $msgIndexP2 ?></p>
+<p><?echo $msgIndexP3 ?></p>
+<p class="warning"><?echo $msgIndexPW1 ?></p>
+<p class="warning"><?echo $msgIndexPW2 ?></p>
+<p class="warning"><?echo $msgIndexPW3 ?></p>
 <?php
 
 if ($usr_name != "" && !isset($_GET["msg"])) {
@@ -177,100 +165,101 @@ if ($usr_name != "" && !isset($_GET["msg"])) {
 
 switch ($_GET["msg"])  {
 	case "log_fail":
-		echo "<p class=\"warning\">Pøihlá¹ení se nepovedlo! Zadána ¹patná kombinace jména a hesla.</p>";
+		echo "<p class=\"warning\">$msgIndexLogFail</p>";
 		break;
 	case "log_ok":
-		echo "<p class=\"info\">U¾ivatel $usr_name byl úspì¹nì pøihlá¹en.</p>";
+		echo "<p class=\"info\">$msgIndexUser $usr_name $msgIndexLogOk</p>";
 		break;
 	case "logout":
-		echo "<p class=\"info\">U¾ivatel byl úspì¹nì odhlá¹en.</p>";
+		echo "<p class=\"info\">$msgIndexLogout</p>";
 		break;
 	case "reg_fail_ip":
-		echo "<p class=\"warning\">Chyba registrace: Z této ip adresy ji¾ byl jeden u¾ivatel zaregistorván</p>";
+		echo "<p class=\"warning\">$msgIndexRegFailIp</p>";
 		break;
 	case "reg_fail_data":
-		echo "<p class=\"warning\">Chyba registrace: Je nutné zadat jméno, heslo a email.</p>";
+		echo "<p class=\"warning\">$msgIndexRegFailData</p>";
 		break;
 	case "reg_fail_email":
-		echo "<p class=\"warning\">Chyba registrace: Nesprávný formát emailové adresy.</p>";
+		echo "<p class=\"warning\">$msgIndexRegFailEmail</p>";
 		break;
 	case "reg_fail_pass":
-		echo "<p class=\"warning\">Chyba registrace: Zadaná hesla se neshodují.</p>";
+		echo "<p class=\"warning\">$msgIndexRegFailPass";
 		break;
 	case "reg_fail_name":
-		echo "<p class=\"warning\">Chyba registrace: U¾ivatel s tímto pøihla¹ovacím jménem ji¾ existuje, zvolte prosím jiné!</p>";
+		echo "<p class=\"warning\">$msgIndexRegFailName</p>";
 		break;
 	case "reg_ok":
-		echo "<p class=\"info\">U¾ivatel $usr_name byl úspì¹nì zaregistrován.</p>";
+		echo "<p class=\"info\">$msgIndexUser $usr_name $msgIndexRegOk</p>";
 		break;
 	default:
 
 }
 
-// TODO vyresit zasilani hesla mailem
 if (!authenticated($_COOKIE["usr_id"], $_COOKIE["usr_pass"])) {
 ?>
-Pro zpøístupnìní polo¾ek v menu vlevo se pøihla¹te:<br>
+<?echo $msgAcountNoLoggedNotice ?><br />
 <form name="login" action="<?=$PHP_SELF."?action=login"?>" method="post" onsubmit="return checkLogin()">
 <table class="registration">
 <tr>
-	<th class="inputCenter" colspan="2">Pøihlá¹ení<th>
+	<th class="inputCenter" colspan="2"><?echo $msgAccountLoginFormTitle ?><th>
 </tr>
 <tr>
-	<td class="inputName">Pøihla¹ovací jméno:</td>
+	<td class="inputName"><?echo $msgAccountLogin ?></td>
 	<td><input size="20" type="text" name="usr_name"></td>
 </tr>
 <tr>
-	<td class="inputName">Heslo:</td>
+	<td class="inputName"><?echo $msgAccountPass ?></td>
 	<td><input size="20" type="password" name="usr_pass"></td>
 </tr>
 <tr>
-	<td colspan="2"><a href="sendPass.php?action=sendPassword">Zapomìli jste své heslo?</a></td>
+	<td colspan="2"><a href="sendPass.php?action=sendPassword"><?echo $msgAccountLostPass ?></a></td>
 </tr>
 <tr>
 	<td class="inputCenter" colspan="2">
-		<input type="submit" value="Pøihlásit se">
+		<input type="submit" value="<?echo $msgAccountLoginButton ?>">
 	</td>
 </tr>
 </table>
 </form>
 
-Jste tu poprvé? Vyplòte, prosím, krátkou registraci:<br>
+<?echo $msgAccountRegistrationTitle ?><br>
 <form name="register" action="<?=$PHP_SELF."?action=register"?>" method="post" onsubmit="return checkRegister()">
 <table class="registration">
 <tr>
-	<th class="inputCenter" colspan="2">Registrace</th>
+	<th class="inputCenter" colspan="2"><?echo $msgAccountRegistrationFormTitle ?></th>
 </tr>
 <tr>
-	<td class="inputName">Pøihla¹ovací jméno:</td>
+	<td class="inputName"><?echo $msgAccountLogin ?></td>
 	<td><input type="text" name="usr_name"></td>
 </tr>
 <tr>
-	<td class="inputName">Heslo:</td>
+	<td class="inputName"><?echo $msgAccountPass ?></td>
 	<td><input type="password" name="usr_pass1"></td>
 </tr>
 <tr>
-	<td class="inputName">Zopakovat heslo:</td>
+	<td class="inputName"><?echo $msgAccountPass2 ?></td>
 	<td><input type="password" name="usr_pass2"></td>
+<tr>
+	<td class="inputName"><?echo $msgAccountEmail ?></td>
+	<td><input type="text" name="usr_email"></td>
 </tr>
 <tr>
-	<td class="inputName">e-mail:</td>
-	<td><input type="text" name="usr_email"></td>
+    <td colspan="2" class="warning"><?echo $msgAccountEmailWarning ?></td>
 </tr>
 <tr>
 	<td class="inputCenter" colspan="2"><hr></td>
 </tr>
 <tr>
-	<td class="inputName">icq#:</td>
+	<td class="inputName"><?echo $msgAccountIcq ?></td>
 	<td><input type="text" name="usr_icq"></td>
 </tr>
 <tr>
-	<td class="inputName">jabber:</td>
+	<td class="inputName"><?echo $msgAccountJabber ?></td>
 	<td><input type="text" name="usr_jabber"></td>
 	</tr>
 <tr>
 	<td class="inputCenter" colspan="2">
-        	<input type="submit" value="Registrovat">
+        	<input type="submit" value="<?echo $msgAccountRegisterButton ?>">
 	</td>
 </tr>
 </table>

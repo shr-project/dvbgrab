@@ -8,6 +8,7 @@ require("header.php");
 
 $menuitem = "";
 require("menu.php");
+require_once("language.inc.php");
 ?>
 
 <td valign="top">
@@ -16,27 +17,31 @@ require("menu.php");
 <col width="80%">
 <tr>
   <td align="right">&nbsp;4. &nbsp;9. 2005 22:00</td>
-  <td align="left">Opraveno/Pøidáno vyhledávání v plánovaných grabech (Velmi u¾itecné pro grabovaèe seriálù ;-))</td>
+  <td align="left"><? echo $msgNews1 ?></td>
 </tr>
 <tr>
   <td align="right">&nbsp;4. &nbsp;9. 2005 23:00</td>
-  <td align="left">Omezeno zobrazovaní hotových grabù na posledních 100 zaznamù, to samé pro zobrazení mých grabù.</td>
+  <td align="left"><? echo $msgNews2 ?></td>
 </tr>
 <tr>
   <td align="right">&nbsp;4. &nbsp;9. 2005 01:00</td>
-  <td align="left">Pøidána mo¾nost nechat si poslat nové vygenerované heslo.</td>
+  <td align="left"><? echo $msgNews3 ?></td>
 </tr>
 <tr>
   <td align="right">&nbsp;4. &nbsp;9. 2005 02:30</td>
-  <td align="left">Pøidána volba "Nastavení", pro úpravy u¾ivatelských úètù.</td>
+  <td align="left"><? echo $msgNews4 ?></td>
 </tr>
 <tr>
   <td align="right">27. &nbsp;9. 2005 21:10</td>
-  <td>Registrován jubilejní 100. u¾ivatel. Bohu¾el vùbec nic nevyhrává proto¾e má plnou mailovou schránku.:-P</td>
+  <td align="left"><? echo $msgNews5 ?></td>
 </tr>
 <tr>
   <td align="right">&nbsp;5. &nbsp;5. 2005 22:00</td>
-  <td align="left">Pøidána mo¾nost zadávat graby rovnou z vyhledávací stránky.</td>
+  <td align="left"><? echo $msgNews6 ?></td>
+</tr>
+<tr>
+  <td align="right">26. 11. 2005 22:00</td>
+  <td align="left"><? echo $msgNews7 ?></td>
 </tr>
 </table>
 </td>

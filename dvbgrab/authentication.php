@@ -1,4 +1,5 @@
 <?php
+require_once("language.inc.php");
 
 // autentizuje uzivatele
 function authenticated($usr_id, $usr_pass_md5) {
@@ -31,7 +32,7 @@ function logout() {
 
 function auth_failed() {
 	include "header.php";
-	echo "<p>U¾ivatel není pøihlá¹en. <a href=\"./\">Pøihlásit se.</a></p>\n";
+	echo "<p>$msgAccountNoUser <a href=\"./\">$msgAccountLogin</a></p>\n";
 	include "footer.php";
 }
 ?>

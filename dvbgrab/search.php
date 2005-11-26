@@ -6,6 +6,7 @@ require("config.php");
 require_once("status.inc.php");
 require("header.php");
 require("menu.php");
+require_once("language.inc.php");
 
 
 $MAX_SEARCH_RESULTS = 50;
@@ -89,20 +90,20 @@ require("grabActionsNoRedir.php");
 ?>
 <td valign="top">
 <form method="get" action="<?=$PHP_SELF?>">
-Hledej v tv programu: 
+<? echo $msgSearchTitle ?>
 <input type="text" name="query" value="<?=$query?>">
-<input type="submit" value="Hledej">
+<input type="submit" value="<? echo $msgSearchButton ?>">
 </form>
 <?
 // TODO nevyhledavat v html tazich
 
 if (sizeof($query_array) == 0) {
-	echo "Chyba: nebyl zadán vyhledávaný øetìzec.";
+	echo $msgSearchErrorNoInput;
 	include("footer.php");
 	exit;
 }
 if (sizeof($query_array) > 10) {
-	echo "Chyba: bylo zadáno pøíli¹ mnoho slov k vyhledání.";
+	echo $msgSearchErrorManyInput;
 	include("footer.php");
 	exit;
 }
@@ -137,9 +138,9 @@ $SQL = "select c.chn_name, t.tel_id, t.tel_name, t.tel_desc, unix_timestamp(t.te
 //echo $SQL;
 $rs = db_sql($SQL);
 $res_count = $rs->RecordCount();
-echo "Nalezených záznamù: $res_count<br>";
+echo "$msgSearchResultsCount $res_count<br>";
 if ($res_count > $MAX_SEARCH_RESULTS) {
-	echo "Nalezeno pøíli¹ mnoho záznamù, zobrazuji prvních $MAX_SEARCH_RESULTS";
+	echo "$msgSearchResultsCountsLimit $MAX_SEARCH_RESULTS";
 }
 ?>
 <br>
@@ -151,22 +152,22 @@ if (isset($_GET["msg"])) {
 <?php
   switch ($_GET["msg"]) {
     case "grb_add_fail_quota":
-      echo "alert(\"ERROR: tento týden ji¾ nelze zadávat dal¹í graby\");\n";
+      echo "alert(\"$msgGrabFailAddQuota\");\n";
       break;
     case "grb_add_fail_time":
-      echo "alert(\"ERROR: po¾adavek o grab na u¾ odvysílaný poøad\");\n";
+      echo "alert(\"$msgGrabFailAddTime\");\n";
       break;
     case "grb_add_fail_exist":
-      echo "alert(\"ERROR: grab ji¾ existuje\");\n";
+      echo "alert(\"$msgGrabFailAddExist\");\n";
       break;
     case "grb_add_fail_tel":
-      echo "alert(\"ERROR: daný poøad neexistuje\");\n";
+      echo "alert(\"$msgGrabFailAddTel\");\n";
       break;
     case "grb_del_fail_time":
-      echo "alert(\"ERROR: grab u¾ skonèil, nebo probíhá\");\n";
+      echo "alert(\"$msgGrabFailDelTime\");\n";
       break;
     case "grb_del_fail_exist":
-      echo "alert(\"ERROR: daný grab neexistuje\");\n";
+      echo "alert(\"$msgGrabFailDelExist\");\n";
       break;
     default:
 } ?>
@@ -240,37 +241,36 @@ if ($res_count > 0) {
         // svuj grab s mohu zrusit, pokud ho pozadoval jeste nekdo dalsi tak se stejne nahraje
         if ($row["grb_id"] && $row["my_grab"]) {
           echo "<a class=\"program\" href=\"$PHP_SELF?action=grab_del&amp;grb_id=".
-            $row["grb_id"]."&amp;tv_date=$tv_date&amp;query=".$query."\">zru¹it&nbsp;grab</a>&nbsp;...&nbsp;";
+            $row["grb_id"]."&amp;tv_date=$tv_date&amp;query=".$query."\">$msgGrabLinkStorno</a>&nbsp;...&nbsp;";
         }
         // pro svuj grab muzu nastavit, ze se ma komprimovat do MPEG4
         if ($row["grb_id"] && $row["my_grab"] && !$row["grb_enc"]) {
-          echo "<a onclick=\"return confirm('Chcete poøad ".htmlspecialchars($row["tel_name"])." doopravdy rovnou zkomprimovat do MPEG4?')\" ".
+          echo "<a onclick=\"return confirm('$msgGrabConfirmStart ".htmlspecialchars($row["tel_name"])." $msgGrabConfirmGrabMpeg4')\" ".
           "href=\"$PHP_SELF?action=grab_enc&amp;grb_id=".$row["grb_id"]."&amp;tv_date=$tv_date&amp;query=".$query."\"".
-          " title=\"grabnout\" class=\"program\">do MPEG4</a>";
+          " title=\"grabnout\" class=\"program\">$msgGrabLinkGrabMpeg4</a>";
 //          echo "<a class=\"program\" href=\"$PHP_SELF?action=grab_enc&amp;grb_id=".
 //            $row["grb_id"]."&amp;tv_date=$tv_date\">komprimovat</a>";
         }
         // pro svuj grab muzu nastavit, ze se nema komprimovat do MPEG4
         if ($row["grb_id"] && $row["my_grab"] && $row["grb_enc"]) {
-          echo "<a onclick=\"return confirm('Chcete poøad ".htmlspecialchars($row["tel_name"]).
-            " doopravdy jenom nahrát a nechat v transport streamu (.ts)?')\" ".
+          echo "<a onclick=\"return confirm('$msgGrabConfirmStart".htmlspecialchars($row["tel_name"])." $msgGrabConfirmGrabTS')\" ".
             "href=\"$PHP_SELF?action=grab_noenc&amp;grb_id=".$row["grb_id"]."&amp;tv_date=$tv_date&amp;query=".$query."\"".
-            " title=\"grabnout\" class=\"program\">do TS</a>";
+            " title=\"grabnout\" class=\"program\">$msgGrabLinkGrabTS</a>";
 //          echo "<a class=\"program\" href=\"$PHP_SELF?action=grab_noenc&amp;grb_id=".
 //            $row["grb_id"]."&amp;tv_date=$tv_date\">nekomprimovat</a>";
         }
         // pokud se nejedna o grab a je mozno ho zadat, tak to umoznim
         if (!$row["grb_id"] && $DB->UnixTimeStamp($row["tel_date_start"]) >= $grab_time_limit) {
-          echo "<a onclick=\"return confirm('Chcete poøad ".htmlspecialchars($row["tel_name"])." vá¾nì grabnout?')\" ".
+          echo "<a onclick=\"return confirm('$msgGrabConfirmStart".htmlspecialchars($row["tel_name"])." $msgGrabConfirmGrab')\" ".
           "href=\"$PHP_SELF?action=grab_add&amp;tel_id=".$row["tel_id"]."&amp;tv_date=$tv_date&amp;query=".$query."\"".
           " title=\"grabnout\" class=\"program\">".
-          "grabnout</a>";
+          "$msgGrabLinkGrab</a>";
         } else if ($row["grb_id"] && $DB->UnixTimeStamp($row["tel_date_start"]) >= $grab_time_limit && !$row["my_grab"]) {
         // grab existuje, jeste neprobehl a ja jsem ho jeste nerequestoval
-          echo "<a onclick=\"return confirm('Chcete poøad ".htmlspecialchars($row["tel_name"])." vá¾nì taky grabnout?')\" ".
+          echo "<a onclick=\"return confirm('$msgGrabConfirmStart".htmlspecialchars($row["tel_name"])." $msgGrabConfirmGrabToo')\" ".
           "href=\"$PHP_SELF?action=grab_add_me&amp;grb_id=".$row["grb_id"]."&amp;tv_date=$tv_date&amp;query=".$query."\"".
           " title=\"grabnout\" class=\"program\">".
-          "taky grabnout</a>";
+          "$msgGrabLinkGrabToo</a>";
         }
         ?>
 				<br><br>

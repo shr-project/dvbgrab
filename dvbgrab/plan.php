@@ -6,9 +6,12 @@ require("config.php");
 require("status.inc.php");
 require("header.php");
 
-// $type = sched  ... zobrazime vsechny naplanovane graby
-// $type = done   ... zobrazime vsechny hotove graby
-// $type = mygrab ... zobrazime vsechny moje graby
+require_once("language.inc.php");
+
+// $type = sched  ... show all sheduled records
+// $type = done   ... show all finished records
+// $type = mygrab ... show my records
+
 $type = $_GET["type"];
 if ($type != "sched" && $type != "done" && $type != "mygrab") $type = "sched";
 switch ($type) {
@@ -30,22 +33,22 @@ require("menu.php");
 
 echo "<td valign=\"top\">";
 
-if ($type == "sched") echo "<h2 class=\"planList\">Seznam naplánovaných grabù</h2>\n";
-if ($type == "done") echo "<h2 class=\"planList\">Seznam hotových grabù</h2>\n";
-if ($type == "mygrab") echo "<h2 class=\"planList\">Seznam mých grabù</h2>\n";
+if ($type == "sched") echo "<h2 class=\"planList\">".$msgPlanListSchedTitle."</h2>\n";
+if ($type == "done") echo "<h2 class=\"planList\">".$msgPlanListDoneTitle."</h2>\n";
+if ($type == "mygrab") echo "<h2 class=\"planList\">".$msgPlanListMygrabTitle."</h2>\n";
 
 if ($type == "sched") {
 	$SQL = "select count(*) from grab where grb_status='scheduled'";
 	$rs = db_sql($SQL);
 	$row = $rs->FetchRow();
-	echo "Plánovaných grabù: $row[0]<br />\n";
+	echo $msgPlanSchedCount.": $row[0]<br />\n";
 }
 
 if ($type == "done") {
 	$SQL = "select count(*) from grab where grb_status='done'";
 	$rs = db_sql($SQL);
 	$row = $rs->FetchRow();
-	echo "Hotových grabù: $row[0]<br />\n";
+	echo $msgPlanDoneCount.": $row[0]<br />\n";
 }
 
 if ($type == "mygrab") {
@@ -55,7 +58,7 @@ if ($type == "mygrab") {
 					r.usr_id=$usr_id";
 	$rs = db_sql($SQL);
 	$row = $rs->FetchRow();
-	echo "Plánovaných grabù: $row[0]<br />\n";
+	echo $msgPlanSchedCount.": $row[0]<br />\n";
 
 	$SQL = "select count(*) from grab g, request r where 
 					g.grb_id=r.grb_id and
@@ -63,10 +66,10 @@ if ($type == "mygrab") {
 					r.usr_id=$usr_id";
 	$rs = db_sql($SQL);
 	$row = $rs->FetchRow();
-	echo "Hotových grabù: $row[0]<br /><br />\n";
+	echo $msgPlanDoneCount.": $row[0]<br /><br />\n";
 }
 
-// zjisti datum nejstarsiho hotoveho grabu 
+// date of oldest and finished record 
 $SQL = "select grb_date_start from grab where grb_status='done'
 			order by grb_date_start limit 1";
 $rs = db_sql($SQL);
@@ -78,7 +81,7 @@ if ($row = $rs->FetchRow()) {
 
 $SQL = "select g.grb_id, g.grb_status, t.tel_name,
 				c.chn_name, grb_date_start, grb_date_end, g.tel_id as tel_id,
-				u.usr_id, u.usr_name, u.usr_email, r.grb_enc
+				u.usr_id, u.usr_name, u.usr_email, r.grb_enc, r.grb_output
 			from 
 				channel c inner join television t on (c.chn_id=t.chn_id) 
 				inner join grab g on (t.tel_id=g.tel_id)
@@ -117,9 +120,9 @@ while ($row = $res->FetchRow()) {
 
 	if ($grb_day != $old_grb_day) {
 		if ($old_grb_day != "") {
-			echo "<tr><td colspan=\"".(($type=="mygrab")?"5":"7")."\">&nbsp;</td></tr>\n";
+			echo "<tr><td colspan=\"".(($type=="mygrab")?"6":"8")."\">&nbsp;</td></tr>\n";
 		}
-		echo "<tr><th colspan=\"".(($type=="mygrab")?"5":"7")."\">&nbsp;&nbsp;&nbsp;$grb_day</th></tr>\n";
+		echo "<tr><th colspan=\"".(($type=="mygrab")?"6":"8")."\">&nbsp;&nbsp;&nbsp;$grb_day</th></tr>\n";
 	}
 	$old_grb_day = $grb_day;
 
@@ -129,9 +132,9 @@ while ($row = $res->FetchRow()) {
   if ($row["grb_status"] != "scheduled") {
     echo $row["grb_status"]."\">\n";
   } else {
-    // oznacime graby, ktere maji oznaceny ostatni a ja ne
+    // mark records for other users not me
     if ($row["usr_id"]==$usr_id) {
-      // muj request
+      // mark my requests
       if ($row["grb_enc"])
         echo "myscheduled\">\n";
       else
@@ -152,15 +155,27 @@ while ($row = $res->FetchRow()) {
 	echo "</b></td>\n";
 
 	echo "		<td><a href=\"tvprog.php?tv_date=".
-		date("Ymd", $row["grb_date_start"]-((date("G", $row["grb_date_start"])<$midnight)?1:0)*24*3600).
+		date("Ymd", $grb_timeStamp).
 		"#".$row["tel_id"]."\">".htmlspecialchars($row["tel_name"])."</a>".
 		"</td>\n";
 
 	if ($type != "mygrab") {
 		echo "		<td width=\"20\">&nbsp;</td>\n";
 		echo "		<td><a href=\"mailto:".str_replace("@", "@NOSPAM.", $row["usr_email"])."\">".$row["usr_name"]."</a></td>\n";
-	}
-	echo "	</tr>\n";
+        } else {
+          if ($row["grb_status"] == "done") {
+            if ($row["grb_output"] != "") {
+              echo "          <td><a href=\"http:\/\/".$hostname.$row["grb_output"]."\">".$msgPlanGrabLink."</a></td>\n";
+            } else {
+              echo "          <td>".$msgPlanGrabLinkNone."</td>\n";
+            }
+          } else if ($row["grb_status"] == "deleted") {
+            echo "          <td>".$msgPlanGrabDeleted."</td>\n";
+          } else {
+            echo "          <td>&nbsp;</td>\n";
+          }
+          echo "	</tr>\n";
+        }
 }		
 echo "</table>\n";
 echo "</td></tr></table>\n";

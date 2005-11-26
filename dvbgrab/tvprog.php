@@ -3,6 +3,7 @@ require("dblib.php");
 require("authenticate.php");
 require("config.php");
 require_once("status.inc.php");
+require_once("language.inc.php");
 
 
 // kontrola parametru $_GET["tv_date"]
@@ -13,10 +14,6 @@ if (ereg("([0-9]{4})([0-9]{2})([0-9]{2})", $_GET["tv_date"], $regs)
 
 	$tv_date = $_GET["tv_date"];
 }
-
-$tv_day = substr($tv_date, 6, 2);
-$tv_month = substr($tv_date, 4, 2);
-$tv_year = substr($tv_date, 0, 4);
 
 global $DB;  // pripojeni do databaze
 
@@ -32,6 +29,9 @@ require("menu.php");
 ?>
 <td>
 <h2 class="planList">Televizní program - <?
+$tv_day = substr($tv_date, 6, 2);
+$tv_month = substr($tv_date, 4, 2);
+$tv_year = substr($tv_date, 0, 4);
 echo $dow[date("l", mktime(0, 0, 0, $tv_month, $tv_day, $tv_year))];
 echo date(" j. n. Y", mktime(0, 0, 0, $tv_month, $tv_day, $tv_year));
 ?></h2>
@@ -47,7 +47,7 @@ echo date(" j. n. Y", mktime(0, 0, 0, $tv_month, $tv_day, $tv_year));
 	//-->
 	</script>
 
-	Zobrazit televizní program pro den 
+        <? echo $msgProgTitleDay ?>
 	<select name="tv_date" onchange="change_date(this.form)">
 <?php
 	// TODO nabidnout televizni program pouze pro dny, pro ktere mame zaznamy v db a max na $tv_days dopredu
@@ -70,43 +70,43 @@ echo date(" j. n. Y", mktime(0, 0, 0, $tv_month, $tv_day, $tv_year));
 </form>
 
 <form method="get" action="search.php">
-Hledej v tv programu: 
+<? echo $msgProgSearch ?>
 <input type="text" name="query">
-<input type="submit" value="Hledej">
+<input type="submit" value="<? echo $msgProgSearchButton ?>">
 </form>
 
 <table width="100%" border="0" cellspacing="0">
 <tr>
 	<td class="status-scheduled">&nbsp;&nbsp;&nbsp;</td>
-	<td>&nbsp;bude se grabovat</td>
+	<td>&nbsp;<? echo $msgStatusScheduled ?></td>
 </tr>
 <tr>
 	<td class="status-myscheduled">&nbsp;&nbsp;&nbsp;</td>
-	<td>&nbsp;bude se grabovat pro mì</td>
+	<td>&nbsp;<? echo $msgStatusMyScheduled ?></td>
 </tr>
 <tr>
 	<td class="status-mynocomprim">&nbsp;&nbsp;&nbsp;</td>
-	<td>&nbsp;bude se grabovat pro mì bez komprese</td>
+	<td>&nbsp;<? echo $msgStatusMyNoComprim ?></td>
 </tr>
 <tr>
 	<td class="status-done">&nbsp;&nbsp;&nbsp;</td>
-	<td>&nbsp;hotové graby</td>
+	<td>&nbsp;<? echo $msgStatusDone ?></td>
 </tr>
 <tr>
 	<td class="status-missed">&nbsp;&nbsp;&nbsp;</td>
-	<td>&nbsp;negrablo se</td>
+	<td>&nbsp;<? echo $msgStatusMissed ?></td>
 </tr>
 <tr>
 	<td class="status-error">&nbsp;&nbsp;&nbsp;</td>
-	<td>&nbsp;chyba pøi grabování</td>
+	<td>&nbsp;<? echo $msgStatusError ?></td>
 </tr>
 <tr>
 	<td class="status-processing">&nbsp;&nbsp;&nbsp;</td>
-	<td>&nbsp;právì se grabuje</td>
+	<td>&nbsp;<? echo $msgStatusProcessing ?></td>
 </tr>
 <tr>
 	<td align="center"><img alt="moje" src="images/dot.gif"></td>
-	<td>&nbsp;moje graby</td>
+	<td>&nbsp;<? echo $msgStatusMy ?></td>
 </tr>
 </table>
 
@@ -284,26 +284,26 @@ if (isset($_GET["msg"])) {
 <script type="text/javascript">
 <!--
 <?php
-	switch ($_GET["msg"]) {
-		case "grb_add_fail_quota":
-			echo "alert(\"ERROR: tento týden ji¾ nelze zadávat dal¹í graby\");\n";
-			break;
-		case "grb_add_fail_time":
-			echo "alert(\"ERROR: po¾adavek o grab na u¾ odvysílaný poøad\");\n";
-			break;
-		case "grb_add_fail_exist":
-			echo "alert(\"ERROR: grab ji¾ existuje\");\n";
-			break;
-		case "grb_add_fail_tel":
-			echo "alert(\"ERROR: daný poøad neexistuje\");\n";
-			break;
-		case "grb_del_fail_time":
-			echo "alert(\"ERROR: grab u¾ skonèil, nebo probíhá\");\n";
-			break;
-		case "grb_del_fail_exist":
-			echo "alert(\"ERROR: daný grab neexistuje\");\n";
-			break;
-		default:
+  switch ($_GET["msg"]) {
+    case "grb_add_fail_quota":
+      echo "alert(\"$msgGrabFailAddQuota\");\n";
+      break;
+    case "grb_add_fail_time":
+      echo "alert(\"$msgGrabFailAddTime\");\n";
+      break;
+    case "grb_add_fail_exist":
+      echo "alert(\"$msgGrabFailAddExist\");\n";
+      break;
+    case "grb_add_fail_tel":
+      echo "alert(\"$msgGrabFailAddTel\");\n";
+      break;
+    case "grb_del_fail_time":
+      echo "alert(\"$msgGrabFailDelTime\");\n";
+      break;
+    case "grb_del_fail_exist":
+      echo "alert(\"$msgGrabFailDelExist\");\n";
+      break;
+    default:
 } ?>
 //-->
 </script>
@@ -311,10 +311,10 @@ if (isset($_GET["msg"])) {
 <table width="100%">
 <tr>
 	<td align="left">
-		<a href="<?=$PHP_SELF?>?tv_date=<?=date("Ymd", mktime(0, 0, 0, $tv_month, $tv_day-1, $tv_year))?>">Pøedchozí den</a>
+		<a href="<?=$PHP_SELF?>?tv_date=<?=date("Ymd", mktime(0, 0, 0, $tv_month, $tv_day-1, $tv_year))?>"><? echo $msgProgNextDay ?></a>
 	</td>
 	<td align="right">
-		<a href="<?=$PHP_SELF?>?tv_date=<?=date("Ymd", mktime(0, 0, 0, $tv_month, $tv_day+1, $tv_year))?>">Následující den</a>
+		<a href="<?=$PHP_SELF?>?tv_date=<?=date("Ymd", mktime(0, 0, 0, $tv_month, $tv_day+1, $tv_year))?>"><? echo $msgProgNextDay ?></a>
 	</td>
 </tr>
 </table>

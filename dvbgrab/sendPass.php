@@ -5,6 +5,7 @@ require("const.php");
 require("authentication.php");
 require("config.php");
 require("header.php");
+require_once("language.inc.php");
 
 $menuitem = "";
 require("menu.php");
@@ -23,15 +24,15 @@ global $DB;  // pripojeni do databaze
         
     function checkSendPassword() {
         if (document.sendPassword.usr_name.value=='') {
-            alert("Vyplòte pøihla¹ovací jméno!");
+            alert("<?echo $msgAccountValidateLogin ?>");
             ret=false;        
             document.sendPassword.usr_name.focus();
         } else if (document.sendPassword.usr_email.value=='') {
-            alert("Vyplòte email!"); 
+            alert("<?echo $msgAccountValidateEmail ?>"); 
             document.sendPassword.usr_email.focus();
             ret=false;
         } else if (!emailPassCheck()) {
-            alert("Neplatný email!");
+            alert("<?echo $msgAccountValidateEmailFormat ?>");
             document.sendPassword.usr_email.focus();
             ret=false;
         } else ret=true;
@@ -179,19 +180,19 @@ switch ($_GET["action"]) {
        <table class="registration">
        <form name="sendPassword" method="post" onsubmit="return checkSendPassword()" action="<?=$PHP_SELF."?action=sendPasswordDo"?>">
          <tr>
-           <th class="inputCenter" colspan="2">Vygenerování doèasného hesla</th>
+           <th class="inputCenter" colspan="2"><?echo $msgSendPassTitle ?></th>
          </tr>   
          <tr>
-           <td class="inputName">Pøihla¹ovací jméno:</td>
+           <td class="inputName"><?echo $msgAccountLogin ?></td>
            <td><input type="text" name="usr_name"></td>
          </tr>
          <tr>
-           <td class="inputName">e-mail:</td>
+           <td class="inputName"><?echo $msgAccountEmail ?></td>
            <td><input type="text" name="usr_email"></td>
          </tr>
          <tr>
            <td class="inputCenter" colspan="2">
-             <input type="submit" value="Po¹li mi heslo!">
+             <input type="submit" value="<?echo $msgSendPassButton ?>">
            </td>
          </tr>
        <?
@@ -208,9 +209,9 @@ switch ($_GET["action"]) {
           if ($rowCount != 1) { 
        ?> 
           <center>
-          Kombinace u¾ivatele <?= $user ?> a mail <?= $email ?> nenalezena.<br />
-          <a href="index.php">Zpìt na hlavní stránku</a></br>
-          <a href="sendPass.php?action=sendPassword">Zkusit znova</a>
+          <? echo "$msgSendPassCheckFailed1 $user $msgSendPassCheckFailed2 $mail $msgSendPassCheckFailed3 <br />" ?>
+          <a href="index.php"><?echo $msgGlobalBack ?></a></br>
+          <a href="sendPass.php?action=sendPassword"><?echo $msgGlobalRetry ?></a>
           </center>
        <?
           } else {
@@ -222,15 +223,15 @@ switch ($_GET["action"]) {
             $SQL = "update user set usr_pass='$newPass'
                     where usr_id=$usr_id";
             db_sql($SQL);
-            $msg = "Na stránkách DVBgrabu bylo vy¾ádáno nové heslo pro úèet:\n";
+            $msg = "$msgSendPassEmailStart\n";
             $msg .= "username: $user\n";
             $msg .= "email: $mail\n\n";
-            $msg .= "nove heslo: $newPass\n";
-            mail($mail, "DVBgrab: nové heslo", $msg, "From: $admin_email\r\n");
+            $msg .= "new password: $newPass\n";
+            mail($mail, "DVBgrab: $msgSendPassEmailSubject", $msg, "From: $admin_email\r\n");
        ?>
           <center>
-          Heslo u¾ivatele <?= $user ?> bylo posláno na mail <?= $mail ?>.<br />
-          <a href="index.php">Pokraèovat na hlavní stránku</a>
+          <? echo "$msgSendPassNotice1 $user $msgSendPassNotice2 $mail <br />"?>
+          <a href="index.php"><?echo $msgGlobalBack ?></a>
           </center>
        <?
           }

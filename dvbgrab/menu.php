@@ -1,24 +1,25 @@
 <?php
-	$menu[1]="tv program";
-	$menu[] ="plánované graby";
-//	$menu[] ="o èem se hlasuje";
-	$menu[] ="hotové graby";
-	$menu[] ="moje graby";
-	$menu[] ="nastavení";
+require_once("language.inc.php");
+require_once("config.php");
+
+	$menu[1]=$msgMenuTvProgram;
+	$menu[] =$msgMenuPlanSched;
+	$menu[] =$msgMenuPlanDone;
+	$menu[] =$msgMenuPlanMygrab;
+	$menu[] =$msgMenuPlanAccount;
 	$menu[] =" ";
-	$menu[] ="napi¹te nám";
-	$menu[] ="novinky";
-//	$menu[] ="dokumentace";
-//	$menu[] ="odhlásit se";
+	$menu[] =$msgMenuEmailUs;
+	$menu[] =$msgMenuNews;
+//	$menu[] =$msgMenuDocs;
+//	$menu[] =$msgMenuLogout;
 	
 	$link[1]="tvprog.php";
 	$link[] ="plan.php?type=sched";
-//	$link[] ="votes.php?menuitem=3";
 	$link[] ="plan.php?type=done";
 	$link[] ="plan.php?type=mygrab";
 	$link[] ="account.php?action=edit";
 	$link[] ="";
-	$link[] ="mailto:dvbgrab.admin@mk.cvut.cz";
+	$link[] ="mailto:$admin_email";
 	$link[] ="news.php";
 //	$link[] ="http://martinja.mk.cvut.cz/tvgrab";
 //	$link[] ="index.php?action=logout";

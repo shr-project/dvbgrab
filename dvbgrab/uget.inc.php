@@ -36,10 +36,12 @@ function uget($id, $offset) {
         " *<td class=\"tvp_popis[0-9]*\"><b>(.*)</b>(.*)</td>";
     //-----------------------------------------------------------------
 
-    if ($proxy_server != "")
+    if ($proxy_server != "") {
       $fp = fsockopen($proxy_server, 3128, &$errno, &$errstr, 5);
-    else
-      $fp = fsockopen('www.ceskenoviny.cz', 80, &$errno, &$errstr, 5);
+      fputs($fp, 'GET '.$path." HTTP/1.0\n\n");
+    } else {
+      $fp = fopen($path, "r");
+    }
     if (!$fp) {
         echo '$errstr ($errno)<br>';
         if ($proxy_server != "")
@@ -48,43 +50,34 @@ function uget($id, $offset) {
           echo '<br>!nejede www!<br>';
         return false;
     } else {
-        fputs($fp, 'GET '.$path." HTTP/1.0\n\n");
-        if ($fp > 0) {
+        //NOTE: podle poctu "\n" v reg_vyrazu pozname, kolik radku nacist
+        $ln_count = substr_count($reg_exp, "\n");
+        $output = '';
+        // prednacteme $ln_count radek
+        for ($i = 0; $i < $ln_count; $i++) {
+            $output .= fgets($fp, 4096);
+        }
 
-            //NOTE: podle poctu "\n" v reg_vyrazu pozname, kolik radku nacist
-            $ln_count = substr_count($reg_exp, "\n");
-            $output = '';
-            // prednacteme $ln_count radek
-            for ($i = 0; $i < $ln_count; $i++) {
-                $output .= fgets($fp, 4096);
+        $result = array();
+        $row = 0;
+        while (!feof($fp)) {
+            $output .= fgets($fp, 4096);
+
+            if (ereg($reg_exp, $output, $groups)) {
+                $result[$row]['cas'] = $groups[1];
+                $result[$row]['nazev'] = $groups[2];
+                $result[$row]['popis'] = $groups[3];
+                $row++;
             }
 
-            $result = array();
-            $row = 0;
-            while (!feof($fp)) {
-                $output .= fgets($fp, 4096);
-
-                if (ereg($reg_exp, $output, $groups)) {
-                    $result[$row]['cas'] = $groups[1];
-                    $result[$row]['nazev'] = $groups[2];
-                    $result[$row]['popis'] = $groups[3];
-                    $row++;
-                }
-
-                // oriznuti prvni radky v output
-                $first = strchr($output, "\n");
-                if ($first != false) {
-                    $output = substr($first, 1);
-                }
+            // oriznuti prvni radky v output
+            $first = strchr($output, "\n");
+            if ($first != false) {
+                $output = substr($first, 1);
             }
-            fclose($fp);
-            return $result;
         }
-        else {
-            fclose($fp);
-            echo "<br>!nejede $path!<br>";
-            return false;
-        }
+        fclose($fp);
+        return $result;
     }
 }
 

@@ -5,11 +5,13 @@ require("authenticate.php");
 require_once("status.inc.php");
 require("config.php");
 require("header.php");
+require_once("language.inc.php");
+
 
 $menuitem = "";
 require("menu.php");
 
-global $DB;  // pripojeni do databaze
+global $DB;  // connection to database
 ?>
 <script type="text/javascript" language="JavaScript1.2">
 <!--
@@ -21,7 +23,7 @@ global $DB;  // pripojeni do databaze
             return false;
     }       
     function ipCheck(){
-        var goodIp = document.edit.usr_ip.value.match(/^147.32.\d{1,3}.\d{1,3}$/gi);
+        var goodIp = document.edit.usr_ip.value.match(/^\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}$/gi);
         if (goodIp) 
             return true;
         else 
@@ -29,27 +31,27 @@ global $DB;  // pripojeni do databaze
     }       
     function checkEdit() {
         if (document.edit.usr_name.value=='') {
-            alert("Vyplòte pøihla¹ovací jméno!");
+            alert("<?echo $msgAccountValidateLogin ?>");
             ret=false;        
             document.edit.usr_name.focus();
         } else if (document.edit.usr_pass1.value!=document.edit.usr_pass2.value) {
-            alert("Hesla se neshodují!"); 
+            alert("<?echo $msgAccountValidatePassNoEql ?>"); 
             document.edit.usr_pass2.focus();
             ret=false;
         } else if (document.edit.usr_email.value=='') {
-            alert("Vyplòte email!"); 
+            alert("<?echo $msgAccountValidateEmail ?>"); 
             document.edit.usr_email.focus();
             ret=false;
         } else if (document.edit.usr_ip.value=='') {
-            alert("Vyplòte ip!"); 
+            alert("<?echo $msgAccountValidateIp ?>"); 
             document.edit.usr_ip.focus();
             ret=false;
         } else if (!emailCheck()) {
-            alert("Neplatný email!");
+            alert("<?echo $msgAccountValidateEmailFormat ?>");
             document.edit.usr_email.focus();
             ret=false;
         } else if (!ipCheck()) {
-            alert("Neplatná IP adresa, musí být 147.32.xxx.xxx!");
+            alert("<?echo $msgAccountValidateIpFormat ?>");
             document.edit.usr_ip.focus();
             ret=false;
         } else ret=true;
@@ -75,42 +77,45 @@ switch ($_GET["action"]) {
 <form name="edit" action="<?=$PHP_SELF."?action=editDo"?>" method="post" onsubmit="return checkEdit()">
 <table class="registration">
 <tr>
-    <th class="inputCenter" colspan="2">Nastavení úètu</th>
+    <th class="inputCenter" colspan="2"><?echo $msgAccountTitle ?></th>
 </tr>   
 <tr>
-    <td class="inputName">Pøihla¹ovací jméno:</td>
+    <td class="inputName"><?echo $msgAccountLogin ?></td>
     <td><input type="text" readonly disabled name="usr_name" value="<?= $usr_name ?>"></td>
 </tr>
 <tr>    
-    <td class="inputName">Heslo:</td>
+    <td class="inputName"><?echo $msgAccountPass ?></td>
     <td><input type="password" name="usr_pass1"></td>
 </tr>   
 <tr>    
-    <td class="inputName">Zopakovat heslo:</td>
+    <td class="inputName"><?echo $msgAccountPass2 ?></td>
     <td><input type="password" name="usr_pass2"></td>
 </tr>   
 <tr>
-    <td class="inputName">e-mail:</td>
+    <td class="inputName"><?echo $msgAccountEmail ?></td>
     <td><input type="text" name="usr_email" value="<?= $usr_email ?>"></td>
 </tr>
 <tr>
-    <td class="inputName">Stahování povoleno z IP:</td>
+    <td colspan="2" class="warning"><?echo $msgAccountEmailWarning ?></td>
+</tr>
+<tr>
+    <td class="inputName"><?echo $msgAccountIp ?></td>
     <td><input type="text" name="usr_ip" value="<?= $usr_ip ?>"></td>
 </tr>
 <tr>
     <td class="inputCenter" colspan="2"><hr></td>
 </tr>
 <tr>
-    <td class="inputName">icq#:</td>
+    <td class="inputName"><?echo $msgAccountIcq ?></td>
     <td><input type="text" name="usr_icq" value="<?= $usr_icq ?>"></td>
 </tr>
 <tr>
-    <td class="inputName">jabber:</td>
+    <td class="inputName"><?echo $msgAccountJabber ?></td>
     <td><input type="text" name="usr_jabber" value="<?= $usr_jabber ?>"></td>
     </tr>
 <tr>
     <td class="inputCenter" colspan="2">
-            <input type="submit" value="Nastavit">
+            <input type="submit" value="<?echo $msgAccountChangeButton ?>">
     </td>
 </tr>
 </table>
@@ -127,7 +132,7 @@ switch ($_GET["action"]) {
           $SQL = "select usr_id, usr_name, usr_email, usr_pass, usr_icq, usr_jabber, usr_ip
                          from user u 
                          where usr_id=$usr_id";
-          $msg = "Na stránkách DVBgrabu byly vy¾ádány nìjaké zmìny v nastavení úètu:\n";
+          $msg = $msgAccountChanges."\n";
           
           $rs = db_sql($SQL);
           $row = $rs->FetchRow();
@@ -143,64 +148,64 @@ switch ($_GET["action"]) {
           if ($usr_pass != "" && $old_usr_pass != $usr_pass) {
             $SQL .= "usr_pass = '$usr_pass'";
             $changed = true;
-            $msg .= "heslo: z $old_usr_pass na $usr_pass\n";
+            $msg .= "$msgAccountPass $old_usr_pass -> $usr_pass\n";
           }
           if ($old_usr_email != $usr_email) {
             if ($changed) {
-              $SQL .= ", ";  // je-li uz nejaka zmena v sql UPDATE tak dalsi musim oddelit carkou
+              $SQL .= ", ";
             }
             $SQL .= "usr_email = '$usr_email'";
             $changed = true;
-            $msg .= "email: z $old_usr_email na $usr_email\n";
+            $msg .= "$msgAccountEmail $old_usr_email -> $usr_email\n";
           }
           if ($old_usr_icq != $usr_icq) {
             if ($changed) {
-              $SQL .= ", ";  // je-li uz nejaka zmena v sql UPDATE tak dalsi musim oddelit carkou
+              $SQL .= ", ";
             }
             $SQL .= "usr_icq = '$usr_icq'";
             $changed = true;
-            $msg .= "icq: z $old_usr_icq na $usr_icq\n";
+            $msg .= "$msgAccountIcq $old_usr_icq -> $usr_icq\n";
           }
           if ($old_usr_jabber != $usr_jabber) {
             if ($changed) {
-              $SQL .= ", ";  // je-li uz nejaka zmena v sql UPDATE tak dalsi musim oddelit carkou
+              $SQL .= ", ";
             }
             $SQL .= "usr_jabber = '$usr_jabber'";
             $changed = true;
-            $msg .= "jabber: z $old_usr_jabber na $usr_jabber\n";
+            $msg .= "$msgAccountJabber $old_usr_jabber -> $usr_jabber\n";
           }
           if ($old_usr_ip != $usr_ip) {
             if ($changed) {
-              $SQL .= ", ";  // je-li uz nejaka zmena v sql UPDATE tak dalsi musim oddelit carkou
+              $SQL .= ", ";
             }
             $SQL .= "usr_ip = '$usr_ip'";
             $changed = true;
-            $msg .= "ip: z $old_usr_ip na $usr_ip\n";
-            $amsg = "U¾ivatel $usr_name po¾aduje zmìnu stahovací IP:\n";
-            $amsg .= "Pokud se rozhodne¹ tuto misi pøíjmout, tak je tøeba na grabovacím serveru spustit toto:\n\n";
+            $msg .= "$msgAccountIp $old_usr_ip -> $usr_ip\n";
+            $amsg = "$msgAccountLogin $usr_name $msgAccountChangeIp\n";
+            $amsg .= "$msgAccountChangeIpText \n\n";
             $amsg .= "USR_ID=\"$usr_id\" php -f changeUsrIp.php\n\n";
-			      $amsg .= "A jako obvykle, pokud tebe nebo nìkoho z tvého týmu pøi akci zajmou a budou muèit, ministr grabování se od v¹eho distancuje:\n";
-            mail($admin_email, "DVBgrab: po¾adavek na zmìnu IP", $amsg, "From: $admin_email\r\n");
+			      $amsg .= "$msgAccountChangeIpText2 \n";
+            mail($admin_email, "DVBgrab: $msgAccountChangeIpSubject", $amsg, "From: $admin_email\r\n");
             ?>
-            <p class="warning">Zmìna IP adresy pro stahování se neprojeví okam¾itì, a¾ bude zmìna provedena bude zaslán potvrzující email</p>
+            <p class="warning"><? echo "$msgAccountChangeIpNotice" ?></p>
             <?
           }
           if ($changed) {
             $SQL.= " where usr_id=$usr_id";
             db_sql($SQL);
-            mail($usr_email, "DVBgrab: zmìny v nastavení úètu", $msg, "From: $admin_email\r\n");
+            mail($usr_email, "DVBgrab: $msgAccountChangesSubject", $msg, "From: $admin_email\r\n");
        ?>
           <center>
-          Po¾adované zmìny byly ulo¾eny a odeslán informaèní mail.<br />
-          <a href="index.php">Zpìt na hlavní stránku</a></br>
+          <? echo "$msgAccountChangesNotice" ?><br />
+          <a href="index.php"><? echo "$msgGlobalBack" ?></a></br>
           </center>
        <?
           } else {
        ?>
           <center>
-          Nebyla zadána ¾ádná zmìna.<br />
-          <a href="index.php">Zpìt na hlavní stránku</a></br>
-          <a href="account.php?action=edit">Znova</a>
+          <? echo "$msgAccountNoChangesNotice" ?><br />
+          <a href="index.php"><? echo "$msgGlobalBack" ?></a></br>
+          <a href="account.php?action=edit"><? echo "$msgGlobalRetry" ?></a>
           </center>
        <?
           }

@@ -30,7 +30,9 @@ $begin_time = $DB->UserTimeStamp($DB->UnixTimeStamp($row[1])-$grab_date_start_sh
 $end_time = $DB->UserTimeStamp($DB->UnixTimeStamp($row[2])+$grab_date_stop_shift*60, "Y-m-d H:i:s");
 #$end_time = $DB->UserTimeStamp($DB->UnixTimeStamp($row[1])-($grab_date_start_shift-1)*60, "Y-m-d H:i:s");
 $channel = strtolower(strip_diacritics($row[0]));
-$timestamp = $DB->UserTimeStamp($DB->UnixTimeStamp($row[1])-$grab_date_start_shift*60, "Ymd-H");
+#$timestamp = $DB->UserTimeStamp($DB->UnixTimeStamp($row[1])-$grab_date_start_shift*60, "Ymd-H");
+$timestamp = $DB->UserTimeStamp($DB->UnixTimeStamp($row[1]), "Ymd-H");
+
 $grab_name = "DVB-".$timestamp."-".$channel."-".ereg_replace("[/ ()?&]", "_", strip_diacritics($row[3]));
         
 // dvbgrab -b BEGIN_TIME -e END_TIME -i INPUT_CHANNEL -o OUTPUT_FILE
@@ -89,7 +91,7 @@ if (strstr($outputTest, 'true')) {
     $MAX_RAND= mt_getrandmax();
     $randomSeed = mt_rand($MAX_RAND/2, $MAX_RAND);
     if (!is_dir($grab_root."/".$userDir)) {
-      $command = "mkdir $grab_root/$userDir";
+      $command = "mkdir -p $grab_root/$userDir";
       system($command);
     }
     if (!file_exists($grab_root."/".$userDir."/.htaccess")) {
