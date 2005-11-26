@@ -7,9 +7,9 @@
 */
 $db_name= "dvbgrab";
 $db_type= "mysql";
-$db_host= "dvbgrab.mk.cvut.cz";
-$db_user= "dvbgrab";
-$db_pass= "dvbgm6s6rk6";
+$db_host= "server.domena";
+$db_user= "user";
+$db_pass= "heslo";
 
 /*
     * 0 - Any error is written into the page
@@ -17,13 +17,13 @@ $db_pass= "dvbgm6s6rk6";
     * 2 - Any error is ignored. This is the default.
 */
 $error_status= "1";
-$error_email= "dvbgrab.admin@mk.cvut.cz";
+$error_email= "dvbgrab.admin@domena";
 
 // email spravce dvbgrabu
-$admin_email= "dvbgrab.admin@mk.cvut.cz";
+$admin_email= "dvbgrab.admin@domena";
 
 // email na zasilani denni reportu
-$report_email= "dvbgrab.admin@mk.cvut.cz";
+$report_email= "dvbgrab.admin@domena";
 
 // set this value, if proxy server is needed for downloading tv program
 $proxy_server= "";
@@ -43,7 +43,7 @@ $hour_frac_item= "2";
 
 // kolik grabu za tyden muze uzivatel zadat
 // pokud zada grab, ktery se negrabne nebo ktery pozdeji zrusi, tak muze misto nej zadat dalsi
-$grab_quota= "100";
+$grab_quota= "30";
 
 // logovani udalosti dvb grabu
 $dvbgrab_log= "/var/log/dvbgrab.log";
@@ -52,10 +52,10 @@ $dvbgrab_log= "/var/log/dvbgrab.log";
 $grab_date_start_shift= "2";
 
 // posun zacatku a konce nahravani v minutach
-$grab_date_stop_shift= "15";
+$grab_date_stop_shift= "20";
 
 // jmeno stroje s http serverem dvbgrabu
-$hostname= "zeus.mk.cvut.cz";
+$hostname= "server.domena";
 
 // root adresar http grabu
 $grab_root= "/var/www/html/dvbgrab";
