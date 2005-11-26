@@ -13,7 +13,7 @@ function strip_diacritics($str) {
 $grb_id = getenv("GRB_ID");
 // zjisti informace o danem grabu
 $SQL = "select ch.chn_name, g.grb_date_start, g.grb_date_end, t.tel_name
-          from channel ch, television t, grab g
+          from channel ch, television t, grab g, request r
           where ch.chn_id=t.chn_id and
                 t.tel_id=g.tel_id and
                 g.grb_id=r.grb_id and
