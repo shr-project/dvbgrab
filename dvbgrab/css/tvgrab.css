@@ -84,10 +84,6 @@
 		color: #aaaa00;
 		font-weight: bold;
 	}
-	.status {
-		float: right;
-		position: relative;
-	}
   .inputCenter {
 		text-align: center;
 		background-color: #41afff;
@@ -264,8 +260,18 @@
 		width: 40%;
 	}
 
+	div.top {
+ 		text-align: right;
+		position: relative;
+	}
+	.status {
+		float: right;
+                right: 20px;
+		position: relative;
+	}
+		
 	img.top {
- 		width: 600px;
-		height: 100px;
+ 		width: 780px;
+		height: 145px;
 		border: 0;
 	}
