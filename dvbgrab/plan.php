@@ -81,7 +81,7 @@ if ($row = $rs->FetchRow()) {
 
 $SQL = "select g.grb_id, g.grb_status, t.tel_name,
 				c.chn_name, grb_date_start, grb_date_end, g.tel_id as tel_id,
-				u.usr_id, u.usr_name, u.usr_email, r.grb_enc, r.grb_output
+				u.usr_id, u.usr_name, u.usr_email, r.grb_enc, r.req_output
 			from 
 				channel c inner join television t on (c.chn_id=t.chn_id) 
 				inner join grab g on (t.tel_id=g.tel_id)
@@ -164,8 +164,8 @@ while ($row = $res->FetchRow()) {
 		echo "		<td><a href=\"mailto:".str_replace("@", "@NOSPAM.", $row["usr_email"])."\">".$row["usr_name"]."</a></td>\n";
         } else {
           if ($row["grb_status"] == "done") {
-            if ($row["grb_output"] != "") {
-              echo "          <td><a href=\"http:\/\/".$hostname.$row["grb_output"]."\">".$msgPlanGrabLink."</a></td>\n";
+            if ($row["req_output"] != "") {
+              echo "          <td><a href=\"".$row["req_output"]."\">".$msgPlanGrabLink."</a></td>\n";
             } else {
               echo "          <td>".$msgPlanGrabLinkNone."</td>\n";
             }
