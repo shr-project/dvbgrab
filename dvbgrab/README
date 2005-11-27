@@ -32,6 +32,10 @@ Jak na webovem tak grabovacim serveru se muze pouzit adodb z distribucniho
 baliku misto toho adresare, nastavuje se to v dblib.php nahore. Fedora nema
 debian, gentoo ano ;-).
 
+Taky se muze hodit zvolit spravnou jazykovou mutaci ve skriptu 
+language.inc.php, pozdeji to nebude potreba protoze dopisu detekci locale z 
+prohlizece a do rozhrani dam prepinaci ikonky.
+
 Dalsi info dopisu mozna pozdeji, ale ted me nic nenapada a ani se mi 
 nechce ;-).
 
