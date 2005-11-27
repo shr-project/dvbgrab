@@ -84,7 +84,7 @@ while (true) {
         system($command);
         $output = "http://".$hostname."/".$userDir."/".$randomSeed."_".$grab_name.".avi";
         $msgUser = $msg.$output;
-        $update = "update request set req_output=$output where req_id=".$row["req_id"];
+        $update = "update request set req_output='$output' where req_id=".$row["req_id"];
         db_sql($update);
         mail($row[1], "hotovy zkomprimovany grab", $msgUser, "From: $admin_email\r\n");
       }

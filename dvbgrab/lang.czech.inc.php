@@ -4,7 +4,7 @@ $msgGlobalTitle=":: projekt DVBgrab ::";
 $msgGlobalRetry="Znova";
 $msgGlobalBack="Zpìt na hlavní stránku";
 
-$msgIndex="Vítejte na stránkách projektu TV grab.";
+$msgIndex="Vítejte na stránkách projektu DVBgrab.";
 $msgIndexP1="Po pøihlá¹ení máte mo¾nost prohlí¾et televizní program na 10 dní dopøedu a oznaèovat v nìm poøady, o které máte zájem. Po nagrabování se zájemci po¹le email o jeho ulo¾ení a odkaz ke sta¾ení.";
 $msgIndexP2="Po objednání grabu je mo¾nost pomoci odkazu \"do TS\" zru¹it standartní kompresi do MPEG4. Pak bude ulo¾en pøibli¾nì 2,5x vìt¹í soubor, ale lépe editovatelný tøeba pro vystøihování reklam a úpravy zaèátku a konce poøadu. Bohu¾el bez této komprese se stává, ¾e výsledný soubor je vìt¹í ne¾ 2GB a pak nejde stáhnout, proto¾e souèasná verze http serveru apache2 s tím má problémy.";
 $msgIndexP3="Graby se uchovávají pouze omezenou dobu (obvykle i 1 mìsíc, minimálnì 7 dní od nahrání poøadu). Pokud si ho nestihnete stáhnout tak mù¾e být prostì smazán, proto¾e nemáme nekoneènou diskovou kapacitu. (smazaný poøad bude oznaèen v seznamu \"Moje graby\")";
