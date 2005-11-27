@@ -11,7 +11,7 @@ require_once("language.inc.php");
 
 <body>
 <div align="center">
-<a href="index.php" class="h"><img class="top" src="images/top.png" alt="<? echo $msgGlobalTitle ?>"></a>
+<a href="index.php" class="h"><img class="top" width="780" height="145" src="images/top.png" alt="<? echo $msgGlobalTitle ?>"></a>
 </div>
 <div class="status">
 <span class="value" id="hodiny"><?=date("d.m. G:i")?></span>

@@ -159,7 +159,7 @@ require("menu.php");
 <?php
 
 if ($usr_name != "" && !isset($_GET["msg"])) {
-	echo "<p><b>Pøihlá¹ený u¾ivatel: $usr_name</b></p>";
+	echo "<p><b>$msgAccountLogged $usr_name</b></p>";
 }
 
 
