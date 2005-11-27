@@ -58,7 +58,7 @@ while (true) {
   //                 grab left join request
   //            where grab.grb_id=$grb_id and
   //                  grab.grb_enc=1";
-      $SQL = "select distinct usr_name, usr_email, usr_ip from user u, grab g, request r where
+      $SQL = "select distinct usr_name, usr_email, usr_ip, req_id from user u, grab g, request r where
               r.grb_id=$grb_id and
               u.usr_id=r.usr_id";
 // zruseno protoze .ts >2G nejde dorucovat pomoci apache tak mozna bude lepsi kdyz pak dorazi alespon encodovana verze
@@ -84,7 +84,7 @@ while (true) {
         system($command);
         $output = "http://".$hostname."/".$userDir."/".$randomSeed."_".$grab_name.".avi";
         $msgUser = $msg.$output;
-        $update = "update request set req_output='$output' where req_id=".$row["req_id"];
+        $update = "update request set req_output='$output' where req_id='".$row["req_id"]."'";
         db_sql($update);
         mail($row[1], "hotovy zkomprimovany grab", $msgUser, "From: $admin_email\r\n");
       }
