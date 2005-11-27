@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `request` (
   `grb_id` int(11) NOT NULL default '0',
   `usr_id` int(11) NOT NULL default '0',
   `grb_enc` tinyint(4) NOT NULL default '1',
-  `grb_output` varchar(255) default '',
+  `req_output` varchar(255) default '',
   PRIMARY KEY  (`req_id`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
