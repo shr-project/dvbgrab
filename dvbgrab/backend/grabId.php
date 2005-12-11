@@ -33,7 +33,7 @@ $channel = strtolower(strip_diacritics($row[0]));
 #$timestamp = $DB->UserTimeStamp($DB->UnixTimeStamp($row[1])-$grab_date_start_shift*60, "Ymd-H");
 $timestamp = $DB->UserTimeStamp($DB->UnixTimeStamp($row[1]), "Ymd-H");
 
-$grab_name = "DVB-".$timestamp."-".$channel."-".ereg_replace("[/ ()?&]", "_", strip_diacritics($row[3]));
+$grab_name = "DVB-".$timestamp."-".$channel."-".ereg_replace("[/ ()?&:]", "_", strip_diacritics($row[3]));
         
 // dvbgrab -b BEGIN_TIME -e END_TIME -i INPUT_CHANNEL -o OUTPUT_FILE
 $command = "./dvbgrab -b \"".$begin_time."\" -e \"".$end_time."\" -i ".$channel." -o ".$grab_storage."/".$grab_name.".ts 2>&1 >> $dvbgrab_log";
