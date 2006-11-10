@@ -27,7 +27,7 @@ status() {
 
 start() {
     echo -n $"Starting DVBgrab grab loop: "
-    sh -c "$GRABLOOP 1>&2 2>/dev/null & disown" & disown
+    sh -c "$GRABLOOP >/dev/null 2>&1 & disown"
     RETVALG=$?
     echo
     [ $RETVALG -eq 0 ] && touch "$LOCKFILE_G"
@@ -35,7 +35,7 @@ start() {
 
     rm -f "$STORAGE/frameno.avi"
     echo -n $"Starting DVBgrab encode loop: "
-    sh -c "$ENCODELOOP 1>&2 2>/dev/null & disown" & disown
+    sh -c "$ENCODELOOP >/dev/null 2>&1 & disown"
     RETVALE=$?
     echo
     [ $RETVALE -eq 0 ] && touch "$LOCKFILE_E"
