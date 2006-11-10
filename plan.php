@@ -1,185 +1,188 @@
 <?php
-require("dblib.php");
-require("authenticate.php");
-require("const.php");
-require("config.php");
-require("status.inc.php");
-require("header.php");
-
+require_once("dolib.inc.php");
+require_once("const.php");
+require_once("config.php");
 require_once("language.inc.php");
+require_once("view.inc.php");
+require("authenticate.php");
 
 // $type = sched  ... show all sheduled records
 // $type = done   ... show all finished records
 // $type = mygrab ... show my records
 
 $type = $_GET["type"];
-if ($type != "sched" && $type != "done" && $type != "mygrab") $type = "sched";
 switch ($type) {
-	case "sched":
-		$menuitem = 2;
-		break;
+  case "sched":
+    $menuitem = 2;
+    break;
 
-	case "done":
-		$menuitem = 3;
-		break;
+  case "done":
+    $menuitem = 3;
+    break;
 
-	case "mygrab":
-		$menuitem = 4;
-		break;
+  case "mygrab":
+    $menuitem = 4;
+    break;
 
-	default:
+  default:
+    $type = "sched";
+    $menuitem = 2;
+    break;
+
 }
-require("menu.php");
-
-echo "<td valign=\"top\">";
-
-if ($type == "sched") echo "<h2 class=\"planList\">".$msgPlanListSchedTitle."</h2>\n";
-if ($type == "done") echo "<h2 class=\"planList\">".$msgPlanListDoneTitle."</h2>\n";
-if ($type == "mygrab") echo "<h2 class=\"planList\">".$msgPlanListMygrabTitle."</h2>\n";
+require("header.php");
+echo '<table width="100%">';
+echo '<tr>';
+echo '<td valign="top">';
 
 if ($type == "sched") {
-	$SQL = "select count(*) from grab where grb_status='scheduled'";
-	$rs = db_sql($SQL);
-	$row = $rs->FetchRow();
-	echo $msgPlanSchedCount.": $row[0]<br />\n";
+  $SQL = "select count(distinct(grb_id)) from request where req_status='scheduled'";
+  $rs = do_sql($SQL);
+  $row = $rs->FetchRow();
+  echo "<h2>"._MsgPlanListSchedTitle."</h2>\n";
+  echo _MsgPlanSchedCount.": $row[0]<br />\n";
 }
 
 if ($type == "done") {
-	$SQL = "select count(*) from grab where grb_status='done'";
-	$rs = db_sql($SQL);
-	$row = $rs->FetchRow();
-	echo $msgPlanDoneCount.": $row[0]<br />\n";
+  $SQL = "select count(distinct(grb_id)) from request where req_status='done'";
+  $rs = do_sql($SQL);
+  $row = $rs->FetchRow();
+  echo "<h2>"._MsgPlanListDoneTitle."</h2>\n";
+  echo _MsgPlanDoneCount.": $row[0]<br />\n";
 }
 
 if ($type == "mygrab") {
-	$SQL = "select count(*) from grab g, request r where 
-					g.grb_id=r.grb_id and
-					g.grb_status='scheduled' and
-					r.usr_id=$usr_id";
-	$rs = db_sql($SQL);
-	$row = $rs->FetchRow();
-	echo $msgPlanSchedCount.": $row[0]<br />\n";
+  echo "<h2>"._MsgPlanListMygrabTitle."</h2>\n";
+  $SQL = "select count(distinct(grb_id)) from request where req_status='scheduled' and usr_id=$usr_id";
+  $rs = do_sql($SQL);
+  $row = $rs->FetchRow();
+  echo _MsgPlanSchedCount.": $row[0]<br />\n";
 
-	$SQL = "select count(*) from grab g, request r where 
-					g.grb_id=r.grb_id and
-					g.grb_status='done' and
-					r.usr_id=$usr_id";
-	$rs = db_sql($SQL);
-	$row = $rs->FetchRow();
-	echo $msgPlanDoneCount.": $row[0]<br /><br />\n";
+  $SQL = "select count(distinct(grb_id)) from request where req_status='done' and usr_id=$usr_id";
+  $rs = do_sql($SQL);
+  $row = $rs->FetchRow();
+  echo _MsgPlanDoneCount.": $row[0]<br />\n";
 }
 
 // date of oldest and finished record 
-$SQL = "select grb_date_start from grab where grb_status='done'
-			order by grb_date_start limit 1";
-$rs = db_sql($SQL);
+$SQL = "select grb_date_start 
+        from grab g,request r 
+        where req_status='done' and g.grb_id=r.grb_id
+        order by g.grb_date_start
+        limit 1";
+$rs = do_sql($SQL);
 if ($row = $rs->FetchRow()) {
-	$grab_datetime = $row[0];
+  $grab_datetime = $row[0];
 } else {
-	$grab_datetime = '0000-00-00 00:00:00';
+  $grab_datetime = '0000-00-00 00:00:00';
 }
 
-$SQL = "select g.grb_id, g.grb_status, t.tel_name,
-				c.chn_name, grb_date_start, grb_date_end, g.tel_id as tel_id,
-				u.usr_id, u.usr_name, u.usr_email, r.grb_enc, r.req_output
-			from 
-				channel c inner join television t on (c.chn_id=t.chn_id) 
-				inner join grab g on (t.tel_id=g.tel_id)
-				inner join request r on (g.grb_id=r.grb_id)
-				inner join user u on (r.usr_id=u.usr_id)
-			where";
+$SQL = "select g.grb_id, 
+               r.req_status, 
+               t.tel_name,
+               c.chn_name, 
+               c.chn_logo, 
+               grb_date_start, 
+               grb_date_end, 
+               g.tel_id as tel_id,
+               u.usr_id, 
+               u.usr_name, 
+               u.usr_email, 
+               r.req_output
+        from channel c inner join television t on (c.chn_id=t.chn_id) 
+             inner join grab g on (t.tel_id=g.tel_id)
+             inner join request r on (g.grb_id=r.grb_id)
+             inner join usergrb u on (r.usr_id=u.usr_id)
+        where";
 
-if ($type == "sched") $SQL .= " g.grb_status='scheduled' or g.grb_status='processing'";
-if ($type == "done") $SQL .= " g.grb_status='done'";
-if ($type == "mygrab") $SQL .= " g.grb_status<>'deleted' and u.usr_id=$usr_id and g.grb_date_start >='$grab_datetime'";
+if ($type == "sched")  $SQL .= " r.req_status='scheduled' or r.req_status='processing'";
+if ($type == "done")   $SQL .= " r.req_status='done'";
+if ($type == "mygrab") $SQL .= " r.req_status<>'deleted' and u.usr_id=$usr_id";
+// and g.grb_date_start >='$grab_datetime'";
 
-$SQL .= " order by year(g.grb_date_start)".(($type=="sched")?"":" desc").", if(hour(g.grb_date_start)<$midnight, dayofyear(g.grb_date_start)-1, dayofyear(g.grb_date_start))".(($type=="sched")?"":" desc").", if(hour(g.grb_date_start)<$midnight, hour(g.grb_date_start)+24, hour(g.grb_date_start)), minute(g.grb_date_start), c.chn_order";
+$SQL .= " order by g.grb_date_start".(($type=="sched")?"":" desc").", c.chn_order";
 
-if ($type == "done") $SQL .= " limit 100";
+if ($type == "done")   $SQL .= " limit 100";
 if ($type == "mygrab") $SQL .= " limit 100";
 
-$res = db_sql($SQL);
+$res = do_sql($SQL);
 
-if ($res->RecordCount = 0) {
-	echo "Nenalezeny ¾ádné záznamy."; 
-	require("footer.php");
-	exit;
-}
+require_once("grabinfoJS.php");
 
-$old_grb_day = "";
-echo "<table class=\"grabList\">\n";
-
-global $DB;
-
-while ($row = $res->FetchRow()) {
-  $grb_timeStamp=$DB->UnixTimeStamp($row["grb_date_start"]);
-  if ($DB->UserTimeStamp($row["grb_date_start"],"G")<$midnight) {
-		$grb_timeStamp-=24*3600;
-	}
-	$grb_day = $dow[$DB->UserTimeStamp($grb_timeStamp,"l")].$DB->UserDate($grb_timeStamp,", d. m. Y");
-
-	if ($grb_day != $old_grb_day) {
-		if ($old_grb_day != "") {
-			echo "<tr><td colspan=\"".(($type=="mygrab")?"6":"8")."\">&nbsp;</td></tr>\n";
-		}
-		echo "<tr><th colspan=\"".(($type=="mygrab")?"6":"8")."\">&nbsp;&nbsp;&nbsp;$grb_day</th></tr>\n";
-	}
-	$old_grb_day = $grb_day;
-
-	echo "	<tr>\n";
-	echo "		<td width=\"30\">&nbsp;</td>\n";
-	echo "		<td width=\"12\" align=\"center\" class=\"status-";
-  if ($row["grb_status"] != "scheduled") {
-    echo $row["grb_status"]."\">\n";
-  } else {
-    // mark records for other users not me
-    if ($row["usr_id"]==$usr_id) {
-      // mark my requests
-      if ($row["grb_enc"])
-        echo "myscheduled\">\n";
-      else
-        echo "mynocomprim\">\n";
-    } else {
-      echo "scheduled\">\n";
+?>
+<script type="text/javascript">
+<!--
+  var grabinfos = new grabInfos(); 
+// -->
+</script>
+<?
+if ($res->RecordCount() == 0) {
+  echo _MsgPlanNothing;
+} else {
+  $old_grb_day = "";
+  echo "<table class=\"grabList\">\n";
+  
+  global $DB;
+  
+  while ($row = $res->FetchRow()) {
+    $grb_id = $row[0];
+    $grb_timeStamp=$DB->UnixTimeStamp($row["grb_date_start"]);
+    if ($DB->UserTimeStamp($row["grb_date_start"],"G")<_Config_midnight) {
+      $grb_timeStamp-=24*3600;
     }
-  }
-	echo "			".(($row["usr_id"]==$usr_id)?"<img alt=\"moje\" src=\"images/dot.gif\">":"&nbsp;");
-	echo "		</td>\n";
-	echo "		<td width=\"60\">&nbsp;&nbsp;<img alt=\"".$row["chn_name"]."\"".
-		" src=\"images/".$channel_logo[$row["chn_name"]]."\"></td>\n";
+    $grb_day = $dow[$DB->UserTimeStamp($grb_timeStamp,"l")].$DB->UserDate($grb_timeStamp,", d. m. Y");
+    if ($grb_day != $old_grb_day) {
+  
+      if ($old_grb_day != "") {
+        echo "<tr><td colspan=\"6\">&nbsp;</td></tr>\n";
+      }
+      echo "<tr><th colspan=\"6\">&nbsp;&nbsp;&nbsp;$grb_day</th></tr>\n";
+    }
+    $old_grb_day = $grb_day;
 
-	echo "<td width=\"110\"><b>";
-	if ($row["grb_status"] == "missed") {
-		echo "&nbsp;&nbsp;&nbsp;negrabnuto";
-	} else echo ($DB->UserTimeStamp($row["grb_date_start"],"H:i")."-".$DB->UserTimeStamp($row["grb_date_end"],"H:i"));
-	echo "</b></td>\n";
 
-	echo "		<td><a href=\"tvprog.php?tv_date=".
-		date("Ymd", $grb_timeStamp).
-		"#".$row["tel_id"]."\">".htmlspecialchars($row["tel_name"])."</a>".
-		"</td>\n";
-
-	if ($type != "mygrab") {
-		echo "		<td width=\"20\">&nbsp;</td>\n";
-		echo "		<td><a href=\"mailto:".str_replace("@", "@NOSPAM.", $row["usr_email"])."\">".$row["usr_name"]."</a></td>\n";
+    echo "  <tr";
+    show_grab_class($grb_id, $row['req_status'], $row['usr_id'] == $usr_id);
+    echo " onmouseover=\"grabinfos.show($grb_id); setTimeout('grabinfos.loadMe($grb_id)',200);\"";
+    echo " onmouseout=\"grabinfos.hide($grb_id)\">\n";
+    echo "    <td width=\"30\">&nbsp;</td>\n";
+    echo "    <td><img class=\"programLogo\" alt=\"".$row["chn_name"]."\" title=\"".$row["chn_name"]."\" src=\"images/logos/".$row["chn_logo"]."\"></td>\n";
+    echo "    <td width=\"110\">";
+    if ($row["req_status"] == "missed") {
+      echo "&nbsp;&nbsp;&nbsp;"._MsgPlanGrabMissed;
+    } else {
+      echo $DB->UserTimeStamp($row["grb_date_start"],"H:i")."-".$DB->UserTimeStamp($row["grb_date_end"],"H:i");
+    }
+    echo "    </td>\n";
+  
+    echo "    <td><a href=\"tvprog.php?tv_date=".date("Ymd", $grb_timeStamp).
+      "#".$row["tel_id"]."\">".htmlspecialchars($row["tel_name"])."</a><div class=\"grabInfo\" style=\"margin-left: 30pt; display:none; position: absolute\" id=\"grabinfo_".$grb_id."\"></div></td>\n";
+  
+    if ($type != "mygrab") {
+//      echo "    <td width=\"20\">&nbsp;</td>\n";
+      echo "    <td><a href=\"mailto:".str_replace("@", "@NOSPAM.", $row["usr_email"])."\">".$row["usr_name"]."</a></td>\n";
+    } else {
+      if ($row["req_status"] == "done") {
+        if ($row["req_output"] != "") {
+          echo "    <td><a href=\"".$row["req_output"]."\">"._MsgPlanGrabLink."</a></td>\n";
         } else {
-          if ($row["grb_status"] == "done") {
-            if ($row["req_output"] != "") {
-              echo "          <td><a href=\"".$row["req_output"]."\">".$msgPlanGrabLink."</a></td>\n";
-            } else {
-              echo "          <td>".$msgPlanGrabLinkNone."</td>\n";
-            }
-          } else if ($row["grb_status"] == "deleted") {
-            echo "          <td>".$msgPlanGrabDeleted."</td>\n";
-          } else {
-            echo "          <td>&nbsp;</td>\n";
-          }
-          echo "	</tr>\n";
+          echo "    <td>"._MsgPlanGrabLinkNone."</td>\n";
         }
-}		
-echo "</table>\n";
-echo "</td></tr></table>\n";
+      } else if ($row["req_status"] == "deleted") {
+        echo "    <td>"._MsgPlanGrabDeleted."</td>\n";
+      } else {
+        echo "    <td>&nbsp;</td>\n";
+      }
+    }
+//    echo "  <tr><td colspan=\"8\"><div style=\"display:none\" id=\"planGrab".$grb_id."\"></div></td></tr>";
+    echo "  </tr>\n";
+  }    
+  echo "</table>\n";
+}
+echo "</td>\n";
+echo "<td class=\"legend\">\n";
+require_once("legend.inc.php");
+echo "</td>\n";
+echo "</tr>\n</table>\n";
 require("footer.php");
-
-// vim: noexpandtab tabstop=4
 ?>

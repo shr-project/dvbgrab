@@ -1,0 +1,59 @@
+new CRA broadcast enabled
+setup CRA input dvb: 
+
+setup CRA option dvb-adapter=0
+setup CRA option dvb-frequency=506000000
+setup CRA option dvb-bandwidth=8
+setup CRA option dvb-transmission=8
+setup CRA option dvb-guard=8
+setup CRA option dvb-hierarchy=-1
+setup CRA option dvb-modulation=64
+setup CRA option ts-es-id-pid
+setup CRA option programs=1,2,3,4,5,10,11,12,13,14,15,16,1000
+
+setup CRA output #duplicate
+{
+dst=std{access=rtp,mux=ts,url=239.194.12.1:1234,sap,group="Masarka-CRA",name="CT1"},select="program=1"
+,dst=std{access=rtp,mux=ts,url=239.194.12.2:1234,sap,group="Masarka-CRA",name="CT2"},select="program=2"
+,dst=std{access=rtp,mux=ts,url=239.194.12.3:1234,sap,group="Masarka-CRA",name="CT24"},select="program=3"
+,dst=std{access=rtp,mux=ts,url=239.194.12.4:1234,sap,group="Masarka-CRA",name="CT4"},select="program=4"
+,dst=std{access=rtp,mux=ts,url=239.194.12.5:1234,sap,group="Masarka-CRA",name="Nova"},select="program=5"
+,dst=std{access=rtp,mux=ts,url=239.194.12.6:1234,sap,group="Masarka-CRA",name="CRO1"},select="program=10"
+,dst=std{access=rtp,mux=ts,url=239.194.12.7:1234,sap,group="Masarka-CRA",name="CRO2"},select="program=11"
+,dst=std{access=rtp,mux=ts,url=239.194.12.8:1234,sap,group="Masarka-CRA",name="CRO3"},select="program=12"
+,dst=std{access=rtp,mux=ts,url=239.194.12.9:1234,sap,group="Masarka-CRA",name="CRO4"},select="program=13"
+,dst=std{access=rtp,mux=ts,url=239.194.12.10:1234,sap,group="Masarka-CRA",name="Ddur"},select="program=14"
+,dst=std{access=rtp,mux=ts,url=239.194.12.11:1234,sap,group="Masarka-CRA",name="Leonardo"},select="program=15"
+,dst=std{access=rtp,mux=ts,url=239.194.12.12:1234,sap,group="Masarka-CRA",name="Cesko"},select="program=16"
+,dst=std{access=rtp,mux=ts,url=239.194.12.13:1234,sap,group="Masarka-CRA",name="MHP"},select="program=1000"
+}
+
+control CRA play
+
+new CDG broadcast enabled
+setup CDG input dvb:
+
+setup CDG option dvb-adapter=1
+setup CDG option dvb-frequency=674000000
+setup CDG option dvb-bandwidth=8
+setup CDG option dvb-transmission=8
+setup CDG option dvb-guard=16
+setup CDG option dvb-hierarchy=-1
+setup CDG option dvb-modulation=64
+setup CDG option ts-es-id-pid
+setup CDG option programs=1,2,3,4,5,7,11,19,23
+
+setup CDG output #duplicate
+{
+dst=std{access=rtp,mux=ts,url=239.194.13.1:1234,sap,group="Masarka-CDG",name="Prima"},select="program=1"
+,dst=std{access=rtp,mux=ts,url=239.194.13.2:1234,sap,group="Masarka-CDG",name="Top"},select="program=2"
+,dst=std{access=rtp,mux=ts,url=239.194.13.3:1234,sap,group="Masarka-CDG",name="TA3"},select="program=3"
+,dst=std{access=rtp,mux=ts,url=239.194.13.4:1234,sap,group="Masarka-CDG",name="Ocko"},select="program=4"
+,dst=std{access=rtp,mux=ts,url=239.194.13.5:1234,sap,group="Masarka-CDG",name="24CZ"},select="program=5"
+,dst=std{access=rtp,mux=ts,url=239.194.13.6:1234,sap,group="Masarka-CDG",name="Test"},select="program=7"
+,dst=std{access=rtp,mux=ts,url=239.194.13.7:1234,sap,group="Masarka-CDG",name="Proglas"},select="program=11"
+,dst=std{access=rtp,mux=ts,url=239.194.13.8:1234,sap,group="Masarka-CDG",name="Evropa2"},select="program=19"
+,dst=std{access=rtp,mux=ts,url=239.194.13.9:1234,sap,group="Masarka-CDG",name="Clasic"},select="program=23"
+}
+
+control CDG play

@@ -1,27 +1,27 @@
 #!/usr/bin/php -q
 <?php
-require("config.php");
-require("dblib.php");
+require_once("config.php");
+require_once("dolib.inc.php");
+require_once("status.inc.php");
+require_once("loggers.inc.php");
 
-if ($fp = fopen($dvbgrab_log, 'a')) {
-  fwrite($fp, sprintf("%s starting grab_loop\n", date("Y-m-d G:i:s")));
-  fclose($fp);
-}
+$logdbg = &Log::singleton('file', _Config_dvbgrab_log, 'grabId - debug', $logFileConf);
+$logerr = &Log::singleton('file', _Config_dvbgrab_log, 'grabId - error', $logFileConf);
+
 
 while (true) {
+  status_update();
   // vyber grab, ktery by se mel prave zacit grabovat
-  $SQL ="select grb_id from grab
+  $SQL ="select g.grb_id from grab g , request r
            where
-             ".$DB->DBTimeStamp(time()+$grab_date_start_shift*60)." >= grb_date_start and 
-             grb_status='scheduled'";
-  $rs = db_sql($SQL);
+             ".$DB->DBTimeStamp(time())." >= grb_date_start and g.grb_id=r.grb_id
+             and req_status='scheduled'";
+  $rs = do_sql($SQL);
   
   while($row=$rs->FetchRow()) {
-    // pokracuj, pokud byl nalezen grab
-//    echo "start grab id $row[0]\n";
-    system("GRB_ID=".$row[0]." ./grabId.php 2>> $dvbgrab_log >> $dvbgrab_log &");
-//    echo "next one\n";
+    do_cmd("GRB_ID=".$row[0]." ./grab_process.php >/dev/null 2>&1 &");
   }
+  $rs->Close();
   sleep(30);
 }
 ?>

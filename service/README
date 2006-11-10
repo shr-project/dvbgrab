@@ -1,0 +1,5 @@
+vlm 	- script /etc/init.d/vlm
+dvbgrab	- script /etc/init.d/dvbgrab
+dvb 	- config /etc/sysconfig/dvb
+vlm.cfg	- config /etc/videolan/vlm/vlm.cfg
+vlm.cfg.human.readable	- the same as vlm.cfg but with extra line breaks (which parser probably doesn't support)

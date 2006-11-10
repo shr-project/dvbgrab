@@ -1,0 +1,86 @@
+#!/bin/sh
+#
+# dvbgrab:	Starts grab and encode loop for DVBgrab
+#
+# chkconfig:	345 95 05
+# description:	DVBgrab can store TV shows from multicast streams
+#
+# processname:	encode_loop,grab_loop
+#
+
+DVBGRAB_HOME=/var/lib/dvbgrab
+DVBGRAB_USER=dvbgrab
+GRABLOOP=$DVBGRAB_HOME/grab_loop.php
+ENCODELOOP=$DVBGRAB_HOME/encode_loop.php
+LOCKFILE_G=$DVBGRAB_HOME/grab_loop.running
+LOCKFILE_E=$DVBGRAB_HOME/encode_loop.running
+STORAGE=/pub/grab/
+
+cd $DVBGRAB_HOME
+
+status() {
+    /bin/ps x | grep [/]$1 > /dev/null
+    RETVAL=$?
+    [ $RETVAL -eq 0 ] && echo "$1 is running"
+    [ $RETVAL -eq 0 ] || echo "$1 is stopped"
+}
+
+start() {
+    echo -n $"Starting DVBgrab grab loop: "
+    sh -c "$GRABLOOP 1>&2 2>/dev/null & disown" & disown
+    RETVALG=$?
+    echo
+    [ $RETVALG -eq 0 ] && touch "$LOCKFILE_G"
+
+
+    rm -f "$STORAGE/frameno.avi"
+    echo -n $"Starting DVBgrab encode loop: "
+    sh -c "$ENCODELOOP 1>&2 2>/dev/null & disown" & disown
+    RETVALE=$?
+    echo
+    [ $RETVALE -eq 0 ] && touch "$LOCKFILE_E"
+    RETVAL=`expr $RETVALE + $RETVALG`
+}
+
+stop() {
+    echo -n $"Stopping DVBgrab grab loop: "
+    killall -u $DVBGRAB_USER `basename "$GRABLOOP"`   > /dev/null 2> /dev/null
+    killall -u $DVBGRAB_USER grab_process.php         > /dev/null 2> /dev/null
+    killall -u $DVBGRAB_USER dumprtp                  > /dev/null 2> /dev/null
+    rm -f "$LOCKFILE_G";
+    echo
+    
+    echo -n $"Stopping DVBgrab encode loop: "
+    killall -u $DVBGRAB_USER `basename "$ENCODELOOP"` > /dev/null 2> /dev/null
+    killall -u $DVBGRAB_USER encode_process.php       > /dev/null 2> /dev/null
+    killall -u $DVBGRAB_USER mencoder                 > /dev/null 2> /dev/null
+
+    rm -f "$LOCKFILE_E"
+    echo
+    RETVAL=0
+}
+
+
+# See how we were called.
+case "$1" in
+    start)
+	start
+	;;
+    stop)
+	stop
+	;;
+    status)
+        status `basename "$GRABLOOP"`
+	RETVAL=$? 
+        status `basename "$ENCODELOOP"`
+	RETVAL=`expr $RETVAL + $?` 
+        ;;
+    restart)
+	stop
+	start
+	;;
+    *)
+	echo $"Usage: `basename "$0"` {start|stop|status|restart}"
+	;;
+esac
+exit $RETVAL
