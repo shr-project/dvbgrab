@@ -2,7 +2,7 @@
 body {
   font-family : Verdana, Arial, Helvetica, sans-serif;
   font-size : 10pt;
-  background-color : #cccccc; 
+  background-color : #111111;
   color : #888888;
 }
 /* Header definitions */
@@ -95,13 +95,13 @@ a:hover, .menuitem_act {
   color : #6467c5;
 }
 a.menuitem {
-  color : #6467c5;
+  color : #ffffff;
   font-size : 10pt;
   font-family : Verdana, Arial, Helvetica, sans-serif;
 }
 /* TV program styles */
 .programDate {
-  color : red;
+  color : #red;
   vertical-align : top;
 }
 .programHigh {
@@ -221,94 +221,94 @@ td.value {
 }
 /* Today highlight */
 option.today {
-  background-color : #ff6666;
+  background-color : #ebec75;
 }
 .status-scheduled {
-  background-color : #aaffbb;
+  background-color : #ffff77;
 }
 .status-scheduled-my {
-  background-color : #aaffbb;
+  background-color : #ffff77;
   background-image : url("../images/dot.gif");
   background-repeat : no-repeat;
   background-position : left;
 }
 .status-saving {
-  background-color : #aaffbb;
+  background-color : #99ff44;
 }
 .status-saving-my {
-  background-color : #aaffbb;
+  background-color : #99ff44;
   background-image : url("../images/dot.gif");
   background-repeat : no-repeat;
   background-position : left;
 }
 .status-saved {
-  background-color : #aaffbb;
+  background-color : #99ff44;
 }
 .status-saved-my {
-  background-color : #aaffbb;
+  background-color : #99ff44;
   background-image : url("../images/dot.gif");
   background-repeat : no-repeat;
   background-position : left;
 }
 .status-encoding {
-  background-color : #aaffbb;
+  background-color : #33cc66;
 }
 .status-encoding-my {
-  background-color : #aaffbb;
+  background-color : #33cc66;
   background-image : url("../images/dot.gif");
   background-repeat : no-repeat;
   background-position : left;
 }
 .status-encoded {
-  background-color : #aaffbb;
+  background-color : #33cc66;
 }
 .status-encoded-my {
-  background-color : #aaffbb;
+  background-color : #33cc66;
   background-image : url("../images/dot.gif");
   background-repeat : no-repeat;
   background-position : left;
 }
 .status-done {
-  background-color : #aaffff;
+  background-color : #66ffff;
 }
 .status-done-my {
-  background-color : #aaffff;
+  background-color : #66ffff;
   background-image : url("../images/dot.gif");
   background-repeat : no-repeat;
   background-position : left;
 }
 .status-deleted {
-  background-color : #aaffff;
+  background-color : #6666ff;
 }
 .status-deleted-my {
-  background-color : #aaffff;
+  background-color : #6666ff;
   background-image : url("../images/dot.gif");
   background-repeat : no-repeat;
   background-position : left;
 }
 .status-missed {
-  background-color : #ffddcc;
+  background-color : #9933ff;
 }
 .status-missed-my {
-  background-color : #ffddcc;
+  background-color : #9933ff;
   background-image : url("../images/dot.gif");
   background-repeat : no-repeat;
   background-position : left;
 }
 .status-error {
-  background-color : #ffa0a0;
+  background-color : #9933ff;
 }
 .status-error-my {
-  background-color : #ffa0a0;
+  background-color : #9933ff;
   background-image : url("../images/dot.gif");
   background-repeat : no-repeat;
   background-position : left;
 }
 .status-undefined {
-  background-color : #ffa0a0;
+  background-color : #9933ff;
 }
 .status-undefined-my {
-  background-color : #ffa0a0;
+  background-color : #9933ff;
   background-image : url("../images/dot.gif");
   background-repeat : no-repeat;
   background-position : left;

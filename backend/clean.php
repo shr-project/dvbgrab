@@ -88,4 +88,5 @@ function unknownAccount($usrName) {
   // only write to log
   $logdbg->log("Unknown dir: $usrName");
 }
+// find . -type l -not -xtype f -print -exec rm -f {} \;
 ?>
