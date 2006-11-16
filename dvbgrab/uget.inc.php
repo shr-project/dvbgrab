@@ -13,31 +13,20 @@ function uget($id, $offset) {
     $uget_row_popis = 2;
 
     //-----------------------------------------------------------------
-    /*
-    // tvtip.tiscali.cz
-    $path = "http://tvtip.tiscali.cz/print.asp?stanice=$id&dny=$offset";
-    $reg_exp = "<b>([0-9]+:[0-9]+)</b>.*<b>(.*)</b><br>"
-    ."<span class='popis'>(.*)</span>";
-     */
-    //-----------------------------------------------------------------
-    // http://www.ceskenoviny.cz/kultura/tvpr
-    //FIXME: ud¾et konzistenci s databází
-    switch ($id) {
-        case 1: $stanice_name = "ÈT1"; break;
-        case 2: $stanice_name = "ÈT2"; break;
-        case 3: $stanice_name = "Nova"; break;
-        case 4: $stanice_name = "Prima"; break;
-//	case 5: $stanice_name = "Ocko"; break;
-        default: return false;
-    }
-    $url_den = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") + $offset));
-    $path = "http://www.ceskenoviny.cz/kultura/tvpr/index.php?stanicex%5B1%5D=stanice1&stanice1=$stanice_name&tv=6&dnygrp=5&datumod=$url_den&datumdo=$url_den&hodinygrp=1&casod=5&casdo=5&zobraz=1&findStr=&hledejV=1";
-    $reg_exp = "<td class=\"tvp_cas[0-9]*\"[^>]*>([0-9]+:[0-9]+)</td>\n".
-        " *<td class=\"tvp_popis[0-9]*\"><b>(.*)</b>(.*)</td>";
+    // seznam.cz
+    $url_date = date("Ymd", mktime(0, 0, 0, date("m"), date("d") + $offset));
+    $path = "http://www.novinky.cz/tv_program/tvindex.fcgi?akce=tv&subakce=nastav&tv_$id=on&tv_odkdy=0&datum=$url_date";
+
+    $reg_exp = "@<dt>([0-9]+:[0-9]+)</dt>".
+        "\s*<dd>".
+        "(?:\s*<img .*/>)*".
+        "\s*<span class=\"titulek\"\s*>(?:<a [^>]*>)*([^<]*)(?:</a>)*</span>".
+        "\s*<span class=\"popisek\"\s*>(?: - )?([^<]*)</span>@";
+
     //-----------------------------------------------------------------
 
     if ($proxy_server != "") {
-      $fp = fsockopen($proxy_server, 3128, &$errno, &$errstr, 5);
+      $fp = fsockopen($proxy_server, $proxy_port, &$errno, &$errstr, 5);
       fputs($fp, 'GET '.$path." HTTP/1.0\n\n");
     } else {
       $fp = fopen($path, "r");
@@ -50,33 +39,23 @@ function uget($id, $offset) {
           echo '<br>!nejede www!<br>';
         return false;
     } else {
-        //NOTE: podle poctu "\n" v reg_vyrazu pozname, kolik radku nacist
-        $ln_count = substr_count($reg_exp, "\n");
         $output = '';
-        // prednacteme $ln_count radek
-        for ($i = 0; $i < $ln_count; $i++) {
-            $output .= fgets($fp, 4096);
+        while (!feof($fp)) {
+            $output .= fread($fp, 8192);
         }
+        fclose($fp);
 
         $result = array();
         $row = 0;
-        while (!feof($fp)) {
-            $output .= fgets($fp, 4096);
+        while (preg_match($reg_exp, $output, $groups, PREG_OFFSET_CAPTURE)) {
+            $result[$row]['cas'] = $groups[1][0];
+            $result[$row]['nazev'] = $groups[2][0];
+            $result[$row]['popis'] = $groups[3][0];
+            $row++;
 
-            if (ereg($reg_exp, $output, $groups)) {
-                $result[$row]['cas'] = $groups[1];
-                $result[$row]['nazev'] = $groups[2];
-                $result[$row]['popis'] = $groups[3];
-                $row++;
-            }
-
-            // oriznuti prvni radky v output
-            $first = strchr($output, "\n");
-            if ($first != false) {
-                $output = substr($first, 1);
-            }
+            $output = substr($output, $groups[3][1] + strlen($groups[3][0]));
         }
-        fclose($fp);
+
         return $result;
     }
 }
