@@ -129,6 +129,16 @@ function print_list_tv($usr_id,$tv_date) {
   $prev_tv_date = date("Ymd", mktime(0, 0, 0, $tv_month, $tv_day-2, $tv_year));
   echo '</table>'."\n";
   echo '<table width="100%">';
+  echo '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>'."\n";
+  echo '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>'."\n";
+  echo '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>'."\n";
+  echo '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>'."\n";
+  echo '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>'."\n";
+  echo '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>'."\n";
+  echo '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>'."\n";
+  echo '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>'."\n";
+  echo '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>'."\n";
+  echo '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>'."\n";
   echo '<tr><td align="left">'."\n";
   echo '<a href="'.$PHP_SELF.'?tv_date='.$prev_tv_date.'">'._MsgProgPrevDay.'</a>';
   echo '</td><td align="right">'."\n";

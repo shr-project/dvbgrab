@@ -16,7 +16,7 @@ if (empty($tel_id)) {
   return "";
 }
 
-$SQL = "select distinct(enc_codec), req_output, req_output_md5, req_output_size from request r,encoder e,television t,grab g where g.tel_id=t.tel_id and r.grb_id=g.grb_id and t.tel_id=$tel_id and r.enc_id=e.enc_id order by e.enc_codec";
+$SQL = "select distinct(enc_codec), req_output, req_output_md5, req_output_size, req_status from request r,encoder e,television t,grab g where g.tel_id=t.tel_id and r.grb_id=g.grb_id and t.tel_id=$tel_id and r.enc_id=e.enc_id order by e.enc_codec";
 $rs = do_sql($SQL);
 $req_outputs = array();
 while ($row = $rs->FetchRow()) {
@@ -28,9 +28,10 @@ while ($row = $rs->FetchRow()) {
     }
   }
   $req_output = array("filename" => $filename,
-                      "size" => $row[3],
+                      "size" => $row[3]/(1024 * 1024),
                       "md5" => $row[2],
-                      "enc" => $row[0]);
+                      "enc" => $row[0],
+                      "status" => $row[4]);
   array_push($req_outputs,$req_output);
 }
 

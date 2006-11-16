@@ -14,7 +14,7 @@ while (true) {
 
   while($row=$rs->FetchRow()) {
     
-    system("ENC_ID=".$row[0]." nice -n 10 ./encode_process.php 2>&1 >"._Config_dvbgrab_encode_log." &");
+    system("ENC_ID=".$row[0]." nice -n 10 ./encode_process.php >/dev/null 2>&1 &");
   }
   $rs->Close();
   sleep(60);

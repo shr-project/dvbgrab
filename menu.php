@@ -32,7 +32,7 @@ require_once("authentication.php");
       echo '<p class="menuitem">';
     }
     if (authenticated($_COOKIE["usr_id"], $_COOKIE["usr_pass"])) {
-      echo ($menu[$i] == " ")?"&nbsp;":"<a href=\"$link[$i]\">::&nbsp;$menu[$i]&nbsp;::</a>\n";
+      echo ($menu[$i] == " ")?"&nbsp;":"<a class=\"menuitem\" href=\"$link[$i]\">::&nbsp;$menu[$i]&nbsp;::</a>\n";
     } else {
       echo ($menu[$i] == " ")?"&nbsp;":"<i>::&nbsp;$menu[$i]&nbsp;::</i>\n";
     }

@@ -8,7 +8,6 @@ require_once("header.php");
 require_once("account.inc.php");
 switch ($_GET["action"]) {
   case "edit":
-    echo "$usr_id";
 //    $usr_id = $_COOKIE["usr_id"];
 
     printUserRegistration(true, $usr_id);

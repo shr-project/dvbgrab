@@ -13,7 +13,7 @@ if (empty($grab_id)) {
   return "";
 }
 
-$SQL = "select distinct(enc_codec), req_output, req_output_md5, req_output_size from request,encoder where grb_id=$grab_id and request.enc_id=encoder.enc_id order by encoder.enc_codec";
+$SQL = "select distinct(enc_codec), req_output, req_output_md5, req_output_size, req_status from request,encoder where grb_id=$grab_id and request.enc_id=encoder.enc_id order by encoder.enc_codec";
 $rs = do_sql($SQL);
 $req_outputs = array();
 while ($row = $rs->FetchRow()) {
@@ -25,9 +25,10 @@ while ($row = $rs->FetchRow()) {
     }
   }
   $req_output = array("filename" => $filename,
-                      "size" => $row[3],
+                      "size" => $row[3]/(1024 * 1024),
                       "md5" => $row[2],
-                      "enc" => $row[0]);
+                      "enc" => $row[0],
+                      "status" => $row[4]);
   array_push($req_outputs,$req_output);
 }
 

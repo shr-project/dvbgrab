@@ -148,11 +148,11 @@ if ($res->RecordCount() == 0) {
     echo "    <td width=\"30\">&nbsp;</td>\n";
     echo "    <td><img class=\"programLogo\" alt=\"".$row["chn_name"]."\" title=\"".$row["chn_name"]."\" src=\"images/logos/".$row["chn_logo"]."\"></td>\n";
     echo "    <td width=\"110\">";
-    if ($row["req_status"] == "missed") {
-      echo "&nbsp;&nbsp;&nbsp;"._MsgPlanGrabMissed;
-    } else {
+//    if ($row["req_status"] == "missed") {
+//      echo "&nbsp;&nbsp;&nbsp;"._MsgPlanGrabMissed;
+//    } else {
       echo $DB->UserTimeStamp($row["grb_date_start"],"H:i")."-".$DB->UserTimeStamp($row["grb_date_end"],"H:i");
-    }
+//    }
     echo "    </td>\n";
   
     echo "    <td><a href=\"tvprog.php?tv_date=".date("Ymd", $grb_timeStamp).
@@ -184,5 +184,10 @@ echo "<td class=\"legend\">\n";
 require_once("legend.inc.php");
 echo "</td>\n";
 echo "</tr>\n</table>\n";
+echo "<br /><br /><br /><br /><br /><br />";
+echo "<br /><br /><br /><br /><br /><br />";
+echo "<br /><br /><br /><br /><br /><br />";
+echo "<br /><br /><br /><br /><br /><br />";
+echo "<br /><br /><br /><br /><br /><br />";
 require("footer.php");
 ?>

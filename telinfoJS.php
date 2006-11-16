@@ -139,8 +139,9 @@ function telInfo(tel_id) {
     }
     for(i in obj.req_outputs) {
       inner +=  '<tr><td><? echo  _MsgJsonReqOutputEnc ?>: '+obj.req_outputs[i].enc+'</td><td>';
+      inner +=  writeStatusText(obj.req_outputs[i].status);
       if (obj.req_outputs[i].filename != null && obj.req_outputs[i].filename != '') {
-        inner += '<? echo _MsgJsonReqOutput ?>: '+obj.req_outputs[i].filename;
+        inner += ', <? echo _MsgJsonReqOutput ?>: '+obj.req_outputs[i].filename;
       }
       if (obj.req_outputs[i].size != null && obj.req_outputs[i].size != '' && obj.req_outputs[i].size != '0') {
         inner += ', '+obj.req_outputs[i].size+'MB';
@@ -154,5 +155,19 @@ function telInfo(tel_id) {
     div.innerHTML=inner;
   }
 
+  function writeStatusText(text) {
+    switch(text) {
+      case "scheduled" : return '<?php echo _MsgStatusScheduled ?>';
+      case "saving" : return '<?php echo _MsgStatusSaving ?>';
+      case "saved" : return '<?php echo _MsgStatusSaved ?>';
+      case "encoding" : return '<?php echo _MsgStatusEncoding ?>';
+      case "encoded" : return '<?php echo _MsgStatusEncoded ?>';
+      case "done" : return '<?php echo _MsgStatusDone ?>';
+      case "deleted" : return '<?php echo _MsgStatusDeleted ?>';
+      case "missed" : return '<?php echo _MsgStatusMissed ?>';
+      case "error" : return '<?php echo _MsgStatusError ?>';
+      case "undefined" : return '<?php echo _MsgStatusUndefined ?>';
+    }
+  }
 // -->
 </script>

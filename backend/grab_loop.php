@@ -15,7 +15,7 @@ while (true) {
   $SQL ="select g.grb_id from grab g , request r
            where
              ".$DB->DBTimeStamp(time())." >= grb_date_start and g.grb_id=r.grb_id
-             and req_status='scheduled'";
+             and req_status='scheduled' order by grb_date_start limit 1";
   $rs = do_sql($SQL);
   
   while($row=$rs->FetchRow()) {

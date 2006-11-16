@@ -44,10 +44,9 @@ function cleanPidInfo($enc_id) {
 */
 function getOldestGrab($enc_id) {
   $SQL ="select g.grb_id
-    from grab g, request r, usergrb u
+    from grab g, request r
     where
       r.grb_id = g.grb_id and
-      r.usr_id = u.usr_id and
       r.enc_id = $enc_id and
       r.req_status = 'saved' and
       r.req_output = ''
@@ -57,6 +56,26 @@ function getOldestGrab($enc_id) {
   $row = $rs->FetchRow();
   $rs->Close();
   if (!$row) {
+    return false;
+  }
+  return $row[0];
+}
+
+/*
+* Returns filename of saved grb_id and checks if exists
+*/
+function getGrabName($grb_id) {
+  $SQL ="select g.grb_name
+    from grab g
+    where
+      r.grb_id = $grb_id";
+  $rs = do_sql($SQL);
+  $row = $rs->FetchRow();
+  $rs->Close();
+  if (!$row[0]) {
+    return false;
+  }
+  if (is_empty_file($row[0])) {
     return false;
   }
   return $row[0];
@@ -76,22 +95,32 @@ function encodeGrab($enc_id, $enc_suffix, $enc_script) {
   }
   ensure_free_space();
 
-  $grab_name = get_grab_basename($grab_id);
+  if (!($grab_name = getGrabName($grab_id))) {
+    $logerr->log("encoding failed to find saved grab $grab_name, enc_id=$enc_id");
+    $target_name = "$grab_name$enc_suffix";
+    report_failed_grab($grab_id, $target_name);
+    return;
+  }
+
   $target_name = "$grab_name$enc_suffix";
-  $target_path = "_Config_grab_storage/$target_name";
-  $grabinfo_name = "_Config_grab_storage/$grab_name.xml";
+  $target_path = _Config_grab_storage."/$target_name";
+  $grabinfo_name = _Config_grab_storage."/$target_name.xml";
   $cmd = "./$enc_script _Config_grab_storage/$grab_name.mpg $target_path >/dev/null 2>&1";
   $logdbg->log("starting encoder (enc_id=$enc_id): $cmd");
   do_cmd($cmd);
 
   if (!is_empty_file($target_path)) {
     $logdbg->log("encoding created $target_path, enc_id=$enc_id");
-    $grabinfo_file = create_xml_info($grab_id,$grabinfo_name, $target_name);
-    report_success_grab($grab_id, $target_name);
+    $req_output_size = get_file_size($target_path);
+    $req_output_md5 = get_file_md5($target_path);
+    $SQL = "update request set req_output='$target_name', req_output_size=$req_output_size, req_output_md5=$req_output_md5 where grb_id=$grab_id and enc_id=$enc_id";
+    do_sql($SQL);
+    $grabinfo_file = create_xml_info($grab_id,$enc_id);
+    report_success_grab($grab_id, $target_name, $enc_id);
   }
   else {
     $logerr->log("encoding failed to create $target_path, enc_id=$enc_id");
-    report_failed_grab($grab_id, $target_name);
+    report_failed_grab($grab_id, $target_name, $enc_id);
   }
 }
 

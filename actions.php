@@ -15,15 +15,16 @@ function grabAction($action,$query,$tv_date,$tel_id,$grb_id) {
     // zadani noveho grabu
     case "grab_add":
       // zjisti, zda porad existuje
-      $SQL = "select t.tel_date_start, t.chn_id, g.grb_id
+      $SQL = "select t.tel_date_start, t.tel_date_end, t.chn_id, g.grb_id
               from television t left join grab g on (t.tel_id=g.tel_id) 
               where t.tel_id=$tel_id";
 
       $rs = do_sql($SQL);
       $row = $rs->FetchRow();
       $tel_date_start = $row[0];
-      $tel_chn_id = $row[1];
-      $tel_grb_id = $row[2];
+      $tel_date_end = $row[1];
+      $tel_chn_id = $row[2];
+      $tel_grb_id = $row[3];
       if (!$row) {
         // porad s $tel_id neexistuje
         header("Location:$PHP_SELF?msg=grb_add_fail_tel&$addition#$tel_id");
@@ -59,18 +60,21 @@ function grabAction($action,$query,$tv_date,$tel_id,$grb_id) {
       // grab neexistuje a muzeme ho zadat
       } else {
         // zjisti cas nasledujiciho poradu na danem kanale -> to bude cas pro skonceni grabu
-        $SQL = "select tel_date_start from television 
-                where chn_id=$tel_chn_id and tel_date_start>'$tel_date_start'
-                order by tel_date_start
-                limit 1";
-        $rs = do_sql($SQL);
-        $row = $rs->FetchRow();
-        if (!$row) {
-          header("Location:$PHP_SELF?msg=grb_add_fail_tel&$addition#$tel_id");
-          return;
+        if (empty($tel_date_end)) {
+          $SQL = "select tel_date_start from television 
+                  where chn_id=$tel_chn_id and tel_date_start>'$tel_date_start'
+                  order by tel_date_start
+                  limit 1";
+          $rs = do_sql($SQL);
+          $row = $rs->FetchRow();
+          if (!$row) {
+            header("Location:$PHP_SELF?msg=grb_add_fail_tel&$addition#$tel_id");
+            return;
+          }
+          $tel_date_end = $row[0];
         }
         $grb_date_start=$DB->UnixTimeStamp($tel_date_start)-_Config_grab_date_start_shift*60;
-        $grb_date_stop=$DB->UnixTimeStamp($row[0])+_Config_grab_date_stop_shift*60;
+        $grb_date_stop=$DB->UnixTimeStamp($tel_date_end)+_Config_grab_date_stop_shift*60;
         $grb_length=$grb_date_stop-$grb_date_start;
         $grb_date_start_hour=date('G',$grb_date_start);
         if ($grb_length>4*3600 and $grb_date_start_hour > 1 and $grb_date_start_hour < 5) {
@@ -81,7 +85,7 @@ function grabAction($action,$query,$tv_date,$tel_id,$grb_id) {
         }
         // zadame grab
         $SQL = "insert into grab(tel_id,grb_date_start,grb_date_end) 
-                         VALUES ($tel_id, ".$DB->DBDate($grb_date_start).", ".$DB->DBDate($grb_date_stop).")";
+                         VALUES ($tel_id, ".$DB->DBTimeStamp($grb_date_start).", ".$DB->DBTimeStamp($grb_date_stop).")";
         do_sql($SQL);
         // zjistime jeho grb_id
         $SQL = "select grb_id from grab 

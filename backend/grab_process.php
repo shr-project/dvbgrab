@@ -51,11 +51,13 @@ $output = do_cmd($cmd);
 
 if (is_empty_file($grab_filename)) {
     $logerr->log("grab $grab_name got error: $output");
-    $SQL = "update request set req_status='error-saving' where grb_id=$grb_id";
+    $SQL = "update request set req_status='error' where grb_id=$grb_id";
     do_sql($SQL);
     report_grab_failure($grb_id, $grab_name);
 } else {
     $logdbg->log("grab $grab_name is ok");
+    $SQL = "update grab set grb_name=$grab_name where grb_id=$grb_id";
+    do_sql($SQL);
     $SQL = "update request set req_status='saved' where grb_id=$grb_id";
     do_sql($SQL);
 }

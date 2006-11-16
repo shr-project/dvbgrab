@@ -4,6 +4,12 @@
 // vyhledavane retezce se mohou prekryvaji
 // pokud $use_diacritics neni true, tak se vyhledava bez diakritiky
 function str_match_array_ascii($str, $query_array, $match, $use_diacritics) {
+/*
+  echo "str: ".$str."\n";
+  echo "qa: "; print_r($query_array);
+  echo "match: ".$match."\n";
+  echo "dia: ".$use_diacritics."\n";
+*/
   $res_array = array();
   $res2_array = array();
 

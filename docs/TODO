@@ -26,7 +26,5 @@ DVBgrab TODO:
 
 pri ukladani do userdiru kontrolovat allow na usr_ip
 status u mygrabu 'undefined', 'scheduled', 'done', 'missed', 'deleted', 'error', 'saving', 'saved', 'encoding', 'encoded'
-doplneni informaci z tel do json, uprava backendu
-udrzba uctu v backendu + registracni email
 clean na stare graby + misto
 

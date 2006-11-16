@@ -1,7 +1,7 @@
 <?php
 
 require_once("config.php");
-require_once("dolib.inc.php");
+#require_once("dolib.inc.php");
 require_once("loggers.inc.php");
 require_once("lang/lang."._Config_grab_backend_lang.".inc.php");
 
@@ -51,10 +51,27 @@ function is_valid_file($filename) {
  * Usable size is bigger than 1M.
  */
 function is_empty_file($filename) {
-    $cmd = "du '$filename'";
-    $output = exec($cmd, $retval);
-    return ($retval != 0 or $output < 1000000);
+  return (get_file_size($filename) < 1000000);
 }
+
+/**
+ * Returns file size
+ */
+function get_file_size($filename) {
+  $cmd = "du ".$filename." | cut -f 1";
+  $output = exec($cmd, $retval);
+  return ($retval != 0?0:$output);
+}
+
+/**
+ * Returns file md5
+ */
+function get_file_md5($filename) {
+  $cmd = "md5sum ".$filename." | cut -d ' ' -f 1";
+  $output = exec($cmd, $retval);
+  return ($retval != 0?0:$output);
+}
+
 
 /**
  * Marks deleted grabs in database.
@@ -177,37 +194,66 @@ function report_grab_failure($grab_id, $grab_name) {
 /**
 * Create XML info file
 */
-function create_xml_info($grab_id, $grabinfo_name, $grabfile_name) {
-    $SQL = "select t.tel_name, 
-              c.chn_name, 
-              t.tel_date_start, 
-              g.grb_date_start, 
-              g.grb_date_end, 
-            from grab g,television t,channel c 
+function create_xml_info($grab_id, $enc_id, $grabinfo_name) {
+    global $DB;
+    $SQL = "select distinct(enc_codec), 
+              req_output, 
+              req_output_md5, 
+              req_output_size, 
+              req_status,
+              t.tel_name, 
+              t.tel_series,
+              t.tel_episode,
+              t.tel_part,
+              c.chn_name,
+              g.grb_name,
+              t.tel_date_start,
+              t.tel_date_end,
+              g.grb_date_start,
+              g.grb_date_end
+            from grab g,television t,channel c,request r,encoder e
             where g.tel_id=t.tel_id 
               AND t.chn_id=c.chn_id 
-              AND g.grb_id=$grab_id";
+              AND r.grb_id=g.grb_id
+              AND e.enc_id=r.enc_id
+              AND g.grb_id=$grb_id
+              AND r.enc_id=$enc_id";
     $rs = do_sql($SQL);
     $row = $rs->FetchRow();
     if ($fp = fopen($grabinfo_name, 'w')) {
+      $filename = $row[1];
+      if (!empty($filename)) {
+        $pos = strrpos($filename, "/");
+        if ($pos !== false) {
+          $filename = substr($filename,$pos);
+        }
+      }
       fwrite($fp, sprintf("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")); 
       fwrite($fp, sprintf("<grab>\n")); 
-      fwrite($fp, sprintf("  <television_name>".$row[1]."</television_name>\n")); 
-      fwrite($fp, sprintf("  <channel_name>".$row[2]."</channel_name>\n")); 
-      fwrite($fp, sprintf("  <file_name>".$grabfile_name."</file_name>\n")); 
-      fwrite($fp, sprintf("  <file_md5>".md5_file(_Config_grab_storage/$grabfile_name)."</file_md5>\n")); 
-      fwrite($fp, sprintf("  <tel_date_start_timestamp>".$DB->UnixTimeStamp($row[3])."</tel_date_start_timestamp>\n")); 
-      fwrite($fp, sprintf("  <tel_date_stop_timestamp>".$DB->UnixTimeStamp($row[3])."</tel_date_start_timestamp>\n")); 
-      fwrite($fp, sprintf("  <grab_date_start_timestamp>".$DB->UnixTimeStamp($row[4])."</grab_date_start_timestamp>\n")); 
-      fwrite($fp, sprintf("  <grab_date_end_timestamp>".$DB->UnixTimeStamp($row[5])."</grab_date_end_timestamp>\n")); 
-      fwrite($fp, sprintf("  <tel_date_start>".$DB->UserTimeStamp($DB->UnixTimeStamp($row[3]))."</tel_date_start>\n")); 
-      fwrite($fp, sprintf("  <grab_date_start>".$DB->UserTimeStamp($DB->UnixTimeStamp($row[4]))."</grab_date_start>\n")); 
-      fwrite($fp, sprintf("  <grab_date_end>".$DB->UserTimeStamp($DB->UnixTimeStamp($row[5]))."</grab_date_end>\n")); 
+      fwrite($fp, sprintf("  <channel_name>".$row[9]."</channel_name>\n")); 
+      fwrite($fp, sprintf("  <tel_name>".$row[5]."</teln_name>\n")); 
+      fwrite($fp, sprintf("  <tel_series>".$row[6]."</tel_series>\n")); 
+      fwrite($fp, sprintf("  <tel_episode>".$row[7]."</tel_episode>\n")); 
+      fwrite($fp, sprintf("  <tel_part>".$row[8]."</tel_part>\n")); 
+      fwrite($fp, sprintf("  <tel_date_start_timestamp>".$DB->UnixTimeStamp($row[11])."</tel_date_start_timestamp>\n")); 
+      fwrite($fp, sprintf("  <tel_date_end_timestamp>".$DB->UnixTimeStamp($row[12])."</tel_date_end_timestamp>\n")); 
+      fwrite($fp, sprintf("  <tel_date_start>".$DB->UserTimeStamp($DB->UnixTimeStamp($row[11]))."</tel_date_start>\n")); 
+      fwrite($fp, sprintf("  <tel_date_end>".$DB->UserTimeStamp($DB->UnixTimeStamp($row[12]))."</tel_date_end>\n")); 
+      fwrite($fp, sprintf("  <grb_name>".$row[10]."</grb_name>\n")); 
+      fwrite($fp, sprintf("  <grb_date_start_timestamp>".$DB->UnixTimeStamp($row[13])."</grb_date_start_timestamp>\n")); 
+      fwrite($fp, sprintf("  <grb_date_end_timestamp>".$DB->UnixTimeStamp($row[14])."</grb_date_end_timestamp>\n")); 
+      fwrite($fp, sprintf("  <grb_date_start>".$DB->UserTimeStamp($DB->UnixTimeStamp($row[13]))."</grb_date_start>\n")); 
+      fwrite($fp, sprintf("  <grb_date_end>".$DB->UserTimeStamp($DB->UnixTimeStamp($row[14]))."</grb_date_end>\n")); 
+      fwrite($fp, sprintf("  <enc_codec>".$row[0]."</enc_codec>\n")); 
+      fwrite($fp, sprintf("  <req_output>".$filename."</req_output>\n")); 
+      fwrite($fp, sprintf("  <req_output_size>".$row[2]."</req_output_size>\n")); 
+      fwrite($fp, sprintf("  <req_output_md5>".$row[3]."</req_output_md5>\n")); 
+      fwrite($fp, sprintf("  <req_status>".$row[4]."</req_status>\n")); 
       fwrite($fp, sprintf("</grab>\n")); 
+      fclose($fp);
     }
     return $grabinfo_name;
 }
-    
 /**
 * Sends polite email to all requestors.
 * Send the error report to the admin too.
@@ -230,5 +276,12 @@ function report_encode_failure($grab_id, $grab_name, $enc_id) {
     }
 }
 
+function report_filesize_warning($size,$free) {
+    global $DB;
 
+    $msg = "grab storage size: ".$size/(1024*1024)." MB\n";
+    $msg = "grab storage free: ".$free/(1024*1024)." MB\n";
+
+    send_mail(_Config_error_email, _MsgBackendFilesizeWarning, $msg);
+}
 ?>
