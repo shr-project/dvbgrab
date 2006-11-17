@@ -155,7 +155,7 @@ function report_success_grab($grab_id, $grab_fullname, $enc_id) {
     $msg .= _MsgBackendSuccess."\n";
 
     $SQL = "select usr_name, usr_email, usr_ip, req_id
-        from user u, request r
+        from usergrb u, request r
         where
         r.grb_id = $grab_id and
         u.enc_id = $enc_id and
@@ -180,7 +180,7 @@ function report_grab_failure($grab_id, $grab_name) {
 
     $msg = "grab: $grab_name\n";
     $msg .= _MsgBackendGrabError."\n";
-    $SQL = "select distinct usr_email from user u, request r where
+    $SQL = "select distinct usr_email from usergrb u, request r where
           r.grb_id=$grab_id and
           u.usr_id=r.usr_id";
 
@@ -264,7 +264,7 @@ function report_encode_failure($grab_id, $grab_name, $enc_id) {
 
     $msg = "grab: $grab_name\n";
     $msg .= _MsgBackendEncodeError."\n";
-    $SQL = "select distinct usr_email from user u, request r where
+    $SQL = "select distinct usr_email from usergrb u, request r where
           r.grb_id=$grab_id and
           u.enc_id=$enc_id and
           u.usr_id=r.usr_id";
