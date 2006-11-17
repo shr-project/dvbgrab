@@ -75,13 +75,19 @@ function print_list_tv($usr_id,$tv_date) {
                  g.grb_id,
                  r.req_status,
                  ".$DB->IfNull('r.usr_id',"'0'")." as my_grab,
-                 ".$DB->SQLDate('H','tel_date_start')." as hour_frac
-          from channel c inner join television t on (c.chn_id=t.chn_id)
+                 ".$DB->SQLDate('H','tel_date_start')." as hour,
+                 ".$DB->SQLDate('Ymd','tel_date_start')." as day,";
+  if (_Config_db_type == "postgres") {
+    $SQL .="floor(cast(".$DB->SQLDate('H','tel_date_start')." as numeric)/"._Config_hour_frac_item.") as hour_frac ";
+  } else {
+    $SQL .="floor(".$DB->SQLDate('H','tel_date_start')."/"._Config_hour_frac_item.") as hour_frac ";
+  }
+  $SQL .="from channel c inner join television t on (c.chn_id=t.chn_id)
                left join grab g on (t.tel_id=g.tel_id)
                left join request r on (g.grb_id=r.grb_id and r.usr_id=$usr_id)
           where tel_date_start > $tel_date_from and
                 tel_date_start < $tel_date_to 
-          order by tel_date_start, chn_order";
+          order by day, hour_frac, chn_order, tel_date_start";
 
   $rs = do_sql($SQL);
 
@@ -98,24 +104,24 @@ function print_list_tv($usr_id,$tv_date) {
     while ($row) {
       $firstRow = $row;
       echo "<tr>\n";
-      if (_Config_hour_frac_item != 0) {
-        $hour_frac = floor($row["hour_frac"]/_Config_hour_frac_item);
-      } else {
-        $hour_frac = $row["hour_frac"];
-      }
+      
+      $akt_hour_frac = $row["hour_frac"];
 
       // projdeme vsechny stanice pro casove odbobi $hour_frac
       for ($channel=0; $channel<count($channel_array); $channel++) {
         $akt_chn_id = $channel_array[$channel]["chn_id"];
         echo "<td valign=\"top\"><table>\n";
         // pokud v casovem obdobi $hour_frac na stanici $channel nic neni
-        if (!$row || $row["hour_frac"] != $hour_frac || $row["chn_id"] != $akt_chn_id) {
+        if (!$row || $row["hour_frac"] != $akt_hour_frac || $row["chn_id"] != $akt_chn_id) {
           echo '<tr><td colspan="2">&nbsp;</td></tr>';
         } else {
           // vypiseme porady v casovem obdobi $hour_frac na stanici $channel
           do {
+            if ($row["hour_frac"] != $akt_hour_frac || $row["chn_id"] != $akt_chn_id) {
+              break;
+            }
             show_television_row($row, $query, $highlight_strings, $use_diacritics, $show_link, $show_logo, $channel==count($channel_array)-1);
-          } while (($row = $rs->FetchRow()) && $row["hour_frac"] == $hour_frac && $row["chn_id"] == $akt_chn_id);
+          } while ($row = $rs->FetchRow());
         }
         echo "</table></td>\n";
       }
