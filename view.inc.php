@@ -58,7 +58,7 @@ function show_television_row($row, $query, $highlight_strings, $use_diacritics, 
   $my_grab = ($row["my_grab"]=="0")?false:true;
   $tel_id = $row["tel_id"];
   $tel_date_start = $DB->UnixTimeStamp($row["tel_date_start"]);
-  $tv_date = date("Ymd", $tel_date_start_unx-((date("G", $tel_date_start_unx)<_Config_midnight)?1:0)*24*3600);
+  $tv_date = date("Ymd", $tel_date_start-((date("G", $tel_date_start)<_Config_midnight)?1:0)*24*3600);
   $tel_name = $row["tel_name"];
   $tel_desc = $row["tel_desc"];
   $tel_series = $row["tel_series"];
@@ -130,6 +130,7 @@ function show_television_date($tel_id, $tel_date_start, $hi="") {
 * @param text text to display for the link body
 */
 function show_grab_add_link($tel_id, $tel_date_start, $text, $my_grab, $query="", $hi="") {
+  global $PHP_SELF;
   $grab_time_limit = time() - _Config_grab_date_stop_shift*60;
 //  echo "tel_id: $tel_id, tel_date_start: $tel_date_start, grab_time_limit: $grab_time_limit, text: $text, my_grab: $my_grab, query: $query";
   //if (!$my_grab && $tel_date_start >= $grab_time_limit) {

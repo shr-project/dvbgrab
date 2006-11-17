@@ -2,6 +2,7 @@
 
 function print_list_tv($usr_id,$tv_date) {
   global $DB;
+  global $PHP_SELF;
 
   $tv_day = substr($tv_date, 6, 2);
   $tv_month = substr($tv_date, 4, 2);
@@ -74,7 +75,7 @@ function print_list_tv($usr_id,$tv_date) {
                  g.grb_id,
                  r.req_status,
                  ".$DB->IfNull('r.usr_id',"'0'")." as my_grab,
-                 ".$DB->SQLDate('H','tel_date_start')." as hour
+                 ".$DB->SQLDate('H','tel_date_start')." as hour_frac
           from channel c inner join television t on (c.chn_id=t.chn_id)
                left join grab g on (t.tel_id=g.tel_id)
                left join request r on (g.grb_id=r.grb_id and r.usr_id=$usr_id)

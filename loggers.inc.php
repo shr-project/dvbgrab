@@ -4,7 +4,7 @@ require_once 'Log.php';
 require_once 'config.php';
 
 $logFileConf = array('mode' => 0666, 'timeFormat' => '%X %x');
-$logMailConf = array('subject' => 'DVBgrab log message', 'from' => $email_from);
+$logMailConf = array('subject' => 'DVBgrab log message', 'from' => _Config_from_email);
 
 #$logdbg = &Log::singleton('file', _Config_dvbgrab_log, 'debug', $conf);
 #$logerr = &Log::singleton('file', _Config_dvbgrab_log, 'error', $conf);

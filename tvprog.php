@@ -15,6 +15,7 @@ if (ereg("([0-9]{4})([0-9]{2})([0-9]{2})", $_GET["tv_date"], $regs)
 }
 
 global $DB;  // pripojeni do databaze
+global $PHP_SELF;
 
 require("actions.php");
 grabAction($_GET["action"],$_GET["query"],$_GET["tv_date"],$_GET["tel_id"],$_GET["grb_id"]);

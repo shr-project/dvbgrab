@@ -14,6 +14,7 @@ function getUserIp() {
 }
 
 function printUserRegistration($update,$usr_id) {
+  global $PHP_SELF;
 ?>
 <script type="text/javascript">
 <!--
@@ -165,6 +166,7 @@ function printUserRegistration($update,$usr_id) {
 <?php 
 } 
 function printUserLogin() {
+  global $PHP_SELF;
 ?>
 <script type="text/javascript">
 <!--
@@ -216,6 +218,7 @@ function printUserLogin() {
 }
 
 function printSendPassword() {
+  global $PHP_SELF;
 ?>
 <script type="text/javascript">
 <!--

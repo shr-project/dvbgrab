@@ -5,6 +5,7 @@
 ?>
 <body>
 <?
+global $PHP_SELF;
 switch ($_GET["action"]) {
   case "save":
     $db_name=$_POST["v_db_name"];

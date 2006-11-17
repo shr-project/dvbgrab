@@ -7,6 +7,7 @@ require_once("status.inc.php");
 function grabAction($action,$query,$tv_date,$tel_id,$grb_id) {
   global $DB;
   global $usr_id;
+  global $PHP_SELF;
   $addition = "tv_date=$tv_date&query=$query&";
   // nejdrive od ted
   $grab_time_limit = time()-30*60;
@@ -149,6 +150,7 @@ function grabAction($action,$query,$tv_date,$tel_id,$grb_id) {
 
 function indexAction($action,$query,$tv_date,$tel_id) {
   global $DB;
+  global $PHP_SELF;
 switch ($action) {
   // uzivatel se chce prilogovat, pokusime se ho autentizovat
   case "login":

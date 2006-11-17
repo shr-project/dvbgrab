@@ -8,6 +8,7 @@ require_once("header.inc.php");
 <?php
 $menuitem = "";
 require_once("menu.php");
+global $PHP_SELF;
 ?>
 </td>
 <td class="top">
