@@ -98,11 +98,11 @@ function show_television_row($row, $query, $highlight_strings, $use_diacritics, 
 
   if (!empty($highlight_strings)) {
     $tel_name = str_match_array_ascii($tel_name,
-        $highlight_strings, "<span class=\"match".$hi."\">$1</span>", $use_diacritics);
+        $highlight_strings, '<span class="match'.$hi.'">','</span>', $use_diacritics);
   }
   if (!empty($highlight_strings)) {
     $tel_desc = str_match_array_ascii($tel_desc,
-        $highlight_strings, "<span class=\"match".$hi."\">$1</span>", $use_diacritics);
+        $highlight_strings, '<span class="match'.$hi.'">','</span>', $use_diacritics);
   }
   $chn_name = $row["chn_name"];
   $chn_logo = $row["chn_logo"];

@@ -158,7 +158,7 @@ function checkRow() {
     $tel_date_end = parseDate($tel_date_start_raw,_Config_record_time_after_last);
   }
   parseEpString($tel_ep_string);
-  $data = ereg_replace("[[:space:]]+", " ", $data);
+  $tel_ep_string = ereg_replace("[[:space:]]+", " ", $tel_ep_string);
   if (empty($chn_id) || empty($tel_date_start) || empty($tel_date_end) || empty($tel_name)) {
     $ok=false;
     echo _MsgXmlTvFormatErrorNotAll."\n";

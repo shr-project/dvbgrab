@@ -107,7 +107,7 @@ a.programLinkHi {
   font-family : Verdana, Arial, Helvetica, sans-serif;
 }
 a.programLinkHi:hover {
-  background-color : #99ccff;
+  background-color : #transparent;
 }
 a.menuitem {
   color : #009966;
@@ -119,11 +119,11 @@ a.menuitem:hover, a.menuitem_act:hover {
 }
 /* TV program styles */
 .programDate {
-  color : #cccccc;
+  color : #339966;
   vertical-align : top;
 }
 .programDateHi {
-  color : #cccccc;
+  color : #111111;
   vertical-align : top;
 }
 .match {
@@ -135,21 +135,21 @@ a.menuitem:hover, a.menuitem_act:hover {
 a.programName {
   text-decoration : underline;
   font-weight : bold;
-  color : #cccccc;
+  color : #9933ff;
   background : transparent;
 }
 a.programNameHi {
   text-decoration : underline;
   font-weight : bold;
-  color : #cccccc;
+  color : #111111;
   background : transparent;
 }
 span.programName {
-  color : #cccccc;
+  color : #9933ff;
   background : transparent;
 }
 span.programNameHi {
-  color : #cccccc;
+  color : #111111;
   background : transparent;
 }
 .programLogo {
@@ -158,7 +158,7 @@ span.programNameHi {
 .programDesc {
   font-style : italic;
   font-size : 8pt;
-  color : #555555;
+  color : #3366ff;
   background : transparent;
 }
 .programDescHi {
@@ -170,13 +170,13 @@ span.programNameHi {
 .programCategory {
   font-weight : bold;
   font-size : 8pt;
-  color : #999999;
+  color : #339999;
   background : transparent;
 }
 .programCategoryHi {
   font-weight : bold;
   font-size : 8pt;
-  color : #999999;
+  color : #555555;
   background : transparent;
 }
 .programDel {
@@ -193,7 +193,7 @@ span.programNameHi {
 }
 .telInfo {
   border: 1px solid ; 
-  background-color: #ffff77;
+  background-color: #cccccc;
 }
 /* Text positions */
 .center {
@@ -235,7 +235,7 @@ table.grabList {
   width : 70%;
 }
 .desc {
-  color : #336699;
+  color : #aaaaaa;
   text-align : center;
 }
 th.key {
@@ -258,16 +258,16 @@ td.value {
 }
 /* Text highlight */
 .warning {
-  color : #33cc33;
+  color : #9933ff;
   font-weight : bold;
 }
 /* Header keys */
 a.item {
-  color : #339966;
+  color : #336699;
   font-weight : bold;
 }
 span.item {
-  color : #999999;
+  color : #336699;
   font-weight : bold;
 }
 .item {
@@ -276,7 +276,7 @@ span.item {
 }
 /* Today highlight */
 option.today {
-  background-color : #ffff44;
+  background-color : #ffff66;
 }
 .status-scheduled {
   background-color : #ffff77;

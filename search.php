@@ -19,26 +19,20 @@ function print_results($usr_id,$query) {
     exit;
   }
 
-  // kdyz $query obsahuje diakritiku, tak budeme hledat s diakritikou
-  $use_diacritics = 0;
-  for ($i=0; $i<sizeof($query_array); $i++) {
-    if (is_diacritics_used($query_array[$i])) {
-      $use_diacritics = 1;
-    }
-  }
-
   // vytvorime dotaz na vyhledani retezcu
   $query_sql = "";
-  reset($query_array);
-  for ($i=0; $i<sizeof($query_array); $i++) {
-    if ($use_diacritics) {
-      $query_sql .= "((lower(t.tel_name) like lower('%".$query_array[$i]."%')) or ";
-      $query_sql .= " (lower(t.tel_desc) like lower('%".$query_array[$i]."%')))";
+  foreach ($query_array as $query) {
+    $lowerQuery = mb_strtolower($query, "utf-8");
+    if (is_diacritics_used($lowerQuery)) {
+      $query_sql .= "((t.tel_name like '%".$query."%') or ";
+      $query_sql .= " (t.tel_desc like '%".$query."%'))";
     } else {
-      $query_sql .= "((lower(".sql_strip_diacritics("t.tel_name").") like lower('%".$query_array[$i]."%')) or ";
-      $query_sql .= " (lower(".sql_strip_diacritics("t.tel_desc").") like lower('%".$query_array[$i]."%')))";
+      $query_sql .= "((lower(".sql_strip_diacritics("t.tel_name").") like '%".$lowerQuery."%') or ";
+      $query_sql .= " (lower(".sql_strip_diacritics("t.tel_desc").") like '%".$lowerQuery."%'))";
     }
+    $query_sql .= " and ";
   }
+  $query_sql .= " (1=1) ";
 
   $SQL = "select c.chn_name, 
                  c.chn_logo,
