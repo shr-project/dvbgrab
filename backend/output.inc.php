@@ -2,6 +2,7 @@
 
 require_once("config.php");
 #require_once("dolib.inc.php");
+require_once("charset.inc.php");
 require_once("loggers.inc.php");
 require_once("lang/lang."._Config_grab_backend_lang.".inc.php");
 
