@@ -24,11 +24,11 @@ while ($row = $rs->FetchRow()) {
   if (!empty($filename)) {
     $pos = strrpos($filename, "/");
     if ($pos !== false) {
-      $filename = substr($filename,$pos);
+      $filename = substr($filename,$pos+1);
     }
   }
   $req_output = array("filename" => $filename,
-                      "size" => $row[3]/(1024 * 1024),
+                      "size" => $row[3]/(1024),
                       "md5" => $row[2],
                       "enc" => $row[0],
                       "status" => $row[4]);
