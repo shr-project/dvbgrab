@@ -190,10 +190,12 @@ span.programNameHi {
 .grabInfo {
   border: 1px solid ; 
   background-color: #ffff77;
+  white-space: nowrap;
 }
 .telInfo {
   border: 1px solid ; 
   background-color: #cccccc;
+  white-space: nowrap;
 }
 /* Text positions */
 .center {
