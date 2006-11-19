@@ -108,46 +108,46 @@ function telInfo(tel_id) {
 }
   function fillDiv(obj) {
     var div = document.getElementById('telinfo_'+obj.tel_id);
-    var inner = '<table class="telInfo" width="450pt">';
-    inner += '<tr><td><? echo _MsgJsonTelName ?></td><td colspan="2">'+obj.tel_name+'</td></tr>';
+    var inner = '<table class="telInfo" width="450pt" style="white-space: nowrap">';
+    inner += '<tr><td><? echo _MsgJsonTelName ?></td><td>'+obj.tel_name+'</td></tr>';
     if (obj.tel_series != null && obj.tel_series != '') {
-      inner += '<tr><td><? echo _MsgJsonTelSeries ?></td><td colspan="2">'+obj.tel_series+'</td></tr>';
+      inner += '<tr><td><? echo _MsgJsonTelSeries ?></td><td>'+obj.tel_series+'</td></tr>';
     }
     if (obj.tel_episode != null && obj.tel_episode != '') {
-      inner += '<tr><td><? echo _MsgJsonTelEpisode ?></td><td colspan="2">'+obj.tel_episode+'</td></tr>';
+      inner += '<tr><td><? echo _MsgJsonTelEpisode ?></td><td>'+obj.tel_episode+'</td></tr>';
     }
     if (obj.tel_part != null && obj.tel_part != '') {
-      inner += '<tr><td><? echo _MsgJsonTelPart ?></td><td colspan="2">'+obj.tel_part+'</td></tr>';
+      inner += '<tr><td><? echo _MsgJsonTelPart ?></td><td>'+obj.tel_part+'</td></tr>';
     }
     if (obj.chn_name != null && obj.chn_name != '') {
-      inner += '<tr><td><? echo  _MsgJsonChnName ?></td><td colspan="2">'+obj.chn_name+'</td></tr>';
+      inner += '<tr><td><? echo  _MsgJsonChnName ?></td><td>'+obj.chn_name+'</td></tr>';
     }
     if (obj.grb_name != null && obj.grb_name != '') {
-      inner += '<tr><td><? echo  _MsgJsonGrbName ?></td><td colspan="2">'+obj.grb_name+'</td></tr>';
+      inner += '<tr><td><? echo  _MsgJsonGrbName ?></td><td>'+obj.grb_name+'</td></tr>';
     }
     if (obj.tel_date_start != null && obj.tel_date_start != '') {
-      inner += '<tr><td><? echo  _MsgJsonTelDateStart ?></td><td colspan="2">'+obj.tel_date_start+'</td></tr>';
+      inner += '<tr><td><? echo  _MsgJsonTelDateStart ?></td><td>'+obj.tel_date_start+'</td></tr>';
     }
     if (obj.tel_date_end != null && obj.tel_date_end != '') {
-      inner += '<tr><td><? echo  _MsgJsonTelDateEnd ?></td><td colspan="2">'+obj.tel_date_end+'</td></tr>';
+      inner += '<tr><td><? echo  _MsgJsonTelDateEnd ?></td><td>'+obj.tel_date_end+'</td></tr>';
     }
     if (obj.grb_date_start != null && obj.grb_date_start != '') {
-      inner += '<tr><td><? echo  _MsgJsonGrbDateStart ?></td><td colspan="2">'+obj.grb_date_start+'</td></tr>';
+      inner += '<tr><td><? echo  _MsgJsonGrbDateStart ?></td><td>'+obj.grb_date_start+'</td></tr>';
     }
     if (obj.grb_date_end != null && obj.grb_date_end != '') {
-      inner += '<tr><td><? echo  _MsgJsonGrbDateEnd ?></td><td colspan="2">'+obj.grb_date_end+'</td></tr>';
+      inner += '<tr><td><? echo  _MsgJsonGrbDateEnd ?></td><td>'+obj.grb_date_end+'</td></tr>';
     }
     for(i in obj.req_outputs) {
-      inner +=  '<tr><td><? echo  _MsgJsonReqOutputEnc ?>: '+obj.req_outputs[i].enc+'</td><td>';
-      inner +=  writeStatusText(obj.req_outputs[i].status);
+      inner +=  '<tr><td><? echo  _MsgJsonReqOutputEnc ?>: '+obj.req_outputs[i].enc;
+      inner +=  '<br />'+writeStatusText(obj.req_outputs[i].status)+'</td><td>';
       if (obj.req_outputs[i].filename != null && obj.req_outputs[i].filename != '') {
-        inner += ', <? echo _MsgJsonReqOutput ?>: '+obj.req_outputs[i].filename;
+        inner += '<br />&nbsp;&nbsp;<? echo _MsgJsonReqOutput ?>: '+obj.req_outputs[i].filename;
       }
       if (obj.req_outputs[i].size != null && obj.req_outputs[i].size != '' && obj.req_outputs[i].size != '0') {
-        inner += ', '+obj.req_outputs[i].size+'MB';
+        inner += '<br /><? echo _MsgJsonReqOutputSize ?>: '+obj.req_outputs[i].size+'MB';
       }
       if (obj.req_outputs[i].md5 != null && obj.req_outputs[i].md5 != '') {
-        inner += ', MD5: '+obj.req_outputs[i].md5+'MB';
+        inner += '<br /><? echo _MsgJsonReqOutputMd5 ?>: '+obj.req_outputs[i].md5;
       }
       inner += '</td></tr>';
     }
