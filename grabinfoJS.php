@@ -139,9 +139,9 @@ function grabInfo(grb_id) {
     }
     for(i in obj.req_outputs) {
       inner +=  '<tr><td><? echo  _MsgJsonReqOutputEnc ?>: '+obj.req_outputs[i].enc;
-      inner +=  '<br />'+writeStatusText(obj.req_outputs[i].status)+'</td><td>';
+      inner +=  '<br />&nbsp;&nbsp;'+writeStatusText(obj.req_outputs[i].status)+'</td><td>';
       if (obj.req_outputs[i].filename != null && obj.req_outputs[i].filename != '') {
-        inner += '<br />&nbsp;&nbsp;<? echo _MsgJsonReqOutput ?>: '+obj.req_outputs[i].filename;
+        inner += '<br /><? echo _MsgJsonReqOutput ?>: '+obj.req_outputs[i].filename;
       }
       if (obj.req_outputs[i].size != null && obj.req_outputs[i].size != '' && obj.req_outputs[i].size != '0') {
         inner += '<br /><? echo _MsgJsonReqOutputSize ?>: '+obj.req_outputs[i].size+'MB';
