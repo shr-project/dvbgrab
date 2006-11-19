@@ -12,13 +12,14 @@ if (!$DB->Connect(_Config_db_host, _Config_db_user, _Config_db_pass, _Config_db_
   exit;
 }
 
+function rappend($v, $w) {
+  $v .= "$w\n";
+  return $v;
+}
+
 function do_cmd($cmd) {
   global $logsys;
   exec($cmd, $output, $rVal);
-  function rappend($v, $w) {
-    $v .= "$w\n";
-    return $v;
-  }
   $outputStr = array_reduce($output,"rappend");
 
   $logsys->log("SYS:\"$cmd\" returned $rVal and \n<output>\n$outputStr\n</output>");
