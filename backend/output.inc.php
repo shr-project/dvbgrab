@@ -119,16 +119,17 @@ function publish_user_grab($grab_fullname, $grabinfo_fullname, $username, $usr_i
     //NOTE: It is required that username is free of evil characters.
     // It is the resposibility of registration form.
     $grab_filename = _Config_grab_storage."/$grab_fullname";
+    $grabinfo_filename = _Config_grab_storage."/$grabinfo_fullname";
     $usrDir = _Config_grab_root."/$username";
     if (!is_dir("$usrDir")) {
         $cmd = "mkdir -p '$usrDir'";
         do_cmd($cmd);
     }
     $user_filename = "$usrDir/$grab_fullname";
-    $cmd = "ln -s '$grab_filename' '$user_filename'";
+    $cmd = "ln -s $grab_filename $user_filename";
     do_cmd($cmd);
     $userinfo_filename = "$usrDir/$grabinfo_fullname";
-    $cmd = "ln -s '$grabinfo_filename' '$userinfo_filename'";
+    $cmd = "ln -s $grabinfo_filename $userinfo_filename";
     do_cmd($cmd);
 
     //NOTE: the .htaccess file is always overwritten,
@@ -168,10 +169,12 @@ function report_grab_success($grab_id, $grab_fullname, $grabinfo_fullname, $enc_
     $rs = do_sql($SQL);
     while ($row = $rs->FetchRow()) {
       $user_filename = publish_user_grab($grab_fullname, $grabinfo_fullname, $row["usr_name"], $row["usr_ip"]);
+      $user_file_url = "http://"._Config_hostname."$row[0]/$grab_fullname";
+      $user_fileinfo_url = "http://"._Config_hostname."$row[0]/$grabinfo_fullname";
 
-      $update = "update request set req_output='$user_filename' where req_id='".$row["req_id"]."'";
+      $update = "update request set req_output='$user_file_url' where req_id='".$row["req_id"]."'";
       do_sql($update);
-      send_mail($row["usr_email"], _MsgBackendSuccessSub, $msg);
+      send_mail($row["usr_email"], _MsgBackendSuccessSub, $msg."\n$user_fileinfo_url\n$user_file_url");
     }
     $SQL = "update request set req_status='done' where grb_id=$grab_id and enc_id=$enc_id";
     do_sql($SQL);
@@ -228,7 +231,7 @@ function create_xml_info($grb_id, $enc_id, $grabinfo_name) {
               AND r.enc_id=$enc_id";
     $rs = do_sql($SQL);
     $row = $rs->FetchRow();
-    if ($fp = fopen($grabinfo_name, 'w')) {
+    if ($fp = fopen(_Config_grab_storage."/".$grabinfo_name, 'w')) {
       $filename = $row[1];
       if (!empty($filename)) {
         $pos = strrpos($filename, "/");
@@ -239,7 +242,7 @@ function create_xml_info($grb_id, $enc_id, $grabinfo_name) {
       fwrite($fp, sprintf("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")); 
       fwrite($fp, sprintf("<grab>\n")); 
       fwrite($fp, sprintf("  <channel_name>".$row[9]."</channel_name>\n")); 
-      fwrite($fp, sprintf("  <tel_name>".$row[5]."</teln_name>\n")); 
+      fwrite($fp, sprintf("  <tel_name>".$row[5]."</tel_name>\n")); 
       fwrite($fp, sprintf("  <tel_series>".$row[6]."</tel_series>\n")); 
       fwrite($fp, sprintf("  <tel_episode>".$row[7]."</tel_episode>\n")); 
       fwrite($fp, sprintf("  <tel_part>".$row[8]."</tel_part>\n")); 

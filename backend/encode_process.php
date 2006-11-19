@@ -105,7 +105,7 @@ function encodeGrab($enc_id, $enc_suffix, $enc_script) {
 
   $target_name = "$grab_name.$enc_suffix";
   $target_path = _Config_grab_storage."/$target_name";
-  $grabinfo_name = _Config_grab_storage."/$target_name.xml";
+  $grabinfo_name = "$target_name.xml";
   $cmd = "encoders/$enc_script "._Config_grab_storage."/$grab_name.mpg $target_path >/dev/null 2>&1";
   $logdbg->log("starting encoder (enc_id=$enc_id): $cmd");
   $logdbg->log("starting $target_path");
