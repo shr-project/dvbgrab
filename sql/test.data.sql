@@ -6,5 +6,8 @@ INSERT INTO channel(chn_id,chn_name,chn_xmltv_name,chn_logo,chn_order,chn_ip,chn
 INSERT INTO channel(chn_id,chn_name,chn_xmltv_name,chn_logo,chn_order,chn_ip,chn_port,tvg_id) VALUES (3,'NOVA','nova.365dni.cz','novap.gif', 3, '239.194.12.5', 1234, 1);
 INSERT INTO channel(chn_id,chn_name,chn_xmltv_name,chn_logo,chn_order,chn_ip,chn_port,tvg_id) VALUES (4,'PRIMA','prima.365dni.cz','primap.gif', 4, '239.194.13.1',1234, 1);
 
-INSERT INTO encoder(enc_id,enc_codec,enc_suffix,enc_script,enc_pid) VALUES(1,'MPEG 2','mpg','mpeg2.sh',2);
-INSERT INTO encoder(enc_id,enc_codec,enc_suffix,enc_script,enc_pid) VALUES(2,'MPEG 4','avi','mpeg4.sh',4);
+INSERT INTO encoder(enc_id,enc_codec,enc_suffix,enc_script,enc_pid) VALUES(1,'MPEG 4','avi','mpeg4.sh',2);
+INSERT INTO encoder(enc_id,enc_codec,enc_suffix,enc_script,enc_pid) VALUES(2,'MPEG 2','mpg','mpeg2.sh',2);
+INSERT INTO encoder(enc_id,enc_codec,enc_suffix,enc_script,enc_pid) VALUES(3,'MPEG 4 scale 0,250','medium.avi','mpeg4-medium.sh',4);
+INSERT INTO encoder(enc_id,enc_codec,enc_suffix,enc_script,enc_pid) VALUES(4,'MPEG 4 scale 0,125','small.avi','mpeg4-small.sh',4);
+INSERT INTO encoder(enc_id,enc_codec,enc_suffix,enc_script,enc_pid) VALUES(5,'MPEG 4 full','full.avi','mpeg4-small.sh',4);

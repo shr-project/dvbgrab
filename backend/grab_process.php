@@ -42,12 +42,17 @@ $grab_filename = _Config_grab_storage."/$grab_name.mpg";
 while ($begin_time > time()) {
   sleep(10); // wait for beginning
 }
+$logdbg->log("starting grab: $grab_filename");
 $cmd = "dumprtp $chn_ip $chn_port > $grab_filename 2>/dev/null & "
       ."while [[ `date \"+%s\"` -le $end_time ]] ; do "
       ."  sleep 10; "
       ."done; "
       ."kill %1";
+
+$logdbg->log("running: $cmd");
 $output = do_cmd($cmd);
+$logdbg->log("finishing grab: $grab_filename");
+$logdbg->log("size: ".get_file_size($grab_filename));
 
 if (is_empty_file($grab_filename)) {
     $logerr->log("grab $grab_name got error: $output");
@@ -56,7 +61,7 @@ if (is_empty_file($grab_filename)) {
     report_grab_failure($grb_id, $grab_name);
 } else {
     $logdbg->log("grab $grab_name is ok");
-    $SQL = "update grab set grb_name=$grab_name where grb_id=$grb_id";
+    $SQL = "update grab set grb_name='$grab_name' where grb_id=$grb_id";
     do_sql($SQL);
     $SQL = "update request set req_status='saved' where grb_id=$grb_id";
     do_sql($SQL);

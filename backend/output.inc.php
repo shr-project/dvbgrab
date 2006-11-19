@@ -43,7 +43,8 @@ function get_grab_basename($grb_id) {
 function is_valid_file($filename) {
     //NOTE: is_file() and file_exists() cannot handle files bigger than 2GB
     $test = "test -s '$filename'";
-    exec($test, $retval);
+    exec($test, $output, $retval);
+    $outputStr = array_reduce($output,"rappend");
     return ($retval == 0);
 }
 
@@ -52,7 +53,7 @@ function is_valid_file($filename) {
  * Usable size is bigger than 1M.
  */
 function is_empty_file($filename) {
-  return (get_file_size($filename) < 1000000);
+  return (get_file_size($filename) < 10000);
 }
 
 /**
@@ -60,8 +61,9 @@ function is_empty_file($filename) {
  */
 function get_file_size($filename) {
   $cmd = "du ".$filename." | cut -f 1";
-  $output = exec($cmd, $retval);
-  return ($retval != 0?0:$output);
+  exec($cmd, $output, $retval);
+  $outputStr = array_reduce($output,"rappend");
+  return ($retval != 0?0:$outputStr);
 }
 
 /**
@@ -69,8 +71,10 @@ function get_file_size($filename) {
  */
 function get_file_md5($filename) {
   $cmd = "md5sum ".$filename." | cut -d ' ' -f 1";
-  $output = exec($cmd, $retval);
-  return ($retval != 0?0:$output);
+  exec($cmd, $output, $retval);
+  $outputStr = array_reduce($output,"rappend");
+  $outputStr = str_replace("\n","",$outputStr);
+  return ($retval != 0?0:$outputStr);
 }
 
 
@@ -148,7 +152,7 @@ function publish_user_grab($grab_fullname, $grabinfo_fullname, $username, $usr_i
 * Makes hard link to user directory and sends them email.
 * Also updates column request.req_output in database.
 */
-function report_success_grab($grab_id, $grab_fullname, $enc_id) {
+function report_grab_success($grab_id, $grab_fullname, $grabinfo_fullname, $enc_id) {
     global $DB;
 
     $msg = "grab: $grab_fullname\n";
@@ -158,30 +162,33 @@ function report_success_grab($grab_id, $grab_fullname, $enc_id) {
         from usergrb u, request r
         where
         r.grb_id = $grab_id and
-        u.enc_id = $enc_id and
+        r.enc_id = $enc_id and
         u.usr_id = r.usr_id";
 
     $rs = do_sql($SQL);
     while ($row = $rs->FetchRow()) {
-      $user_filename = publish_user_grab($grab_fullname, $row["usr_name"], $row["usr_ip"]);
+      $user_filename = publish_user_grab($grab_fullname, $grabinfo_fullname, $row["usr_name"], $row["usr_ip"]);
 
       $update = "update request set req_output='$user_filename' where req_id='".$row["req_id"]."'";
       do_sql($update);
       send_mail($row["usr_email"], _MsgBackendSuccessSub, $msg);
     }
+    $SQL = "update request set req_status='done' where grb_id=$grab_id and enc_id=$enc_id";
+    do_sql($SQL);
 }
 
 /**
 * Sends polite email to all requestors.
 * Send the error report to the admin too.
 */
-function report_grab_failure($grab_id, $grab_name) {
+function report_grab_failure($grab_id, $grab_name, $enc_id) {
     global $DB;
 
     $msg = "grab: $grab_name\n";
     $msg .= _MsgBackendGrabError."\n";
     $SQL = "select distinct usr_email from usergrb u, request r where
           r.grb_id=$grab_id and
+          r.enc_id=$enc_id and
           u.usr_id=r.usr_id";
 
     send_mail(_Config_error_email, _MsgBackendGrabErrorSub, $msg);
@@ -195,12 +202,12 @@ function report_grab_failure($grab_id, $grab_name) {
 /**
 * Create XML info file
 */
-function create_xml_info($grab_id, $enc_id, $grabinfo_name) {
+function create_xml_info($grb_id, $enc_id, $grabinfo_name) {
     global $DB;
     $SQL = "select distinct(enc_codec), 
               req_output, 
-              req_output_md5, 
               req_output_size, 
+              req_output_md5, 
               req_status,
               t.tel_name, 
               t.tel_series,
