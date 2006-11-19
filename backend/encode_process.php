@@ -106,13 +106,14 @@ function encodeGrab($enc_id, $enc_suffix, $enc_script) {
   $target_name = "$grab_name.$enc_suffix";
   $target_path = _Config_grab_storage."/$target_name";
   $grabinfo_name = _Config_grab_storage."/$target_name.xml";
-  $cmd = "./$enc_script "._Config_grab_storage."/$grab_name.mpg $target_path >/dev/null 2>&1";
+  $cmd = "encoders/$enc_script "._Config_grab_storage."/$grab_name.mpg $target_path >/dev/null 2>&1";
   $logdbg->log("starting encoder (enc_id=$enc_id): $cmd");
   $logdbg->log("starting $target_path");
   $SQL = "update request set req_status='encoding' where grb_id=$grab_id and enc_id=$enc_id";
   do_sql($SQL);
   do_cmd($cmd);
   $logdbg->log("finished encoder $target_path");
+  $logdbg->log("size: ".get_file_size($target_path));
 
   if (!is_empty_file($target_path)) {
     $SQL = "update request set req_status='encoded' where grb_id=$grab_id and enc_id=$enc_id";
@@ -126,7 +127,7 @@ function encodeGrab($enc_id, $enc_suffix, $enc_script) {
     report_grab_success($grab_id, $target_name, $grabinfo_file, $enc_id);
   }
   else {
-    $SQL = "update request set req_status='saved' where grb_id=$grab_id and enc_id=$enc_id";
+    $SQL = "update request set req_status='error' where grb_id=$grab_id and enc_id=$enc_id";
     do_sql($SQL);  // set for another run
     $logerr->log("encoding failed to create $target_path, enc_id=$enc_id");
     report_grab_failure($grab_id, $target_name, $enc_id);
