@@ -37,7 +37,7 @@ if ($row = $rs->FetchRow() && $row[0]) {
 $logdbg->log("Updating htaccess .. done");
 
 $logdbg->log("Removing unknown dirs .. start");
-$cmd = "/usr/bin/ls "._Config_grab_root."/";
+$cmd = "/bin/ls "._Config_grab_root."/";
 $dirList = do_cmd($cmd);
 $tok = strtok($dirList, " \n\t");
 while ($tok !== false) {
@@ -100,8 +100,8 @@ function cleanSpace() {
   $sizeMin=_Config_grab_storage_min_size*1024*1024*1024;
   $cmdFree = "df "._Config_grab_storage." | tail -n 1 | sed 's/[^ ]* *[0123456789]* *[0123456789]* *\([0123456789]*\) *.*/\\1/g'";
   $free=do_cmd($cmdFree);
-  $logdbg->log("Grab_storage size: "+$size);
-  $logdbg->log("Grab_storage free: "+$free);
+  $logdbg->log("Grab_storage size: ".$size);
+  $logdbg->log("Grab_storage free: ".$free);
   $firstday = time()-(_Config_grab_history*24*3600);
 
   while ($size > $sizeMax || $free < $sizeMin) {
@@ -109,14 +109,14 @@ function cleanSpace() {
     deleteGrab($lastGrab);
     $grb_date_start = $DB->UnixTimeStamp($lastGrab[2]);
     if ($grb_date_start > $firstday) {
-      writeFileSizeWarning($size,$free);
+      report_filesize_warning($size,$free);
       break; // don't remove more days even if sizeMax and sizeMin aren't right
     }
     $size = get_file_size(_Config_grab_storage);
     $free = do_cmd($cmdFree);
   }
-  $logdbg->log("Grab_storage size: "+$size);
-  $logdbg->log("Grab_storage free: "+$free);
+  $logdbg->log("Grab_storage size: ".$size);
+  $logdbg->log("Grab_storage free: ".$free);
 }
 
 function getOldestGrab() {
@@ -138,17 +138,17 @@ function deleteGrab($grab) {
   $grb_name = $grab[1];
   $grb_id = $grab[0];
   if (empty($grb_name)) {
-    $logdbg->log("Trying to remove grab without name: "+$grb_name);
+    $logdbg->log("Trying to remove grab without name: ".$grb_name);
     return;
   } 
-  $logdbg->log("Removing grab: "+$grb_name);
+  $logdbg->log("Removing grab: ".$grb_name);
   $cmdRmGrab="rm -f "._Config_grab_storage."/$grb_name.mpg";
   do_cmd($cmdRmGrab);
   $SQL = "select distinct(req_output) from request where grb_id=$grb_id";
   $rs = do_sql($SQL);
   $cmdBrokenLinks = "find "._Config_grab_root." -type l -not -xtype f -name";
   while ($row = $rs->FetchRow()) {
-    $cmd = $cmdBrokenLinks+" -name $row[0]\\* -exec rm {} \;";
+    $cmd = $cmdBrokenLinks." -name $row[0]\\* -exec rm {} \;";
   }
   $rs->Close();
   $SQL = "update request set req_status='deleted' where grb_id=$grb_id";
