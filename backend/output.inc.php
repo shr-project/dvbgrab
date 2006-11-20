@@ -180,6 +180,16 @@ function report_grab_success($grab_id, $grab_fullname, $grabinfo_fullname, $enc_
     do_sql($SQL);
 }
 
+function sendInfoCleanAccount($usr_name,$usr_email) {
+   global $DB;
+
+    $msg = "user: $usr_name\n";
+    $msg .= _MsgBackendAccountCleaned." "._Config_user_inactivity_limit."\n";
+    send_mail($usr_email, _MsgBackendAccountCleanedSub, $msg);
+}
+
+
+
 /**
 * Sends polite email to all requestors.
 * Send the error report to the admin too.
