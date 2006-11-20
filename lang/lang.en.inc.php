@@ -249,6 +249,8 @@ define("_MsgBackendSuccessSub","DVBgrab: Successfull grab");
 define("_MsgBackendGrabList","List of grabs in");
 define("_MsgBackendAccountCleaned","User account was deleted. Number of inactive days before account removal:");
 define("_MsgBackendAccountCleanedSub","User account was deleted");
+define("_MsgBackendFilesizeWarningSize","On grab storage area is no free disk space, even records which should be yet available are deleted now");
+define("_MsgBackendFilesizeWarningSizeSub","No disk space on grab storage");
 
 define("_MsgXmlTvFormatErrorNoChn","No channel found");
 define("_MsgXmlTvFormatErrorManyChn","Many channels match given xmltv channel id");

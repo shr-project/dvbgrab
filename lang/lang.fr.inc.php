@@ -40,4 +40,5 @@ define("_MsgJsonReqOutputSize","Velikost");
 
 define("_MsgBackendAccountCleaned","Uživatelský účet byl zrušen. Počet dnů neaktivity po kterém se účty ruší:");
 define("_MsgBackendAccountCleanedSub","Uživatelský účet byl zrušen");
-
+define("_MsgBackendFilesizeWarningSize","Na disku pro uchovávání grabů dochází místo, začínají se mazat i graby, které by ještě měli zůstat dostupné");
+define("_MsgBackendFilesizeWarningSizeSub","Není místo na disku pro graby");
