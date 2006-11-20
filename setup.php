@@ -76,7 +76,17 @@ switch ($_GET["action"]) {
       }
     }
     fclose($config_new);
-    echo "<h3 class=\"warning\">"._MsgSetupChangedOk."</h3>";
+    echo "<h3 class=\"warning\">"._MsgSetupChangedOk."</h3><br /><br />";
+    echo "<h3 class=\"warning\">"._MsgSetupCronList."</h3>";
+    echo '<textarea rows="10" cols="80">';
+    echo "MAILTO="._Config_admin_email."\n";
+    echo "0 0 * * * cd BACKEND_DIR; php -f clean.php";
+    $SQL="select tvg_cron_time,tvg_cron_cmd from tvgrabber where tvg_enabled=1";
+    $res = do_sql($SQL);
+    while ($row = $res->FetchRow()) {
+      echo $row[0]." ".$row[1]."\n";
+    }
+    echo '</textarea>';
     break;
 
   case "refresh":

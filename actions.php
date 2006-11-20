@@ -15,6 +15,9 @@ function grabAction($action,$query,$tv_date,$tel_id,$grb_id) {
   switch ($action) {
     // zadani noveho grabu
     case "grab_add":
+      $SQL = "update usergrb set usr_last_activity = ".$DB->OffsetDate(0)." where usr_id=$usr_id";
+      do_sql($SQL);
+
       // zjisti, zda porad existuje
       $SQL = "select t.tel_date_start, t.tel_date_end, t.chn_id, g.grb_id
               from television t left join grab g on (t.tel_id=g.tel_id) 
@@ -103,6 +106,9 @@ function grabAction($action,$query,$tv_date,$tel_id,$grb_id) {
     break;
 
   case "grab_del":
+    $SQL = "update usergrb set usr_last_activity = ".$DB->OffsetDate(0)." where usr_id=$usr_id";
+    do_sql($SQL);
+
     // zjisti, zda grab existuje
     $SQL = "select g.tel_id, r.req_status, r.usr_id
             from grab g, request r
@@ -161,6 +167,9 @@ switch ($action) {
       header("Location:$PHP_SELF?msg=log_fail");
       return;
     }
+    $SQL = "update usergrb set usr_last_activity = ".$DB->OffsetDate(0)." where usr_name='".$_POST["usr_name"]."'";
+    do_sql($SQL);
+
     break;
 
   // odlogovani uzivatele

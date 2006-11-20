@@ -20,6 +20,7 @@ define("_MsgSetupGrabStorageMinSize","Minimální množství místa na grabovac�
 define("_MsgSetupGrabBackendLang","Jazyk používaný v backend skriptech (cs,en,fr,..)");
 define("_MsgSetupBackendStripDiacritics","Zda se má do názvů grabů vkládat název pořadu bez diakritiky nebo jen id");
 define("_MsgSetupUserInactivityLimit","Po kolika dnech neaktivity bude uživatelský účet zrušen");
+define("_MsgSetupCronList","Následující text vložte do konfigurace cron démona (crontab -e)");
 define("_MsgJsonLoading","Načítají se detaily grabu");
 define("_MsgJsonTelName","Televizní pořad");
 define("_MsgJsonTelSeries","Serie");
@@ -36,4 +37,7 @@ define("_MsgJsonReqOutputMd5","MD5");
 define("_MsgJsonReqOutputEnc","Kodek");
 define("_MsgJsonReqOutputSize","Velikost");
 
+
+define("_MsgBackendAccountCleaned","Uživatelský účet byl zrušen. Počet dnů neaktivity po kterém se účty ruší:");
+define("_MsgBackendAccountCleanedSub","Uživatelský účet byl zrušen");
 

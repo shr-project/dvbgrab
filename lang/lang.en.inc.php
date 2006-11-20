@@ -193,6 +193,7 @@ define("_MsgSendPassNotice1","User password");
 define("_MsgSendPassNotice2","was send to email");
 
 define("_MsgSetupChangedOk","Settings in config.php was successfully saved");
+define("_MsgSetupCronList","Put following lines into cron daemon configuration (crontab -e)");
 define("_MsgSetupWelcome","Welcome in setup interface for DVBgrab project");
 define("_MsgSetupText","All settings are stored in file config.php. This file should be overwritten by owner and after new settings is written only read by his owner. Before setup run configure.sh a then secure.sh. This config.php has to be copied to backend directory, and this directory moved to recording server.");
 define("_MsgSetupValue","Value");
@@ -246,6 +247,8 @@ define("_MsgBackendEncodeErrorSub","DVBgrab: Encoding failed");
 define("_MsgBackendSuccess","ready for download");
 define("_MsgBackendSuccessSub","DVBgrab: Successfull grab");
 define("_MsgBackendGrabList","List of grabs in");
+define("_MsgBackendAccountCleaned","User account was deleted. Number of inactive days before account removal:");
+define("_MsgBackendAccountCleanedSub","User account was deleted");
 
 define("_MsgXmlTvFormatErrorNoChn","No channel found");
 define("_MsgXmlTvFormatErrorManyChn","Many channels match given xmltv channel id");

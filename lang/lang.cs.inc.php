@@ -193,6 +193,7 @@ define("_MsgSendPassNotice1","Heslo uživatele");
 define("_MsgSendPassNotice2","bylo posláno na mail");
 
 define("_MsgSetupChangedOk","Konfigurace v souboru config.php byla úspěšně uložena");
+define("_MsgSetupCronList","Následující text vložte do konfigurace cron démona (crontab -e)");
 define("_MsgSetupWelcome","Vítejte v konfiguračním rozhraní pro projekt DVB grab");
 define("_MsgSetupText","Všechna nastavení se ukládají do souboru config.php. Proto by tento soubor měl být přepisovatelný vlastníkem a po nastavení čitelný jenom vlastníkem. Před upravováním proto spusťte configure.sh a potom secure.sh. Stejny config.php je pak třeba překopírovat do adresáře backend, který se přesune na grabovací stroj.");
 define("_MsgSetupValue","Hodnota");
@@ -246,6 +247,8 @@ define("_MsgBackendEncodeErrorSub","DVBgrab: Nepodarene komprimovani");
 define("_MsgBackendSuccess","je pripraveny ke stazeni");
 define("_MsgBackendSuccessSub","DVBgrab: Hotovy grab");
 define("_MsgBackendGrabList","Seznam grabu za");
+define("_MsgBackendAccountCleaned","Uživatelský účet byl zrušen. Počet dnů neaktivity po kterém se účty ruší:");
+define("_MsgBackendAccountCleanedSub","Uživatelský účet byl zrušen");
 
 define("_MsgXmlTvFormatErrorNoChn","Nenalezen odpovídající televizní kanál");
 define("_MsgXmlTvFormatErrorManyChn","Odpovídá více televizním kanálům");
