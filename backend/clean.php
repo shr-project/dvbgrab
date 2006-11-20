@@ -112,7 +112,7 @@ function cleanSpace() {
       report_filesize_warning($size,$free);
       break; // don't remove more days even if sizeMax and sizeMin aren't right
     }
-    $size = get_file_size(_Config_grab_storage);
+    $size = get_file_size(_Config_grab_storage)*;
     $free = do_cmd($cmdFree);
   }
   $logdbg->log("Grab_storage size: ".$size);
