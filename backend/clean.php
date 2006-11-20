@@ -96,8 +96,8 @@ function unknownAccount($usrName) {
 function cleanSpace() {
   global $DB, $logdbg;
   $size = get_file_size(_Config_grab_storage);
-  $sizeMax=_Config_grab_storage_size*1024*1024*1024;
-  $sizeMin=_Config_grab_storage_min_size*1024*1024*1024;
+  $sizeMax=_Config_grab_storage_size*1024*1024;
+  $sizeMin=_Config_grab_storage_min_size*1024*1024;
   $cmdFree = "df "._Config_grab_storage." | tail -n 1 | sed 's/[^ ]* *[0123456789]* *[0123456789]* *\([0123456789]*\) *.*/\\1/g'";
   $free=do_cmd($cmdFree);
   $logdbg->log("Grab_storage size: ".$size);
