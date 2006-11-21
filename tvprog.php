@@ -111,7 +111,7 @@ if (!empty($query)) {
 }
 ?>
 </td>
-<td class="legend">
+<td valign="top" class="legend">
 <? require("legend.inc.php"); ?>
 </td>
 </tr>
