@@ -10,12 +10,13 @@ $logdbg = &Log::singleton('file', _Config_dvbgrab_log, 'clean - debug', $logFile
 $logdbg->log("Erasing inactive users .. start");
 // not active users
 $activity_limit=$DB->OffsetDate(0 - _Config_user_inactivity_limit);
-$SQL = "select usr_name, usr_id from usergrb u where usr_last_activity < $activity_limit";
+$SQL = "select usr_name, usr_id, usr_email from usergrb u where usr_last_activity < $activity_limit";
 
 $rs = do_sql($SQL);
 while ($row = $rs->FetchRow()) {
   $logdbg->log("Erasing account: $row[0]");
   cleanAccount($row[0],$row[1]);
+  sendInfoCleanAccount($row[0],$row[2]);
 }
 $logdbg->log("Erasing inactive .. done");
 
