@@ -172,10 +172,10 @@ if ($res->RecordCount() == 0) {
         if ($row["req_output"] != "") {
           echo "    <td><a class=\"programLink\" href=\"".$row["req_output"]."\">"._MsgPlanGrabLink."</a></td>\n";
         } else {
-          echo "    <td>"._MsgPlanGrabLinkNone."</td>\n";
+          echo "    <td class=\"programLink\">"._MsgPlanGrabLinkNone."</td>\n";
         }
       } else if ($row["req_status"] == "deleted") {
-        echo "    <td>"._MsgPlanGrabDeleted."</td>\n";
+        echo "    <td class=\"programLink\">"._MsgPlanGrabDeleted."</td>\n";
       } else {
         echo "    <td>&nbsp;</td>\n";
       }
@@ -186,7 +186,7 @@ if ($res->RecordCount() == 0) {
   echo "</table>\n";
 }
 echo "</td>\n";
-echo "<td class=\"legend\">\n";
+echo "<td valign=\"top\" class=\"legend\">\n";
 require_once("legend.inc.php");
 echo "</td>\n";
 echo "</tr>\n</table>\n";
