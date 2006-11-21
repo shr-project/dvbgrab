@@ -97,7 +97,7 @@ $SQL = "select g.grb_id,
 
 if ($type == "sched")  $SQL .= " r.req_status='scheduled' or r.req_status='processing'";
 if ($type == "done")   $SQL .= " r.req_status='done'";
-if ($type == "mygrab") $SQL .= " r.req_status<>'deleted' and u.usr_id=$usr_id";
+if ($type == "mygrab") $SQL .= " u.usr_id=$usr_id";
 // and g.grb_date_start >='$grab_datetime'";
 
 $SQL .= " order by g.grb_date_start".(($type=="sched")?"":" desc").", c.chn_order";
@@ -138,6 +138,12 @@ if ($res->RecordCount() == 0) {
       }
       echo "<tr><th colspan=\"6\">&nbsp;&nbsp;&nbsp;$grb_day</th></tr>\n";
     }
+    if (!empty($row[1])) {
+      $hi="Hi";
+    } else {
+      $hi="";
+    }
+
     $old_grb_day = $grb_day;
 
 
@@ -147,7 +153,7 @@ if ($res->RecordCount() == 0) {
     echo " onmouseout=\"grabinfos.hide($grb_id)\">\n";
     echo "    <td width=\"30\">&nbsp;</td>\n";
     echo "    <td><img class=\"programLogo\" alt=\"".$row["chn_name"]."\" title=\"".$row["chn_name"]."\" src=\"images/logos/".$row["chn_logo"]."\"></td>\n";
-    echo "    <td width=\"110\">";
+    echo "    <td width=\"110\" class=\"programDate".$hi."\">";
 //    if ($row["req_status"] == "missed") {
 //      echo "&nbsp;&nbsp;&nbsp;"._MsgPlanGrabMissed;
 //    } else {
@@ -155,16 +161,16 @@ if ($res->RecordCount() == 0) {
 //    }
     echo "    </td>\n";
   
-    echo "    <td><a href=\"tvprog.php?tv_date=".date("Ymd", $grb_timeStamp).
+    echo "    <td><a class=\"programName".$hi."\" href=\"tvprog.php?tv_date=".date("Ymd", $grb_timeStamp).
       "#".$row["tel_id"]."\">".htmlspecialchars($row["tel_name"])."</a><div class=\"grabInfo\" style=\"margin-left: 30pt; display:none; position: absolute\" id=\"grabinfo_".$grb_id."\"></div></td>\n";
   
     if ($type != "mygrab") {
 //      echo "    <td width=\"20\">&nbsp;</td>\n";
-      echo "    <td><a href=\"mailto:".str_replace("@", "@NOSPAM.", $row["usr_email"])."\">".$row["usr_name"]."</a></td>\n";
+      echo "    <td><a class=\"programLink\" href=\"mailto:".str_replace("@", "@NOSPAM.", $row["usr_email"])."\">".$row["usr_name"]."</a></td>\n";
     } else {
       if ($row["req_status"] == "done") {
         if ($row["req_output"] != "") {
-          echo "    <td><a href=\"".$row["req_output"]."\">"._MsgPlanGrabLink."</a></td>\n";
+          echo "    <td><a class=\"programLink\" href=\"".$row["req_output"]."\">"._MsgPlanGrabLink."</a></td>\n";
         } else {
           echo "    <td>"._MsgPlanGrabLinkNone."</td>\n";
         }

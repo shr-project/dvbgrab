@@ -3,7 +3,7 @@ body {
   font-family : Verdana, Arial, Helvetica, sans-serif;
   font-size : 10pt;
   background-color : #111111;
-  color : #888888;
+  color : #999999;
 }
 /* Header definitions */
 div.status {
@@ -46,7 +46,7 @@ div.main {
 h2 {
   font-family : Verdana, Arial, Helvetica, sans-serif;
   font-size : 14pt;
-  color : #66cc33;
+  color : #c9df1c;
   font-weight : bold;
 }
 hr {
@@ -110,32 +110,32 @@ a.programLinkHi:hover {
   background-color : #transparent;
 }
 a.menuitem {
-  color : #009966;
+  color : #336699;
   font-size : 10pt;
   font-family : Verdana, Arial, Helvetica, sans-serif;
 }
 a.menuitem:hover, a.menuitem_act:hover {
-  background-color : #99ff99;
+  background-color : #99ccff;
 }
 /* TV program styles */
 .programDate {
-  color : #339966;
+  color : #99ccff;
   vertical-align : top;
 }
 .programDateHi {
-  color : #111111;
+  color : #777777;
   vertical-align : top;
 }
 .match {
-  color : #ffff44;
+  color : #c9df1c;
 }
 .matchHi {
-  color : #ffff44;
+  color : #c9df1c;
 }
 a.programName {
   text-decoration : underline;
   font-weight : bold;
-  color : #9933ff;
+  color : #66cc33;
   background : transparent;
 }
 a.programNameHi {
@@ -145,7 +145,7 @@ a.programNameHi {
   background : transparent;
 }
 span.programName {
-  color : #9933ff;
+  color : #66cc33;
   background : transparent;
 }
 span.programNameHi {
@@ -158,19 +158,19 @@ span.programNameHi {
 .programDesc {
   font-style : italic;
   font-size : 8pt;
-  color : #3366ff;
+  color : #999999;
   background : transparent;
 }
 .programDescHi {
   font-style : italic;
   font-size : 8pt;
-  color : #555555;
+  color : #999999;
   background : transparent;
 }
 .programCategory {
   font-weight : bold;
   font-size : 8pt;
-  color : #339999;
+  color : #009966;
   background : transparent;
 }
 .programCategoryHi {
@@ -189,13 +189,19 @@ span.programNameHi {
 }
 .grabInfo {
   border: 1px solid ; 
-  background-color: #ffff77;
+  background-color: #cccccc;
   white-space: nowrap;
+  color: red;
+  font-family : Verdana, Arial, Helvetica, sans-serif;
+  font-size : 14pt;
 }
 .telInfo {
   border: 1px solid ; 
-  background-color: #cccccc;
+  background-color: #99ff99;
   white-space: nowrap;
+  color: red;
+  font-family : Verdana, Arial, Helvetica, sans-serif;
+  font-size : 14pt;
 }
 /* Text positions */
 .center {
@@ -237,7 +243,7 @@ table.grabList {
   width : 70%;
 }
 .desc {
-  color : #aaaaaa;
+  color : #111111;
   text-align : center;
 }
 th.key {
@@ -260,7 +266,7 @@ td.value {
 }
 /* Text highlight */
 .warning {
-  color : #9933ff;
+  color : #b965dc;
   font-weight : bold;
 }
 /* Header keys */
@@ -269,16 +275,16 @@ a.item {
   font-weight : bold;
 }
 span.item {
-  color : #336699;
+  color : #339999;
   font-weight : bold;
 }
 .item {
-  color : #339966;
+  color : #aaaaaa;
   font-weight : bold;
 }
 /* Today highlight */
 option.today {
-  background-color : #ffff66;
+  background-color : #c9df1c;
 }
 .status-scheduled {
   background-color : #ffff77;
