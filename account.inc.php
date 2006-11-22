@@ -141,7 +141,7 @@ function printUserRegistration($update,$usr_id) {
   </select></td>
 </tr>
 <tr>
-  <td class="input center" colspan="2"><hr /></td>
+  <td class="center" colspan="2"><hr /></td>
 </tr>
 <tr>
   <td class="key"><?php echo _MsgAccountIcq ?></td>
@@ -152,7 +152,7 @@ function printUserRegistration($update,$usr_id) {
   <td class="value"><input size="30" type="text" name="usr_jabber" value="<?= $usr_jabber ?>"/></td>
 </tr>
 <tr>
-  <td class="input center" colspan="2">
+  <td class="center" colspan="2">
     <input size="30" type="submit" value="<?php if ($update) { 
                                         echo _MsgAccountChangeButton;
                                       } else {

@@ -49,7 +49,7 @@ echo date(" j. n. Y", mktime(0, 0, 0, $tv_month, $tv_day, $tv_year));
   <tr>
     <th><? echo _MsgProgTitleDay ?></th>
     <td align="right">
-      <select name="tv_date" onchange="change_date(this.form)">
+      <select class="tvprog" name="tv_date" onchange="change_date(this.form)">
         <?php
         $SQL = "select max(tel_date_start) from television";
         $rs = do_sql($SQL);
@@ -76,7 +76,7 @@ echo date(" j. n. Y", mktime(0, 0, 0, $tv_month, $tv_day, $tv_year));
       </select>
     </td>
     <td align="left">
-      <input type="submit" value="<? echo _MsgProgShowButton ?>"/>
+      <input class="tvprog" type="submit" value="<? echo _MsgProgShowButton ?>"/>
     </td>
   </tr>
   <tr>
@@ -84,10 +84,10 @@ echo date(" j. n. Y", mktime(0, 0, 0, $tv_month, $tv_day, $tv_year));
       <? echo _MsgProgSearch ?>
     </th>
     <td align="right">
-      <input type="text" size="20" name="query" value="<?= $_GET["query"] ?>" />
+      <input class="tvprog" type="text" size="20" name="query" value="<?= $_GET["query"] ?>" />
     </td>
     <td align="left">
-      <input type="submit" value="<? echo _MsgProgSearchButton ?>" />
+      <input class="tvprog" type="submit" value="<? echo _MsgProgSearchButton ?>" />
     </td>
   </tr>
   <?
