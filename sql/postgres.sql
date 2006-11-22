@@ -152,6 +152,11 @@ CREATE TABLE "params" (
   last_account_update timestamp with time zone DEFAULT '2000-01-01 00:00:00+01'::timestamp with time zone NOT NULL
 );
 
+CREATE TABLE "news" (
+  news_date timestamp with time zone DEFAULT '2000-01-01 00:00:00+01'::timestamp with time zone NOT NULL,
+  news_text text NOT NULL
+);
+
 ALTER TABLE "channel"
     ADD CONSTRAINT channel_fkey_tvgrabber FOREIGN KEY (tvg_id) REFERENCES tvgrabber(tvg_id);
 ALTER TABLE ONLY "grab"

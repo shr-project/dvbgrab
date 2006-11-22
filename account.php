@@ -4,6 +4,7 @@ require_once("dolib.inc.php");
 require_once("const.php");
 require_once("config.php");
 require_once("language.inc.php");
+$menuitem=5;
 require_once("header.php");
 require_once("account.inc.php");
 switch ($_GET["action"]) {

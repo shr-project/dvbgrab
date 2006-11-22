@@ -6,7 +6,7 @@ require_once("header.inc.php");
 <tr>
 <td class="menu">
 <?php
-$menuitem = "";
+//$menuitem = "";
 require_once("menu.php");
 global $PHP_SELF;
 ?>
@@ -15,7 +15,7 @@ global $PHP_SELF;
 <div class="status">
 <table width="100%">
 <tr><td class="left">
-<img class="logo" src="images/top.png" alt="logo" />
+<a href="<?=$PHP_SELF?>"><img class="logo" src="images/top.png" alt="logo" /></a>
 </td>
 <td class="right" valign="top">
 <span class="value" id="hodiny"><?=date("d.m. G:i")?></span>

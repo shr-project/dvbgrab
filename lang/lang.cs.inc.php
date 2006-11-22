@@ -263,12 +263,4 @@ define("_MsgXmlTvInserted","Vložen");
 define("_MsgXmlTvUpdated","Změněn");
 define("_MsgXmlTvSuccess","Tv program úspěšně aktualizován");
 define("_MsgXmlTvFailed","Tv program aktualizován s chybami");
-
-define("_MsgNews1","Opraveno/Přidáno vyhledávání v plánovaných grabech (Velmi užitecné pro grabovače seriálů ;-))");
-define("_MsgNews2","Omezeno zobrazovaní hotových grabů na posledních 100 zaznamů, to samé pro zobrazení mých grabů.");
-define("_MsgNews3","Přidána možnost nechat si poslat nové vygenerované heslo.");
-define("_MsgNews4","Přidána volba \"Nastavení\", pro úpravy uživatelských účtů.");
-define("_MsgNews5","Registrován jubilejní 100. uživatel. Bohužel vůbec nic nevyhrává protože má plnou mailovou schránku.:-P");
-define("_MsgNews6","Přidána možnost zadávat graby rovnou z vyhledávací stránky.");
-define("_MsgNews7","Opravy několika chyb, přidání nových funkcí, změny textů a <a href=\"anketa.php\">anketa.</a>");
 ?>

@@ -27,12 +27,13 @@ require_once("authentication.php");
 // hodnotu $menuitem predava skript, ktery tento soubor includuje
   for ($i=1; $i<=count($menu); $i++) {
     if ($i == $menuitem) {
-      echo '<p class="menuitem_act">';
+      $class="menuitem_act";
     } else {
-      echo '<p class="menuitem">';
+      $class="menuitem";
     }
+    echo '<p class="'.$class.'">';
     if (authenticated($_COOKIE["usr_id"], $_COOKIE["usr_pass"]) || $i>=7) {
-      echo ($menu[$i] == " ")?"&nbsp;":"<a class=\"menuitem\" href=\"$link[$i]\">::&nbsp;$menu[$i]&nbsp;::</a>\n";
+      echo ($menu[$i] == " ")?"&nbsp;":"<a class=\"$class\" href=\"$link[$i]\">::&nbsp;$menu[$i]&nbsp;::</a>\n";
     } else {
       echo ($menu[$i] == " ")?"&nbsp;":"<i>::&nbsp;$menu[$i]&nbsp;::</i>\n";
     }

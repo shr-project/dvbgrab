@@ -264,13 +264,4 @@ define("_MsgXmlTvUpdated","Updated");
 define("_MsgXmlTvSuccess;","Tv schedule successfully updated");
 define("_MsgXmlTvFailed;","Tv schedule updated with errors");
 
-define("_MsgNews1","Repair/Add search possibility in tv program (Mostly used for series requests ;-))");
-define("_MsgNews2","Number of showed records limited to 100.");
-define("_MsgNews3","New option for sending new random password.");
-define("_MsgNews4","New option \"Account\", for user account settings.");
-define("_MsgNews5","Anniversery 100. user registred. No price because she has full mailbox.:-P");
-define("_MsgNews6","New option to request record directly from search page.");
-define("_MsgNews7","Bug hunting day!, few new function, new texts and <a href=\"anketa.php\">inquiry</a>");
-
-
 ?>

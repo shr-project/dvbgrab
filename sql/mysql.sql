@@ -92,6 +92,11 @@ CREATE TABLE IF NOT EXISTS `params` (
   `last_account_update`   datetime      NOT NULL default '0000-00-00 00:00:00'
 ) ENGINE=MyISAM;
 
+CREATE TABLE IF NOT EXISTS `news` (
+  `news_date`   datetime      NOT NULL default '0000-00-00 00:00:00',
+  `news_text`   text      NOT NULL
+) ENGINE=MyISAM;
+
 TRUNCATE channel;
 TRUNCATE encoder;
 TRUNCATE grab;
