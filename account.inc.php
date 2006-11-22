@@ -103,7 +103,7 @@ function printUserRegistration($update,$usr_id) {
 </tr>   
 <tr>
   <td class="key"><?php echo _MsgAccountLogin ?></td>
-  <td class="value"><input size="30" type="text" <?php if ($update) { echo " disabled=\"disabled\" "; } ?> name="usr_name" value="<?= $usr_name ?>"/></td>
+  <td class="value"><input size="30" type="text" class="value" <?php if ($update) { echo " disabled=\"disabled\" "; } ?> name="usr_name" value="<?= $usr_name ?>"/></td>
 </tr>
 <tr>    
   <td class="key"><?php echo _MsgAccountPass ?></td>

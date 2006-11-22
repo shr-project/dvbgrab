@@ -258,6 +258,9 @@ table.registration {
   text-align : center;
   white-space : normal;
   width : 40%;
+  border : 2px;
+  border-style : groove;
+  border-color : #06874c;
   background-color : #8eda90;
 }
 table.config {
@@ -265,7 +268,7 @@ table.config {
   width : 90%;
   border : 2px;
   border-style : groove;
-  border-color : #aaaaaa;
+  border-color : #06874c;
   text-align : left;
   background-color : #8eda90;
 }
@@ -276,7 +279,7 @@ table.grabList {
 .input { 
   color : #444444;
   border-bottom-width : 4px;
-  border-color : #66cc33;
+  border-color : #33cc00;
   border-bottom-style : groove; 
 }
 .key {
@@ -289,26 +292,29 @@ table.grabList {
   width : 70%;
 }
 .desc {
-  color : #999999;
+  color : #333333;
   text-align : center;
 }
 th.key {
-  color : #395497;
+  color : #555555;
   border-bottom-width : 4px;
-  border-color : #66cc33;
+  border-bottom-color : #33cc00;
   border-bottom-style : groove;
 }
 td.key {
   color : #06874c;
 }
 th.value {
-  color : #009966;
-  border-bottom-width : 1px;
-  border-color : #ff0000;
-  border-bottom-style : double;
+  color : #222222;
+  border-bottom-width : 4px;
+  border-bottom-color : #33cc00;
+  border-bottom-style : groove;
 }
 td.value {
   color : #006600;
+}
+input.value[disabled] {
+  color : #006699;
 }
 /* Text highlight */
 .warning {
