@@ -106,7 +106,7 @@ a.item:hover {
 a.menuitem_act {
   font-family : Verdana, Arial, Helvetica, sans-serif;
   font-size : 10pt;
-  background-color : transparent;
+  background-color : #33ccff;
   color : #336699;
 }
 a.programLink {

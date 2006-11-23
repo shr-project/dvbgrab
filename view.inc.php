@@ -155,7 +155,7 @@ function show_grab_del_link($grb_id, $req_status, $my_grab, $query, $hi="") {
   $result = false;
   if ($req_status == 'scheduled' && $grb_id && $my_grab) {
     echo "<a class=\"programDel".$hi."\" href=\"$PHP_SELF?action=grab_del".
-      "&amp;grb_id=$grb_id&amp;$query\">"._MsgGrabLinkStorno."</a>";
+      "&amp;grb_id=$grb_id&amp;query=$query\">"._MsgGrabLinkStorno."</a>";
     $result = true;
   }
   return $result;
