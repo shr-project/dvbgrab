@@ -15,7 +15,7 @@ global $PHP_SELF;
 <div class="status">
 <table width="100%">
 <tr><td class="left">
-<a href="<?=$PHP_SELF?>"><img class="logo" src="images/top.png" alt="logo" /></a>
+<a href="<?=$PHP_SELF?>"><img class="logo" src="images/top.gif" alt="logo" /></a>
 </td>
 <td class="right" valign="top">
 <span class="value" id="hodiny"><?=date("d.m. G:i")?></span>

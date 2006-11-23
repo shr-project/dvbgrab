@@ -105,7 +105,7 @@ echo date(" j. n. Y", mktime(0, 0, 0, $tv_month, $tv_day, $tv_year));
 $query = $_GET["query"];
 if (!empty($query)) {
   require_once("search.php");
-  print_results($usr_id,$query);
+  print_results($usr_id,$query,$tv_date);
 } else {
   require_once("listtv.php");
 }
@@ -121,7 +121,7 @@ if (!empty($query)) {
 if (empty($query)) {
   echo "</div>\n</td>\n</tr>\n"; // zavru main div a ukoncim radek s menu
   echo "<tr>\n<td colspan=\"3\"><div>\n";
-  print_list_tv($usr_id,$tv_date);
+  print_list_tv($usr_id,$tv_date,$query);
 }
 require("footer.php");
 ?>

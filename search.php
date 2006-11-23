@@ -3,9 +3,10 @@ require_once("charset.inc.php");
 
 global $DB;  // pripojeni do databaze
 
-function print_results($usr_id,$query) {
+function print_results($usr_id,$query,$tv_date) {
   global $DB;
   $MAX_SEARCH_RESULTS = 50;
+  $addition = "tv_date=$tv_date&query=$query&";
   $query_array = explode(" ", $query);
 
   if (sizeof($query_array) == 0) {
@@ -79,7 +80,7 @@ function print_results($usr_id,$query) {
     $show_link = true;
     $show_logo = true;
     while ($row = $rs->FetchRow()) {
-      show_television_row($row,$query,$query_array,$use_diacritics,$show_link,$show_logo);
+      show_television_row($row,$addition,$query_array,$use_diacritics,$show_link,$show_logo);
       $cur_res++;  
       if ($cur_res > $MAX_SEARCH_RESULTS) {
         break;

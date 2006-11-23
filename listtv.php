@@ -1,8 +1,10 @@
 <?
 
-function print_list_tv($usr_id,$tv_date) {
+function print_list_tv($usr_id,$tv_date,$query) {
   global $DB;
   global $PHP_SELF;
+  
+  $addition = "tv_date=$tv_date&query=$query&"; 
 
   $tv_day = substr($tv_date, 6, 2);
   $tv_month = substr($tv_date, 4, 2);
@@ -120,7 +122,7 @@ function print_list_tv($usr_id,$tv_date) {
             if ($row["hour_frac"] != $akt_hour_frac || $row["chn_id"] != $akt_chn_id) {
               break;
             }
-            show_television_row($row, $query, $highlight_strings, $use_diacritics, $show_link, $show_logo, $channel==count($channel_array)-1);
+            show_television_row($row, $addition, $highlight_strings, $use_diacritics, $show_link, $show_logo, $channel==count($channel_array)-1);
           } while ($row = $rs->FetchRow());
         }
         echo "</table></td>\n";

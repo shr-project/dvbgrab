@@ -426,5 +426,5 @@ option.today {
   background-color : #9933ff;
   background-image : url("../images/dot.gif");
   background-repeat : no-repeat;
-  background-position : left;
+  background-position : top left;
 }
