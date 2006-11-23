@@ -180,7 +180,7 @@ switch ($action) {
     break;
 
   // registrace noveho uzivatele
-  case "register":
+  case "editDo":
     $usr_ip=getUserIp();    
 
     $SQL = "select usr_name from usergrb where usr_ip='$usr_ip'";
@@ -223,7 +223,7 @@ switch ($action) {
     $usr_icq = (int)$_POST["usr_icq"];
     $usr_jabber = $_POST["usr_jabber"];
     $SQL = "insert into usergrb(usr_name,usr_pass,usr_email,usr_icq,usr_jabber,usr_ip,usr_last_activity)
-                        VALUES('$usr_name','$usr_pass','$usr_email','$usr_icq','$usr_jabber','$usr_ip','.$DB->sysTimeStamp.')";
+                        VALUES('$usr_name','$usr_pass','$usr_email','$usr_icq','$usr_jabber','$usr_ip',".$DB->sysTimeStamp.")";
     do_sql($SQL);
 
     // a hned ho zaloguj

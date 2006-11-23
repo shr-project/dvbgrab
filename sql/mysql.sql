@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `usergrb` (
   `usr_email`      varchar(60)   NOT NULL default '',
   `usr_icq`        int(11)                default NULL,
   `usr_jabber`     varchar(40)   NOT NULL default '',
-  `usr_ip`         varchar(15)   NOT NULL default '0.0.0.0',
+  `usr_ip`         varchar(40)   NOT NULL default '0.0.0.0',
   `usr_priority`   tinyint(4)    NOT NULL default '2',
   `enc_id`         int(11)       NOT NULL default '2',
   `usr_last_activity` datetime   NOT NULL default '0000-00-00 00:00:00',

@@ -140,7 +140,7 @@ CREATE TABLE "usergrb" (
   usr_email       varchar(60)                                             NOT NULL,
   usr_icq         integer,
   usr_jabber      varchar(40),
-  usr_ip          varchar(15)     DEFAULT '0.0.0.0'                       NOT NULL,
+  usr_ip          varchar(40)     DEFAULT '0.0.0.0'                       NOT NULL,
   usr_priority    smallint        DEFAULT 2                               NOT NULL,
   enc_id          integer         DEFAULT 2                               NOT NULL,
   usr_last_activity   timestamp with time zone DEFAULT '2000-01-01 00:00:00+01'::timestamp with time zone NOT NULL,
