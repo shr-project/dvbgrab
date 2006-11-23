@@ -28,11 +28,11 @@ if ($row = $rs->FetchRow() && $row[0]) {
   $thisUpdate = $DB->DBTimeStamp(time());
   $SQL = "update params set last_account_update=$thisUpdate";
   do_sql($SQL);
-  $SQL = "select u.usr_name, u.usr_ip from usergrb u where usr_update >= $lastUpdate and <= $thisUpdate";
+  $SQL = "select u.usr_name, u.usr_ip, u.usr_email from usergrb u where usr_update >= $lastUpdate and <= $thisUpdate";
   $rs = do_sql($SQL);
   while ($row = $rs->FetchRow()) {
     $logdbg->log("Updating account: $row[0]");
-    updateAccount($row[0],$row[1]);
+    updateAccount($row[0],$row[1], $row[2]);
   }
 }
 $logdbg->log("Updating htaccess .. done");
@@ -69,7 +69,7 @@ function cleanAccount($usrName,$usrId) {
   do_sql($SQL);
 }
 
-function updateAccount($usrName,$usrIp) {
+function updateAccount($usrName,$usr_ip,$usr_email) {
   $usrDir = _Config_grab_root."/$usrName";
   if (!is_dir($usrDir)) {
     $cmd = "mkdir -p "._Config_grab_root."/$usrDir";
@@ -86,6 +86,7 @@ function updateAccount($usrName,$usrIp) {
       fclose($fp);
     }
   }
+  sendInfoUpdatedAccount($usr_name,$usr_ip,$usr_email);
 }
 
 function unknownAccount($usrName) {
@@ -113,7 +114,7 @@ function cleanSpace() {
       report_filesize_warning($size,$free);
       break; // don't remove more days even if sizeMax and sizeMin aren't right
     }
-    $size = get_file_size(_Config_grab_storage)*;
+    $size = get_file_size(_Config_grab_storage);
     $free = do_cmd($cmdFree);
   }
   $logdbg->log("Grab_storage size: ".$size);

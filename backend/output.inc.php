@@ -13,7 +13,7 @@ require_once("lang/lang."._Config_grab_backend_lang.".inc.php");
 function get_grab_basename($grb_id) {
     global $DB;
 
-    $SQL = "select ch.chn_name, t.tel_date_start, t.tel_name, t.tel_id
+    $SQL = "select ch.chn_name, t.tel_date_start, t.tel_name, t.tel_id, t.tel_series, t.tel_episode, t.tel_part
         from channel ch, television t, grab g
         where ch.chn_id = t.chn_id and
             t.tel_id = g.tel_id and
@@ -23,6 +23,10 @@ function get_grab_basename($grb_id) {
     if (!$row) {;
         return false;
     }
+    $tel_series = $row["tel_series"];
+    $tel_episode = $row["tel_episode"];
+    $tel_part = $row["tel_part"];
+
 
     $channel = strtolower(strip_diacritics($row[0]));
     $timestamp = $DB->UserTimeStamp($DB->UnixTimeStamp($row[1]), "Ymd-Hi");
@@ -31,6 +35,19 @@ function get_grab_basename($grb_id) {
     } else {
       $tel_name = $row[3];
     }
+    if (!empty($tel_series) || !empty($tel_episode) || !empty($tel_part)) {
+      $tel_name .= "_";
+    }
+    if (!empty($tel_series)) {
+      $tel_name .= "S$tel_series";
+    }
+    if (!empty($tel_episode)) {
+      $tel_name .= "E$tel_episode";
+    }
+    if (!empty($tel_part)) {
+      $tel_name .= "P$tel_part";
+    }
+
     $rs->Close();
 
     return "DVB-$timestamp-$channel-".
@@ -186,6 +203,14 @@ function sendInfoCleanAccount($usr_name,$usr_email) {
     $msg = "user: $usr_name\n";
     $msg .= _MsgBackendAccountCleaned." "._Config_user_inactivity_limit."\n";
     send_mail($usr_email, _MsgBackendAccountCleanedSub, $msg);
+}
+
+function sendInfoUpdatedAccount($usr_name,$usr_ip,$usr_email) {
+   global $DB;
+
+    $msg = "user: $usr_name\n";
+    $msg .= _MsgBackendAccountUpdated." $usr_ip\n";
+    send_mail($usr_email, _MsgBackendAccountUpdatedSub, $msg);
 }
 
 
