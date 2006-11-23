@@ -136,7 +136,7 @@ function show_grab_add_link($tel_id, $tel_date_start, $text, $my_grab, $query=""
   //if (!$my_grab && $tel_date_start >= $grab_time_limit) {
   if ($tel_date_start >= $grab_time_limit) {
     echo "<a onclick=\"return confirm('"._MsgGrabConfirmStart." ".strip_tags($text)." "._MsgGrabConfirmGrab."')\" ".
-      "href=\"$PHP_SELF?action=grab_add&amp;tel_id=$tel_id&amp;$query\"".
+      "href=\"$PHP_SELF?action=grab_add&amp;tel_id=$tel_id&amp;query=$query\"".
       " title=\""._MsgGrabLinkGrab."\" class=\"programName".$hi."\">";
     echo $text;
     echo "</a>";
