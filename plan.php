@@ -149,8 +149,7 @@ if ($res->RecordCount() == 0) {
 
     echo "  <tr";
     show_grab_class($grb_id, $row['req_status'], false);
-    echo " onmouseover=\"grabinfos.show($grb_id); setTimeout('grabinfos.loadMe($grb_id)',200);\"";
-    echo " onmouseout=\"grabinfos.hide($grb_id)\">\n";
+    echo ">";
     echo "    <td ";
     show_grab_class($grb_id, $row['req_status'], $row['usr_id'] == $usr_id);
     echo " width=\"30\">&nbsp;</td>\n";
@@ -163,7 +162,10 @@ if ($res->RecordCount() == 0) {
 //    }
     echo "    </td>\n";
   
-    echo "    <td><a class=\"programName".$hi."\" href=\"tvprog.php?tv_date=".date("Ymd", $grb_timeStamp).
+    echo "    <td";
+    echo " onmouseover=\"grabinfos.show($grb_id); setTimeout('grabinfos.loadMe($grb_id)',200);\"";
+    echo " onmouseout=\"grabinfos.hide($grb_id)\"";
+    echo "><a class=\"programName".$hi."\" href=\"tvprog.php?tv_date=".date("Ymd", $grb_timeStamp).
       "#".$row["tel_id"]."\">".htmlspecialchars($row["tel_name"])."</a><div class=\"grabInfo\" style=\"margin-left: 30pt; margin-top: 20pt; display:none; position: absolute\" id=\"grabinfo_".$grb_id."\"></div></td>\n";
   
     if ($type != "mygrab") {
