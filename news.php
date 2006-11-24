@@ -12,7 +12,7 @@ require_once("header.php");
 <col width="20%">
 <col width="80%">
 <?
-$SQL = "select * from news order by news_date";
+$SQL = "select * from news order by news_date desc";
 
 $rs = do_sql($SQL);
 while ($row = $rs->FetchRow()) {
