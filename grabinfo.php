@@ -13,7 +13,7 @@ if (empty($grab_id)) {
   return "";
 }
 
-$SQL = "select distinct(enc_codec), req_output, req_output_md5, req_output_size, req_status from request,encoder where grb_id=$grab_id and request.enc_id=encoder.enc_id order by encoder.enc_codec";
+$SQL = "select enc_codec, max(req_id), max(req_output), max(req_output_md5), max(req_output_size), max(req_status) from request left join encoder on (request.enc_id = encoder.enc_id) where grb_id=$grab_id group by enc_codec";
 $rs = do_sql($SQL);
 $req_outputs = array();
 while ($row = $rs->FetchRow()) {
