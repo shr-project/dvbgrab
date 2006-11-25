@@ -2,7 +2,7 @@
 body {
   font-family : Verdana, Arial, Helvetica, sans-serif;
   font-size : 10pt;
-  background-color : #111111;
+  background-color : #000000;
   color : #999999;
 }
 /* Header definitions */
@@ -33,9 +33,10 @@ td.top {
   white-space : normal;
 }
 td.legend {
-  width : 30pt;
+  width: 30pt;
   margin-right : 1pt;
   margin-left : auto;
+  white-space : nowrap;
 }
 div.main {
   margin-left : 10pt;

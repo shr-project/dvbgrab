@@ -15,7 +15,7 @@ global $PHP_SELF;
 <div class="status">
 <table width="100%">
 <tr><td class="left">
-<a href="<?=$PHP_SELF?>"><img class="logo" src="images/top.gif" alt="logo" /></a>
+<a href="<?=$PHP_SELF?>"><img class="logo" src="images/top.black.png" alt="logo" /></a>
 </td>
 <td class="right" valign="top">
 <span class="value" id="hodiny"><?=date("d.m. G:i")?></span>
@@ -26,7 +26,7 @@ if (authenticated($_COOKIE["usr_id"], $_COOKIE["usr_pass"])) {
   $rs = do_sql($SQL);
   $row = $rs->FetchRow();
   $usr_name = $row[0];
-  $SQL = "update usergrb set usr_last_activity = $DB->sysTimeStamp";
+  $SQL = "update usergrb set usr_last_activity = $DB->sysTimeStamp where usr_name='$usr_name'";
   do_sql($SQL);
   echo "<span class=\"item\"> :: "._MsgAccountLogged." </span><span class=\"value\">$usr_name</span>";
   echo " <a class=\"item\" href=\"index.php?action=logout\">("._MsgAccountLogout.")</a>";
