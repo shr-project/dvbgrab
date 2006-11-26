@@ -205,7 +205,7 @@ define("_MsgSetupDbPass","Heslo, s akým sa budeme prihlasovať do databázy");
 define("_MsgSetupErrorStatus","Množstvo informácií o vzniknutej chybe:");
 define("_MsgSetupErrorStatus0","* 0 - Každá chyba je vypísaná na stránke");
 define("_MsgSetupErrorStatus1","* 1 - Každá chyba je odoslaná na chybový email");
-define("_MsgSetupErrorStatus2","* 2 - Každá chyba je ignorovaná. Toto je východiskové nastavenie);
+define("_MsgSetupErrorStatus2","* 2 - Každá chyba je ignorovaná. Toto je východiskové nastavenie");
 define("_MsgSetupErrorEmail","Email, kam budú odosielané informácie o chybách webového rozhrania");
 define("_MsgSetupAdminEmail","Email, kam budú odosielané informácie o chybách v grabovacom systéme");
 define("_MsgSetupReportEmail","Email, kam budú odosielané súhrnné informácie o využití systému");
@@ -247,7 +247,7 @@ define("_MsgBackendSuccess","je pripravený na stiahnutie");
 define("_MsgBackendSuccessSub","DVBgrab: Hotový grab");
 define("_MsgBackendGrabList","Zoznam grabu za");
 define("_MsgBackendAccountCleaned","Užívateľský účet bol zrušený. Počet dní neaktivity, po ktorom sa účty rušia:");
-define("_MsgBackendAccountCleanedSub","Užívateľský účet bol zrušený);
+define("_MsgBackendAccountCleanedSub","Užívateľský účet bol zrušený");
 define("_MsgBackendFilesizeWarningSize","Na disku pre uchovávanie grabov dochádza miesto, začínajú sa mazať aj graby, ktoré by ešte mali ostať dostupné");
 define("_MsgBackendFilesizeWarningSizeSub","Nie je miesto na disku pre graby");
 
