@@ -229,7 +229,7 @@ define("_MsgSetupSubmitButton","Nastavit");
 define("_MsgSetupTvgDesc","Stahovače televizních programů");
 define("_MsgSetupTvgName","Jméno");
 define("_MsgSetupTvgEnabled","Povolen?");
-define("_MsgSetupTvgRunAt","Kdy souštět cronem");
+define("_MsgSetupTvgRunAt","Kdy spouštět cronem");
 define("_MsgSetupTvgRun","Příkaz");
 define("_MsgSetupTvgNew","Nový");
 define("_MsgSetupTvgFailed","Přidání nového stahovače selhalo, pravděpodobně nebyl zadán kompletně.");
