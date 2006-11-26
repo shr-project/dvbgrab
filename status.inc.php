@@ -20,7 +20,7 @@ function status_update() {
   // graby ktere zacaly a nedokoncily se oznac jako 'error'
   $SQL = "update request r
           set req_status='error'
-          where r.req_status='processing' and
+          where r.req_status='saving' and
             r.req_id IN ( select g.req_id 
                           from grab g 
                           where g.grb_date_end < $grab_stop_limit)";
