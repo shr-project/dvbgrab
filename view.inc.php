@@ -56,6 +56,13 @@ function show_television_row($row, $addition, $highlight_strings, $use_diacritic
   $grb_id = $row["grb_id"];
   $req_status = $row["req_status"];
   $my_grab = ($row["my_grab"]=="0")?false:true;
+  // pokud je grab nekoho jineho tak join on r.usr_id = MOJE_ID request vyradil a tudiz musim doselectovat status
+  if (!empty($grb_id) && empty($req_status) && ! $mygrab) {
+    $SQL = "SELECT min(req_status) from request where grb_id=$grb_id";
+    $rs2 = do_sql($SQL);
+    $row2 = $rs2->FetchRow();
+    $req_status = $row2[0];
+  }
   $tel_id = $row["tel_id"];
   $tel_date_start = $DB->UnixTimeStamp($row["tel_date_start"]);
   $tv_date = date("Ymd", $tel_date_start-((date("G", $tel_date_start)<_Config_midnight)?1:0)*24*3600);

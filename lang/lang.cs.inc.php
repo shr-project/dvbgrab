@@ -239,12 +239,12 @@ define("_MsgSetupGrabBackendLang","Jazyk používaný v backend skriptech (cs,en
 define("_MsgSetupBackendStripDiacritics","1 pokud se má zkoušet použít název pořadu bez diakritiky jako název grabu a 0 pokud se má použít tel_id");
 define("_MsgSetupUserInactivityLimit","Po kolika dnech neaktivity bude uživatelský účet zrušen");
 
-define("_MsgBackendGrabError","se nepodarilo ulozit");
-define("_MsgBackendGrabErrorSub","DVBgrab: Nepodarene nahravani");
-define("_MsgBackendEncodeError","se nepodarilo zkomprimovat");
-define("_MsgBackendEncodeErrorSub","DVBgrab: Nepodarene komprimovani");
-define("_MsgBackendSuccess","je pripraveny ke stazeni");
-define("_MsgBackendSuccessSub","DVBgrab: Hotovy grab");
+define("_MsgBackendGrabError","se nepodařilo uložit");
+define("_MsgBackendGrabErrorSub","DVBgrab: Nepodařené nahrávání");
+define("_MsgBackendEncodeError","se nepodařilo zkomprimovat");
+define("_MsgBackendEncodeErrorSub","DVBgrab: Nepodařené komprimování");
+define("_MsgBackendSuccess","je připravený ke stažení");
+define("_MsgBackendSuccessSub","DVBgrab: Hotový grab");
 define("_MsgBackendGrabList","Seznam grabu za");
 define("_MsgBackendAccountCleaned","Uživatelský účet byl zrušen. Počet dnů neaktivity po kterém se účty ruší:");
 define("_MsgBackendAccountCleanedSub","Uživatelský účet byl zrušen");
