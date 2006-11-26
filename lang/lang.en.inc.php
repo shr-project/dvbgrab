@@ -104,7 +104,6 @@ define("_MsgAccountLoginButton","Login");
 
 define("_MsgAccountChangeFormTitle","Account Settings");
 define("_MsgAccountLogin","Username:");
-define("_MsgAccountUsername","Username:");
 define("_MsgAccountPass","Password:");
 define("_MsgAccountPass2","Retype password:");
 define("_MsgAccountEmail","E-mail:");

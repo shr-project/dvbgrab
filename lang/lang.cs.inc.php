@@ -104,7 +104,6 @@ define("_MsgAccountLoginButton","Přihlásit");
 
 define("_MsgAccountChangeFormTitle","Nastavení účtu");
 define("_MsgAccountLogin","Přihlašovací jméno:");
-define("_MsgAccountUsername","Přihlašovací jméno:");
 define("_MsgAccountPass","Heslo:");
 define("_MsgAccountPass2","Zopakovat heslo:");
 define("_MsgAccountEmail","E-mail:");
@@ -203,7 +202,7 @@ define("_MsgSetupDbType","Typ databázového stroje, k dispozici je díky AdoDB:
 define("_MsgSetupDbHost","Název počítače, kde poběží databázový stroj");
 define("_MsgSetupDbUser","Jméno uživatele, jak se budeme přihlašovat do databáze");
 define("_MsgSetupDbPass","Heslo s jakym se budeme přihlašovat do databáze");
-define("_MsgSetupErrorStatus","Množství informací o vzniké chybě:");
+define("_MsgSetupErrorStatus","Množství informací o vzniklé chybě:");
 define("_MsgSetupErrorStatus0","* 0 - Každá chyba je vypsána do stránky");
 define("_MsgSetupErrorStatus1","* 1 - Každá chyba je odeslána na chybový email");
 define("_MsgSetupErrorStatus2","* 2 - Každá chyba je ignorována. Toto je výchozí nastavení");

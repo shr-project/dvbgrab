@@ -51,12 +51,17 @@ if (authenticated($_COOKIE["usr_id"], $_COOKIE["usr_pass"])) {
 ?>
 <br />
 <a href="<?=$PHP_SELF."?lang=cs"?>"><img src="images/cs.gif" alt="cs.gif" /></a>
+<a href="<?=$PHP_SELF."?lang=sk"?>"><img src="images/sk.gif" alt="sk.gif" /></a>
 <a href="<?=$PHP_SELF."?lang=en"?>"><img src="images/en.gif" alt="en.gif" /></a>
+<a href="<?=$PHP_SELF."?lang=fr"?>"><img src="images/fr.gif" alt="fr.gif" /></a>
 </td></tr></table>
 </div>
 <div class="main">
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript" />
 <script type="text/javascript">
 <!--
+_uacct = "UA-986588-2";
+urchinTracker();
 
 function tick() {
   today = new Date();
@@ -72,4 +77,3 @@ function tick() {
 window.onload = tick;
 //-->
 </script>
-<?php
