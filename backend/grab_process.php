@@ -37,7 +37,7 @@ $end_time = $DB->UnixTimeStamp($row[3]);
 $rs->Close();
 
 $grab_name = get_grab_basename($grb_id);
-$grab_filename = _Config_grab_storage."/$grab_name.mpg";
+$grab_filename = _Config_grab_storage."/$grab_name.ts";
         
 while ($begin_time > time()) {
   sleep(10); // wait for beginning

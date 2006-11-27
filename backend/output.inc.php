@@ -329,6 +329,6 @@ function report_filesize_warning($size,$free) {
     $msg = "grab storage size: ".($size/(1024))." MB\n";
     $msg = "grab storage free: ".($free/(1024))." MB\n";
 
-    send_mail(_Config_error_email, _MsgBackendFilesizeWarningSizeSubj, $msg);
+    send_mail(_Config_error_email, _MsgBackendFilesizeWarningSizeSub, $msg);
 }
 ?>

@@ -75,7 +75,7 @@ function getGrabName($grb_id) {
   if (!$row[0]) {
     return false;
   }
-  $grab_file = _Config_grab_storage."/".$row[0].".mpg";
+  $grab_file = _Config_grab_storage."/".$row[0].".ts";
   if (is_empty_file($grab_file)) {
     return false;
   }
@@ -106,7 +106,7 @@ function encodeGrab($enc_id, $enc_suffix, $enc_script) {
   $target_name = "$grab_name.$enc_suffix";
   $target_path = _Config_grab_storage."/$target_name";
   $grabinfo_name = "$target_name.xml";
-  $cmd = "encoders/$enc_script "._Config_grab_storage."/$grab_name.mpg $target_path >/dev/null 2>&1";
+  $cmd = "encoders/$enc_script "._Config_grab_storage."/$grab_name.ts $target_path >/dev/null 2>&1";
   $logdbg->log("starting encoder (enc_id=$enc_id): $cmd");
   $logdbg->log("starting $target_path");
   $SQL = "update request set req_status='encoding' where grb_id=$grab_id and enc_id=$enc_id";
