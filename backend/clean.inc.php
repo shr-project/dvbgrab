@@ -1,5 +1,4 @@
 <?php
-$logdbg = &Log::singleton('console', _Config_dvbgrab_log, 'clean - debug');
 
 function cleanAccount($usrName,$usrId) {
   $cmd = "rm -f "._Config_grab_root."/$usrName/*";
@@ -65,31 +64,32 @@ function cleanSpace() {
 }
 
 function cleanTs() {
-  global $DB, $logdbg;
+  global $logdbg;
   $cmd = "/bin/ls "._Config_grab_storage."/*.ts";
   $tsList = do_cmd($cmd);
   $tok = strtok($tsList, " \n\t");
   while ($tok !== false) {
-    str_replace(".ts", "", $tok);
-    $ts = $tok;
+    $ts = str_replace(".ts", "", $tok);
+    $ts = str_replace(_Config_grab_storage."/", "", $ts);
     $SQL = "select grb_id, grb_name from grab where grb_name LIKE '$ts%'";
     $rs = do_sql($SQL);
     $row = $rs->FetchRow();
     if ($row) {
       $logdbg->log("Checking ts $ts");
-      checkTs($row[1], $row[2]);
+      checkTs($row[0], $row[1]);
     }
     $tok = strtok(" \n\t");
   }
 }
 
-function checkTs($grb_id) {
-  $SQL = "select req_output,enc_name,enc_suffix from request r,encoder e where r.enc_id=e.enc_id grb_id=$grb_id";
+function checkTs($grb_id, $grb_name) {
+  global $logdbg;
+  $SQL = "select req_output,enc_codec,enc_suffix from request r,encoder e where r.enc_id=e.enc_id AND grb_id=$grb_id";
   $rs = do_sql($SQL);
   $finishedAll = true;
   while ($row = $rs->FetchRow()) {
     if (empty($row[0])) {
-      $logdbg->log("Encoding with ".$row[2]." is probably not ready (file ".$grb_name.".".$row[3].")");
+      $logdbg->log("Encoding with ".$row[1]." is probably not ready (file ".$grb_name.".".$row[2].")");
       $finishedAll = false;
     }
   }
