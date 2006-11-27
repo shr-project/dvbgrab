@@ -3,7 +3,7 @@
 
 require_once("config.php");
 require_once("dolib.inc.php");
-require_once("lang/lang._Config_grab_backend_lang.inc.php");
+require_once("lang/lang."._Config_grab_backend_lang.".inc.php");
 
 // zjisti informace o hotovych grabech za poslednich 24 hodin
 $sqlYesterday = $DB->OffsetDate(-1);
@@ -19,7 +19,7 @@ $SQL = "select ch.chn_name, t.tel_name, t.tel_date_start
 
 $rs = do_sql($SQL);
 
-$body = _MsgBackendGrabList.date("Ymd").":";
+$body = _MsgBackendGrabList." ".date("Ymd").":\n";
 while ($row = $rs->FetchRow()) {
         $tv_date = $DB->UserTimeStamp($row[2]);
 	$tv_channel = strtolower($row[0]);
@@ -27,5 +27,5 @@ while ($row = $rs->FetchRow()) {
 
 	$body .= $grab_name."\n";
 }
-send_mail(_Config_report_email, _MsgBackendGrabList.date("Ymd"), $body, $header);
+send_mail(_Config_report_email, _MsgBackendGrabList." ".date("Ymd"), $body);
 ?>
