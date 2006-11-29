@@ -101,6 +101,7 @@ define("_MsgAccountRegistrationFormTitle","Registrácia");
 define("_MsgAccountRegisterButton","Registrovať");
 define("_MsgAccountChangeButton","Zmeniť");
 define("_MsgAccountLoginButton","Prihlásiť");
+define("_MsgAccountRemove","Úplne zrušiť účet a všetky jeho graby");
 
 define("_MsgAccountChangeFormTitle","Nastavenie účtu");
 define("_MsgAccountLogin","Prihlasovacie meno:");
@@ -173,8 +174,8 @@ define("_MsgGrabFailDelTime","ERROR: grab už skončil alebo prebieha");
 define("_MsgGrabFailDelOwner","ERROR: nie je možné zrušiť cudzí grab");
 define("_MsgGrabFailDelExist","ERROR: daný grab neexistuje");
 define("_MsgGrabConfirmStart","Chcete program");
-define("_MsgGrabConfirmGrab","vážne grabnúť?");
-define("_MsgGrabConfirmGrabToo","vážne tiež grabnúť?");
+define("_MsgGrabConfirmGrab","naozaj grabnúť?");
+define("_MsgGrabConfirmGrabToo","naozaj tiež grabnúť?");
 define("_MsgGrabLinkStorno","zrušiť grab");
 define("_MsgGrabLinkGrabToo","tiež grabnúť");
 define("_MsgGrabLinkGrab","grabnúť");

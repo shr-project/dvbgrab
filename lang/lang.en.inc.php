@@ -101,6 +101,7 @@ define("_MsgAccountRegistrationFormTitle","Registration");
 define("_MsgAccountRegisterButton","Registr");
 define("_MsgAccountChangeButton","Change");
 define("_MsgAccountLoginButton","Login");
+define("_MsgAccountRemove","Completely remove my account and all my records");
 
 define("_MsgAccountChangeFormTitle","Account Settings");
 define("_MsgAccountLogin","Username:");

@@ -163,6 +163,8 @@ function printUserRegistration($update,$usr_id) {
 </tr>
 </table>
 </form>
+<br/>
+<a href="<?=$PHP_SELF."?action=removeAccount"?>" class="warning"><?= _MsgAccountRemove ?></a>
 <?php 
 } 
 function printUserLogin() {

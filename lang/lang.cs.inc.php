@@ -101,6 +101,7 @@ define("_MsgAccountRegistrationFormTitle","Registrace");
 define("_MsgAccountRegisterButton","Registrovat");
 define("_MsgAccountChangeButton","Změnit");
 define("_MsgAccountLoginButton","Přihlásit");
+define("_MsgAccountRemove","Úplně zrušit účet a všechny jeho graby");
 
 define("_MsgAccountChangeFormTitle","Nastavení účtu");
 define("_MsgAccountLogin","Přihlašovací jméno:");

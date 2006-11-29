@@ -185,14 +185,15 @@ function indexAction($action,$query,$tv_date,$tel_id) {
 switch ($action) {
   // uzivatel se chce prilogovat, pokusime se ho autentizovat
   case "login":
-    if (login(safeUsername($_POST["usr_name"]), $_POST["usr_pass"])) {
+    $db_usr_name = safeUsername($_POST["usr_name"]);
+    if (login($db_usr_name, $_POST["usr_pass"])) {
       header("Location:$PHP_SELF?msg=log_ok");
       return;
     } else {
       header("Location:$PHP_SELF?msg=log_fail");
       return;
     }
-    $SQL = "update userinfo set usr_last_activity = ".$DB->OffsetDate(0)." where usr_name='".$_POST["usr_name"]."'";
+    $SQL = "update userinfo set usr_last_activity = ".$DB->OffsetDate(0)." where usr_name='$db_usr_name'";
     do_sql($SQL);
 
     break;
@@ -217,9 +218,10 @@ switch ($action) {
     
     // zkontrolujeme, zda bylo zadano jmeno, heslo a email
     $usr_name = safeUsername($_POST["usr_name"]);
-    $usr_pass = $_POST["usr_pass1"];
+    $usr_pass1 = safeUsername($_POST["usr_pass1"]);
+    $usr_pass2 = safeUsername($_POST["usr_pass1"]);
     $usr_email = $_POST["usr_email"];
-    if ($usr_name == "" || $usr_pass == "" || $usr_email == "") {
+    if ($usr_name == "" || $usr_pass1 == "" || $usr_pass2 == "" || $usr_email == "") {
       header("Location:$PHP_SELF?msg=reg_fail_data");
       return;
     }
@@ -231,7 +233,7 @@ switch ($action) {
     }
 
     // zkontrolujeme, zda obe zadana hesla jsou totozna
-    if ($usr_pass != $_POST["usr_pass2"]) {
+    if ($usr_pass2 != $usr_pass1) {
       header("Location:$PHP_SELF?msg=reg_fail_pass");
       return;
     }
@@ -247,12 +249,23 @@ switch ($action) {
     // zaregistrujeme noveho uzivatele
     $usr_icq = (int)$_POST["usr_icq"];
     $usr_jabber = $_POST["usr_jabber"];
-    $SQL = "insert into userinfo(usr_name,usr_pass,usr_email,usr_icq,usr_jabber,usr_ip,usr_last_activity)
-                        VALUES('$usr_name','$usr_pass','$usr_email','$usr_icq','$usr_jabber','$usr_ip',".$DB->sysTimeStamp.")";
+    $usr_enc_id = $_POST["usr_enc_id"];
+    $SQL = "insert into userinfo(usr_name,usr_pass,usr_email,usr_icq,usr_jabber,usr_ip,enc_id,usr_last_activity)
+                        VALUES('$usr_name','$usr_pass1','$usr_email','$usr_icq','$usr_jabber','$usr_ip','$usr_enc_id',".$DB->sysTimeStamp.")";
     do_sql($SQL);
 
+    // posleme email
+    $msg = _MsgIndexUser." $usr_name "._MsgIndexRegOk."\n";
+    $msg .= _MsgAccountLogin." ".$usr_name."\n";
+    $msg .= _MsgAccountPass." ".$usr_pass1."\n";
+    $msg .= _MsgAccountEmail." ".$usr_email."\n";
+    $msg .= _MsgAccountIcq." ".$usr_icq."\n";
+    $msg .= _MsgAccountJabber." ".$usr_jabber."\n";
+    $msg .= _MsgAccountIp." ".$usr_ip."\n";
+    send_mail($usr_email, _MsgIndexUser." $usr_name "._MsgIndexRegOk, $msg);
+
     // a hned ho zaloguj
-    login($usr_name, $usr_pass);
+    login($usr_name, $usr_pass1);
     header("Location:$PHP_SELF?msg=reg_ok");
     return;
     break;

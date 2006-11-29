@@ -108,6 +108,33 @@ switch ($_GET["action"]) {
     }
     echo "</div>\n";
     break;
+  case "removeAccount":
+    $SQL = "select usr_id, usr_name, usr_email, usr_pass, usr_icq, usr_jabber, usr_ip, enc_id
+            from userinfo u
+            where usr_id=$usr_id";
+    $rs = do_sql($SQL);
+    $row = $rs->FetchRow();
+    if (!$row) {
+      echo _MsgAccountNoChangesNotice."<br />\n";
+      return;
+    }
+    $SQL = "delete from userreq where usr_id=$usr_id";
+    do_sql($SQL);
+    $SQL = "delete from userinfo where usr_id=$usr_id";
+    do_sql($SQL);
+    
+    // posleme email
+    $msg = _MsgBackendAccountCleanedSub."\n";
+    $msg .= _MsgAccountLogin.": ".$row[1]."\n";
+    $msg .= _MsgAccountEmail.": ".$row[2]."\n";
+    $msg .= _MsgAccountIcq.": ".$row[4]."\n";
+    $msg .= _MsgAccountJabber.": ".$row[5]."\n";
+    $msg .= _MsgAccountIp.": ".$row[6]."\n";
+    send_mail($row[2], _MsgBackendAccountCleanedSub, $msg);
+
+    echo _MsgBackendAccountCleanedSub."<br />\n";
+    //logout();
+    break;
 }
 require_once("footer.php");
 ?>
