@@ -42,13 +42,12 @@ switch ($_GET["action"]) {
     $usr_pass=md5($usr_pass1);
     if ($usr_pass1 != "" && $old_usr_pass != $usr_pass) {
       if (_Config_auth_db_used == '1' && autenticatedExistExtern($usr_name)) {
-        $msg .= _MsgAccountPassExternAuthNoChange."\n";
-        echo "</div>\n";
+        echo '<span class="warning">'._MsgAccountPassExternAuthNoChange."</span>\n";
         break;
       } else {
         // zkontrolujeme, zda obe zadana hesla jsou totozna
         if ($usr_pass2 != $usr_pass1) {
-          echo _MsgIndexRegFailPass."\n";
+          echo '<span class="warning">'._MsgIndexRegFailPass."</span>\n";
           return;
         }
         $SQL .= "usr_pass = '$usr_pass'";
