@@ -1,4 +1,10 @@
 <?
+/*    
+     WARNING: dont change this file without good reason
+     You have to let define clause formating untouched.
+     setup.php will apply new setting by replacing ^define("variable","old_value"); no spaces!
+*/
+
 /* 
      supported db_type: all from adodb 
      (MySQL, PostgreSQL, Interbase, Firebird, Informix, Oracle, MS SQL, 
@@ -10,6 +16,18 @@ define("_Config_db_type","postgres");
 define("_Config_db_host","localhost");
 define("_Config_db_user","dvbgrab");
 define("_Config_db_pass","dvbgrab");
+
+/*
+     External authentication
+     Use external database for user authentication.
+*/
+define("_Config_auth_db_used","1");
+define("_Config_auth_db_name","users");
+define("_Config_auth_db_type","postgres");
+define("_Config_auth_db_host","localhost");
+define("_Config_auth_db_user","dvbgrab");
+define("_Config_auth_db_pass","dvbgrab");
+define("_Config_auth_db_select","select * from users where person='dvbgrab_username' and password='dvbgrab_password'");
 
 /*
     * 0 - Any error is written into the page
