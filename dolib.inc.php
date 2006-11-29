@@ -4,8 +4,8 @@ require_once("config.php");
 require_once("loggers.inc.php");
 require_once("adodb/adodb.inc.php");
 
-$logsql  = &Log::singleton('file', _Config_dvbgrab_log.'.sql', $logFileConf);
-$logsys  = &Log::singleton('file', _Config_dvbgrab_log.'.sys', $logFileConf);
+$logsql  = &Log::singleton('file', _Config_dvbgrab_log.'.sql', 'sql', $logFileConf);
+$logsys  = &Log::singleton('file', _Config_dvbgrab_log.'.sys', 'sys', $logFileConf);
 $DB = NewADOConnection(_Config_db_type);
 if (!$DB->Connect(_Config_db_host, _Config_db_user, _Config_db_pass, _Config_db_name)) {
   print "Sorry, cannot connect to database";

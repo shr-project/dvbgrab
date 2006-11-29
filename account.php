@@ -43,7 +43,8 @@ switch ($_GET["action"]) {
     if ($usr_pass1 != "" && $old_usr_pass != $usr_pass) {
       if (_Config_auth_db_used == '1' && autenticatedExistExtern($usr_name)) {
         $msg .= _MsgAccountPassExternAuthNoChange."\n";
-        return;
+        echo "</div>\n";
+        break;
       } else {
         // zkontrolujeme, zda obe zadana hesla jsou totozna
         if ($usr_pass2 != $usr_pass1) {
