@@ -51,7 +51,7 @@ $SQL = "select t.tel_name,
           g.grb_date_end
         from television t
              left join grab g on (g.tel_id = t.tel_id)
-             left join channel c on (c.chn_id = t.chn.id)
+             left join channel c on (c.chn_id = t.chn_id)
         where g.grb_id=$grab_id";
 $rs = do_sql($SQL);
 $row = $rs->FetchRow();
