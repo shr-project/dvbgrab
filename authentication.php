@@ -1,6 +1,10 @@
 <?php
 require_once("language.inc.php");
 require_once("dolib.inc.php");
+require_once("loggers.inc.php");
+
+$logdbg  = &Log::singleton('file', _Config_dvbgrab_log, 'auth', $logFileConf);
+
 
 // autentizuje uzivatele
 function authenticated($usr_id, $usr_pass_md5) {
@@ -44,9 +48,12 @@ function autenticatedExistExtern($usr_name) {
 }
 
 function authenticatedUser($usr_name,$usr_pass_md5) {
+  global $logdbg;
   if (_Config_auth_db_used == '1') {
     if (autenticatedExistExtern($usr_name)) {
+      $logdbg->log($usr_name." exists in external database");
       if (authenticatedExtern($usr_name,$usr_pass_md5)) {
+        $logdbg->log($usr_name." password good");
         return true;
       }
     }
@@ -58,14 +65,23 @@ function authenticatedUser($usr_name,$usr_pass_md5) {
             where usr_name='$usr_name' and
               usr_pass='$usr_pass_md5'";
   $rs = do_sql($SQL);
+  $logdbg->log($usr_name." locally ".($rs->recordCount() == 1));
   return ($rs->recordCount() == 1);
 }
 
 
 // naloguje uzivatele
 function login($usr_name, $usr_pass_md5) {
+  global $logdbg;
   if (authenticatedUser($usr_name,$usr_pass_md5)) {
-    setcookie("usr_id", $row[0], time()+60*60*24*365*2);
+    $logdbg->log("Setting cookies");
+    $SQL = "select usr_id from userinfo
+              where usr_name='$usr_name'";
+    $rs = do_sql($SQL);
+    $row = $rs->FetchRow();
+    $usr_id = $row[0];
+
+    setcookie("usr_id", $usr_id, time()+60*60*24*365*2);
     setcookie("usr_pass", $usr_pass_md5, time()+60*60*24*365*2);
     return true;
   } else {
