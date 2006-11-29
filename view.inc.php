@@ -15,7 +15,7 @@ require_once("language.inc.php");
 * @param my_grab true when it is grab also for my
 * @param addition GET links (e.g., "tv_date=xxxx")
 */
-function show_television($tel_id, $tel_date_start, $tel_name, $tel_desc, $tel_category, $grb_id, $req_status, $my_grab, $addition="", $show_logo, $chn_logo, $chn_name,$tv_date, $show_link, $last=false, $hi) {
+function show_television($tel_id, $tel_date_start, $tel_name, $tel_desc, $tel_category, $grb_id, $req_status, $my_grab, $addition="", $show_logo, $chn_logo, $chn_name,$tv_date, $show_link, $last=false, $datetime, $hi) {
   echo "<tr";
     show_grab_class($grb_id, $req_status, false);
   echo ">\n";
@@ -23,7 +23,7 @@ function show_television($tel_id, $tel_date_start, $tel_name, $tel_desc, $tel_ca
     echo "<td valign=\"top\"><img class=\"programLogo\" alt=\"$chn_name\" title=\"$chn_name\" src=\"images/logos/$chn_logo\"/></td>";
   }
 
-  show_television_date($tel_id, $tel_date_start, $req_status, $my_grab, $grb_id, $hi);
+  show_television_date($tel_id, $tel_date_start, $req_status, $my_grab, $grb_id, $datetime, $hi);
 
   echo "<td valign=\"top\">\n";
   echo '<span class="programName'.$hi.'"';
@@ -107,7 +107,7 @@ function show_television_row($row, $addition, $highlight_strings, $use_diacritic
   $chn_name = $row["chn_name"];
   $chn_logo = $row["chn_logo"];
 
-  show_television($tel_id, $tel_date_start, $tel_name, $tel_desc, $tel_category, $grb_id, $req_status, $my_grab, $addition, $show_logo, $chn_logo, $chn_name, $tv_date, $show_link, $last, $hi);
+  show_television($tel_id, $tel_date_start, $tel_name, $tel_desc, $tel_category, $grb_id, $req_status, $my_grab, $addition, $show_logo, $chn_logo, $chn_name, $tv_date, $show_link, $last, (!empty($highlight_strings)), $hi);
 }
 
 /**
@@ -119,14 +119,18 @@ function show_grab_class($grb_id, $req_status, $my_grab) {
   }
 }
 
-function show_television_date($tel_id, $tel_date_start, $req_status, $my_grab, $grb_id, $hi="") {
+function show_television_date($tel_id, $tel_date_start, $req_status, $my_grab, $grb_id, $datetime, $hi="") {
   echo "<td class=\"programDate".$hi;
   if ($grb_id && !empty($req_status)) {
     echo " status-".$req_status.(($my_grab)?"-my":"");
   }
   echo "\">";
+  $format = "H:i";
+  if ($datetime) {
+    $format = "Y-m-d H:i";
+  }
 
-  echo "<a name=\"$tel_id\"></a>".ereg_replace("^0","&nbsp;",date("H:i", $tel_date_start))."</td>";
+  echo "<a name=\"$tel_id\"></a>".ereg_replace("^0","&nbsp;",date($format, $tel_date_start))."</td>";
 }
 
 /**
