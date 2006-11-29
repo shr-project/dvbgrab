@@ -15,7 +15,8 @@ switch ($_GET["action"]) {
     break;
   case "editDo":
     $usr_email=$_POST["usr_email"];
-    $usr_pass=$_POST["usr_pass1"];
+    $usr_pass1=$_POST["usr_pass1"];
+    $usr_pass2=$_POST["usr_pass2"];
     $usr_icq=$_POST["usr_icq"];
     $usr_jabber=$_POST["usr_jabber"];
     $usr_ip=$_POST["usr_ip"];
@@ -38,10 +39,21 @@ switch ($_GET["action"]) {
 
     $changed = false;
     $SQL = "update userinfo set ";
-    if ($usr_pass != "" && $old_usr_pass != $usr_pass) {
-      $SQL .= "usr_pass = '$usr_pass'";
-      $changed = true;
-      $msg .= _MsgAccountPass." $old_usr_pass -> $usr_pass\n";
+    $usr_pass=md5($usr_pass1);
+    if ($usr_pass1 != "" && $old_usr_pass != $usr_pass) {
+      if (_Config_auth_db_used == '1' && autenticatedExistExtern($usr_name)) {
+        $msg .= _MsgAccountPassExternAuthNoChange."\n";
+        return;
+      } else {
+        // zkontrolujeme, zda obe zadana hesla jsou totozna
+        if ($usr_pass2 != $usr_pass1) {
+          echo _MsgIndexRegFailPass."\n";
+          return;
+        }
+        $SQL .= "usr_pass = '$usr_pass'";
+        $changed = true;
+        $msg .= _MsgAccountPass." $old_usr_pass -> $usr_pass1\n";
+      }
     }
     if ($old_usr_email != $usr_email) {
       if ($changed) {
@@ -100,6 +112,7 @@ switch ($_GET["action"]) {
       do_sql($SQL);
       mail($usr_email, "DVBgrab: "._MsgAccountChangesSubject, $msg, "From: "._Config_admin_email."\r\n");
       echo _MsgAccountChangesNotice."<br />\n";
+      echo str_replace("\n",,"<br />",$msg)."<br />\n";
       echo "<a href=\"index.php\">"._MsgGlobalBack."</a></br>\n";
     } else {
        echo _MsgAccountNoChangesNotice."<br />\n";

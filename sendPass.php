@@ -56,6 +56,10 @@ switch ($_GET["action"]) {
             echo "<a href=\"sendPass.php?action=sendPassword\">"._MsgGlobalRetry."</a>";
             echo "</div>";
           } else {
+            if (_Config_auth_db_used == '1' && autenticatedExistExtern($usr_name)) {
+              echo _MsgAccountPassExternAuthNoChange."\n";
+              return;
+            }
             $row = $rs->FetchRow();
             $usr_id = $row[0];
             $user = $row[1];

@@ -107,6 +107,7 @@ define("_MsgAccountChangeFormTitle","Account Settings");
 define("_MsgAccountLogin","Username:");
 define("_MsgAccountPass","Password:");
 define("_MsgAccountPass2","Retype password:");
+define("_MsgAccountPassExternAuthNoChange","Password cannot be changed here for externally authenticated users.");
 define("_MsgAccountEmail","E-mail:");
 define("_MsgAccountEmailWarning","E-mail has to be valid, to this address you will receive recording finish notice and download links!");
 define("_MsgAccountIp","IP for download:");
@@ -203,6 +204,10 @@ define("_MsgSetupDbType","Database type, thanks to ADOdb we can use: MySQL, Post
 define("_MsgSetupDbHost","Computer name where is database located");
 define("_MsgSetupDbUser","Database user name");
 define("_MsgSetupDbPass","Password for database user to access our data");
+define("_MsgSetupAuth","External sql query for user authentication. Registration is allowed after user authenticated in external db and password is not stored in dvbgrab table.");
+define("_MsgSetupAuthDbUsed","Using external user/pass or store it in own userinfo table (0 dont use, 1 use)");
+define("_MsgSetupAuthDbUsedOnly","Allow only externaly authenticated users to register and use DVBgrab (0 no, 1 yes)");
+define("_MsgSetupAuthDbSelect","Select used in query, in this string are 2 replaced strings dvbgrab_username is replaced with username used here and dvbgrab_password is md5 of password.");
 define("_MsgSetupErrorStatus","Verbosity of errors:");
 define("_MsgSetupErrorStatus0","* 0 - Every error is written to page");
 define("_MsgSetupErrorStatus1","* 1 - Every error is send to error mail");

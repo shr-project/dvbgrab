@@ -12,6 +12,15 @@ switch ($_GET["action"]) {
     $db_host=$_POST["v_db_host"];
     $db_user=$_POST["v_db_user"];
     $db_pass=$_POST["v_db_pass"];
+    $auth_db_name=$_POST["v_auth_db_name"];
+    $auth_db_used=$_POST["v_auth_db_used"];
+    $auth_db_used_only=$_POST["v_auth_db_used_only"];
+    $auth_db_type=$_POST["v_auth_db_type"];
+    $auth_db_host=$_POST["v_auth_db_host"];
+    $auth_db_user=$_POST["v_auth_db_user"];
+    $auth_db_pass=$_POST["v_auth_db_pass"];
+    $auth_db_select=$_POST["v_auth_db_select"];
+    $auth_db_user_select=$_POST["v_auth_db_user_select"];
     $error_status=$_POST["v_error_status"];
     $error_email=$_POST["v_error_email"];
     $admin_email=$_POST["v_admin_email"];
@@ -97,6 +106,15 @@ $db_type=_Config_db_type;
 $db_host=_Config_db_host;
 $db_user=_Config_db_user;
 $db_pass=_Config_db_pass;
+$auth_db_used=_Config_auth_db_used;
+$auth_db_used_only=_Config_auth_db_used_only;
+$auth_db_name=_Config_auth_db_name;
+$auth_db_type=_Config_auth_db_type;
+$auth_db_host=_Config_auth_db_host;
+$auth_db_user=_Config_auth_db_user;
+$auth_db_pass=_Config_auth_db_pass;
+$auth_db_select=_Config_auth_db_select;
+$auth_db_user_select=_Config_auth_db_user_select;
 $error_status=_Config_error_status;
 $error_email=_Config_error_email;
 $admin_email=_Config_admin_email;
@@ -148,6 +166,44 @@ $record_time_after_last=_Config_record_time_after_last;
 <tr><td colspan="2" class="desc"><? echo _MsgSetupDbPass ?></td></tr>
 <tr><td class="key" id="db_pass">db_pass:</td>
 <td class="value" id="v_db_pass"><input class="value" type="text" name="v_db_pass" value="<?php print $db_pass;?>"/></td></tr>
+
+<tr><td colspan="2" class="desc"><? echo _MsgSetupDbName ?></td></tr>
+<tr><td class="key" id="db_name">db_name:</td>
+<td class="value" id="v_db_name"><input class="value" type="text" name="v_db_name" value="<?php print $db_name;?>"/></td></tr>
+
+<tr><td colspan="2" class="desc"><? echo _MsgSetupAuth ?><br />
+<tr><td colspan="2" class="desc"><? echo _MsgSetupAuthDbUsed ?></td></tr>
+<tr><td class="key" id="auth_db_used">auth_db_used:</td>
+<td class="value" id="v_auth_db_used"><input class="value" type="text" name="v_auth_db_used" value="<?php print $auth_db_used;?>"/></td></tr>
+
+<tr><td colspan="2" class="desc"><? echo _MsgSetupAuthDbUsedOnly ?></td></tr>
+<tr><td class="key" id="auth_db_used_only">auth_db_used_only:</td>
+<td class="value" id="v_auth_db_used_only"><input class="value" type="text" name="v_auth_db_used_only" value="<?php print $auth_db_used_only;?>"/></td></tr>
+
+<tr><td colspan="2" class="desc"><? echo _MsgSetupDbHost ?></td></tr>
+<tr><td colspan="2" class="desc"><? echo _MsgSetupDbType ?></td></tr>
+<tr><td class="key" id="auth_db_type">auth_db_type:</td>
+<td class="value" id="v_auth_db_type"><input class="value" type="text" name="v_auth_db_type" value="<?php print $auth_db_type;?>"/></td></tr>
+
+<tr><td colspan="2" class="desc"><? echo _MsgSetupDbHost ?></td></tr>
+<tr><td class="key" id="auth_db_host">auth_db_host:</td>
+<td class="value" id="v_auth_db_host"><input class="value" type="text" name="v_auth_db_host" value="<?php print $auth_db_host;?>"/></td></tr>
+
+<tr><td colspan="2" class="desc"><? echo _MsgSetupDbUser ?></td></tr>
+<tr><td class="key" id="auth_db_user">auth_db_user:</td>
+<td class="value" id="v_auth_db_user"><input class="value" type="text" name="v_auth_db_user" value="<?php print $auth_db_user;?>"/></td></tr>
+
+<tr><td colspan="2" class="desc"><? echo _MsgSetupDbPass ?></td></tr>
+<tr><td class="key" id="auth_db_pass">auth_db_pass:</td>
+<td class="value" id="v_auth_db_pass"><input class="value" type="text" name="v_auth_db_pass" value="<?php print $auth_db_pass;?>"/></td></tr>
+
+<tr><td colspan="2" class="desc"><? echo _MsgSetupAuthDbSelect ?></td></tr>
+<tr><td class="key" id="auth_db_select">auth_db_select:</td>
+<td class="value" id="v_auth_db_select"><input class="value" type="text" name="v_auth_db_select" value="<?php print $auth_db_select;?>"/></td></tr>
+
+<tr><td colspan="2" class="desc"><? echo _MsgSetupAuthDbUserSelect ?></td></tr>
+<tr><td class="key" id="auth_db_user_select">auth_db_user_select:</td>
+<td class="value" id="v_auth_db_user_select"><input class="value" type="text" name="v_auth_db_user_select" value="<?php print $auth_db_user_select;?>"/></td></tr>
 
 <tr><td colspan="2" class="desc"><? echo _MsgSetupErrorStatus ?><br />
                                  <? echo _MsgSetupErrorStatus0 ?><br />

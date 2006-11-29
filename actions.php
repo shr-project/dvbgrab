@@ -186,7 +186,8 @@ switch ($action) {
   // uzivatel se chce prilogovat, pokusime se ho autentizovat
   case "login":
     $db_usr_name = safeUsername($_POST["usr_name"]);
-    if (login($db_usr_name, $_POST["usr_pass"])) {
+    $db_usr_pass = md5($_POST["usr_pass"]);
+    if (login($db_usr_name, $db_usr_pass)) {
       header("Location:$PHP_SELF?msg=log_ok");
       return;
     } else {
@@ -218,8 +219,8 @@ switch ($action) {
     
     // zkontrolujeme, zda bylo zadano jmeno, heslo a email
     $usr_name = safeUsername($_POST["usr_name"]);
-    $usr_pass1 = safeUsername($_POST["usr_pass1"]);
-    $usr_pass2 = safeUsername($_POST["usr_pass1"]);
+    $usr_pass1 = $_POST["usr_pass1"];
+    $usr_pass2 = $_POST["usr_pass2"];
     $usr_email = $_POST["usr_email"];
     if ($usr_name == "" || $usr_pass1 == "" || $usr_pass2 == "" || $usr_email == "") {
       header("Location:$PHP_SELF?msg=reg_fail_data");
@@ -247,11 +248,29 @@ switch ($action) {
     }
 
     // zaregistrujeme noveho uzivatele
+    $usr_pass = md5($usr_pass1);
     $usr_icq = (int)$_POST["usr_icq"];
     $usr_jabber = $_POST["usr_jabber"];
     $usr_enc_id = $_POST["usr_enc_id"];
+    
+    if (_Config_auth_db_used == '1') {
+      if (autenticatedExistExtern($usr_name)) {
+        if (!authenticatedExtern($usr_name,$usr_pass)) {
+          if (_Config_auth_db_used_only == '1') {
+            header("Location:$PHP_SELF?msg=log_fail");
+            return;
+          }
+          header("Location:$PHP_SELF?msg=reg_fail_name");
+          return;
+        }
+        $usr_pass="extern";
+      } else if (_Config_auth_db_used_only == '1') {
+        header("Location:$PHP_SELF?msg=log_fail");
+        return;
+      }
+    }
     $SQL = "insert into userinfo(usr_name,usr_pass,usr_email,usr_icq,usr_jabber,usr_ip,enc_id,usr_last_activity)
-                        VALUES('$usr_name','$usr_pass1','$usr_email','$usr_icq','$usr_jabber','$usr_ip','$usr_enc_id',".$DB->sysTimeStamp.")";
+                        VALUES('$usr_name','$usr_pass','$usr_email','$usr_icq','$usr_jabber','$usr_ip','$usr_enc_id',".$DB->sysTimeStamp.")";
     do_sql($SQL);
 
     // posleme email
@@ -265,7 +284,7 @@ switch ($action) {
     send_mail($usr_email, _MsgIndexUser." $usr_name "._MsgIndexRegOk, $msg);
 
     // a hned ho zaloguj
-    login($usr_name, $usr_pass1);
+    login($usr_name, $usr_pass);
     header("Location:$PHP_SELF?msg=reg_ok");
     return;
     break;
