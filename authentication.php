@@ -4,7 +4,7 @@ require_once("dolib.inc.php");
 
 // autentizuje uzivatele
 function authenticated($usr_id, $usr_pass_md5) {
-  $SQL = "select usr_id from usergrb
+  $SQL = "select usr_id from userinfo
           where usr_id=".(int)$usr_id." and
             md5(usr_pass)='$usr_pass_md5'";
   $rs = do_sql($SQL);
@@ -13,7 +13,7 @@ function authenticated($usr_id, $usr_pass_md5) {
 
 // naloguje uzivatele
 function login($usr_name, $usr_pass) {
-  $SQL = "select usr_id from usergrb 
+  $SQL = "select usr_id from userinfo 
           where usr_name='$usr_name' and
             usr_pass='$usr_pass'";
   $rs = do_sql($SQL);

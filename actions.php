@@ -15,8 +15,13 @@ function grabAction($action,$query,$tv_date,$tel_id,$grb_id) {
   switch ($action) {
     // zadani noveho grabu
     case "grab_add":
-      $SQL = "update usergrb set usr_last_activity = ".$DB->OffsetDate(0)." where usr_id=$usr_id";
+      $SQL = "update userinfo set usr_last_activity = ".$DB->OffsetDate(0)." where usr_id=$usr_id";
       do_sql($SQL);
+      $SQL = "select enc_id from userinfo where usr_id=$usr_id";
+      do_sql($SQL);
+      $rs = do_sql($SQL);
+      $row = $rs->FetchRow();
+      $usr_enc_id = $row[0];
 
       // zjisti, zda porad existuje
       $SQL = "select t.tel_date_start, t.tel_date_end, t.chn_id, g.grb_id
@@ -45,24 +50,8 @@ function grabAction($action,$query,$tv_date,$tel_id,$grb_id) {
         header("Location:$PHP_SELF?msg=grb_add_fail_time&$addition#$tel_id");
         return;
       }
-      // grab jiz existuje, pridat dalsiho usera
-      if ($tel_grb_id) {
-        // check for duplicate request of the same user
-        $SQL = "select * from request
-                where grb_id = $tel_grb_id and usr_id=$usr_id";
-        $rs_check = do_sql($SQL);
-        if ($rs_check->RecordCount() == 0) {
-          $SQL = "insert into request(grb_id,usr_id,req_status) 
-                              VALUES ($tel_grb_id, $usr_id, 'scheduled')";
-          do_sql($SQL);
-          header("Location:$PHP_SELF?msg=grb_add_ok&$addition#$tel_id");
-          return;
-        } else {
-          header("Location:$PHP_SELF?msg=grb_add_fail_exist&$addition#$tel_id");
-          return;
-        }
-      // grab neexistuje a muzeme ho zadat
-      } else {
+
+      if (!$tel_grb_id) {
         // zjisti cas nasledujiciho poradu na danem kanale -> to bude cas pro skonceni grabu
         if (empty($tel_date_end)) {
           $SQL = "select tel_date_start from television 
@@ -96,64 +85,100 @@ function grabAction($action,$query,$tv_date,$tel_id,$grb_id) {
                 where tel_id=$tel_id";
         $rs = do_sql($SQL);
         $row = $rs->FetchRow();
-         
-        $SQL = "insert into request (grb_id,usr_id,req_status)
-                             VALUES ($row[0], $usr_id,'scheduled')";
+        $tel_grb_id = $row[0];
+      }
+
+      // check for duplicate request of the same encoding
+      $SQL = "select req_id from request
+              where grb_id = $tel_grb_id and enc_id=$usr_enc_id";
+      $rs_check = do_sql($SQL);
+      $row_check = $rs_check->FetchRow();
+      $tel_req_id = $row_check[0];
+
+      if (!$tel_req_id) {
+        $SQL = "insert into request(grb_id,enc_id,req_status) 
+                            VALUES ($tel_grb_id, $usr_enc_id, 'scheduled')";
+        do_sql($SQL);
+        $SQL = "select req_id from request
+                where grb_id = $tel_grb_id and enc_id=$usr_enc_id";
+        $rs_check = do_sql($SQL);
+        $row_check = $rs_check->FetchRow();
+        $tel_req_id = $row_check[0];
+      }
+ 
+      // check for duplicate user request
+      $SQL = "select urq_id from userreq
+              where req_id = $tel_req_id and usr_id=$usr_id";
+      $rs_check = do_sql($SQL);
+      if ($rs_check->RecordCount() == 0) {
+        $SQL = "insert into userreq(req_id,usr_id)
+                            VALUES ($tel_req_id, $usr_id)";
         do_sql($SQL);
         header("Location:$PHP_SELF?msg=grb_add_ok&$addition#$tel_id");
         return;
+      } else {
+        header("Location:$PHP_SELF?msg=grb_add_fail_exist&$addition#$tel_id");
+        return;
       }
-    break;
+      break;
 
-  case "grab_del":
-    $SQL = "update usergrb set usr_last_activity = ".$DB->OffsetDate(0)." where usr_id=$usr_id";
-    do_sql($SQL);
-
-    // zjisti, zda grab existuje
-    $SQL = "select g.tel_id, r.req_status, r.usr_id
-            from grab g, request r
-            where g.grb_id=r.grb_id and g.grb_id=$grb_id";
-    // grab existuje
-    $rs = do_sql($SQL);    
-    $row = $rs->FetchRow();
-    // grab s $grb_id neexistuje
-    if (!$row) {
-      header("Location:$PHP_SELF?msg=grb_del_fail_exist&$addition");
-      return;
-    }
-    // grab uz skoncil nebo probiha
-    if ($row[1] != 'scheduled') {
-      header("Location:$PHP_SELF?msg=grb_del_fail_time&$addition#$row[0]");
-      return;
-    }
-
-    while ($row[2] != $usr_id) {
-      if (!($row = $rs->FetchRow())) {
-        // nejedna se o muj grab
+    case "grab_del":
+      $SQL = "update userinfo set usr_last_activity = ".$DB->OffsetDate(0)." where usr_id=$usr_id";
+      do_sql($SQL);
+  
+      // zjisti, zda existuje grab, k nemu spravny request a na ten userreq
+      $SQL = "select u.urq_id,u.req_id,u.usr_id, g.tel_id, r.grb_id, r.req_status
+              from grab g, request r, userreq u
+              where g.grb_id=r.grb_id and u.req_id = r.req_id and g.grb_id=$grb_id";
+      // grab existuje
+      $rs = do_sql($SQL);
+      $row = $rs->FetchRow();
+      // grab s $grb_id neexistuje
+      if (!$row) {
+        header("Location:$PHP_SELF?msg=grb_del_fail_exist&$addition");
+        return;
+      }
+      $my_usr_id = $row[2];
+      // Hledam muj userreq
+      while ($my_usr_id != $usr_id) {
+        if (!($row = $rs->FetchRow())) {
+          // nejedna se o muj grab
+          header("Location:$PHP_SELF?msg=grb_del_fail_owner&$addition#$row[0]");
+          return;
+        }
+        $my_usr_id = $row[2];
+      }
+      // stejne jsem nenasel
+      if ($my_usr_id != $usr_id) {
+        // na dany grab nemam zadny request
         header("Location:$PHP_SELF?msg=grb_del_fail_owner&$addition#$row[0]");
         return;
       }
-    }
-    if (($rs->RecordCount()) == 1) {
-      // zadal jsem o ten porad jediny
-      $SQL = "delete from request where grb_id=$grb_id";
+      
+      $my_urq_id = $row[0];
+      $my_req_id = $row[1];
+      $my_tel_id = $row[3];
+      $my_grb_id = $row[4];
+      $my_req_status = $row[5];
+      // grab uz skoncil nebo probiha
+      if ($my_req_status != 'scheduled') {
+        header("Location:$PHP_SELF?msg=grb_del_fail_time&$addition#$my_tel_id");
+        return;
+      }
+      $SQL = "delete from userreq where urq_id=$my_urq_id";
       do_sql($SQL);
-      $SQL = "delete from grab where grb_id=$grb_id";
+      $SQL = "delete from request where req_id=$my_req_id AND NOT EXISTS (select usr_id from userreq where req_id=$my_req_id)";
       do_sql($SQL);
-    } else {
-      // ne je nas vic, takze jenom odeberu muj request
-      $SQL = "delete from request
-              where grb_id=$grb_id and usr_id=$usr_id";
+      $SQL = "delete from grab where grb_id=$my_grb_id AND NOT EXISTS (select req_id from request where grb_id=$my_grb_id)";
       do_sql($SQL);
-    }
-
-    header("Location:$PHP_SELF?msg=grb_del_ok&$addition#$row[0]");
-    return;
-    break;
-  default:
+  
+      header("Location:$PHP_SELF?msg=grb_del_ok&$addition#$my_tel_id");
+      return;
+      break;
+    default:
   }
 }
-
+  
 function indexAction($action,$query,$tv_date,$tel_id) {
   global $DB;
   global $PHP_SELF;
@@ -167,7 +192,7 @@ switch ($action) {
       header("Location:$PHP_SELF?msg=log_fail");
       return;
     }
-    $SQL = "update usergrb set usr_last_activity = ".$DB->OffsetDate(0)." where usr_name='".$_POST["usr_name"]."'";
+    $SQL = "update userinfo set usr_last_activity = ".$DB->OffsetDate(0)." where usr_name='".$_POST["usr_name"]."'";
     do_sql($SQL);
 
     break;
@@ -183,7 +208,7 @@ switch ($action) {
   case "editDo":
     $usr_ip=getUserIp();    
 
-    $SQL = "select usr_name from usergrb where usr_ip='$usr_ip'";
+    $SQL = "select usr_name from userinfo where usr_ip='$usr_ip'";
     $rs = do_sql($SQL);
     if ($rs->rowCount() > 0) {
       header("Location:$PHP_SELF?msg=reg_fail_ip");
@@ -212,7 +237,7 @@ switch ($action) {
     }
 
     // zkontrolujeme, zda uzivatel daneho jmena uz neexistuje
-    $SQL = "select usr_id from usergrb where usr_name='$usr_name'";
+    $SQL = "select usr_id from userinfo where usr_name='$usr_name'";
     $rs = do_sql($SQL);
     if ($rs->rowCount() == 1) {
       header("Location:$PHP_SELF?msg=reg_fail_name");
@@ -222,7 +247,7 @@ switch ($action) {
     // zaregistrujeme noveho uzivatele
     $usr_icq = (int)$_POST["usr_icq"];
     $usr_jabber = $_POST["usr_jabber"];
-    $SQL = "insert into usergrb(usr_name,usr_pass,usr_email,usr_icq,usr_jabber,usr_ip,usr_last_activity)
+    $SQL = "insert into userinfo(usr_name,usr_pass,usr_email,usr_icq,usr_jabber,usr_ip,usr_last_activity)
                         VALUES('$usr_name','$usr_pass','$usr_email','$usr_icq','$usr_jabber','$usr_ip',".$DB->sysTimeStamp.")";
     do_sql($SQL);
 

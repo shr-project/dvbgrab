@@ -48,10 +48,12 @@ function print_results($usr_id,$query,$tv_date) {
                  tel_date_start,
                  g.grb_id,
                  r.req_status,
-                 ".$DB->IfNull('r.usr_id',"'0'")." as my_grab
-          from channel c inner join television t on (c.chn_id=t.chn_id)
-               left join grab g on (t.tel_id=g.tel_id)
-               left join request r on (g.grb_id=r.grb_id and r.usr_id=$usr_id)
+                 ".$DB->IfNull('u.usr_id',"'0'")." as my_grab
+          from television t
+               left join channel c on (c.chn_id=t.chn_id)
+               left join grab g on (g.tel_id=t.tel_id)
+               left join request r on (r.grb_id=g.grb_id)
+               left join userreq u on (u.req_id=r.req_id and u.usr_id=$usr_id)
           where $query_sql and
                 tel_date_start>=".$DB->sysTimeStamp."
           order by tel_date_start";

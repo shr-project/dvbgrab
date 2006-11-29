@@ -22,7 +22,7 @@ switch ($_GET["action"]) {
     $usr_enc_id=(int)$_POST["usr_enc_id"];
 
     $SQL = "select usr_id, usr_name, usr_email, usr_pass, usr_icq, usr_jabber, usr_ip, enc_id
-            from usergrb u 
+            from userinfo u 
             where usr_id=$usr_id";
     $msg = _MsgAccountChanges."\n";
           
@@ -37,7 +37,7 @@ switch ($_GET["action"]) {
     $old_usr_enc_id=$row[7];
 
     $changed = false;
-    $SQL = "update usergrb set ";
+    $SQL = "update userinfo set ";
     if ($usr_pass != "" && $old_usr_pass != $usr_pass) {
       $SQL .= "usr_pass = '$usr_pass'";
       $changed = true;

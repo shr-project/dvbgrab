@@ -74,7 +74,7 @@ function printUserRegistration($update,$usr_id) {
 <?php
   if ($update) {
     $SQL = "select u.usr_name, u.usr_email, u.usr_icq, u.usr_jabber, u.usr_ip, e.enc_id, e.enc_codec
-            from usergrb u, encoder e
+            from userinfo u, encoder e
             where e.enc_id = u.enc_id and u.usr_id=$usr_id";
     $rs = do_sql($SQL);
     $row = $rs->FetchRow();

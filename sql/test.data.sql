@@ -1,3 +1,5 @@
+INSERT INTO param(par_key, par_val) VALUES ('last_account_update', '0000-00-00 00:00:00');
+
 INSERT INTO tvgrabber(tvg_id,tvg_name,tvg_cron_time,tvg_cron_cmd) VALUES(1,'PHP poller CT1,CT2,Nova,Prima','0 23 * * 6','cd /var/www/dvbgrab/tvgrabbers; ./zaznam.php 10');
 INSERT INTO tvgrabber(tvg_id,tvg_name,tvg_cron_time,tvg_cron_cmd) VALUES(2,'tv_grab_cz','0 23 * * 6','cd /var/www/dvbgrab/tvgrabbers/; tv_grab_cz/tv_grab_cz --days 10 | ./xmltv_to_db.php');
 
@@ -10,7 +12,7 @@ INSERT INTO encoder(enc_id,enc_codec,enc_suffix,enc_script,enc_pid) VALUES(1,'MP
 INSERT INTO encoder(enc_id,enc_codec,enc_suffix,enc_script,enc_pid) VALUES(2,'MPEG 2','mpg','mpeg2.sh',2);
 INSERT INTO encoder(enc_id,enc_codec,enc_suffix,enc_script,enc_pid) VALUES(3,'MPEG 4 scale 0,250','medium.avi','mpeg4-medium.sh',4);
 INSERT INTO encoder(enc_id,enc_codec,enc_suffix,enc_script,enc_pid) VALUES(4,'MPEG 4 scale 0,125','small.avi','mpeg4-small.sh',4);
-INSERT INTO encoder(enc_id,enc_codec,enc_suffix,enc_script,enc_pid) VALUES(5,'MPEG 4 full','full.avi','mpeg4-small.sh',4);
+INSERT INTO encoder(enc_id,enc_codec,enc_suffix,enc_script,enc_pid) VALUES(5,'MPEG 4 full','full.avi','mpeg4-full.sh',4);
 
 INSERT INTO news(news_date,news_text) VALUES('2005-09-04 22:00','Opraveno/Přidáno vyhledávání v plánovaných grabech (Velmi užitecné pro grabovače seriálů ;-))<br />Repair/Add search possibility in tv program (Mostly used for series requests ;-))');
 INSERT INTO news(news_date,news_text) VALUES('2005-09-04 23:00','Omezeno zobrazovaní hotových grabů na posledních 100 zaznamů, to samé pro zobrazení mých grabů.<br />Number of showed records limited to 100.');

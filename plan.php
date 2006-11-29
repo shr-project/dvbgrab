@@ -53,12 +53,12 @@ if ($type == "done") {
 
 if ($type == "mygrab") {
   echo "<h2>"._MsgPlanListMygrabTitle."</h2>\n";
-  $SQL = "select count(distinct(grb_id)) from request where req_status='scheduled' and usr_id=$usr_id";
+  $SQL = "select count(distinct(grb_id)) from userreq u left join request r on (u.req_id=r.req_id) where req_status='scheduled' and usr_id=$usr_id";
   $rs = do_sql($SQL);
   $row = $rs->FetchRow();
   echo _MsgPlanSchedCount.": $row[0]<br />\n";
 
-  $SQL = "select count(distinct(grb_id)) from request where req_status='done' and usr_id=$usr_id";
+  $SQL = "select count(distinct(grb_id)) from userreq u left join request r on (u.req_id=r.req_id) where req_status='done' and usr_id=$usr_id";
   $rs = do_sql($SQL);
   $row = $rs->FetchRow();
   echo _MsgPlanDoneCount.": $row[0]<br />\n";
@@ -89,10 +89,12 @@ $SQL = "select g.grb_id,
                u.usr_name, 
                u.usr_email, 
                r.req_output
-        from channel c inner join television t on (c.chn_id=t.chn_id) 
-             inner join grab g on (t.tel_id=g.tel_id)
-             inner join request r on (g.grb_id=r.grb_id)
-             inner join usergrb u on (r.usr_id=u.usr_id)
+        from television t
+               left join channel c on (c.chn_id=t.chn_id)
+               left join grab g on (g.tel_id=t.tel_id)
+               left join request r on (r.grb_id=g.grb_id)
+               left join userreq ur on (ur.req_id=r.req_id)
+               left join userinfo u on (u.usr=ur.usr_id)
         where";
 
 if ($type == "sched")  $SQL .= " r.req_status='scheduled' or r.req_status='processing'";

@@ -11,7 +11,7 @@ $logdbg = &Log::singleton('console', _Config_dvbgrab_log, 'clean - debug');
 $logdbg->log("Erasing inactive users .. start");
 // not active users
 $activity_limit=$DB->OffsetDate(0 - _Config_user_inactivity_limit);
-$SQL = "select usr_name, usr_id, usr_email from usergrb u where usr_last_activity < $activity_limit";
+$SQL = "select usr_name, usr_id, usr_email from userinfo u where usr_last_activity < $activity_limit";
 
 $rs = do_sql($SQL);
 while ($row = $rs->FetchRow()) {
@@ -22,14 +22,14 @@ while ($row = $rs->FetchRow()) {
 $logdbg->log("Erasing inactive .. done");
 
 $logdbg->log("Updating htaccess .. start");
-$SQL = "select last_account_update from params";
+$SQL = "select par_val from param where par_key='last_account_update'";
 $rs = do_sql($SQL);
 if ($row = $rs->FetchRow() && $row[0]) {
   $lastUpdate = $row[0];
   $thisUpdate = $DB->DBTimeStamp(time());
-  $SQL = "update params set last_account_update=$thisUpdate";
+  $SQL = "update param set par_val=$thisUpdate where par_key='last_account_update'";
   do_sql($SQL);
-  $SQL = "select u.usr_name, u.usr_ip, u.usr_email from usergrb u where usr_update >= $lastUpdate and <= $thisUpdate";
+  $SQL = "select u.usr_name, u.usr_ip, u.usr_email from userinfo u where usr_update >= $lastUpdate and <= $thisUpdate";
   $rs = do_sql($SQL);
   while ($row = $rs->FetchRow()) {
     $logdbg->log("Updating account: $row[0]");
@@ -44,7 +44,7 @@ $dirList = do_cmd($cmd);
 $tok = strtok($dirList, " \n\t");
 while ($tok !== false) {
   $usrList = $tok;
-  $SQL = "select u.usr_name from usergrb u where u.usr_name = '$tok'";
+  $SQL = "select u.usr_name from userinfo u where u.usr_name = '$tok'";
   $rs = do_sql($SQL);
   if ($rs->RecordCount( ) != 1) {
     unknownAccount($tok);

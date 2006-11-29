@@ -41,9 +41,11 @@ function get_user_grab($usr_id, $week) {
   global $DB;
 //  echo "U$usr_id,W$week";
   $SQL = "select count(*) 
-          from grab g, request r 
-          where g.grb_id=r.grb_id and
-            r.usr_id=$usr_id and
+          from grab g
+               left join request r on (r.grb_id=g.grb_id)
+               left join userreq ur on (ur.req_id=r.req_id)
+          where 
+            ur.usr_id=$usr_id and
             (r.req_status='scheduled' or r.req_status='done') and "
             .$DB->SQLDate('W',"g.grb_date_start")."=$week";
   $rs = do_sql($SQL);

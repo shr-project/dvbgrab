@@ -5,9 +5,9 @@ function cleanAccount($usrName,$usrId) {
   do_cmd($cmd);
   $cmd = "rmdir -f "._Config_grab_root."/$usrName/*";
   do_cmd($cmd);
-  $SQL = "delete from usergrb where usr_id=$usrId";
+  $SQL = "delete from userinfo where usr_id=$usrId";
   do_sql($SQL);
-  $SQL = "delete from request where usr_id=$usrId";
+  $SQL = "delete from userreq where usr_id=$usrId";
   do_sql($SQL);
 }
 

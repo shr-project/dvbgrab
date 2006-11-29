@@ -99,7 +99,7 @@ function encodeGrab($enc_id, $enc_suffix, $enc_script) {
   if (!($grab_name = getGrabName($grab_id))) {
     $logerr->log("encoding failed to find saved grab $grab_name, enc_id=$enc_id");
     $target_name = "$grab_name$enc_suffix";
-    report_grab_failure($grab_id, $target_name, $enc_id);
+    report_encode_failure($grab_id, $target_name, $enc_id);
     return;
   }
 
@@ -130,7 +130,7 @@ function encodeGrab($enc_id, $enc_suffix, $enc_script) {
     $SQL = "update request set req_status='error' where grb_id=$grab_id and enc_id=$enc_id";
     do_sql($SQL);  // set for another run
     $logerr->log("encoding failed to create $target_path, enc_id=$enc_id");
-    report_grab_failure($grab_id, $target_name, $enc_id);
+    report_encode_failure($grab_id, $target_name, $enc_id);
   }
 }
 

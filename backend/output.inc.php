@@ -14,10 +14,10 @@ function get_grab_basename($grb_id) {
     global $DB;
 
     $SQL = "select ch.chn_name, t.tel_date_start, t.tel_name, t.tel_id, t.tel_series, t.tel_episode, t.tel_part
-        from channel ch, television t, grab g
-        where ch.chn_id = t.chn_id and
-            t.tel_id = g.tel_id and
-            g.grb_id = $grb_id";
+        from television t
+             left join channel ch on (ch.chn_id=t.chn_id)
+             left join grab g on (g.tel_id=t.tel_id)
+        where g.grb_id = $grb_id";
     $rs = do_sql($SQL);
     $row = $rs->FetchRow();
     if (!$row) {;
@@ -99,20 +99,20 @@ function get_file_md5($filename) {
  * Marks deleted grabs in database.
  */
 function mark_deleted_grabs() {
-    $SQL = "select g.grb_id from grab g, request r
-        where req_status = 'done' and g.grb_id=r.grb_id
-        order by grb_date_start";
+    $SQL = "select r.req_output,r.req_id 
+            from grab g 
+                 left join request r on (r.grb_id=g.grb_id)
+            where req_status = 'done'
+            order by grb_date_start";
     $rs = do_sql($SQL);
     while ($row = $rs->FetchRow()) {
-        $grb_id = $row[0];
-        $filename = get_grab_basename($grb_id);
-        $filename = _Config_grab_storage."/$filename.mpg";
+        $filename = _Config_grab_storage."/".$row[0];
         if (is_valid_file($filename)) {
             return;
         }
         else {
             $SQL = "update request set req_status='deleted'
-                where grb_id = $grb_id";
+                where req_id = ".$row[1];
             do_sql($SQL);
         }
     }
@@ -132,21 +132,21 @@ function ensure_free_space() {
  * Makes a copy for the given user.
  * Returns path to user copy.
  */
-function publish_user_grab($grab_fullname, $grabinfo_fullname, $username, $usr_ip) {
+function publish_user_grab($grb_fullname, $grbinfo_fullname, $username, $usr_ip) {
     //NOTE: It is required that username is free of evil characters.
     // It is the resposibility of registration form.
-    $grab_filename = _Config_grab_storage."/$grab_fullname";
-    $grabinfo_filename = _Config_grab_storage."/$grabinfo_fullname";
+    $grb_filename = _Config_grab_storage."/$grb_fullname";
+    $grbinfo_filename = _Config_grab_storage."/$grbinfo_fullname";
     $usrDir = _Config_grab_root."/$username";
     if (!is_dir("$usrDir")) {
         $cmd = "mkdir -p '$usrDir'";
         do_cmd($cmd);
     }
-    $user_filename = "$usrDir/$grab_fullname";
-    $cmd = "ln -s $grab_filename $user_filename";
+    $user_filename = "$usrDir/$grb_fullname";
+    $cmd = "ln -s $grb_filename $user_filename";
     do_cmd($cmd);
-    $userinfo_filename = "$usrDir/$grabinfo_fullname";
-    $cmd = "ln -s $grabinfo_filename $userinfo_filename";
+    $userinfo_filename = "$usrDir/$grbinfo_fullname";
+    $cmd = "ln -s $grbinfo_filename $userinfo_filename";
     do_cmd($cmd);
 
     //NOTE: the .htaccess file is always overwritten,
@@ -170,31 +170,35 @@ function publish_user_grab($grab_fullname, $grabinfo_fullname, $username, $usr_i
 * Makes hard link to user directory and sends them email.
 * Also updates column request.req_output in database.
 */
-function report_grab_success($grab_id, $grab_fullname, $grabinfo_fullname, $enc_id) {
+function report_grab_success($grb_id, $grb_fullname, $grbinfo_fullname, $enc_id) {
     global $DB;
 
-    $msg = "grab: $grab_fullname\n";
+    $msg = "grab: $grb_fullname\n";
     $msg .= _MsgBackendSuccess."\n";
 
-    $SQL = "select usr_name, usr_email, usr_ip, req_id
-        from usergrb u, request r
+    $SQL = "select usr_name, usr_email, usr_ip, urq_id, req_id
+        from request r
+             left join userreq ur on (ur.req_id=r.req_id)
+             left join userinfo u on (u.usr_id=ur.req_id)
         where
-        r.grb_id = $grab_id and
-        r.enc_id = $enc_id and
-        u.usr_id = r.usr_id";
+        r.grb_id = $grb_id and
+        r.enc_id = $enc_id";
+
+    $update = "update request set req_output='$grb_fullname' where grb_id=$grb_id and enc_id=$enc_id";
+    do_sql($update);
+    $SQL = "update request set req_status='done' where grb_id=$grb_id and enc_id=$enc_id";
+    do_sql($SQL);
 
     $rs = do_sql($SQL);
     while ($row = $rs->FetchRow()) {
-      $user_filename = publish_user_grab($grab_fullname, $grabinfo_fullname, $row["usr_name"], $row["usr_ip"]);
-      $user_file_url = "http://"._Config_hostname."$row[0]/$grab_fullname";
-      $user_fileinfo_url = "http://"._Config_hostname."$row[0]/$grabinfo_fullname";
+      $user_filename = publish_user_grab($grb_fullname, $grbinfo_fullname, $row["usr_name"], $row["usr_ip"]);
+      $user_file_url = "http://"._Config_hostname."$row[0]/$grb_fullname";
+      $user_fileinfo_url = "http://"._Config_hostname."$row[0]/$grbinfo_fullname";
 
-      $update = "update request set req_output='$user_file_url' where req_id='".$row["req_id"]."'";
+      $update = "update userreq set urq_output='$user_file_url' where urq_id=".$row["urq_id"];
       do_sql($update);
       send_mail($row["usr_email"], _MsgBackendSuccessSub, $msg."\n$user_fileinfo_url\n$user_file_url");
     }
-    $SQL = "update request set req_status='done' where grb_id=$grab_id and enc_id=$enc_id";
-    do_sql($SQL);
 }
 
 function sendInfoCleanAccount($usr_name,$usr_email) {
@@ -219,15 +223,16 @@ function sendInfoUpdatedAccount($usr_name,$usr_ip,$usr_email) {
 * Sends polite email to all requestors.
 * Send the error report to the admin too.
 */
-function report_grab_failure($grab_id, $grab_name, $enc_id) {
+function report_grab_failure($grb_id, $grb_name) {
     global $DB;
 
-    $msg = "grab: $grab_name\n";
+    $msg = "grab: $grb_name\n";
     $msg .= _MsgBackendGrabError."\n";
-    $SQL = "select distinct usr_email from usergrb u, request r where
-          r.grb_id=$grab_id and
-          r.enc_id=$enc_id and
-          u.usr_id=r.usr_id";
+    $SQL = "select distinct usr_email
+              from request r
+                   left join userreq ur on (ur.req_id=r.req_id)
+                   left join userinfo u on (u.usr_id=ur.req_id)
+              where r.grb_id = $grb_id";
 
     send_mail(_Config_error_email, _MsgBackendGrabErrorSub, $msg);
 
@@ -240,9 +245,9 @@ function report_grab_failure($grab_id, $grab_name, $enc_id) {
 /**
 * Create XML info file
 */
-function create_xml_info($grb_id, $enc_id, $grabinfo_name) {
+function create_xml_info($grb_id, $enc_id, $grbinfo_name) {
     global $DB;
-    $SQL = "select distinct(enc_codec), 
+    $SQL = "select enc_codec, 
               req_output, 
               req_output_size, 
               req_output_md5, 
@@ -257,16 +262,16 @@ function create_xml_info($grb_id, $enc_id, $grabinfo_name) {
               t.tel_date_end,
               g.grb_date_start,
               g.grb_date_end
-            from grab g,television t,channel c,request r,encoder e
-            where g.tel_id=t.tel_id 
-              AND t.chn_id=c.chn_id 
-              AND r.grb_id=g.grb_id
-              AND e.enc_id=r.enc_id
-              AND g.grb_id=$grb_id
-              AND r.enc_id=$enc_id";
+            from request r
+                 left join encoder e on (e.enc_id=r.enc_id)
+                 left join grab g on (g.grb_id=r.grb_id)
+                 left join television t on (t.tel_id=g.tel_id)
+                 left join channel c on (c.chn_id=t.chn_id)
+            where AND g.grb_id=$grb_id
+                  AND r.enc_id=$enc_id";
     $rs = do_sql($SQL);
     $row = $rs->FetchRow();
-    if ($fp = fopen(_Config_grab_storage."/".$grabinfo_name, 'w')) {
+    if ($fp = fopen(_Config_grab_storage."/".$grbinfo_name, 'w')) {
       $filename = $row[1];
       if (!empty($filename)) {
         $pos = strrpos($filename, "/");
@@ -298,21 +303,22 @@ function create_xml_info($grb_id, $enc_id, $grabinfo_name) {
       fwrite($fp, sprintf("</grab>\n")); 
       fclose($fp);
     }
-    return $grabinfo_name;
+    return $grbinfo_name;
 }
 /**
 * Sends polite email to all requestors.
 * Send the error report to the admin too.
 */
-function report_encode_failure($grab_id, $grab_name, $enc_id) {
+function report_encode_failure($grb_id, $grb_name, $enc_id) {
     global $DB;
 
-    $msg = "grab: $grab_name\n";
+    $msg = "grab: $grb_name\n";
     $msg .= _MsgBackendEncodeError."\n";
-    $SQL = "select distinct usr_email from usergrb u, request r where
-          r.grb_id=$grab_id and
-          u.enc_id=$enc_id and
-          u.usr_id=r.usr_id";
+    $SQL = "select distinct usr_email
+              from request r
+                   left join userreq ur on (ur.req_id=r.req_id)
+                   left join userinfo u on (u.usr_id=ur.req_id)
+              where r.grb_id = $grb_id and r.enc_id=$enc_id";
 
     send_mail(_Config_error_email, _MsgBackendEncodeErrorSub, $msg);
 

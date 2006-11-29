@@ -45,14 +45,22 @@ CREATE TABLE IF NOT EXISTS `grab` (
 CREATE TABLE IF NOT EXISTS `request` (
   `req_id`         int(11)       NOT NULL auto_increment,
   `grb_id`         int(11)       NOT NULL default '0',
-  `usr_id`         int(11)       NOT NULL default '0',
   `enc_id`         int(11)       NOT NULL default '1',
   `req_output`     varchar(255)           default '',
   `req_output_md5` varchar(80)            default '',
   `req_output_size`int(20)                default '0',
   `req_status`     enum('undefined','scheduled','done','missed','processing','deleted','error') NOT NULL default 'scheduled',
   PRIMARY KEY      (`req_id`),
-  UNIQUE KEY idx_grb_usr (grb_id,usr_id)
+  UNIQUE KEY idx_grb_usr (grb_id,enc_id)
+) ENGINE=MyISAM;
+
+CREATE TABLE IF NOT EXISTS `userreq` (
+  `urq_id`         int(11)       NOT NULL auto_increment,
+  `req_id`         int(11)       NOT NULL default '0',
+  `usr_id`         int(11)       NOT NULL default '0',
+  `urq_output`     varchar(255)           default '',
+  PRIMARY KEY      (`urq_id`),
+  UNIQUE KEY idx_grb_usr (req_id,usr_id)
 ) ENGINE=MyISAM;
 
 CREATE TABLE IF NOT EXISTS `television` (
@@ -71,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `television` (
   UNIQUE KEY `idx_tel_chn` (`chn_id`,`tel_date_start`)
 ) ENGINE=MyISAM;
 
-CREATE TABLE IF NOT EXISTS `usergrb` (
+CREATE TABLE IF NOT EXISTS `userinfo` (
   `usr_id`         int(11)       NOT NULL auto_increment,
   `usr_name`       varchar(30)   binary NOT NULL default '',
   `usr_pass`       varchar(52)   NOT NULL default '',
@@ -85,11 +93,11 @@ CREATE TABLE IF NOT EXISTS `usergrb` (
   `usr_last_update`   datetime   NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY      (`usr_id`),
   UNIQUE KEY `idx_usr_name` (`usr_name`),
-  KEY idx_enc_id (enc_id)
 ) ENGINE=MyISAM;
 
-CREATE TABLE IF NOT EXISTS `params` (
-  `last_account_update`   datetime      NOT NULL default '0000-00-00 00:00:00'
+CREATE TABLE IF NOT EXISTS `param` (
+  `par_key`        varchar(40)   NOT NULL default '',
+  `par_val`        varchar(255)  NOT NULL default ''  
 ) ENGINE=MyISAM;
 
 CREATE TABLE IF NOT EXISTS `news` (
@@ -103,5 +111,6 @@ TRUNCATE grab;
 TRUNCATE request;
 TRUNCATE television;
 TRUNCATE tvgrabber;
-TRUNCATE usergrb;
-TRUNCATE params;
+TRUNCATE userinfo;
+TRUNCATE userreq;
+TRUNCATE param;

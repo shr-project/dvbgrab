@@ -45,7 +45,7 @@ switch ($_GET["action"]) {
           $usr_email=$_POST["usr_email"];
     
           $SQL = "select usr_id, usr_name, usr_email 
-                         from usergrb u 
+                         from userinfo u 
                          where usr_name='$usr_name' and usr_email='$usr_email'";
           $rs = do_sql($SQL);
           $rowCount = $rs->RecordCount();
@@ -61,7 +61,7 @@ switch ($_GET["action"]) {
             $user = $row[1];
             $mail = $row[2];
             $newPass=get_rand_id(10);
-            $SQL = "update usergrb set usr_pass='$newPass'
+            $SQL = "update userinfo set usr_pass='$newPass'
                     where usr_id=$usr_id";
             do_sql($SQL);
             $msg = _MsgSendPassEmailStart."\n";

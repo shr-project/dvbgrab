@@ -22,11 +22,11 @@ global $PHP_SELF;
 <?php
 $usr_name = "";
 if (authenticated($_COOKIE["usr_id"], $_COOKIE["usr_pass"])) {
-  $SQL = "select usr_name from usergrb where usr_id=".(int)$_COOKIE["usr_id"];
+  $SQL = "select usr_name from userinfo where usr_id=".(int)$_COOKIE["usr_id"];
   $rs = do_sql($SQL);
   $row = $rs->FetchRow();
   $usr_name = $row[0];
-  $SQL = "update usergrb set usr_last_activity = $DB->sysTimeStamp where usr_name='$usr_name'";
+  $SQL = "update userinfo set usr_last_activity = $DB->sysTimeStamp where usr_name='$usr_name'";
   do_sql($SQL);
   echo "<span class=\"item\"> :: "._MsgAccountLogged." </span><span class=\"value\">$usr_name</span>";
   echo " <a class=\"item\" href=\"index.php?action=logout\">("._MsgAccountLogout.")</a>";
