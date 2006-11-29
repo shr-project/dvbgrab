@@ -21,7 +21,8 @@ define("_Config_db_pass","dvbgrab");
      External authentication
      Use external database for user authentication.
 */
-define("_Config_auth_db_used","1");
+define("_Config_auth_db_used","0");
+define("_Config_auth_db_used_only","1");
 define("_Config_auth_db_name","users");
 define("_Config_auth_db_type","postgres");
 define("_Config_auth_db_host","localhost");
