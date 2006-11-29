@@ -39,15 +39,15 @@ if ($row = $rs->FetchRow() && $row[0]) {
 $logdbg->log("Updating htaccess .. done");
 
 $logdbg->log("Removing unknown dirs .. start");
-$cmd = "find "._Config_grab_root." -type d";
+$cmd = "find "._Config_grab_root." -mindepth 1 -type d";
 $dirList = do_cmd($cmd);
 $tok = strtok($dirList, " \n\t");
 while ($tok !== false) {
-  $ursList = str_replace(_Config_grab_storage."/", "", $tok);
-  $SQL = "select u.usr_name from userinfo u where u.usr_name LIKE '$tok'";
+  $usrDir = str_replace(_Config_grab_root, "", $tok);
+  $SQL = "select u.usr_name from userinfo u where u.usr_name LIKE '$usrDir'";
   $rs = do_sql($SQL);
   if ($rs->RecordCount( ) != 1) {
-    unknownAccount($tok);
+    unknownAccount($usrDir);
   }
   $tok = strtok(" \n\t");
 }
