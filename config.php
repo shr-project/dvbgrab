@@ -29,6 +29,7 @@ define("_Config_auth_db_host","localhost");
 define("_Config_auth_db_user","dvbgrab");
 define("_Config_auth_db_pass","dvbgrab");
 define("_Config_auth_db_select","select * from users where person='dvbgrab_username' and password='dvbgrab_password'");
+define("_Config_auth_db_user_select","select * from users where person='dvbgrab_username'");
 
 /*
     * 0 - Any error is written into the page
