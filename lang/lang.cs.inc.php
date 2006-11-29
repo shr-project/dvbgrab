@@ -21,6 +21,8 @@ define("_MsgIndexRegFailData","Chyba registrace: Je nutné zadat jméno, heslo a
 define("_MsgIndexRegFailEmail","Chyba registrace: Nesprávný formát emailové adresy.");
 define("_MsgIndexRegFailPass","Chyba registrace: Zadaná hesla se neshodují.");
 define("_MsgIndexRegFailName","Chyba registrace: Uživatel s tímto přihlašovacím jménem již existuje, zvolte prosím jiné!");
+define("_MsgIndexLogFailExtern","Chyba při ověřování uživatele v externí databázi. Zadaná špatná kombinace jména a hesla.");
+define("_MsgIndexLogFailExternName","Chyba při ověřování uživatele v externí databázi. Zadáno neexistující jméno.");
 define("_MsgIndexRegOk","byl úspěšně zaregistrován.");
    
 define("_MsgConstsMonday","pondělí");

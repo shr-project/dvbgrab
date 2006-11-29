@@ -138,11 +138,11 @@ switch ($_GET["action"]) {
     
     // posleme email
     $msg = _MsgBackendAccountCleanedSub."\n";
-    $msg .= _MsgAccountLogin.": ".$row[1]."\n";
-    $msg .= _MsgAccountEmail.": ".$row[2]."\n";
-    $msg .= _MsgAccountIcq.": ".$row[4]."\n";
-    $msg .= _MsgAccountJabber.": ".$row[5]."\n";
-    $msg .= _MsgAccountIp.": ".$row[6]."\n";
+    $msg .= _MsgAccountLogin." ".$row[1]."\n";
+    $msg .= _MsgAccountEmail." ".$row[2]."\n";
+    $msg .= _MsgAccountIcq." ".$row[4]."\n";
+    $msg .= _MsgAccountJabber." ".$row[5]."\n";
+    $msg .= _MsgAccountIp." ".$row[6]."\n";
     send_mail($row[2], _MsgBackendAccountCleanedSub, $msg);
 
     echo _MsgBackendAccountCleanedSub."<br />\n";

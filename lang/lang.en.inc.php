@@ -21,6 +21,8 @@ define("_MsgIndexRegFailData","Registration error: Username,password and email i
 define("_MsgIndexRegFailEmail","Registration error: Wrong email address format.");
 define("_MsgIndexRegFailPass","Registration error: Password isn't the same.");
 define("_MsgIndexRegFailName","Registration error: User with this username already exists, choose different one!");
+define("_MsgIndexLogFailExtern","Error with authenticating user in extern database. Bad username or password.");
+define("_MsgIndexLogFailExternName","Error with authenticating user in extern database, Username doesn§t exists.");
 define("_MsgIndexRegOk","was successfuly registred.");
    
 define("_MsgConstsMonday","monday");

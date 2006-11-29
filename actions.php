@@ -257,7 +257,7 @@ switch ($action) {
       if (autenticatedExistExtern($usr_name)) {
         if (!authenticatedExtern($usr_name,$usr_pass)) {
           if (_Config_auth_db_used_only == '1') {
-            header("Location:$PHP_SELF?msg=log_fail");
+            header("Location:$PHP_SELF?msg=log_fail_extern");
             return;
           }
           header("Location:$PHP_SELF?msg=reg_fail_name");
@@ -265,7 +265,7 @@ switch ($action) {
         }
         $usr_pass="extern";
       } else if (_Config_auth_db_used_only == '1') {
-        header("Location:$PHP_SELF?msg=log_fail");
+        header("Location:$PHP_SELF?msg=log_fail_extern_name");
         return;
       }
     }
@@ -297,6 +297,14 @@ function printMsg($msg) {
     case "log_fail":
       $txtmsg = "<p class=\"warning\">"._MsgIndexLogFail."</p>";
       $almsg=_MsgIndexLogFail;
+      break;
+    case "log_fail_extern":
+      $txtmsg = "<p class=\"warning\">"._MsgIndexLogFailExtern."</p>";
+      $almsg=_MsgIndexLogFailExtern;
+      break;
+    case "log_fail_extern_name":
+      $txtmsg = "<p class=\"warning\">"._MsgIndexLogFailExternName."</p>";
+      $almsg=_MsgIndexLogFailExternName;
       break;
     case "log_ok":
       $txtmsg = "<p class=\"info\">"._MsgIndexUser." $usr_name "._MsgIndexLogOk."</p>";

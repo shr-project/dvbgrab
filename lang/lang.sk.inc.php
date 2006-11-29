@@ -21,6 +21,8 @@ define("_MsgIndexRegFailData","Chyba registrácie: Je nutné zadať meno, heslo 
 define("_MsgIndexRegFailEmail","Chyba registrácie: Nesprávny formát emailovej adresy.");
 define("_MsgIndexRegFailPass","Chyba registrácie: Zadané heslá sa nezhodujú.");
 define("_MsgIndexRegFailName","Chyba registrácie: Užívateľ s týmto prihlasovacím menom už existuje, zvoľte prosím iné!");
+define("_MsgIndexLogFailExtern","Chyba pri overovaní užívateľa v externej databáze. Zadaná nesprávna kombinácia mena a hesla.");
+define("_MsgIndexLogFailExternName","Chyba pri overovaní užívateľa v externej databáze. Zadané neexistujúce meno");
 define("_MsgIndexRegOk","bol úspešne zaregistrovaný.");
    
 define("_MsgConstsMonday","pondelok");
@@ -107,7 +109,7 @@ define("_MsgAccountChangeFormTitle","Nastavenie účtu");
 define("_MsgAccountLogin","Prihlasovacie meno:");
 define("_MsgAccountPass","Heslo:");
 define("_MsgAccountPass2","Zopakovať heslo:");
-define("_MsgAccountPassExternAuthNoChange","Heslo u externě ověřovaných uživatelů nelze tady měnit");
+define("_MsgAccountPassExternAuthNoChange","Heslo u externe overovaných užívateľov tu nie je možné meniť");
 define("_MsgAccountEmail","E-mail:");
 define("_MsgAccountEmailWarning","E-mail vyplňte správny, na túto adresu Vám budú chodiť oznámenie o grabe a odkazy na stiahnutie!");
 define("_MsgAccountIp","IP pre sťahovanie:");
@@ -208,7 +210,7 @@ define("_MsgSetupAuth","Dopyt do externej databázy pre overovanie užívateľov
 define("_MsgSetupAuthDbUsed","Používať externú databázu alebo ukladať užívateľov aj s heslom do vlastnej userinfo tabuľky (0 nepoužiť, 1 použiť");
 define("_MsgSetupAuthDbUsedOnly","Povoliť registráciu a používanie DVBgrabu LEN užívateľom z externej databázy (0 nie, 1 áno)");
 define("_MsgSetupAuthDbSelect","SQL dopyt na užívateľa, v tomto reťazci sa nahradia 2 reťazce, dvbgrab_username je nahradené zadaným užívateľským menom a dvbgrab_password je md5 zadaného hesla.");
-define("_MsgSetupAuthDbUserSelect","SQL dopty na užívateľa, jestli existuje, v tomto reťazci sa nahradia pouze dvbgrab_username.");
+define("_MsgSetupAuthDbUserSelect","SQL dopyt na užívateľa, či existuje, v tomto reťazci sa nahradí len dvbgrab_username.");
 
 define("_MsgSetupErrorStatus","Množstvo informácií o vzniknutej chybe:");
 define("_MsgSetupErrorStatus0","* 0 - Každá chyba je vypísaná na stránke");
