@@ -44,7 +44,7 @@ $dirList = do_cmd($cmd);
 $tok = strtok($dirList, " \n\t");
 while ($tok !== false) {
   $usrList = $tok;
-  $SQL = "select u.usr_name from userinfo u where u.usr_name = '$tok'";
+  $SQL = "select u.usr_name from userinfo u where u.usr_name LIKE '$tok'";
   $rs = do_sql($SQL);
   if ($rs->RecordCount( ) != 1) {
     unknownAccount($tok);
