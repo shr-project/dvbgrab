@@ -64,11 +64,7 @@ function authenticatedUser($usr_name,$usr_pass_md5) {
 
 // naloguje uzivatele
 function login($usr_name, $usr_pass_md5) {
-  $SQL = "select usr_id from userinfo 
-          where usr_name='$usr_name' and
-            usr_pass='$usr_pass_md5'";
-  $rs = do_sql($SQL);
-  if ($row = $rs->FetchRow()) {
+  if (authenticatedUser($usr_name,$usr_pass_md5)) {
     setcookie("usr_id", $row[0], time()+60*60*24*365*2);
     setcookie("usr_pass", $usr_pass_md5, time()+60*60*24*365*2);
     return true;
