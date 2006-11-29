@@ -37,6 +37,22 @@ function unknownAccount($usrName) {
   $logdbg->log("Unknown dir: $usrName");
 }
 
+function cleanOldDb() {
+  global $DB, $logdbg;
+  $logdbg->log("Cleaning television,grab,request older than ".(_Config_grab_history*3)." days");
+  $limit = $DB->OffsetDate(-_Config_grab_history*3);
+  $logdbg->log("Cleaning television,grab,request,userreq older than $limit");
+  $SQL = "delete from userreq where req_id IN (select req_id from request where grb_id IN (select grb_id from grab where tel_id IN (select tel_id from television where tel_date_start < $limit)))";
+  $n_userreq = do_sql($SQL);
+  $SQL = "delete from request where grb_id IN (select grb_id from grab where tel_id IN (select tel_id from television where tel_date_start < $limit))";
+  $n_request = do_sql($SQL);
+  $SQL = "delete from grab where tel_id IN (select tel_id from television where tel_date_start < $limit)";
+  $n_grab = do_sql($SQL);
+  $SQL = "delete from television where tel_date_start < $limit";
+  $n_television = do_sql($SQL);
+  $logdbg->log("Removed ".$n_userreq->RecordCount()." user request, ".$n_request->RecordCount()." request, ".$n_grab->RecordCount()." grab, ".$n_television->RecordCount()." television rows");
+}
+
 function cleanSpace() {
   global $DB, $logdbg;
   $size = get_file_size(_Config_grab_storage);

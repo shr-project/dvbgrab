@@ -62,4 +62,7 @@ $logdbg->log("Checking used space .. start");
 cleanSpace();
 $logdbg->log("Checking used space .. done");
 
+$logdbg->log("Checking old data in database .. start");
+cleanOldDb();
+$logdbg->log("Checking old data in database .. done");
 ?>
