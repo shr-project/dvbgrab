@@ -13,7 +13,14 @@ if (empty($grab_id)) {
   return "";
 }
 
-$SQL = "select enc_codec, max(req_output), max(req_output_md5), max(req_output_size), max(req_status) from request left join encoder on (request.enc_id = encoder.enc_id) where grb_id=$grab_id group by enc_codec";
+$SQL = "select enc_codec,
+          req_output,
+          req_output_md5,
+          req_output_size,
+          req_status
+        from request r
+          left join encoder e on (e.enc_id=r.enc_id)
+        where r.grb_id=$grab_id";
 $rs = do_sql($SQL);
 $req_outputs = array();
 while ($row = $rs->FetchRow()) {
@@ -42,10 +49,10 @@ $SQL = "select t.tel_name,
           t.tel_date_end,
           g.grb_date_start,
           g.grb_date_end
-        from grab g,television t,channel c
-        where g.tel_id=t.tel_id
-          AND t.chn_id=c.chn_id
-          AND g.grb_id=$grab_id";
+        from television t
+             left join grab g on (g.tel_id = t.tel_id)
+             left join channel c on (c.chn_id = t.chn.id)
+        where g.grb_id=$grab_id";
 $rs = do_sql($SQL);
 $row = $rs->FetchRow();
 

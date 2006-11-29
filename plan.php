@@ -94,7 +94,7 @@ $SQL = "select g.grb_id,
                left join grab g on (g.tel_id=t.tel_id)
                left join request r on (r.grb_id=g.grb_id)
                left join userreq ur on (ur.req_id=r.req_id)
-               left join userinfo u on (u.usr=ur.usr_id)
+               left join userinfo u on (u.usr_id=ur.usr_id)
         where";
 
 if ($type == "sched")  $SQL .= " r.req_status='scheduled' or r.req_status='processing'";
