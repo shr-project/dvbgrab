@@ -52,10 +52,10 @@ function show_television($tel_id, $tel_date_start, $tel_name, $tel_desc, $tel_ca
 }
 
 function show_television_row($row, $addition, $highlight_strings, $use_diacritics, $show_link, $show_logo, $last=false) {
-  global $DB;
+  global $DB, $usr_id;
   $grb_id = $row["grb_id"];
   $req_status = $row["req_status"];
-  $my_grab = ($row["my_grab"]=="0")?false:true;
+  $my_grab = ($row["my_grab"]==$usr_id)?true:false;
   $tel_id = $row["tel_id"];
   $tel_date_start = $DB->UnixTimeStamp($row["tel_date_start"]);
   $tv_date = date("Ymd", $tel_date_start-((date("G", $tel_date_start)<_Config_midnight)?1:0)*24*3600);
