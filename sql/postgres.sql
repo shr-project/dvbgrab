@@ -171,7 +171,7 @@ CREATE TABLE IF NOT EXISTS "param" (
 );
 
 CREATE TABLE "news" (
-  news_date timestamp with time zone DEFAULT '2000-01-01 00:00:00+01'::timestamp with time zone NOT NULL,
+  news_date timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
   news_text text NOT NULL
 );
 
