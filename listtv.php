@@ -88,7 +88,7 @@ function print_list_tv($usr_id,$tv_date,$query) {
                left join channel c on (c.chn_id=t.chn_id)
                left join grab g on (g.tel_id=t.tel_id)
                left join request r on (r.grb_id=g.grb_id)
-               left join userreq u on (u.req_id=r.req_id and u.usr_id=$usr_id)
+               inner join userreq u on (u.req_id=r.req_id and u.usr_id=$usr_id)
           where tel_date_start > $tel_date_from and
                 tel_date_start < $tel_date_to 
           order by day, hour_frac, chn_order, tel_date_start";
