@@ -210,10 +210,11 @@ switch ($action) {
   case "editDo":
     $usr_ip=getUserIp();    
 
-    $SQL = "select usr_name from userinfo where usr_ip='$usr_ip'";
+    $SQL = "select usr_name,usr_email from userinfo where usr_ip='$usr_ip'";
     $rs = do_sql($SQL);
-    if ($rs->rowCount() > 0) {
-      header("Location:$PHP_SELF?msg=reg_fail_ip");
+    $row = $rs->FetchRow();
+    if ($row) {
+      header("Location:$PHP_SELF?msg=reg_fail_ip&name=".$row[0]."&email=".$row[1]."&ip=".$usr_ip);
       return;
     }
     
@@ -315,8 +316,8 @@ function printMsg($msg) {
       $almsg=_MsgIndexLogout;
       break;
     case "reg_fail_ip":
-      $txtmsg = "<p class=\"warning\">"._MsgIndexRegFailIp."</p>";
-      $almsg=_MsgIndexRegFailIp;
+      $txtmsg = "<p class=\"warning\">"._MsgIndexRegFailIp."<br />user=".$_GET["name"]."<br />e-mail=".$_GET["email"]."<br />ip=".$_GET["ip"]."</p>";
+      $almsg=_MsgIndexRegFailIp."\\nuser=".$_GET["name"]."\\ne-mail=".$_GET["email"]."\\nip=".$_GET["ip"];
       break;
     case "reg_fail_data":
       $txtmsg = "<p class=\"warning\">"._MsgIndexRegFailData."</p>";

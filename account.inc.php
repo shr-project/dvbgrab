@@ -19,7 +19,7 @@ function printUserRegistration($update,$usr_id) {
 <script type="text/javascript">
 <!--
   function emailCheck(){
-    var frm = getDocumentById('register');
+    var frm = document.getElementById('register');
     var goodEmail = frm.usr_email.value.match(/\b(^(\S+@).+((\.com)|(\.net)|(\.edu)|(\.mil)|(\.gov)|(\.org)|(\..{2,2}))$)\b/gi);
     if (goodEmail) 
       return true;
@@ -27,15 +27,20 @@ function printUserRegistration($update,$usr_id) {
       return false;
   }     
   function ipCheck(){
-    var frm = getDocumentById('register');
+    var frm = document.getElementById('register');
     var goodIp = frm.usr_ip.value.match(/^\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}$/gi);
     if (goodIp) 
       return true;
-    else 
-      return false;
+    else {
+      var goodIp6 = frm.usr_ip.value.match(/^[0-9a-fA-F]{0,4}:[0-9a-fA-F]{0,4}:[0-9a-fA-F]{0,4}:[0-9a-fA-F]{0,4}:[0-9a-fA-F]{0,4}:[0-9a-fA-F]{0,4}:[0-9a-fA-F]{0,4}:[0-9a-fA-F]{0,4}$/gi);
+      if (goodIp6) 
+        return true;
+      else
+        return false;
+    }
   }     
   function checkRegister() {
-    var frm = getDocumentById('register');
+    var frm = document.getElementById('register');
     if (frm.usr_name.value=='') {
       alert("<?php echo _MsgAccountValidateLogin ?>");
       ret=false;    
@@ -173,7 +178,7 @@ function printUserLogin() {
 <script type="text/javascript">
 <!--
   function checkLogin() {
-    var frm = getDocumentById('login');
+    var frm = document.getElementById('login');
     if (frm.usr_name.value=='') {
       ret=false;
       alert("<?php echo _MsgAccountValidateLogin ?>");
@@ -215,6 +220,12 @@ function printUserLogin() {
 </tr>
 </table>
 </form>
+<script type="text/javascript">
+<!--
+  var frm = document.getElementById('login');
+  frm.usr_name.focus();
+//-->
+</script>
 <?php
 
 }
@@ -225,7 +236,7 @@ function printSendPassword() {
 <script type="text/javascript">
 <!--
   function emailCheck(){
-    var frm = getDocumentById('sendPassword');
+    var frm = document.getElementById('sendPassword');
     var goodEmail = frm.usr_email.value.match(/\b(^(\S+@).+((\.com)|(\.net)|(\.edu)|(\.mil)|(\.gov)|(\.org)|(
 \..{2,2}))$)\b/gi);
     if (goodEmail)
@@ -235,7 +246,7 @@ function printSendPassword() {
   }
 
   function checkSendPassword() {
-    var frm = getDocumentById('sendPassword');
+    var frm = document.getElementById('sendPassword');
     if (frm.usr_name.value=='') {
       alert("<?echo _MsgAccountValidateLogin ?>");
       ret=false;

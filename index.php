@@ -26,13 +26,6 @@ if (!authenticated($_COOKIE["usr_id"], $_COOKIE["usr_pass"])) {
   echo _MsgAccountRegistrationTitle."<br />\n";
   printUserRegistration(false,null);
   echo '</div>';
-?>
-  <script type="text/javascript">
-  <!--
-    document.login.usr_name.focus();
-  //-->
-  </script>
-<?php
 } else {
   require_once("news.php");
 }
