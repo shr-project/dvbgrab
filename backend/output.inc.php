@@ -280,6 +280,7 @@ function create_xml_info($grb_id, $enc_id, $grbinfo_name) {
         }
       }
       fwrite($fp, sprintf("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")); 
+      fwrite($fp, sprintf("<?xml-stylesheet type=\"text/xsl\" href=\"../dvbgrab.xsl\"?>\n"));
       fwrite($fp, sprintf("<grab>\n")); 
       fwrite($fp, sprintf("  <channel_name>".$row[9]."</channel_name>\n")); 
       fwrite($fp, sprintf("  <tel_name>".$row[5]."</tel_name>\n")); 
