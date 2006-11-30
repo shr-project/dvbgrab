@@ -21,6 +21,17 @@ define("_MsgSetupGrabBackendLang","Jazyk používaný v backend skriptech (cs,en
 define("_MsgSetupBackendStripDiacritics","Zda se má do názvů grabů vkládat název pořadu bez diakritiky nebo jen id");
 define("_MsgSetupUserInactivityLimit","Po kolika dnech neaktivity bude uživatelský účet zrušen");
 define("_MsgSetupCronList","Následující text vložte do konfigurace cron démona (crontab -e)");
+define("_MsgSetupAuth","Dotazy do externí databáze pro ověřování uživatelů. Registrace poté ověří zda takový uživatel existuje v externí databázi a poté není heslo ukládáno lokálně v databázi dvbgrabu, ale používá se vždy z externí.");
+define("_MsgSetupAuthDbUsed","Používat externí databázi nebo ukládat uživatele i s heslem do vlastní userinfo tabulky (0 nepoužít, 1 použít");
+define("_MsgSetupAuthDbUsedOnly","Povolit registraci a používání DVBgrabu POUZE uživatelům z externí databáze (0 ne, 1 ano)");
+define("_MsgSetupAuthDbSelect","SQL dotaz na uživatele, v tomto řetězci se nahradí 2 řetězce dvbgrab_username je nahrazeno zadaným uživatelským jménem a dvbgrab_password je md5 zadaného hesla.");
+define("_MsgSetupAuthDbUserSelect","SQL dotaz na uživatele, jestli existuje, v tomto řetězci se nahradí pouze dvbgrab_username.");
+
+define("_MsgAccountPassExternAuthNoChange","Heslo u externě ověřovaných uživatelů nelze tady měnit");
+define("_MsgIndexLogFailExtern","Chyba při ověřování uživatele v externí databázi. Zadaná špatná kombinace jména a hesla.");
+define("_MsgIndexLogFailExternName","Chyba při ověřování uživatele v externí databázi. Zadáno neexistující jméno");
+
+
 define("_MsgJsonLoading","Načítají se detaily grabu");
 define("_MsgJsonTelName","Televizní pořad");
 define("_MsgJsonTelSeries","Serie");
@@ -42,9 +53,11 @@ define("_MsgBackendAccountCleaned","Uživatelský účet byl zrušen. Počet dn�
 define("_MsgBackendAccountCleanedSub","Uživatelský účet byl zrušen");
 define("_MsgBackendFilesizeWarningSize","Na disku pro uchovávání grabů dochází místo, začínají se mazat i graby, které by ještě měli zůstat dostupné");
 define("_MsgBackendFilesizeWarningSizeSub","Není místo na disku pro graby");
+define("_MsgAccountRemove","Úplně zrušit účet a všechny jeho graby");
 
 
 zrusit
+define("_MsgAccountUsername","Přihlašovací jméno:");
 define("_MsgNews1","Repair/Add search possibility in tv program (Mostly used for series requests ;-))");
 define("_MsgNews2","Number of showed records limited to 100.");
 define("_MsgNews3","New option for sending new random password.");
