@@ -48,7 +48,7 @@ function print_results($usr_id,$query,$tv_date) {
                  tel_date_start,
                  g.grb_id,
                  (select min(req_status) from request as r where r.grb_id=g.grb_id) as req_status,
-                 (select usr_id from request as r left join userreq as u using (req_id) where r.grb_id=g.grb_id and u.usr_id=$usr_id) as my_grab,
+                 (select usr_id from request as r left join userreq as u using (req_id) where r.grb_id=g.grb_id and u.usr_id=$usr_id) as my_grab
           from television t
                left join channel c on (c.chn_id=t.chn_id)
                left join grab g on (g.tel_id=t.tel_id)
