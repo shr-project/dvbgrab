@@ -73,10 +73,10 @@ function print_list_tv($usr_id,$tv_date,$query) {
                  t.tel_series,
                  t.tel_episode,
                  t.tel_part,
-                 tel_date_start,
+                 t.tel_date_start,
                  g.grb_id,
-                 r.req_status,
-                 ".$DB->IfNull('u.usr_id',"'0'")." as my_grab,
+                 (select min(req_status) from request as r where r.grb_id=g.grb_id) as req_status,
+                 (select usr_id from request as r left join userreq as u using (req_id) where r.grb_id=g.grb_id and u.usr_id=$usr_id) as my_grab,
                  ".$DB->SQLDate('H','tel_date_start')." as hour,
                  ".$DB->SQLDate('Ymd','tel_date_start')." as day,";
   if (_Config_db_type == "postgres") {
@@ -87,8 +87,6 @@ function print_list_tv($usr_id,$tv_date,$query) {
   $SQL .="from television t
                left join channel c on (c.chn_id=t.chn_id)
                left join grab g on (g.tel_id=t.tel_id)
-               left join request r on (r.grb_id=g.grb_id)
-               inner join userreq u on (u.req_id=r.req_id and u.usr_id=$usr_id)
           where tel_date_start > $tel_date_from and
                 tel_date_start < $tel_date_to 
           order by day, hour_frac, chn_order, tel_date_start";
