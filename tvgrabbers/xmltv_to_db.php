@@ -84,40 +84,45 @@ function startElement($parser, $name, $attrs)
   global $DB, $chn_id, $chn_xmltv_id, $tel_date_start, $tel_date_end, $tel_date_start_raw, $ok, $tag_name, $tel_typ;
   //echo $name;
   if ($name == "PROGRAMME") {
-/*
     foreach ($attrs as $k => $v) {
-      echo "$k => $v\n";
-    }
-*/
-    $attr = $attrs["CHANNEL"];
-    if (!empty($attr)) {
-      $chn_xmltv_id=$attr;
-      $rs=do_sql("SELECT chn_id FROM channel WHERE chn_xmltv_name='$attr'");
-      if ($rs->RecordCount() == 1) {
-        $row=$rs->FetchRow();
-        $chn_id = $row[0];
-      } else if ($rs->RecordCount() == 0) {
-        $ok = false;
-        echo _MsgXmlTvFormatErrorNoChn."\n";
-      } else {
-        $ok = false;
-        echo _MsgXmlTvFormatErrorManyChn."\n";
+      switch($k) {
+        case "CHANNEL": 
+          $attr = $v;
+          if (!empty($attr)) {
+            $chn_xmltv_id=$attr;
+            $rs=do_sql("SELECT chn_id FROM channel WHERE chn_xmltv_name='$attr'");
+            if ($rs->RecordCount() == 1) {
+              $row=$rs->FetchRow();
+              $chn_id = $row[0];
+            } else if ($rs->RecordCount() == 0) {
+              $ok = false;
+              echo _MsgXmlTvFormatErrorNoChn."\n";
+            } else {
+              $ok = false;
+              echo _MsgXmlTvFormatErrorManyChn."\n";
+            }
+          } else {
+            $ok = false;
+            echo _MsgXmlTvFormatErrorNoneChn."\n";
+          }
+          break;
+        case "START":
+          $attr = $v;
+          if ($attr) {
+            $tel_date_start = parseDate($attr);
+            $tel_date_start_raw = $attr;
+          } else {
+            $ok = false;
+            echo _MsgXmlTvFormatErrorNoDateStart."\n";
+          }
+          break;
+        case "STOP":
+          $attr = $v;
+          if ($attr) {
+            $tel_date_end = parseDate($attr);
+          }
+          break;
       }
-    } else {
-      $ok = false;
-      echo _MsgXmlTvFormatErrorNoneChn."\n";
-    }
-    $attr = $attrs["START"];
-    if ($attr) {
-      $tel_date_start = parseDate($attr);
-      $tel_date_start_raw = $attr;
-    } else {
-      $ok = false;
-      echo _MsgXmlTvFormatErrorNoDateStart."\n";
-    }
-    $attr = $attrs["STOP"];
-    if ($attr) {
-      $tel_date_end = parseDate($attr);
     }
   } else if ($name == "EPISODE-NUM" || $name == "CATEGORY" || $name == "TITLE" || $name == "DESC" || $name == "DISPLAY-NAME") {
     $tag_name = $name;

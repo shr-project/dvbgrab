@@ -1,8 +1,21 @@
 -=DVBgrab=-
 2006
+ - Cleanup
+ - All request are distributed with XML info file and can be show with XSL transformation.
+ - Grab and television detail fetched by asynchronous XML request
+ - Possibility to remove account
+ - Now XHTML 1.1 valid
+ - Configurable user encoders
+ - Removing old television,grab,request rows from database
+ - Showing unknow dirs (for non-existent users)
+ - Removing inactive users (after configurable amount of days)
+ - All removed grabs are tagged as 'deleted' in request table
+ - Removing old grabs, removing when there isn't enough space
+ - All channel info is now in database (ip,port,logo)
+ - Tv schedule can be read in XMLTV format
  - UTF8 web pages (need utf8 database and patched adodb)
  - Database changes (grabbers, status is in request now)
- - Used language file is determined from Accepted-language settings in user browser
+ - Used language file is determined from Accepted-language settings in user browser or with respect to saved cookie
  - VLM configuration files
 
 2005
