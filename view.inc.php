@@ -19,11 +19,11 @@ function show_television($tel_id, $tel_date_start, $tel_name, $tel_desc, $tel_ca
   echo "<tr";
     show_grab_class($grb_id, $req_status, false);
   echo ">\n";
+
+  show_television_date($tel_id, $tel_date_start, $req_status, $my_grab, $grb_id, $datetime, $hi);
   if ($show_logo) {
     echo "<td valign=\"top\"><img class=\"programLogo\" alt=\"$chn_name\" title=\"$chn_name\" src=\"images/logos/$chn_logo\"/></td>";
   }
-
-  show_television_date($tel_id, $tel_date_start, $req_status, $my_grab, $grb_id, $datetime, $hi);
 
   echo "<td valign=\"top\">\n";
   echo '<span class="programName'.$hi.'"';
