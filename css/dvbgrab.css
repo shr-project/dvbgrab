@@ -148,10 +148,12 @@ a.menuitem:hover, a.menuitem_act:hover {
 .programDate {
   color : #99ccff;
   vertical-align : top;
+  white-space: nowrap;
 }
 .programDateHi {
   color : #111111;
   vertical-align : top;
+  white-space: nowrap;
 }
 .match {
   color : #a600b6;
