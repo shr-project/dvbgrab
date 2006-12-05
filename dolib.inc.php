@@ -174,7 +174,7 @@ function do_xml_grab($grb_id) {
             from grab g,television t,channel c
             where g.tel_id=t.tel_id
               AND t.chn_id=c.chn_id
-              AND g.grb_id=$grab_id";
+              AND g.grb_id=$grb_id";
     $rs = do_sql($SQL);
     $row = $rs->FetchRow();
     if (!$row) {
