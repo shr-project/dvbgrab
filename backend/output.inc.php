@@ -151,7 +151,7 @@ function publish_user_grab($grb_fullname, $grbinfo_fullname, $username, $usr_ip)
 
     //NOTE: the .htaccess file is always overwritten,
     // this allows user to change his IP address
-    $accessFile = "$userDir/.htaccess";
+    $accessFile = "$usrDir/.htaccess";
     if ($fp = fopen($accessFile, 'w')) {
         fwrite($fp, "Order deny,allow\n");
         fwrite($fp, "Deny from all\n");
@@ -176,6 +176,11 @@ function report_grab_success($grb_id, $grb_fullname, $grbinfo_fullname, $enc_id)
     $msg = "grab: $grb_fullname\n";
     $msg .= _MsgBackendSuccess."\n";
 
+    $update = "update request set req_output='$grb_fullname' where grb_id=$grb_id and enc_id=$enc_id";
+    do_sql($update);
+    $SQL = "update request set req_status='done' where grb_id=$grb_id and enc_id=$enc_id";
+    do_sql($SQL);
+
     $SQL = "select usr_name, usr_email, usr_ip, urq_id, req_id
         from request r
              left join userreq ur on (ur.req_id=r.req_id)
@@ -183,11 +188,6 @@ function report_grab_success($grb_id, $grb_fullname, $grbinfo_fullname, $enc_id)
         where
         r.grb_id = $grb_id and
         r.enc_id = $enc_id";
-
-    $update = "update request set req_output='$grb_fullname' where grb_id=$grb_id and enc_id=$enc_id";
-    do_sql($update);
-    $SQL = "update request set req_status='done' where grb_id=$grb_id and enc_id=$enc_id";
-    do_sql($SQL);
 
     $rs = do_sql($SQL);
     while ($row = $rs->FetchRow()) {
