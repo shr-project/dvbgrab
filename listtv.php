@@ -134,8 +134,8 @@ function print_list_tv($usr_id,$tv_date,$query) {
     }
   }
 
-  $next_tv_date = date("Ymd", mktime(0, 0, 0, $tv_month, $tv_day-1, $tv_year));
-  $prev_tv_date = date("Ymd", mktime(0, 0, 0, $tv_month, $tv_day-2, $tv_year));
+  $next_tv_date = date("Ymd", mktime(0, 0, 0, $tv_month, $tv_day+1, $tv_year));
+  $prev_tv_date = date("Ymd", mktime(0, 0, 0, $tv_month, $tv_day-1, $tv_year));
   echo '</table>'."\n";
   echo '<table width="100%">';
   echo '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>'."\n";
