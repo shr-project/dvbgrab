@@ -19,7 +19,7 @@ $SQL = "select enc_codec,
           req_output_size,
           req_status
         from request r
-          left join encoder e on (e.enc_id=r.enc_id)
+          left join encoder e using (enc_id)
         where r.grb_id=$grab_id";
 $rs = do_sql($SQL);
 $req_outputs = array();
@@ -50,8 +50,8 @@ $SQL = "select t.tel_name,
           g.grb_date_start,
           g.grb_date_end
         from television t
-             left join grab g on (g.tel_id = t.tel_id)
-             left join channel c on (c.chn_id = t.chn_id)
+             left join grab g using (tel_id )
+             left join channel c using (chn_id )
         where g.grb_id=$grab_id";
 $rs = do_sql($SQL);
 $row = $rs->FetchRow();

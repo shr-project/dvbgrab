@@ -42,8 +42,8 @@ function get_user_grab($usr_id, $week) {
 //  echo "U$usr_id,W$week";
   $SQL = "select count(*) 
           from grab g
-               left join request r on (r.grb_id=g.grb_id)
-               left join userreq ur on (ur.req_id=r.req_id)
+               left join request r using (grb_id)
+               left join userreq ur using (req_id)
           where 
             ur.usr_id=$usr_id and
             (r.req_status='scheduled' or r.req_status='done') and "

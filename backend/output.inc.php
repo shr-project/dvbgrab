@@ -53,7 +53,7 @@ function get_file_md5($filename) {
 function mark_deleted_grabs() {
   $SQL = "select r.req_output,r.req_id 
           from grab g 
-               left join request r on (r.grb_id=g.grb_id)
+               left join request r using (grb_id)
           where req_status = 'done'
           order by grb_date_start";
   $rs = do_sql($SQL);
@@ -84,26 +84,26 @@ function ensure_free_space() {
  * Makes a copy for the given user.
  * Returns path to user copy.
  */
-function publish_user_grab($grb_fullname, $grbinfo_fullname, $username, $usr_ip) {
-  //NOTE: It is required that username is free of evil characters.
+function publish_user_grab($target_name, $target_name_xml, $usr_name, $usr_ip) {
+  //NOTE: It is required that usr_name is free of evil characters.
   // It is the resposibility of registration form.
-  $grb_filename = _Config_grab_storage."/$grb_fullname";
-  $grbinfo_filename = _Config_grab_storage."/$grbinfo_fullname";
-  $usrDir = _Config_grab_root."/$username";
-  if (!is_dir("$usrDir")) {
-    $cmd = "mkdir -p '$usrDir'";
+  $target_path = _Config_grab_storage."/$target_name";
+  $target_path_xml = _Config_grab_storage."/$target_name_xml";
+  $usr_dir = _Config_grab_root."/$usr_name";
+  if (!is_dir("$usr_dir")) {
+    $cmd = "mkdir -p '$usr_dir'";
     do_cmd($cmd);
   }
-  $user_filename = "$usrDir/$grb_fullname";
-  $cmd = "ln -s $grb_filename $user_filename";
+  $usr_path = "$usr_dir/$target_name";
+  $usr_path_xml = "$usr_dir/$target_name_xml";
+  $cmd = "ln -s $target_path $usr_path";
   do_cmd($cmd);
-  $userinfo_filename = "$usrDir/$grbinfo_fullname";
-  $cmd = "ln -s $grbinfo_filename $userinfo_filename";
+  $cmd = "ln -s $target_path_xml $usr_path_xml";
   do_cmd($cmd);
 
   //NOTE: the .htaccess file is always overwritten,
-  // this allows user to change his IP address
-  $accessFile = "$usrDir/.htaccess";
+  // this allows usr to change his IP address
+  $accessFile = "$usr_dir/.htaccess";
   if ($fp = fopen($accessFile, 'w')) {
     fwrite($fp, "Order deny,allow\n");
     fwrite($fp, "Deny from all\n");
@@ -113,7 +113,7 @@ function publish_user_grab($grb_fullname, $grbinfo_fullname, $username, $usr_ip)
     fclose($fp);
   }
 
-  return $user_filename;
+  return $usr_path;
 }
 
 
@@ -122,36 +122,45 @@ function publish_user_grab($grb_fullname, $grbinfo_fullname, $username, $usr_ip)
 * Makes hard link to user directory and sends them email.
 * Also updates column request.req_output in database.
 */
-function report_grab_success($grb_id, $grb_fullname, $grbinfo_fullname, $enc_id) {
-  global $DB;
-
-  $update = "update request set req_output='$grb_fullname', req_status='done' where grb_id=$grb_id and enc_id=$enc_id";
+function report_grab_success($req_id, $target_name, $target_name_xml) {
+  global $DB,$logdbg;
+  $logdbg->log("Reporting success of $target_name and $target_name_xml");
+  $update = "update request set req_status='done' where req_id=$req_id";
   do_sql($update);
+  $logdbg->log("Updated request to status done");
 
-  $SQL = "select usr_name, usr_email, usr_ip, urq_id, req_id, usr_lang
+  $SQL = "select usr_name, usr_email, usr_ip, urq_id, usr_lang
           from request r
-               left join userreq ur on (ur.req_id=r.req_id)
-               left join userinfo u on (u.usr_id=ur.req_id)
-          where r.grb_id = $grb_id and
-                r.enc_id = $enc_id";
+               left join userreq ur using (req_id)
+               left join userinfo u using (usr_id)
+          where r.req_id = $req_id";
 
   $rs = do_sql($SQL);
   while ($row = $rs->FetchRow()) {
-    $usr_lang = $row[5];
+    $usr_name = $row[0];
+    $usr_email = $row[1];
+    $usr_ip = $row[2];
+    $urq_id = $row[3];
+    $usr_lang = $row[4];
+    
+    $usr_target = publish_user_grab($target_name, $target_name_xml, $usr_name, $usr_ip);
+    $usr_target_url = "http://"._Config_hostname."$usr_name/$target_name";
+    $usr_target_url_xml = "http://"._Config_hostname."$usr_name/$target_name_xml";
+    
+    $update = "update userreq set urq_output='$usr_target_url' where urq_id=".$urq_id;
+    do_sql($update);
+
     if (empty($usr_lang)) {
       $usr_lang = _Config_grab_backend_lang;
     }
     require_once("lang/lang.$usr_lang.inc.php");
-    $msg = "grab: $grb_fullname\n";
+    $msg = "grab: $target_name\n";
     $msg .= _MsgBackendSuccess."\n";
+    $msg .= $usr_target_url."\n";
+    $msg .= $usr_target_url_xml."\n";
   
-    $user_filename = publish_user_grab($grb_fullname, $grbinfo_fullname, $row["usr_name"], $row["usr_ip"]);
-    $user_file_url = "http://"._Config_hostname."$row[0]/$grb_fullname";
-    $user_fileinfo_url = "http://"._Config_hostname."$row[0]/$grbinfo_fullname";
 
-    $update = "update userreq set urq_output='$user_file_url' where urq_id=".$row["urq_id"];
-    do_sql($update);
-    send_mail($row["usr_email"], _MsgBackendSuccessSub, $msg."\n$user_fileinfo_url\n$user_file_url");
+    echo "send_mail($usr_email, _MsgBackendSuccessSub, $msg);";
   }
 }
 
@@ -189,8 +198,8 @@ function report_grab_failure($grb_id, $grb_name) {
   $msg .= _MsgBackendGrabError."\n";
   $SQL = "select distinct usr_email, usr_lang
           from request r
-               left join userreq ur on (ur.req_id=r.req_id)
-               left join userinfo u on (u.usr_id=ur.req_id)
+               left join userreq ur using (req_id)
+               left join userinfo u using (usr_id)
           where r.grb_id = $grb_id";
 
   send_mail(_Config_error_email, _MsgBackendGrabErrorSub, $msg);
@@ -213,7 +222,7 @@ function report_grab_failure($grb_id, $grb_name) {
 * Sends polite email to all requestors.
 * Send the error report to the admin too.
 */
-function report_encode_failure($grb_id, $grb_name, $enc_id) {
+function report_encode_failure($req_id, $grb_name) {
   global $DB;
   require_once("lang/lang."._Config_grab_backend_lang.".inc.php");
   
@@ -221,9 +230,9 @@ function report_encode_failure($grb_id, $grb_name, $enc_id) {
   $msg .= _MsgBackendEncodeError."\n";
   $SQL = "select distinct usr_email, usr_lang
           from request r
-               left join userreq ur on (ur.req_id=r.req_id)
-               left join userinfo u on (u.usr_id=ur.req_id)
-          where r.grb_id = $grb_id and r.enc_id=$enc_id";
+               left join userreq ur using (req_id)
+               left join userinfo u using (usr_id)
+          where r.req_id = $req_id";
 
   send_mail(_Config_error_email, _MsgBackendEncodeErrorSub, $msg);
 
@@ -254,7 +263,7 @@ function getUserLang($usr_name) {
 /**
 * Create XML info file
 */
-function create_xml_info($grb_id, $enc_id, $grbinfo_name) {
+function create_xml_info($req_id, $target_path_xml) {
   global $DB;
   $SQL = "select enc_codec, 
             req_output, 
@@ -272,15 +281,14 @@ function create_xml_info($grb_id, $enc_id, $grbinfo_name) {
             g.grb_date_start,
             g.grb_date_end
           from request r
-               left join encoder e on (e.enc_id=r.enc_id)
-               left join grab g on (g.grb_id=r.grb_id)
-               left join television t on (t.tel_id=g.tel_id)
-               left join channel c on (c.chn_id=t.chn_id)
-          where AND g.grb_id=$grb_id
-                AND r.enc_id=$enc_id";
+               left join encoder e using (enc_id)
+               left join grab g using (grb_id)
+               left join television t using (tel_id)
+               left join channel c using (chn_id)
+          where r.req_id=$req_id";
   $rs = do_sql($SQL);
   $row = $rs->FetchRow();
-  if ($fp = fopen(_Config_grab_storage."/".$grbinfo_name, 'w')) {
+  if ($fp = fopen($target_path_xml, 'w')) {
     $filename = $row[1];
     if (!empty($filename)) {
       $pos = strrpos($filename, "/");
@@ -313,7 +321,6 @@ function create_xml_info($grb_id, $enc_id, $grbinfo_name) {
     fwrite($fp, sprintf("</grab>\n")); 
     fclose($fp);
   }
-  return $grbinfo_name;
 }
 
 function report_filesize_warning($size,$free) {

@@ -38,11 +38,10 @@ function cleanPidInfo($enc_id) {
 * Returns id of the oldest grab waiting for this encoder.
 * Returns false when there is none.
 */
-function getOldestGrab($enc_id) {
-  $SQL ="select g.grb_id
-    from grab g, request r
+function getOldestRequest($enc_id) {
+  $SQL ="select r.req_id
+    from request r left join grab g using (grb_id)
     where
-      r.grb_id = g.grb_id and
       r.enc_id = $enc_id and
       r.req_status = 'saved' and
       r.req_output = ''
@@ -60,19 +59,19 @@ function getOldestGrab($enc_id) {
 /*
 * Returns filename of saved grb_id and checks if exists
 */
-function getGrabName($grb_id) {
+function getGrabName($req_id) {
   $SQL ="select g.grb_name
-    from grab g
+    from grab g left join request using (grb_id)
     where
-      g.grb_id = $grb_id";
+      g.req_id = $req_id";
   $rs = do_sql($SQL);
   $row = $rs->FetchRow();
   $rs->Close();
   if (!$row[0]) {
     return false;
   }
-  $grab_file = _Config_grab_storage."/".$row[0].".ts";
-  if (is_empty_file($grab_file)) {
+  $grb_file = _Config_grab_storage."/".$row[0].".ts";
+  if (is_empty_file($grb_file)) {
     return false;
   }
   return $row[0];
@@ -85,28 +84,30 @@ function encodeGrab($enc_id, $enc_suffix, $enc_script) {
   global $logdbg;
   global $logerr;
 
-  $grab_id = getOldestGrab($enc_id);
-  if (!$grab_id) {
+  $req_id = getOldestRequest($enc_id);
+  if (!$req_id) {
     $logdbg->log("nothing to encode, enc_id=$enc_id");
     return;
   }
   ensure_free_space();
-
-  if (!($grab_name = getGrabName($grab_id))) {
-    $logerr->log("encoding failed to find saved grab $grab_name, enc_id=$enc_id");
-    $target_name = "$grab_name$enc_suffix";
-    report_encode_failure($grab_id, $target_name, $enc_id);
+  $grb_name = getGrabName($req_id);
+  if (!$grb_name) {
+    $logerr->log("encoding failed to find saved grab $grb_name, enc_id=$enc_id");
+    $target_name = "$grb_name.$enc_suffix";
+    report_encode_failure($req_id, $target_name);
     return;
   }
 
-  $target_name = "$grab_name.$enc_suffix";
+  $SQL = "update request set req_status='encoding' where req_id=$req_id";
+  do_sql($SQL);
+
+  $target_name = "$grb_name.$enc_suffix";
   $target_path = _Config_grab_storage."/$target_name";
-  $grabinfo_name = "$target_name.xml";
-  $cmd = "encoders/$enc_script "._Config_grab_storage."/$grab_name.ts $target_path >/dev/null 2>&1";
+  $target_name_xml = $target_name.".xml";
+  $target_path_xml = $target_path.".xml";
+  $cmd = "encoders/$enc_script "._Config_grab_storage."/$grb_name.ts $target_path >/dev/null 2>&1";
   $logdbg->log("starting encoder (enc_id=$enc_id): $cmd");
   $logdbg->log("starting $target_path");
-  $SQL = "update request set req_status='encoding' where grb_id=$grab_id and enc_id=$enc_id";
-  do_sql($SQL);
   do_cmd($cmd);
   $logdbg->log("finished encoder $target_path");
   $logdbg->log("size: ".get_file_size($target_path));
@@ -115,16 +116,16 @@ function encodeGrab($enc_id, $enc_suffix, $enc_script) {
     $logdbg->log("encoding created $target_path, enc_id=$enc_id");
     $req_output_size = get_file_size($target_path);
     $req_output_md5 = get_file_md5($target_path);
-    $SQL = "update request set req_status='encoded', req_output='$target_name', req_output_size=$req_output_size, req_output_md5='$req_output_md5' where grb_id=$grab_id and enc_id=$enc_id";
+    $SQL = "update request set req_status='encoded', req_output='$target_name', req_output_size=$req_output_size, req_output_md5='$req_output_md5' where req_id=$req_id";
     do_sql($SQL);
-    $grabinfo_file = create_xml_info($grab_id,$enc_id,$grabinfo_name);
-    report_grab_success($grab_id, $target_name, $grabinfo_file, $enc_id);
+    create_xml_info($req_id,$target_path_xml);
+    report_grab_success($req_id, $target_name, $target_name_xml);
   }
   else {
-    $SQL = "update request set req_status='error' where grb_id=$grab_id and enc_id=$enc_id";
-    do_sql($SQL);  // set for another run
+    $SQL = "update request set req_status='error' where req_id=$req_id";
+    do_sql($SQL);
     $logerr->log("encoding failed to create $target_path, enc_id=$enc_id");
-    report_encode_failure($grab_id, $target_name, $enc_id);
+    report_encode_failure($req_id, $target_name);
   }
 }
 

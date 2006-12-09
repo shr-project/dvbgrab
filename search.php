@@ -50,8 +50,8 @@ function print_results($usr_id,$query,$tv_date) {
                  (select min(req_status) from request as r where r.grb_id=g.grb_id) as req_status,
                  (select usr_id from request as r left join userreq as u using (req_id) where r.grb_id=g.grb_id and u.usr_id=$usr_id) as my_grab
           from television t
-               left join channel c on (c.chn_id=t.chn_id)
-               left join grab g on (g.tel_id=t.tel_id)
+               left join channel c using (chn_id)
+               left join grab g using (tel_id)
           where $query_sql and
                 tel_date_start>=".$DB->sysTimeStamp."
           order by tel_date_start";

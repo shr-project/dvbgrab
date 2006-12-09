@@ -25,7 +25,7 @@ function grabAction($action,$query,$tv_date,$tel_id,$grb_id) {
 
       // zjisti, zda porad existuje
       $SQL = "select t.tel_date_start, t.tel_date_end, t.chn_id, g.grb_id
-              from television t left join grab g on (t.tel_id=g.tel_id) 
+              from television t left join grab g using (tel_id) 
               where t.tel_id=$tel_id";
 
       $rs = do_sql($SQL);

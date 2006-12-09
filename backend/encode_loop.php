@@ -15,6 +15,6 @@ while (true) {
     system("ENC_ID=".$row[0]." nice -n 10 ./encode_process.php >/dev/null 2>&1 &");
   }
   $rs->Close();
-  sleep(60);
+  sleep(300);
 }
 ?>
