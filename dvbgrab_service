@@ -8,7 +8,7 @@
 # processname:	encode_loop,grab_loop
 #
 
-DVBGRAB_HOME=/var/lib/dvbgrab
+DVBGRAB_HOME=/var/www/html/dvbgrab/backend
 DVBGRAB_USER=dvbgrab
 GRABLOOP=$DVBGRAB_HOME/grab_loop.php
 ENCODELOOP=$DVBGRAB_HOME/encode_loop.php
