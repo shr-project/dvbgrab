@@ -77,8 +77,8 @@ function grabAction($action,$query,$tv_date,$tel_id,$grb_id) {
           $grb_date_stop = $grb_date_start+2*3600;
         }
         // zadame grab
-        $SQL = "insert into grab(tel_id,grb_date_start,grb_date_end) 
-                         VALUES ($tel_id, ".$DB->DBTimeStamp($grb_date_start).", ".$DB->DBTimeStamp($grb_date_stop).")";
+        $SQL = "insert into grab(tel_id,grb_date_start,grb_date_end,grb_name) 
+                         VALUES ($tel_id, ".$DB->DBTimeStamp($grb_date_start).", ".$DB->DBTimeStamp($grb_date_stop).",".getGrabName($tel_id).")";
         do_sql($SQL);
         // zjistime jeho grb_id
         $SQL = "select grb_id from grab 

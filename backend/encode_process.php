@@ -5,9 +5,6 @@ require_once("dolib.inc.php");
 require_once("output.inc.php");
 require_once("loggers.inc.php");
 
-$logdbg = &Log::singleton('file', _Config_dvbgrab_log, 'encode - debug', $logFileConf);
-$logerr = &Log::singleton('file', _Config_dvbgrab_log, 'encode - error', $logFileConf);
-
 /**
 * Check for no already active encoder.
 * Dies when there is another process for this encoder.

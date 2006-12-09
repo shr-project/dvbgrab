@@ -3,9 +3,6 @@ require_once("language.inc.php");
 require_once("dolib.inc.php");
 require_once("loggers.inc.php");
 
-$logdbg  = &Log::singleton('file', _Config_dvbgrab_log, 'auth', $logFileConf);
-
-
 // autentizuje uzivatele
 function authenticated($usr_id, $usr_pass_md5) {
   if (_Config_auth_db_used == '1') {

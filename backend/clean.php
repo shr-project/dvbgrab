@@ -6,8 +6,6 @@ require_once("loggers.inc.php");
 require_once("output.inc.php");
 require_once("clean.inc.php");
 
-$logdbg = &Log::singleton('console', _Config_dvbgrab_log, 'clean - debug');
-
 $logdbg->log("Erasing inactive users .. start");
 // not active users
 $activity_limit=$DB->OffsetDate(0 - _Config_user_inactivity_limit);

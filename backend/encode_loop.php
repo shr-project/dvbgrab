@@ -4,9 +4,7 @@ require_once("config.php");
 require_once("dolib.inc.php");
 require_once("loggers.inc.php");
 
-$logdbg = &Log::singleton('file', _Config_dvbgrab_log, 'encodeLoop - debug', $logFileConf);
 $logdbg->log("Starting encode_loop");
-
 // Runs all encoders
 $SQL ="select enc_id from encoder order by enc_id";
 while (true) {
