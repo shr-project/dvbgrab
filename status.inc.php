@@ -15,7 +15,7 @@
 function status_update() {
   global $DB;
   
-  $grab_stop_limit = $DB->DBTimeStamp(time()-(10+_Config_grab_date_stop_shift)*60);
+  $grab_stop_limit = $DB->DBTimeStamp(time()-10*60);
 	
   // graby ktere zacaly a nedokoncily se oznac jako 'error'
   $SQL = "update request

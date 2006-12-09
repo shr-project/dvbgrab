@@ -179,7 +179,7 @@ function get_grab_basename($tel_id) {
     $SQL = "select ch.chn_name, t.tel_date_start, t.tel_name, t.tel_id, t.tel_series, t.tel_episode, t.tel_part
         from television t
              left join channel ch on (ch.chn_id=t.chn_id)
-        where r.tel = $tel_id";
+        where t.tel_id = $tel_id";
     $rs = do_sql($SQL);
     $row = $rs->FetchRow();
     if (!$row) {;
