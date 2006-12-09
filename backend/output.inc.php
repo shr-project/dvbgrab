@@ -142,6 +142,11 @@ function report_grab_success($req_id, $target_name, $target_name_xml) {
     $usr_ip = $row[2];
     $urq_id = $row[3];
     $usr_lang = $row[4];
+
+    if (empty($urq_id) || empty($usr_email)) {
+      $logdbg->log("Dokoncen uz nechteny request\nreq_id=$req_id\ntarget_name=$target_name\ntarget_name_xml=$target_name_xml\nusr_name=$usr_name\nusr_email=$usr_email\nusr_ip=$usr_ip\nurq_id=$urq_id\nusr_lang=$usr_lang");
+      continue;
+    }
     
     $usr_target = publish_user_grab($target_name, $target_name_xml, $usr_name, $usr_ip);
     $usr_target_url = "http://"._Config_hostname."$usr_name/$target_name";
@@ -160,7 +165,7 @@ function report_grab_success($req_id, $target_name, $target_name_xml) {
     $msg .= $usr_target_url_xml."\n";
   
 
-    echo "send_mail($usr_email, _MsgBackendSuccessSub, $msg);";
+    send_mail($usr_email, _MsgBackendSuccessSub, $msg);
   }
 }
 

@@ -154,9 +154,9 @@ function handle_error_by_email($err) {
  */
 function send_mail($to, $subject, $body) {
   $header = "From: "._Config_admin_email." \r\n";
-  $header .= "Content-Type: text/plain; charset=UTF-8\r\n";
-  $header .= "Mime-Version: 1.0\r\n";
+  $header .= "Content-Type: text/plain; charset=UTF-8; format=flowed\r\n";
   $header .= "Content-Transfer-Encoding: 8bit\r\n";
+  $header .= "Mime-Version: 1.0\r\n";
 
   mail($to, $subject, $body, $header);
 }
