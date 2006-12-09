@@ -51,7 +51,7 @@ function get_grab_basename($grb_id) {
     $rs->Close();
 
     return "DVB-$timestamp-$channel-".
-        ereg_replace("[/ ()?&:']", "_", $tel_name);
+        ereg_replace("[/ ()?&:'´]", "_", $tel_name);
 }
 
 /**

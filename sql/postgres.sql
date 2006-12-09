@@ -156,6 +156,7 @@ CREATE TABLE "userinfo" (
   usr_email       varchar(60)                                             NOT NULL,
   usr_icq         integer,
   usr_jabber      varchar(40),
+  usr_lang        varchar(4),
   usr_ip          varchar(40)     DEFAULT '0.0.0.0'                       NOT NULL,
   usr_priority    smallint        DEFAULT 2                               NOT NULL,
   enc_id          integer         DEFAULT 2                               NOT NULL,

@@ -74,6 +74,38 @@ function printUserRegistration($update,$usr_id) {
     } else ret=true;
     return ret;
   }
+  function getkey(e) {
+    var code;
+    if (!e) {
+      var e = window.event; // nastaveni pro IE
+    }
+    
+    if (e.keyCode) {
+      code = e.keyCode;     // IE a Mozilla
+    } else if (e.which) {
+      code = e.which;    // NN4
+    }
+    return code;
+  }
+
+
+  function numericIP(eX) {
+    test=getkey(eX);
+    if ((test>=48 && test<=57) || (test>=97 && test<=102) || (test>=65 && test<=70) || (test==46) || (test==58) || (test>=8 && test<=10)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function alfanumeric(eX) {
+    test=getkey(eX);
+    if ((test>=48 && test<=57) || (test>=97 && test<=122) || (test>=8 && test<=10)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 -->
 </script>
 <?php
@@ -108,15 +140,15 @@ function printUserRegistration($update,$usr_id) {
 </tr>   
 <tr>
   <td class="key"><?php echo _MsgAccountLogin ?></td>
-  <td class="value"><input size="30" type="text" class="value" <?php if ($update) { echo " disabled=\"disabled\" "; } ?> name="usr_name" value="<?= $usr_name ?>"/></td>
+  <td class="value"><input onkeypress="return alfanumeric(event);" size="30" type="text" class="value" <?php if ($update) { echo " disabled=\"disabled\" "; } ?> name="usr_name" value="<?= $usr_name ?>"/></td>
 </tr>
 <tr>    
   <td class="key"><?php echo _MsgAccountPass ?></td>
-  <td class="value"><input size="30" type="password" name="usr_pass1"/></td>
+  <td class="value"><input onkeypress="return alfanumeric(event);" size="30" type="password" name="usr_pass1"/></td>
 </tr>   
 <tr>    
   <td class="key"><?php echo _MsgAccountPass2 ?></td>
-  <td class="value"><input size="30" type="password" name="usr_pass2"/></td>
+  <td class="value"><input onkeypress="return alfanumeric(event);" size="30" type="password" name="usr_pass2"/></td>
 </tr>   
 <tr>
   <td class="key"><?php echo _MsgAccountEmail ?></td>
@@ -127,7 +159,7 @@ function printUserRegistration($update,$usr_id) {
 </tr>
 <tr>
   <td class="key"><?php echo _MsgAccountIp ?></td>
-  <td class="value"><input size="30" type="text" <?php if (!$update) { echo " disabled=\"disabled\" "; } ?> name="usr_ip" value="<?= $usr_ip ?>"/></td>
+  <td class="value"><input onkeypress="return numericIP(event);" size="30" type="text" <?php if (!$update) { echo " disabled=\"disabled\" "; } ?> name="usr_ip" value="<?= $usr_ip ?>"/></td>
 </tr>
 <tr>
   <td class="key"><?php echo _MsgAccountEncoder ?></td>
@@ -168,9 +200,11 @@ function printUserRegistration($update,$usr_id) {
 </tr>
 </table>
 </form>
+<? if (authenticated($_COOKIE["usr_id"], $_COOKIE["usr_pass"])) { ?>
 <br/>
-<a href="<?=$PHP_SELF."?action=removeAccount"?>" class="warning"><?= _MsgAccountRemove ?></a>
+<a href="<?=$PHP_SELF."?action=removeAccount"?>" onclick="return confirm('<?= _MsgAccountRemove ?>');" class="warning"><?= _MsgAccountRemove ?></a>
 <?php 
+}
 } 
 function printUserLogin() {
   global $PHP_SELF;
@@ -194,6 +228,28 @@ function printUserLogin() {
       }
     }
   }
+  function getkey(e) {
+    var code;
+    if (!e) {
+      var e = window.event; // nastaveni pro IE
+    }
+
+    if (e.keyCode) {
+      code = e.keyCode;     // IE a Mozilla
+    } else if (e.which) {
+      code = e.which;    // NN4
+    }
+    return code;
+  }
+
+  function alfanumeric(eX) {
+    test=getkey(eX);
+    if ((test>=48 && test<=57) || (test>=97 && test<=122) || (test>=8 && test<=10)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 //-->
 </script>
 
@@ -204,11 +260,11 @@ function printUserLogin() {
 </tr>
 <tr>
   <td class="key"><?php echo _MsgAccountLogin ?></td>
-  <td class="value"><input size="30" type="text" name="usr_name"/></td>
+  <td class="value"><input onkeypress="return alfanumeric(event);" size="30" type="text" name="usr_name"/></td>
 </tr>
 <tr>
   <td class="key"><?php echo _MsgAccountPass ?></td>
-  <td class="value"><input size="30" type="password" name="usr_pass"/></td>
+  <td class="value"><input onkeypress="return alfanumeric(event);" size="30" type="password" name="usr_pass"/></td>
 </tr>
 <tr>
   <td colspan="2"><a href="sendPass.php?action=sendPassword"><?php echo _MsgAccountLostPass ?></a></td>

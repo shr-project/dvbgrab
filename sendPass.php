@@ -66,8 +66,7 @@ switch ($_GET["action"]) {
             $mail = $row[2];
             $newPass=get_rand_id(10);
             $newPassMD5=md5($newPass);
-            $SQL = "update userinfo set usr_pass='$newPassMD5'
-                    where usr_id=$usr_id";
+            $SQL = "update userinfo set usr_pass='$newPassMD5' where usr_id=$usr_id";
             do_sql($SQL);
             $msg = _MsgSendPassEmailStart."\n";
             $msg .= "username: $user\n";
