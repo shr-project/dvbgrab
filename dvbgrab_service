@@ -25,49 +25,59 @@ status() {
     [ $RETVAL -eq 0 ] || echo "$1 is stopped"
 }
 
-start() {
+start_grab() {
     echo -n $"Starting DVBgrab grab loop: "
     sh -c "$GRABLOOP >/dev/null 2>&1 & disown"
-    RETVALG=$?
+    RETVAL=$?
     echo
-    [ $RETVALG -eq 0 ] && touch "$LOCKFILE_G"
-
-
+    [ $RETVAL -eq 0 ] || echo "[FAILED}" && echo "[OK]" && touch "$LOCKFILE_G"
+}
+start_encode() {
     rm -f "$STORAGE/frameno.avi"
     echo -n $"Starting DVBgrab encode loop: "
     sh -c "$ENCODELOOP >/dev/null 2>&1 & disown"
-    RETVALE=$?
+    RETVAL=$?
+    [ $RETVAL -eq 0 ] || echo "[FAILED}" && echo "[OK]" && touch "$LOCKFILE_E"
     echo
-    [ $RETVALE -eq 0 ] && touch "$LOCKFILE_E"
-    RETVAL=`expr $RETVALE + $RETVALG`
 }
 
-stop() {
+stop_grab() {
     echo -n $"Stopping DVBgrab grab loop: "
     killall -u $DVBGRAB_USER `basename "$GRABLOOP"`   > /dev/null 2> /dev/null
     killall -u $DVBGRAB_USER grab_process.php         > /dev/null 2> /dev/null
     killall -u $DVBGRAB_USER dumprtp                  > /dev/null 2> /dev/null
+
     rm -f "$LOCKFILE_G";
+    RETVAL=0
+    [ $RETVAL -eq 0 ] || echo "[FAILED}" && echo "[OK]"
     echo
-    
+}
+stop_encode() {
     echo -n $"Stopping DVBgrab encode loop: "
     killall -u $DVBGRAB_USER `basename "$ENCODELOOP"` > /dev/null 2> /dev/null
     killall -u $DVBGRAB_USER encode_process.php       > /dev/null 2> /dev/null
     killall -u $DVBGRAB_USER mencoder                 > /dev/null 2> /dev/null
 
     rm -f "$LOCKFILE_E"
-    echo
     RETVAL=0
+    [ $RETVAL -eq 0 ] || echo "[FAILED}" && echo "[OK]"
+    echo
 }
 
 
 # See how we were called.
 case "$1" in
     start)
-	start
+	start_grab
+	RETVAL=$? 
+	start_encode
+	RETVAL=`expr $RETVAL + $?` 
 	;;
     stop)
-	stop
+	stop_grab
+	RETVAL=$? 
+	stop_encode
+	RETVAL=`expr $RETVAL + $?` 
 	;;
     status)
         status `basename "$GRABLOOP"`
@@ -79,8 +89,28 @@ case "$1" in
 	stop
 	start
 	;;
+    startg)
+	start_grab
+	;;
+    starte)
+	start_encode
+	;;
+    stopg)
+	stop_grab
+	;;
+    stope)
+	stop_encode
+	;;
+    restartg)
+	stop_grab
+	start_grab
+	;;
+    restarte)
+	stop_encode
+	start_encode
+	;;
     *)
-	echo $"Usage: `basename "$0"` {start|stop|status|restart}"
+	echo $"Usage: `basename "$0"` {start[eg]|stop[eg]|restart[eg]|status"
 	;;
 esac
 exit $RETVAL

@@ -43,8 +43,7 @@ function getOldestRequest($enc_id) {
     from request r left join grab g using (grb_id)
     where
       r.enc_id = $enc_id and
-      r.req_status = 'saved' and
-      r.req_output = ''
+      r.req_status = 'saved'
     order by g.grb_date_start
     limit 1";
   $rs = do_sql($SQL);
@@ -61,9 +60,9 @@ function getOldestRequest($enc_id) {
 */
 function getGrabName($req_id) {
   $SQL ="select g.grb_name
-    from grab g left join request using (grb_id)
+    from grab g left join request r using (grb_id)
     where
-      g.req_id = $req_id";
+      r.req_id = $req_id";
   $rs = do_sql($SQL);
   $row = $rs->FetchRow();
   $rs->Close();
