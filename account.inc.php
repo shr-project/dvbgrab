@@ -91,7 +91,7 @@ function printUserRegistration($update,$usr_id) {
 
   function numericIP(eX) {
     test=getkey(eX);
-    if ((test>=48 && test<=57) || (test>=97 && test<=102) || (test>=65 && test<=70) || (test==46) || (test==58) || (test>=8 && test<=10)) {
+    if ((test>=48 && test<=57) || (test>=97 && test<=102) || (test>=65 && test<=70) || (test==46) || (test==58) || (test==13) || (test==10) || (test>=8 && test<=10)) {
       return true;
     } else {
       return false;
@@ -100,7 +100,7 @@ function printUserRegistration($update,$usr_id) {
 
   function alfanumeric(eX) {
     test=getkey(eX);
-    if ((test>=48 && test<=57) || (test>=97 && test<=122) || (test>=8 && test<=10)) {
+    if ((test>=48 && test<=57) || (test>=97 && test<=122) || (test==13) || (test==10) || (test>=8 && test<=10)) {
       return true;
     } else {
       return false;
@@ -244,7 +244,7 @@ function printUserLogin() {
 
   function alfanumeric(eX) {
     test=getkey(eX);
-    if ((test>=48 && test<=57) || (test>=97 && test<=122) || (test>=8 && test<=10)) {
+    if ((test>=48 && test<=57) || (test>=97 && test<=122) || (test==13) || (test==10) || (test>=8 && test<=10)) {
       return true;
     } else {
       return false;
