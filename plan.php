@@ -88,7 +88,7 @@ $SQL = "select g.grb_id,
                u.usr_id, 
                u.usr_name, 
                u.usr_email, 
-               r.req_output
+               ur.urq_output
         from television t
                left join channel c using (chn_id)
                left join grab g using (tel_id)
@@ -175,8 +175,8 @@ if ($res->RecordCount() == 0) {
       echo "    <td><a class=\"programLink\" href=\"mailto:".str_replace("@", "@NOSPAM.", $row["usr_email"])."\">".$row["usr_name"]."</a></td>\n";
     } else {
       if ($row["req_status"] == "done") {
-        if ($row["req_output"] != "") {
-          echo "    <td><a class=\"programLink\" href=\"".$row["req_output"]."\">"._MsgPlanGrabLink."</a></td>\n";
+        if ($row["urq_output"] != "") {
+          echo "    <td><a class=\"programLink\" href=\"".$row["urq_output"]."\">"._MsgPlanGrabLink."</a></td>\n";
         } else {
           echo "    <td class=\"programLink\">"._MsgPlanGrabLinkNone."</td>\n";
         }
