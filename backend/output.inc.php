@@ -7,54 +7,6 @@ require_once("loggers.inc.php");
 require_once("lang/lang."._Config_grab_backend_lang.".inc.php");
 
 /**
-* Returns grab basename.
-* Basename = filename without path and suffix.
-*/
-function get_grab_basename($grb_id) {
-    global $DB;
-
-    $SQL = "select ch.chn_name, t.tel_date_start, t.tel_name, t.tel_id, t.tel_series, t.tel_episode, t.tel_part
-        from television t
-             left join channel ch on (ch.chn_id=t.chn_id)
-             left join grab g on (g.tel_id=t.tel_id)
-        where g.grb_id = $grb_id";
-    $rs = do_sql($SQL);
-    $row = $rs->FetchRow();
-    if (!$row) {;
-        return false;
-    }
-    $tel_series = $row["tel_series"];
-    $tel_episode = $row["tel_episode"];
-    $tel_part = $row["tel_part"];
-
-
-    $channel = strtolower(strip_diacritics($row[0]));
-    $timestamp = $DB->UserTimeStamp($DB->UnixTimeStamp($row[1]), "Ymd-Hi");
-    if (_Config_grab_backend_strip_diacritics == "1") {
-      $tel_name = strip_diacritics($row[2]);
-    } else {
-      $tel_name = $row[3];
-    }
-    if (!empty($tel_series) || !empty($tel_episode) || !empty($tel_part)) {
-      $tel_name .= "_";
-    }
-    if (!empty($tel_series)) {
-      $tel_name .= "S$tel_series";
-    }
-    if (!empty($tel_episode)) {
-      $tel_name .= "E$tel_episode";
-    }
-    if (!empty($tel_part)) {
-      $tel_name .= "P$tel_part";
-    }
-
-    $rs->Close();
-
-    return "DVB-$timestamp-$channel-".
-        ereg_replace("[/ ()?&:'´]", "_", $tel_name);
-}
-
-/**
  * Returns true when file exists and is not empty.
  */
 function is_valid_file($filename) {

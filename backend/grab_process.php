@@ -9,7 +9,7 @@ $grb_id = getenv("GRB_ID");
 
 $logdbg->log("Grabing id: $grb_id");
 // get grab info
-$SQL = "select ch.chn_ip, ch.chn_port, g.grb_date_start, g.grb_date_end
+$SQL = "select ch.chn_ip, ch.chn_port, g.grb_date_start, g.grb_date_end, g.grb_name
           from channel ch, television t, grab g
           where ch.chn_id=t.chn_id and
                 t.tel_id=g.tel_id and
@@ -25,9 +25,9 @@ $chn_ip = $row[0];
 $chn_port = $row[1];
 $begin_time = $DB->UnixTimeStamp($row[2]);
 $end_time = $DB->UnixTimeStamp($row[3]);
+$grab_name = $row[4];
 $rs->Close();
 
-$grab_name = get_grab_basename($grb_id);
 $grab_filename = _Config_grab_storage."/$grab_name.ts";
         
 while ($begin_time > time()) {
