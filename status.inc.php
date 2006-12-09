@@ -18,19 +18,19 @@ function status_update() {
   $grab_stop_limit = $DB->DBTimeStamp(time()-(10+_Config_grab_date_stop_shift)*60);
 	
   // graby ktere zacaly a nedokoncily se oznac jako 'error'
-  $SQL = "update request r
+  $SQL = "update request
           set req_status='error'
-          where r.req_status='saving' and
-            r.req_id IN ( select g.req_id 
+          where req_status='saving' and
+            grb_id IN ( select g.grb_id 
                           from grab g 
                           where g.grb_date_end < $grab_stop_limit)";
   do_sql($SQL);
 
   // graby ktere se ani nezacaly oznac jako 'missed'
-  $SQL = "update request r 
+  $SQL = "update request 
           set req_status='missed'
-          where r.req_status='scheduled' and
-            r.req_id IN ( select g.req_id
+          where req_status='scheduled' and
+            grb_id IN ( select g.grb_id
                           from grab g
                           where g.grb_date_end < $grab_stop_limit)";
   do_sql($SQL);

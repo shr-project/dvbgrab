@@ -7,7 +7,6 @@ require_once("loggers.inc.php");
 
 $logdbg = &Log::singleton('file', _Config_dvbgrab_log, 'encode - debug', $logFileConf);
 $logerr = &Log::singleton('file', _Config_dvbgrab_log, 'encode - error', $logFileConf);
-$logsys = &Log::singleton('file', _Config_dvbgrab_log, 'encode - sys', $logFileConf);
 
 /**
 * Check for no already active encoder.
@@ -116,12 +115,10 @@ function encodeGrab($enc_id, $enc_suffix, $enc_script) {
   $logdbg->log("size: ".get_file_size($target_path));
 
   if (!is_empty_file($target_path)) {
-    $SQL = "update request set req_status='encoded' where grb_id=$grab_id and enc_id=$enc_id";
-    do_sql($SQL);
     $logdbg->log("encoding created $target_path, enc_id=$enc_id");
     $req_output_size = get_file_size($target_path);
     $req_output_md5 = get_file_md5($target_path);
-    $SQL = "update request set req_output='$target_name', req_output_size=$req_output_size, req_output_md5='$req_output_md5' where grb_id=$grab_id and enc_id=$enc_id";
+    $SQL = "update request set req_status='encoded', req_output='$target_name', req_output_size=$req_output_size, req_output_md5='$req_output_md5' where grb_id=$grab_id and enc_id=$enc_id";
     do_sql($SQL);
     $grabinfo_file = create_xml_info($grab_id,$enc_id,$grabinfo_name);
     report_grab_success($grab_id, $target_name, $grabinfo_file, $enc_id);
