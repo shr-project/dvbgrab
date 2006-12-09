@@ -15,11 +15,10 @@ while (true) {
              grb_date_start >= ".$DB->DBTimeStamp($grab_time_limit_lo)." and grb_date_start <= ".$DB->DBTimeStamp($grab_time_limit_hi)."
              and exists (select * from request r where req_status='scheduled' and g.grb_id=r.grb_id) order by grb_date_start limit 1";
   $rs = do_sql($SQL);
-  $SQL = "update request set req_status='saving' where grb_id=$grb_id";
-  do_sql($SQL);
 
-  
   while($row=$rs->FetchRow()) {
+    $SQL = "update request set req_status='saving' where grb_id=$row[0]";
+    do_sql($SQL);
     do_cmd("GRB_ID=".$row[0]." ./grab_process.php >/dev/null 2>&1 &");
   }
   $rs->Close();
