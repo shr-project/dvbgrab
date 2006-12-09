@@ -3,7 +3,7 @@
 function cleanAccount($usrName,$usrId) {
   $cmd = "rm -f "._Config_grab_root."/$usrName/*";
   do_cmd($cmd);
-  $cmd = "rmdir -f "._Config_grab_root."/$usrName/*";
+  $cmd = "rmdir "._Config_grab_root."/$usrName";
   do_cmd($cmd);
   $SQL = "delete from userreq where usr_id=$usrId";
   do_sql($SQL);
