@@ -12,7 +12,7 @@ $SQL ="select grb_name,
        from request 
             left join grab using (grb_id) 
             left join encoder using (enc_id) 
-       where req_status IN ('saved','saving','encode','encoded')
+       where req_status IN ('saved','saving','encoding','encoded')
        order by req_status, 
                 enc_codec, 
                 grb_date_start";
