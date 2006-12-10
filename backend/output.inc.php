@@ -172,9 +172,8 @@ function report_grab_success($req_id, $target_name, $target_name_xml) {
   }
 }
 
-function sendInfoCleanAccount($usr_name,$usr_email) {
+function sendInfoCleanAccount($usr_name,$usr_email, $usr_lang) {
   global $DB;
-  $usr_lang = getUserLang($usr_name);
   require_once("lang/lang.$usr_lang.inc.php");
 
   $msg = "user: $usr_name\n";
@@ -182,9 +181,8 @@ function sendInfoCleanAccount($usr_name,$usr_email) {
   send_mail($usr_email, _MsgBackendAccountCleanedSub, $msg);
 }
 
-function sendInfoUpdatedAccount($usr_name,$usr_ip,$usr_email) {
+function sendInfoUpdatedAccount($usr_name,$usr_ip,$usr_email, $usr_lang) {
   global $DB;
-  $usr_lang = getUserLang($usr_name);
   require_once("lang/lang.$usr_lang.inc.php");
 
   $msg = "user: $usr_name\n";
@@ -254,17 +252,6 @@ function report_encode_failure($req_id, $grb_name) {
     $msg = "grab: $grb_name\n";
     $msg .= _MsgBackendEncodeError."\n";
     send_mail($row[0], _MsgBackendEncodeErrorSub, $msg);
-  }
-}
-
-function getUserLang($usr_name) {
-  global $DB;
-  $SQL = "select usr_lang from userinfo where usr_name='$usr_name'";
-  $rs = do_sql($SQL);
-  if (($row = $rs->FetchRow()) && (!empty($row[0]))) {
-    $lang = $row[0];
-  } else {
-    $lang = _Config_grab_backend_lang;
   }
 }
 

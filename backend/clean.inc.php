@@ -3,6 +3,8 @@
 function cleanAccount($usrName,$usrId) {
   $cmd = "rm -f "._Config_grab_root."/$usrName/*";
   do_cmd($cmd);
+  $cmd = "rm -f "._Config_grab_root."/$usrName/.*";
+  do_cmd($cmd);
   $cmd = "rmdir "._Config_grab_root."/$usrName";
   do_cmd($cmd);
   $SQL = "delete from userreq where usr_id=$usrId";
@@ -11,7 +13,7 @@ function cleanAccount($usrName,$usrId) {
   do_sql($SQL);
 }
 
-function updateAccount($usrName,$usr_ip,$usr_email) {
+function updateAccount($usrName,$usr_ip,$usr_email, $usr_lang) {
   if (empty($usrName)) {
     return;
   }
@@ -31,7 +33,7 @@ function updateAccount($usrName,$usr_ip,$usr_email) {
       fclose($fp);
     }
   }
-  sendInfoUpdatedAccount($usr_name,$usr_ip,$usr_email);
+  sendInfoUpdatedAccount($usr_name,$usr_ip,$usr_email, $usr_lang);
 }
 
 function unknownAccount($usrName) {

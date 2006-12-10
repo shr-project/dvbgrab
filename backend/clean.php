@@ -10,13 +10,17 @@ require_once("print_xsl_template.php");
 $logdbg->log("Erasing inactive users .. start");
 // not active users
 $activity_limit=$DB->OffsetDate(0 - _Config_user_inactivity_limit);
-$SQL = "select usr_name, usr_id, usr_email from userinfo u where usr_last_activity < $activity_limit";
+$SQL = "select usr_name, usr_id, usr_email, usr_lang from userinfo u where usr_last_activity < $activity_limit";
 
 $rs = do_sql($SQL);
 while ($row = $rs->FetchRow()) {
   $logdbg->log("Erasing account: $row[0]");
   cleanAccount($row[0],$row[1]);
-  sendInfoCleanAccount($row[0],$row[2]);
+  $usr_lang = $row[3];
+  if (empty($usr_lang)) {
+    $usr_lang = _Config_grab_backend_lang;
+  }
+  sendInfoCleanAccount($row[0],$row[2],$usr_lang);
 }
 $logdbg->log("Erasing inactive .. done");
 
@@ -28,11 +32,15 @@ if ($row = $rs->FetchRow() && $row[0]) {
   $thisUpdate = $DB->DBTimeStamp(time());
   $SQL = "update param set par_val=$thisUpdate where par_key='last_account_update'";
   do_sql($SQL);
-  $SQL = "select u.usr_name, u.usr_ip, u.usr_email from userinfo u where usr_update >= $lastUpdate and <= $thisUpdate";
+  $SQL = "select u.usr_name, u.usr_ip, u.usr_email, u.usr_lang from userinfo u where usr_update >= $lastUpdate and <= $thisUpdate";
   $rs = do_sql($SQL);
   while ($row = $rs->FetchRow()) {
     $logdbg->log("Updating account: $row[0]");
-    updateAccount($row[0],$row[1], $row[2]);
+    $usr_lang = $row[3];
+    if (empty($usr_lang)) {
+      $usr_lang = _Config_grab_backend_lang;
+    }
+    updateAccount($row[0],$row[1], $row[2], $usr_lang);
   }
 }
 $logdbg->log("Updating htaccess .. done");

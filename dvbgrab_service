@@ -30,17 +30,15 @@ start_grab() {
     echo -n $"Starting DVBgrab grab loop: "
     sh -c "$GRABLOOP >/dev/null 2>&1 & disown"
     RETVAL=$?
-    echo
     [ $RETVAL -eq 0 ] || echo "[FAILED}" && echo "[OK]" && touch "$LOCKFILE_G"
 }
 start_encode() {
     rm -f "$STORAGE/frameno.avi"
-    $RESTOREQUEUE
+    $RESTOREQUEUE >/dev/null
     echo -n $"Starting DVBgrab encode loop: "
     sh -c "$ENCODELOOP >/dev/null 2>&1 & disown"
     RETVAL=$?
     [ $RETVAL -eq 0 ] || echo "[FAILED}" && echo "[OK]" && touch "$LOCKFILE_E"
-    echo
 }
 
 stop_grab() {
@@ -52,19 +50,17 @@ stop_grab() {
     rm -f "$LOCKFILE_G";
     RETVAL=0
     [ $RETVAL -eq 0 ] || echo "[FAILED}" && echo "[OK]"
-    echo
 }
 stop_encode() {
     echo -n $"Stopping DVBgrab encode loop: "
     killall -u $DVBGRAB_USER `basename "$ENCODELOOP"` > /dev/null 2> /dev/null
     killall -u $DVBGRAB_USER encode_process.php       > /dev/null 2> /dev/null
     killall -u $DVBGRAB_USER mencoder                 > /dev/null 2> /dev/null
-    $RESTOREQUEUE
+    $RESTOREQUEUE >/dev/null
 
     rm -f "$LOCKFILE_E"
     RETVAL=0
     [ $RETVAL -eq 0 ] || echo "[FAILED}" && echo "[OK]"
-    echo
 }
 
 
@@ -89,8 +85,10 @@ case "$1" in
 	RETVAL=`expr $RETVAL + $?` 
         ;;
     restart)
-	stop
-	start
+	stop_grab
+        stop_encode
+	start_grab
+        start_encode
 	;;
     startg)
 	start_grab
