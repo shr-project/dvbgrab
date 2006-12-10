@@ -5,6 +5,7 @@ require_once("config.php");
 require_once("charset.inc.php");
 require_once("loggers.inc.php");
 require_once("lang/lang."._Config_grab_backend_lang.".inc.php");
+require_once("print_xsl_template.php");
 
 /**
  * Returns true when file exists and is not empty.
@@ -159,6 +160,8 @@ function report_grab_success($req_id, $target_name, $target_name_xml) {
       $usr_lang = _Config_grab_backend_lang;
     }
     require_once("lang/lang.$usr_lang.inc.php");
+    print_xsl_template(_Config_grab_root."/$usr_name/dvbgrab.xsl");
+    
     $msg = "grab: $target_name\n";
     $msg .= _MsgBackendSuccess."\n";
     $msg .= $usr_target_url."\n";
@@ -302,7 +305,7 @@ function create_xml_info($req_id, $target_path_xml) {
       }
     }
     fwrite($fp, sprintf("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")); 
-    fwrite($fp, sprintf("<?xml-stylesheet type=\"text/xsl\" href=\"../dvbgrab.xsl\"?>\n"));
+    fwrite($fp, sprintf("<?xml-stylesheet type=\"text/xsl\" href=\"dvbgrab.xsl\"?>\n"));
     fwrite($fp, sprintf("<grab>\n")); 
     fwrite($fp, sprintf("  <channel_name>".$row[9]."</channel_name>\n")); 
     fwrite($fp, sprintf("  <tel_name>".$row[5]."</tel_name>\n")); 

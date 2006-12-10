@@ -1,5 +1,5 @@
 <?php
   require_once("../config.php");
-  header("Location:http://"._Config_hostname);
+  echo "You should add your username\nURL: http://"._Config_hostname."your_user_name";
 ?>
 

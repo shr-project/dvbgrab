@@ -5,6 +5,7 @@ require_once("dolib.inc.php");
 require_once("loggers.inc.php");
 require_once("output.inc.php");
 require_once("clean.inc.php");
+require_once("print_xsl_template.php");
 
 $logdbg->log("Erasing inactive users .. start");
 // not active users
@@ -43,6 +44,7 @@ $tok = strtok($dirList, " \n\t");
 while ($tok !== false) {
   $usrDir = str_replace(_Config_grab_root, "", $tok);
   $SQL = "select u.usr_name from userinfo u where u.usr_name LIKE '$usrDir'";
+//  print_xsl_template(_Config_grab_root."/$usrDir/dvbgrab.xsl");
   $rs = do_sql($SQL);
   if ($rs->RecordCount( ) != 1) {
     unknownAccount($usrDir);

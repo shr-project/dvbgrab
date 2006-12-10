@@ -12,6 +12,9 @@ function cleanAccount($usrName,$usrId) {
 }
 
 function updateAccount($usrName,$usr_ip,$usr_email) {
+  if (empty($usrName)) {
+    return;
+  }
   $usrDir = _Config_grab_root."/$usrName";
   if (!is_dir($usrDir)) {
     $cmd = "mkdir -p "._Config_grab_root."/$usrDir";
