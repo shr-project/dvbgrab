@@ -10,6 +10,7 @@ require_once("authentication.php");
   $menu[] =_MsgMenuPlanAccount;
   $menu[] =" ";
   $menu[] =_MsgMenuEmailUs;
+  $menu[] ="SourceForge";
   $menu[] =_MsgMenuNews;
 	
   $link[1]="tvprog.php";
@@ -19,6 +20,7 @@ require_once("authentication.php");
   $link[] ="account.php?action=edit";
   $link[] ="";
   $link[] ="mailto:"._Config_admin_email;
+  $link[] ="http://dvbgrab.sourceforge.net";
   $link[] ="news.php";
 ?>
 
