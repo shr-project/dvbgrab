@@ -3,7 +3,7 @@
 set_time_limit(18000);
 require_once("../../config.php");
 require_once("../../dolib.inc.php");
-require_once("funkce.inc.php");
+require_once("../func.inc.php");
 require_once("uget.inc.php");
 
 //-----------------------------------------------------------------
