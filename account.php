@@ -51,6 +51,7 @@ switch ($_GET["action"]) {
           return;
         }
         $SQL .= "usr_pass = '$usr_pass'";
+        $SQL .= "usr_last_update = ".$DB->DBTimeStamp(time())."'";
         $changed = true;
         $msg .= _MsgAccountPass." $old_usr_pass -> $usr_pass1\n";
       }
@@ -85,7 +86,7 @@ switch ($_GET["action"]) {
       }
       $SQL .= "usr_ip = '$usr_ip'";
       $SQL .= ", ";
-      $SQL .= "usr_last_update = ".$DB->OffsetDate(0);
+      $SQL .= "usr_last_update = ".$DB->DBTimeStamp(time())."'";
       $changed = true;
       $msg .= _MsgAccountIp." $old_usr_ip -> $usr_ip\n";
       $msg .= _MsgAccountChangeIpNotice."\n";
