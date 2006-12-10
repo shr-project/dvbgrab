@@ -1,0 +1,433 @@
+/* Main HTML body */
+body {
+  font-family : Verdana, Arial, Helvetica, sans-serif;
+  font-size : 1em;
+  background-color : #000000;
+  color : #999999;
+}
+/* Header definitions */
+div.status {
+  margin-left : 10pt;
+  text-align : right;
+}
+img.logo {
+  height : 100px;
+  width : 310px;
+  border : 0;
+}
+/* Positioning styles */
+td.menu {
+  position : relative;
+  left : 1pt;
+  top : 1pt;
+  height : 100%;
+  text-align : left;
+  vertical-align : top;
+  white-space : nowrap;
+}
+td.top {
+  right : 1pt;
+  top : 1pt;
+  position : relative;
+  vertical-align : top;
+  white-space : normal;
+}
+td.legend {
+  width: 30pt;
+  margin-right : 1pt;
+  margin-left : auto;
+  white-space : nowrap;
+}
+div.main {
+  margin-left : 10pt;
+  text-align : left;
+  vertical-align : top;
+}
+/* Standart tags */
+h2 {
+  font-family : Verdana, Arial, Helvetica, sans-serif;
+  font-size : 1.4em;
+  color : #c9df1c;
+  font-weight : bold;
+}
+hr {
+  height : 1px;
+  width : 40%;
+}
+table {
+  border : 0;
+  border-collapse : collapse;
+}
+tr {
+  border : 0;
+}
+th {
+  font-family : Verdana, Arial, Helvetica, sans-serif;
+  font-size : 1.1em;
+  font-weight : bold;
+  text-align : left;
+}
+td {
+  font-family : Verdana, Arial, Helvetica, sans-serif;
+  font-size : 1em;
+  border-width : 0;
+}
+form {
+  font-family : Verdana, Arial, Helvetica, sans-serif;
+  font-size : 1em;
+}
+select {
+  background-color : #42b15f
+  ;
+}
+input {
+  background-color : #42b15f;
+}
+select.tvprog {
+  background-color : #66cccc;
+}
+input.tvprog {
+  background-color : #66cccc;
+}
+/* Anchors */
+a:link, a:visited {
+  font-family : Verdana, Arial, Helvetica, sans-serif;
+  font-size : 1em;
+  text-decoration : none;
+}
+a:hover {
+  font-family : Verdana, Arial, Helvetica, sans-serif;
+  font-size : 1em;
+  background-color : transparent;
+  color : #336699;
+}
+a.item:hover {
+  background-color : #99ccff;
+}
+a.menuitem_act {
+  font-family : Verdana, Arial, Helvetica, sans-serif;
+  font-size : 1em;
+  background-color : #33ccff;
+  color : #336699;
+}
+a.programLink {
+  color : #003399;
+  font-size : 1em;
+  font-family : Verdana, Arial, Helvetica, sans-serif;
+}
+a.programLink:hover {
+  background-color : #33ccff;
+}
+a.programLinkHi {
+  color : #336699;
+  font-size : 1em;
+  font-family : Verdana, Arial, Helvetica, sans-serif;
+}
+a.programLinkHi:hover {
+  background-color : transparent;
+}
+td.programLink {
+  color : #111111;
+  font-size : 1em;
+  font-family : Verdana, Arial, Helvetica, sans-serif;
+}
+td.programLinkHi {
+  color : #111111;
+  font-size : 1em;
+  font-family : Verdana, Arial, Helvetica, sans-serif;
+}
+a.menuitem {
+  color : #336699;
+  font-size : 1em;
+  font-family : Verdana, Arial, Helvetica, sans-serif;
+}
+a.menuitem:hover, a.menuitem_act:hover {
+  background-color : #99ccff;
+}
+/* TV program styles */
+.programDate {
+  color : #99ccff;
+  vertical-align : top;
+  white-space: nowrap;
+}
+.programDateHi {
+  color : #111111;
+  vertical-align : top;
+  white-space: nowrap;
+}
+.match {
+  color : #a600b6;
+}
+.matchHi {
+  color : #a600b6;
+}
+a.programName {
+  text-decoration : underline;
+  font-weight : bold;
+  color : #66cc33;
+  background : transparent;
+}
+a.programNameHi {
+  text-decoration : underline;
+  font-weight : bold;
+  color : #333333;
+  background : transparent;
+}
+span.programName {
+  color : #66cc33;
+  background : transparent;
+}
+span.programNameHi {
+  color : #111111;
+  background : transparent;
+}
+.programLogo {
+  background : transparent;
+}  
+.programDesc {
+  font-style : italic;
+  font-size : 0.8em;
+  color : #999999;
+  background : transparent;
+}
+.programDescHi {
+  font-style : italic;
+  font-size : 0.8em;
+  color : #111111;
+  background : transparent;
+}
+.programCategory {
+  font-weight : bold;
+  font-size : 0.8em;
+  color : #009966;
+  background : transparent;
+}
+.programCategoryHi {
+  font-weight : bold;
+  font-size : 0.8em;
+  color : #222222;
+  background : transparent;
+}
+.programDel {
+  color : #111111;
+  background : transparent;
+}
+.programDelHi {
+  color : #003399;
+  background : transparent;
+}
+a.programDel:hover {
+  color : #111111;
+  background : #99ccff;
+}
+a.programDelHi:hover {
+  color : #003399;
+  background : #99ccff;
+}
+.grabInfo {
+  border: 1px solid ; 
+  background-color: #99f699;
+  white-space: nowrap;
+}
+.telInfo {
+  border: 1px solid ; 
+  background-color: #99f699;
+  white-space: nowrap;
+}
+.jsonKey {
+  color: #00834f;
+  font-family : Verdana, Arial, Helvetica, sans-serif;
+  font-size : 1em;
+}
+.jsonVal {
+  color: #111111;
+  font-family : Verdana, Arial, Helvetica, sans-serif;
+  font-size : 1em;
+}
+/* Text positions */
+.center {
+  text-align : center;
+}
+.right {
+  text-align : right;
+}
+.left {
+  text-align : left;
+}
+/* Tables */
+table.registration {
+  position : relative;
+  right : auto;
+  text-align : center;
+  white-space : normal;
+  width : 40%;
+  border : 2px;
+  border-style : groove;
+  border-color : #06874c;
+  background-color : #8eda90;
+}
+table.config {
+  position : relative;
+  width : 90%;
+  border : 2px;
+  border-style : groove;
+  border-color : #06874c;
+  text-align : left;
+  background-color : #8eda90;
+}
+table.grabList {
+  width : 90%;
+}
+/* Setup, Account input fields */
+.input { 
+  color : #444444;
+  border-bottom-width : 4px;
+  border-color : #33cc00;
+  border-bottom-style : groove; 
+}
+.key {
+  white-space : nowrap;
+  text-align : right;
+  width : 30%;
+}
+.value {
+  text-align : left;
+  width : 70%;
+}
+.desc {
+  color : #333333;
+  text-align : center;
+}
+th.key {
+  color : #555555;
+  border-bottom-width : 4px;
+  border-bottom-color : #33cc00;
+  border-bottom-style : groove;
+}
+td.key {
+  color : #06874c;
+}
+th.value {
+  color : #222222;
+  border-bottom-width : 4px;
+  border-bottom-color : #33cc00;
+  border-bottom-style : groove;
+}
+td.value {
+  color : #006600;
+}
+input.value[disabled] {
+  color : #006699;
+}
+/* Text highlight */
+.warning {
+  color : #a600b6;
+  font-weight : bold;
+}
+/* Header keys */
+a.item {
+  color : #336699;
+  font-weight : bold;
+}
+span.item {
+  color : #339999;
+  font-weight : bold;
+}
+.item {
+  color : #aaaaaa;
+  font-weight : bold;
+}
+/* Today highlight */
+option.today {
+  background-color : #e1e64a;
+}
+.status-scheduled {
+  background-color : #ffff77;
+}
+.status-scheduled-my {
+  background-color : #ffff77;
+  background-image : url("../images/dot.gif");
+  background-repeat : no-repeat;
+  background-position : left;
+}
+.status-saving {
+  background-color : #99ff44;
+}
+.status-saving-my {
+  background-color : #99ff44;
+  background-image : url("../images/dot.gif");
+  background-repeat : no-repeat;
+  background-position : left;
+}
+.status-saved {
+  background-color : #99ff44;
+}
+.status-saved-my {
+  background-color : #99ff44;
+  background-image : url("../images/dot.gif");
+  background-repeat : no-repeat;
+  background-position : left;
+}
+.status-encoding {
+  background-color : #33cc66;
+}
+.status-encoding-my {
+  background-color : #33cc66;
+  background-image : url("../images/dot.gif");
+  background-repeat : no-repeat;
+  background-position : left;
+}
+.status-encoded {
+  background-color : #33cc66;
+}
+.status-encoded-my {
+  background-color : #33cc66;
+  background-image : url("../images/dot.gif");
+  background-repeat : no-repeat;
+  background-position : left;
+}
+.status-done {
+  background-color : #66ffff;
+}
+.status-done-my {
+  background-color : #66ffff;
+  background-image : url("../images/dot.gif");
+  background-repeat : no-repeat;
+  background-position : left;
+}
+.status-deleted {
+  background-color : #3366ff;
+}
+.status-deleted-my {
+  background-color : #3366ff;
+  background-image : url("../images/dot.gif");
+  background-repeat : no-repeat;
+  background-position : left;
+}
+.status-missed {
+  background-color : #9933ff;
+}
+.status-missed-my {
+  background-color : #9933ff;
+  background-image : url("../images/dot.gif");
+  background-repeat : no-repeat;
+  background-position : left;
+}
+.status-error {
+  background-color : #9933ff;
+}
+.status-error-my {
+  background-color : #9933ff;
+  background-image : url("../images/dot.gif");
+  background-repeat : no-repeat;
+  background-position : left;
+}
+.status-undefined {
+  background-color : #9933ff;
+}
+.status-undefined-my {
+  background-color : #9933ff;
+  background-image : url("../images/dot.gif");
+  background-repeat : no-repeat;
+  background-position : top left;
+}
