@@ -51,6 +51,7 @@ switch ($_GET["action"]) {
           return;
         }
         $SQL .= "usr_pass = '$usr_pass'";
+        $SQL .= ", ";
         $SQL .= "usr_last_update = ".$DB->DBTimeStamp(time())."'";
         $changed = true;
         $msg .= _MsgAccountPass." $old_usr_pass -> $usr_pass1\n";
