@@ -1,7 +1,7 @@
 /* Main HTML body */
 body {
   font-family : Verdana, Arial, Helvetica, sans-serif;
-  font-size : 10pt;
+  font-size : 1em;
   background-color : #000000;
   color : #999999;
 }
@@ -46,7 +46,7 @@ div.main {
 /* Standart tags */
 h2 {
   font-family : Verdana, Arial, Helvetica, sans-serif;
-  font-size : 14pt;
+  font-size : 1.4em;
   color : #c9df1c;
   font-weight : bold;
 }
@@ -63,18 +63,18 @@ tr {
 }
 th {
   font-family : Verdana, Arial, Helvetica, sans-serif;
-  font-size : 11pt;
+  font-size : 1.1em;
   font-weight : bold;
   text-align : left;
 }
 td {
   font-family : Verdana, Arial, Helvetica, sans-serif;
-  font-size : 10pt;
+  font-size : 1em;
   border-width : 0;
 }
 form {
   font-family : Verdana, Arial, Helvetica, sans-serif;
-  font-size : 10pt;
+  font-size : 1em;
 }
 select {
   background-color : #42b15f
@@ -92,12 +92,12 @@ input.tvprog {
 /* Anchors */
 a:link, a:visited {
   font-family : Verdana, Arial, Helvetica, sans-serif;
-  font-size : 10pt;
+  font-size : 1em;
   text-decoration : none;
 }
 a:hover {
   font-family : Verdana, Arial, Helvetica, sans-serif;
-  font-size : 10pt;
+  font-size : 1em;
   background-color : transparent;
   color : #336699;
 }
@@ -106,13 +106,13 @@ a.item:hover {
 }
 a.menuitem_act {
   font-family : Verdana, Arial, Helvetica, sans-serif;
-  font-size : 10pt;
+  font-size : 1em;
   background-color : #33ccff;
   color : #336699;
 }
 a.programLink {
   color : #003399;
-  font-size : 10pt;
+  font-size : 1em;
   font-family : Verdana, Arial, Helvetica, sans-serif;
 }
 a.programLink:hover {
@@ -120,7 +120,7 @@ a.programLink:hover {
 }
 a.programLinkHi {
   color : #336699;
-  font-size : 10pt;
+  font-size : 1em;
   font-family : Verdana, Arial, Helvetica, sans-serif;
 }
 a.programLinkHi:hover {
@@ -128,17 +128,17 @@ a.programLinkHi:hover {
 }
 td.programLink {
   color : #111111;
-  font-size : 10pt;
+  font-size : 1em;
   font-family : Verdana, Arial, Helvetica, sans-serif;
 }
 td.programLinkHi {
   color : #111111;
-  font-size : 10pt;
+  font-size : 1em;
   font-family : Verdana, Arial, Helvetica, sans-serif;
 }
 a.menuitem {
   color : #336699;
-  font-size : 10pt;
+  font-size : 1em;
   font-family : Verdana, Arial, Helvetica, sans-serif;
 }
 a.menuitem:hover, a.menuitem_act:hover {
@@ -186,25 +186,25 @@ span.programNameHi {
 }  
 .programDesc {
   font-style : italic;
-  font-size : 8pt;
+  font-size : 0.8em;
   color : #999999;
   background : transparent;
 }
 .programDescHi {
   font-style : italic;
-  font-size : 8pt;
+  font-size : 0.8em;
   color : #111111;
   background : transparent;
 }
 .programCategory {
   font-weight : bold;
-  font-size : 8pt;
+  font-size : 0.8em;
   color : #009966;
   background : transparent;
 }
 .programCategoryHi {
   font-weight : bold;
-  font-size : 8pt;
+  font-size : 0.8em;
   color : #222222;
   background : transparent;
 }
@@ -237,12 +237,12 @@ a.programDelHi:hover {
 .jsonKey {
   color: #00834f;
   font-family : Verdana, Arial, Helvetica, sans-serif;
-  font-size : 10pt;
+  font-size : 1em;
 }
 .jsonVal {
   color: #111111;
   font-family : Verdana, Arial, Helvetica, sans-serif;
-  font-size : 10pt;
+  font-size : 1em;
 }
 /* Text positions */
 .center {
