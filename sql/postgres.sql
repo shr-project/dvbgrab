@@ -183,8 +183,6 @@ ALTER TABLE ONLY "grab"
 ALTER TABLE ONLY "request"
     ADD CONSTRAINT request_fkey_grab FOREIGN KEY (grb_id) REFERENCES grab(grb_id);
 ALTER TABLE ONLY "request"
-    ADD CONSTRAINT request_fkey_user FOREIGN KEY (usr_id) REFERENCES userinfo(usr_id);
-ALTER TABLE ONLY "request"
     ADD CONSTRAINT request_fkey_encoder FOREIGN KEY (enc_id) REFERENCES encoder(enc_id);
 ALTER TABLE ONLY "television"
     ADD CONSTRAINT television_fkey_television FOREIGN KEY (chn_id) REFERENCES channel(chn_id);
