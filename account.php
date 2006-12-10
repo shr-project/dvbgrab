@@ -87,7 +87,7 @@ switch ($_GET["action"]) {
       }
       $SQL .= "usr_ip = '$usr_ip'";
       $SQL .= ", ";
-      $SQL .= "usr_last_update = ".$DB->DBTimeStamp(time())."'";
+      $SQL .= "usr_last_update = ".$DB->DBTimeStamp(time());
       $changed = true;
       $msg .= _MsgAccountIp." $old_usr_ip -> $usr_ip\n";
       $msg .= _MsgAccountChangeIpNotice."\n";
