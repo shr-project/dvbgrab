@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `request` (
   `req_output`     varchar(255)           default '',
   `req_output_md5` varchar(80)            default '',
   `req_output_size`int(20)                default '0',
-  `req_status`     enum('undefined','scheduled','done','missed','processing','deleted','error') NOT NULL default 'scheduled',
+  `req_status`     enum('undefined','scheduled','done','missed','saving','saved','encoding','encoded','deleted','error') NOT NULL default 'scheduled',
   PRIMARY KEY      (`req_id`),
   UNIQUE KEY idx_grb_usr (grb_id,enc_id)
 ) ENGINE=MyISAM;
