@@ -167,10 +167,6 @@ $record_time_after_last=_Config_record_time_after_last;
 <tr><td class="key" id="db_pass">db_pass:</td>
 <td class="value" id="v_db_pass"><input class="value" type="text" name="v_db_pass" value="<?php print $db_pass;?>"/></td></tr>
 
-<tr><td colspan="2" class="desc"><? echo _MsgSetupDbName ?></td></tr>
-<tr><td class="key" id="db_name">db_name:</td>
-<td class="value" id="v_db_name"><input class="value" type="text" name="v_db_name" value="<?php print $db_name;?>"/></td></tr>
-
 <tr><td colspan="2" class="desc"><? echo _MsgSetupAuth ?><br />
 <tr><td colspan="2" class="desc"><? echo _MsgSetupAuthDbUsed ?></td></tr>
 <tr><td class="key" id="auth_db_used">auth_db_used:</td>
@@ -180,7 +176,10 @@ $record_time_after_last=_Config_record_time_after_last;
 <tr><td class="key" id="auth_db_used_only">auth_db_used_only:</td>
 <td class="value" id="v_auth_db_used_only"><input class="value" type="text" name="v_auth_db_used_only" value="<?php print $auth_db_used_only;?>"/></td></tr>
 
-<tr><td colspan="2" class="desc"><? echo _MsgSetupDbHost ?></td></tr>
+<tr><td colspan="2" class="desc"><? echo _MsgSetupDbName ?></td></tr>
+<tr><td class="key" id="auth_db_name">auth_db_name:</td>
+<td class="value" id="v_auth_db_name"><input class="value" type="text" name="v_auth_db_name" value="<?php print $auth_db_name;?>"/></td></tr>
+
 <tr><td colspan="2" class="desc"><? echo _MsgSetupDbType ?></td></tr>
 <tr><td class="key" id="auth_db_type">auth_db_type:</td>
 <td class="value" id="v_auth_db_type"><input class="value" type="text" name="v_auth_db_type" value="<?php print $auth_db_type;?>"/></td></tr>
