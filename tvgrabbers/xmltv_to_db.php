@@ -185,23 +185,23 @@ function insertRow() {
     return;
   }
 
-  $SQL = "SELECT * FROM TELEVISION WHERE chn_id=$chn_id and tel_date_start=$tel_date_start and tel_name=$tel_name";
+  $SQL = "SELECT * FROM television WHERE chn_id=$chn_id and tel_date_start=$tel_date_start and tel_name=$tel_name";
   $rs = do_sql($SQL);
   if ($rs->RecordCount() != 0) {
     echo _MsgXmlTvIgnored.": $chn_xmltv_id\n\t$tel_date_start: $tel_name\n\n";
     return; // Ignore if programm in this time exists with the same name
   } 
 
-  $SQL = "SELECT * FROM TELEVISION WHERE chn_id=$chn_id and tel_date_start=$tel_date_start";
+  $SQL = "SELECT * FROM television WHERE chn_id=$chn_id and tel_date_start=$tel_date_start";
   $rs = do_sql($SQL);
   if ($rs->RecordCount() != 0) {
     echo _MsgXmlTvUpdated.": $chn_xmltv_id\n\t$tel_date_start: $tel_name\n\n";
-    $SQL = "UPDATE TELEVISION SET tel_date_end=$tel_date_end, tel_name = $tel_name, tel_desc=$tel_desc, tel_typ = $tel_typ, tel_category=$tel_category,tel_series=$tel_series,tel_episode=$tel_episode,tel_part=$tel_part WHERE chn_id=$chn_id and tel_date_start=$tel_date_start";
+    $SQL = "UPDATE television SET tel_date_end=$tel_date_end, tel_name = $tel_name, tel_desc=$tel_desc, tel_typ = $tel_typ, tel_category=$tel_category,tel_series=$tel_series,tel_episode=$tel_episode,tel_part=$tel_part WHERE chn_id=$chn_id and tel_date_start=$tel_date_start";
     do_sql($SQL);
     return; // Update programm in this time exists programme with different name
   }
 
-  $SQL  = "INSERT INTO TELEVISION( chn_id, tel_date_start, tel_date_end, tel_name, tel_desc, tel_typ, tel_category, tel_series, tel_episode, tel_part)";
+  $SQL  = "INSERT INTO television( chn_id, tel_date_start, tel_date_end, tel_name, tel_desc, tel_typ, tel_category, tel_series, tel_episode, tel_part)";
   $SQL .=                " VALUES($chn_id,$tel_date_start,$tel_date_end,$tel_name,$tel_desc,$tel_typ,$tel_category,$tel_series,$tel_episode,$tel_part)";
   do_sql($SQL);
   echo _MsgXmlTvInserted.": $chn_xmltv_id\n\t$tel_date_start: $tel_name\n\n";
