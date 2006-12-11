@@ -1,0 +1,763 @@
+
+\chapter{Vysílání po počítačové síti}
+
+Seznam produktů, které jsou potřeba pro zprovoznění systému a návod k jejich nastavení pro DVBgrab.
+
+\vspace{10pt}
+
+Pro vysílání po sítí se používají programy z projektu VideoLAN \cite{videolanURL}. Jejich použití je následující:
+
+\vspace{10pt}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=15cm]{images/videolan.eps}
+\caption{Využití programů z projektu VideoLAN}
+\label{fig:videolan}
+\end{center}
+\end{figure}
+
+\vspace{10pt}
+
+\section{Příprava na vysílání po síti}
+
+
+\vspace{10pt}
+
+Pro provozování DVBgrabu je důležitá pouze konfigurace vysílání DVB-T signálů pomocí multicastu. Multicast je totiž nejefektivnější a díky tomu vlastně jediný použitelný pro větší lokální sítě. Konfiguraci a získání seznamu pořadů v multiplexu popíšu v této sekci, přesto pak místo VideoLanServer(VLS)+miniSAPserver může být snazší a rychlejší použít přímo VideoLanClient(VLC) i pro vysílání.
+
+\vspace{10pt}
+
+Nejdříve budeme potřebovat nějaké DVB-T karty, obvykle do slotu PCI. Odzkoušené a ověřené jsou například karty Hauppauge WinTV-NOVA-T (Technotrend Systemtechnik GmbH Technotrend-Budget, Philips Semiconductors SAA7146 rev 01). Pokud chceme paralelně vysílat kanály z více různých multiplexu, potřebujeme více těchto karet. Multiplex v DVB je balík televizních, rozhlasových a datových kanálů, který je vysílán v rámci jedné frekvence po celém území. Každá DVB-T karta má potom na svém tuneru naladěnu frekvenci multiplexu a paralelně přijímá všechny kanály tohoto multiplexu.
+
+\vspace{10pt}
+
+V České Republice jsou v současné době k dispozici 3 DVB-T multiplexy Czech Digital Group (CDG), České Radiokomunikace (CRA), Český Telecom (CTc). CRA nyní vysílá pořady České Televize, CDG má navíc k dispozici televizi Nova, Prima, Očko, 24CZ apod., CTc mají Českou Televizi, Očko, Novu.
+
+\vspace{10pt}
+
+Ovladače těchto karet jsou k dispozici na stránkách projektu linuxtv \cite{linuxtvURL} a také jsou součástí jádra systému řady 2.6. V novějších jádrech než je 2.6.9 se promítlo mnoho změn v ovladačích, proto je potřeba stáhnout i novější verze firmware karty, která se nahrává při načítání ovladače.
+
+\vspace{10pt}
+
+Pro zprovoznění vysílání je vhodné nainstalovat ještě několik uživatelských aplikací jako media-tv/linuxtv-dvb,linuxtv-dvb-apps,linuxtv-dvb-headers,libdvbpsi,dvbsnoop pro Gentoo a dvb-utils,dvbsnoop,dvbstream,dvbtune,libdvb-dev,libdvbpsi3,libdvbpsi3-dev pro debian.
+
+\vspace{10pt}
+
+Pro zjištění dostupných kanálů lze použít například příkaz scan z balíku dvb-utils. Nejdříve je třeba připravit soubor s výchozím nastavením tuneru, aby karta věděla, ve kterém multiplexu chceme kanály vyhledávat.
+
+\vspace{10pt}
+
+Výchozí nastavení pro různé multiplexy lze obvykle získat z www stránek provozovatele.
+
+\vspace{10pt}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|l|l|l|}
+\hline
+\bf{Parametr} 		& \bf{Multiplex A} 	& \bf{Multiplex B} 	& \bf{Multiplex C} 	\\
+			& 	\bf{CRA} 	& 	\bf{CDG} 	& 	\bf{CTC} 	\\
+\hline
+Typ multiplexu		&	T		&       T		&       T		\\
+\hline
+Frekvence v Praze	&	506 000 000	&       674 000 000	&       818 000 000	\\
+\hline
+Šířka pásma		&	8 MHz		&       8 MHz		&       8 MHz		\\
+\hline
+Vysílací mód		&	8K		&       8K		&       8K		\\
+\hline
+Ochranný interval 	&	1/8		&       1/16		&       1/8		\\
+\hline
+Kódový poměr(fec\_hi)	&	2/3		&       2/3		&       2/3		\\
+\hline
+Kódový poměr(fec\_lo)	&	2/3		&       1/2		&       2/3		\\
+\hline
+Modulace		&	64 QAM		&       64 QAM		&       64 QAM		\\
+\hline
+Celková bitová rychlost	&	22,12 Mbit/s	&	23,42 Mbit/s	&	22,170 Mbit/s	\\
+\hline
+Kódování češtiny pro EPG&	ISO 6937	&	ISO 6937	&	ISO 8859-2	\\
+\hline
+Hierarchický mód 	&	ne		&       ne		&       ne		\\
+\hline
+\end{tabular}
+\end{center}
+\caption{Parametry vysílání pro jednotlivé multiplexy}
+\label{tab:mplexy}
+\end{table}
+
+\vspace{10pt}
+
+Takže výchozí nastavení pak vypadá následovně (můžeme zadat všechny multiplexy najednou do jednoho souboru)
+
+\vspace{10pt}
+
+\begin{small}
+\begin{verbatim}
+# DVB-T Praha (Prague, Czech Republic)
+# T freq bw fec_hi fec_lo mod transmission-mode guard-interval hierarchy
+T 506000000 8MHz 2/3 2/3 QAM64 8k 1/8 NONE
+T 674000000 8MHz 2/3 1/2 QAM64 8k 1/16 NONE
+T 818000000 8MHz 2/3 1/2 QAM64 8k 1/8 NONE
+\end{verbatim}
+\end{small}
+
+\vspace{10pt}
+
+Výstup programu scan vypadá nějak takto:
+ 
+\vspace{10pt}
+
+\begin{small}
+\begin{verbatim}
+CT1:506000000:INVERSION_AUTO:BANDWIDTH_8_MHZ:FEC_2_3:FEC_2_3:QAM_64: \
+  TRANSMISSION_MODE_8K:GUARD_INTERVAL_1_8:HIERARCHY_NONE:513:641:1
+CT2:506000000:INVERSION_AUTO:BANDWIDTH_8_MHZ:FEC_2_3:FEC_2_3:QAM_64: \
+  TRANSMISSION_MODE_8K:GUARD_INTERVAL_1_8:HIERARCHY_NONE:514:642:2
+CT24:506000000:INVERSION_AUTO:BANDWIDTH_8_MHZ:FEC_2_3:FEC_2_3:QAM_64: \
+  TRANSMISSION_MODE_8K:GUARD_INTERVAL_1_8:HIERARCHY_NONE:515:643:3
+Nova:506000000:INVERSION_AUTO:BANDWIDTH_8_MHZ:FEC_2_3:FEC_2_3:QAM_64: \
+  TRANSMISSION_MODE_8K:GUARD_INTERVAL_1_8:HIERARCHY_NONE:516:644:4
+Praha:506000000:INVERSION_AUTO:BANDWIDTH_8_MHZ:FEC_2_3:FEC_2_3:QAM_64: \
+  TRANSMISSION_MODE_8K:GUARD_INTERVAL_1_8:HIERARCHY_NONE:0:658:18
+Vltava:506000000:INVERSION_AUTO:BANDWIDTH_8_MHZ:FEC_2_3:FEC_2_3:QAM_64: \
+  TRANSMISSION_MODE_8K:GUARD_INTERVAL_1_8:HIERARCHY_NONE:0:659:19
+D-dur:506000000:INVERSION_AUTO:BANDWIDTH_8_MHZ:FEC_2_3:FEC_2_3:QAM_64: \
+  TRANSMISSION_MODE_8K:GUARD_INTERVAL_1_8:HIERARCHY_NONE:0:661:21
+Leonardo:506000000:INVERSION_AUTO:BANDWIDTH_8_MHZ:FEC_2_3:FEC_2_3:QAM_64: \
+  TRANSMISSION_MODE_8K:GUARD_INTERVAL_1_8:HIERARCHY_NONE:0:662:22
+Radio Cesko:506000000:INVERSION_AUTO:BANDWIDTH_8_MHZ:FEC_2_3:FEC_2_3:QAM_64: \
+  TRANSMISSION_MODE_8K:GUARD_INTERVAL_1_8:HIERARCHY_NONE:0:663:23
+\end{verbatim}
+\end{small}
+
+\vspace{10pt}
+
+pro České Radiokomunikace
+
+\vspace{10pt}
+
+a
+
+\vspace{10pt}
+
+\begin{small}
+\begin{verbatim}
+CT 1:674000000:INVERSION_AUTO:BANDWIDTH_8_MHZ:FEC_2_3:FEC_1_2:QAM_64: \
+  TRANSMISSION_MODE_8K:GUARD_INTERVAL_1_16:HIERARCHY_NONE:2501:2502:5
+CT 2:674000000:INVERSION_AUTO:BANDWIDTH_8_MHZ:FEC_2_3:FEC_1_2:QAM_64: \
+  TRANSMISSION_MODE_8K:GUARD_INTERVAL_1_16:HIERARCHY_NONE:164:96:4
+NOVA:674000000:INVERSION_AUTO:BANDWIDTH_8_MHZ:FEC_2_3:FEC_1_2:QAM_64: \
+  TRANSMISSION_MODE_8K:GUARD_INTERVAL_1_16:HIERARCHY_NONE:205:206:3
+TOP TV:674000000:INVERSION_AUTO:BANDWIDTH_8_MHZ:FEC_2_3:FEC_1_2:QAM_64: \
+  TRANSMISSION_MODE_8K:GUARD_INTERVAL_1_16:HIERARCHY_NONE:2601:2602:2
+CT24:674000000:INVERSION_AUTO:BANDWIDTH_8_MHZ:FEC_2_3:FEC_1_2:QAM_64: \
+  TRANSMISSION_MODE_8K:GUARD_INTERVAL_1_16:HIERARCHY_NONE:1026:1027:7
+CRo 2:674000000:INVERSION_AUTO:BANDWIDTH_8_MHZ:FEC_2_3:FEC_1_2:QAM_64: \
+  TRANSMISSION_MODE_8K:GUARD_INTERVAL_1_16:HIERARCHY_NONE:0:2832:6
+CRo 1:674000000:INVERSION_AUTO:BANDWIDTH_8_MHZ:FEC_2_3:FEC_1_2:QAM_64: \
+  TRANSMISSION_MODE_8K:GUARD_INTERVAL_1_16:HIERARCHY_NONE:0:2831:9
+Proglas:674000000:INVERSION_AUTO:BANDWIDTH_8_MHZ:FEC_2_3:FEC_1_2:QAM_64: \
+  TRANSMISSION_MODE_8K:GUARD_INTERVAL_1_16:HIERARCHY_NONE:0:180:11
+Evropa 2:674000000:INVERSION_AUTO:BANDWIDTH_8_MHZ:FEC_2_3:FEC_1_2:QAM_64: \
+  TRANSMISSION_MODE_8K:GUARD_INTERVAL_1_16:HIERARCHY_NONE:0:110:19
+EXPRESRADIO:674000000:INVERSION_AUTO:BANDWIDTH_8_MHZ:FEC_2_3:FEC_1_2:QAM_64: \
+  TRANSMISSION_MODE_8K:GUARD_INTERVAL_1_16:HIERARCHY_NONE:0:120:22
+CLASSIC FM:674000000:INVERSION_AUTO:BANDWIDTH_8_MHZ:FEC_2_3:FEC_1_2:QAM_64: \
+  TRANSMISSION_MODE_8K:GUARD_INTERVAL_1_16:HIERARCHY_NONE:0:130:23
+Prima:674000000:INVERSION_AUTO:BANDWIDTH_8_MHZ:FEC_2_3:FEC_1_2:QAM_64: \
+  TRANSMISSION_MODE_8K:GUARD_INTERVAL_1_16:HIERARCHY_NONE:161:84:1
+\end{verbatim}
+\end{small}
+
+\vspace{10pt}
+
+pro Czech Digital Group 
+
+\vspace{10pt}
+
+Nejzajímavější jsou pro nás prvni sloupec s názvem a poslední čiselný sloupec. Poslední číslo udává PID neboli identifikační číslo toku v rámci multiplexu a ty čísla předním jsou identifikátory jednotlivých složek a to v pořadí video,audio,(data).
+Jsou to vlastně údaje z tabulky PAT a PMT. PAT je vlastně seznam kanálů/aplikacích vysílaných v daném multiplexu a PMT pro daný kanál udává identifikační číslo jeho video, audio, datových toků. Viz následující obrázek \ref{fig:PATaPMT}, převzatý z \cite{digitvURL}.
+
+\vspace{10pt}
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=15cm]{images/PATaPMT.eps}
+\caption{Tabulky toků v MPEG-2}
+\label{fig:PATaPMT}
+\end{center}
+\end{figure}
+
+\vspace{10pt}
+
+Ještě si také musíme rozhodnout jakou metodu vysílání použijeme.
+
+\vspace{10pt}
+
+Metody vysílání:
+
+\vspace{10pt}
+
+\begin{bf}$Unicast$\end{bf}
+
+
+\begin{bf}Popis:\end{bf} vysílání pro konkrétní IP adresu
+
+
+\begin{bf}Výhody:\end{bf} snadná konfigurace pro málo uživatelů, možnost definovat povolené adresy
+
+
+\begin{bf}Nevýhody:\end{bf} data se posílají tolikrát kolik je uživatelů, značně zatežuje sít
+
+\vspace{10pt}
+
+\begin{bf}$Multicast$\end{bf}
+
+
+\begin{bf}Popis:\end{bf} vysílání pro skupinu IP adres
+
+
+\begin{bf}Výhody:\end{bf} do skupiny se klient může přihlašovat a odhlašovat pomocí IGMP paketů, takže dostává data jen z těch stanic, které sleduje.
+
+
+\begin{bf}Nevýhody:\end{bf} pro funkční a efektivní multicast vysílání je potřeba, aby switche podporovali IGMP snooping, což je mechanismus přeposílání packetů pouze na ty porty, ze kterých přišel přihlašovací paket do dané skupiny, jinak se to šíří v rámci switche jako broadcast.
+
+\vspace{10pt}
+
+\begin{bf}$Broadcast$\end{bf}
+   
+
+\begin{bf}Popis:\end{bf} vysílání na úplně všechny IP v síti
+ 
+
+\begin{bf}Výhody:\end{bf} snadné
+
+
+\begin{bf}Nevýhody:\end{bf} značné zatížení sítě, data dostávají všichni a ze všech stanic
+
+\vspace{10pt}
+
+Když máme seznam pořadů a přidělíme jim některé multicastove IP adresy, je vhodné vytvořit také statický playlist. Je to obyčejný textový soubor obvykle s příponout .m3u obsahující pro každý pořad takovéto záznamy.
+
+\vspace{10pt}
+
+\begin{small}
+\begin{verbatim}
+#EXTM3U
+#EXTINF:0,CRA_CT1
+rtp://@239.194.12.1
+...
+#EXTINF:0,CRA6_CT1
+rtp://@[ff08::701]
+...
+\end{verbatim}
+\end{small}
+
+\vspace{10pt}
+
+\section{VideoLAN Server nebo VideoLAN Client?}
+
+Pro vysílání můžee použít buď VLS nebo VLC. Zásadní rozdíl je ve složitosti a udržovanosti projektu. VLS se již několik let nevyvíjí, VLC už podporuje všechny jeho funkce a nyní i mnohem více.
+
+VLS má složitějsí konfiguraci, je potřeba definovat správně seznam kanálu pro jednotlivé karty v souborech .dvbrc.N. Také neobsahuje integrovany SAP server jako VLC takže je navíc konfigurace SAP serveru a i vlastní vls.cfg je sice přehledný, ale přesto dost náchýlný k chybám při úpravách. Velkou výhodou VLS je při použítí na serverech bez grafického prostředí, protože ani jeho binární balícky nezávisejí na žádných grafických knihovnách.
+
+VLC má mnohem snažší konfiguraci nepodporuje .dvbrc.N soubory (což sice znamená, že nemůžeme definovat pro programy symbolické názvy, ale taky to ušetří práci s vytvářením těchto souborů, pokud se skladba programů v multiplexu častěji mění). Má také integrovaný SAP server, takže je vše schováno přehledně v jednom souboru. Nevýhoda u binárních instalačních balíčků se dá obejít buď překompilováním VLC do balíčku bez podpory X serveru nebo například u distribuce Gentoo je to jen o správné volbě USE flagů při instalaci.
+
+\section{VideoLAN Server}
+
+Open source projekt, který umí vysílat do sítě mnoha různými způsoby a z mnoha různých zdrojů.
+
+\vspace{10pt}
+
+Zdroje:
+
+\vspace{10pt}
+
+statické soubory na disku, nebo nějakém médiu (ve formátu MPEG-1, MPEG-2, MPEG-4),
+disky DVD v DVD mechanikách,
+digitální satelitní vysílání z DVB-S karet,
+digitální pozemní vysílání z DVB-T karet,
+přímé přenosy z kamery nebo komprimační karty
+
+\vspace{10pt}
+
+Výstupy:
+
+\vspace{10pt}
+
+na konkrétní IP adresu - unicast
+na všechny adresy v určité síti - broadcast
+na všechny počítače, které se přihlásí k odběru dané skupiny - multicast
+a to vše jak ve variantě IPv4 tak v modernější IPv6
+
+\vspace{10pt}
+
+Hardwarové nároky jsou přibližně Pentium 100 MHz a 32MB RAM pro vysílání jednoho datového toku. Pokud jsou vysílány data ze souborů na lokálním disku, tak je větším omezením čtecí rychlost disku a síťové připojení.
+
+\vspace{10pt}
+
+VLS lze používat jak ve verzi pro MS Windows tak pro Linux. K dispozici jsou i zdrojové kódy.
+
+\vspace{10pt}
+
+Instalační binární i zdrojové balíčky jsou ke stažení na adrese \cite{videolanURL}.
+Linuxové distribuce obvykle obsahují předpřipravené instalační balíčky (například Gentoo a Debian mají). 
+
+\vspace{10pt}
+
+Konfigurace VLS
+\vspace{10pt}
+
+Tady budeme potřebovat výstup s příkazu scan popsaném v předchozí sekci.
+
+Tento výstup potřebujeme zkonvertovat do formátu konfiguračního souboru pro VLS (.dvbrc). Tyto soubory obsahují na prvních řádcích definici multiplexu a jeho parametrů viz. \ref{tab:mplexy}. Pak každý kanál má nastaveno jméno v parametru NAME a poté v SID je identifikační číslo toku (poslední číslice na výstupu scan).
+
+Takže výsledek vypadá asi takto:
+
+\vspace{10pt}
+
+\begin{small}
+\begin{verbatim}
+LNB ID 1 TYPE 2
+  SAT ID 1 NAME "DVBT-Cra" LNBID 1 FMIN 150000000 FMAX 778000000
+    TRANSPONDER ID 1 SATID 1 TYPE 2 FREQ 506000000 BANDWIDTH 0 HP_RATE 2 \
+     LP_RATE 6 MODULATION 1 TRANSMISSION_MODE 1 GUARD_INTERVAL 2 HIERARCHY 0
+      CHANNEL ID 1 NAME "cra_ct1" SATID 1 TPID 1 SID 1 TYPE 0
+      CHANNEL ID 2 NAME "cra_ct2" SATID 1 TPID 1 SID 2 TYPE 0
+      CHANNEL ID 3 NAME "cra_ct24" SATID 1 TPID 1 SID 3 TYPE 0
+      CHANNEL ID 4 NAME "cra_nova" SATID 1 TPID 1 SID 4 TYPE 0
+      CHANNEL ID 5 NAME "cra_praha" SATID 1 TPID 1 SID 18 TYPE 0
+      CHANNEL ID 6 NAME "cra_vltava" SATID 1 TPID 1 SID 19 TYPE 0
+      CHANNEL ID 7 NAME "cra_ddur" SATID 1 TPID 1 SID 21 TYPE 0
+      CHANNEL ID 8 NAME "cra_leonardo" SATID 1 TPID 1 SID 22 TYPE 0
+      CHANNEL ID 9 NAME "cra_cesko" SATID 1 TPID 1 SID 23 TYPE 0
+\end{verbatim}
+\end{small}
+
+\vspace{10pt}
+
+pro České Radiokomunikace 
+
+\vspace{10pt}
+
+a
+
+\vspace{10pt}
+
+\begin{small}
+\begin{verbatim}
+LNB ID 1 TYPE 2
+  SAT ID 1 NAME "DVBT-Cdg" LNBID 1 FMIN 150000000 FMAX 778000000
+    TRANSPONDER ID 0001 SATID 0001 TYPE 2 FREQ 674000000 BANDWIDTH 0 HP_RATE 2 \
+     LP_RATE 6 MODULATION 1 TRANSMISSION_MODE 1 GUARD_INTERVAL 2 HIERARCHY 0
+      CHANNEL ID 1 NAME "cdg_prima" SATID 1 TPID 1 SID 1 TYPE 0
+      CHANNEL ID 2 NAME "cdg_top" SATID 1 TPID 1 SID 2 TYPE 0
+      CHANNEL ID 3 NAME "cdg_nova" SATID 1 TPID 1 SID 3 TYPE 0
+      CHANNEL ID 4 NAME "cdg_ct2" SATID 1 TPID 1 SID 4 TYPE 0
+      CHANNEL ID 5 NAME "cdg_ct1" SATID 1 TPID 1 SID 5 TYPE 0
+      CHANNEL ID 6 NAME "cdg_cro2" SATID 1 TPID 1 SID 6 TYPE 0
+      CHANNEL ID 7 NAME "cdg_ct24" SATID 1 TPID 1 SID 7 TYPE 0
+      CHANNEL ID 8 NAME "cdg_cro1" SATID 1 TPID 1 SID 9 TYPE 0
+      CHANNEL ID 9 NAME "cdg_proglas" SATID 1 TPID 1 SID 11 TYPE 0
+      CHANNEL ID 10 NAME "cdg_e2" SATID 1 TPID 1 SID 19 TYPE 0
+      CHANNEL ID 11 NAME "cdg_expres" SATID 1 TPID 1 SID 22 TYPE 0
+      CHANNEL ID 12 NAME "cdg_classic" SATID 1 TPID 1 SID 23 TYPE 0
+\end{verbatim}
+\end{small}
+
+\vspace{10pt}
+
+pro Czech Digital Group.
+
+\vspace{10pt}
+
+Tyto dva soubory pojmenujeme .dvbrc pro první DVB kartu a .dvbrc.1 pro druhou. Soubory uložíme do domovského adresáře uživatele pod kterým budeme chtít VLS spouštět. Pravděpodobně vytvoříme speciálního neprivilegovaného uživatele třeba vls s domovským adresářem například /var/lib/vls.
+
+\vspace{10pt}
+
+Vlastní konfigurační soubor VLS je obvykle /etc/videolan/vls.conf. 
+
+\vspace{10pt}
+
+Na začátku obsahuje společné nastavení jako telnet rozhraní pro správu vls po spuštění. Která myslím nepotřebuje dodatečný komentář.
+
+\vspace{10pt}
+
+\begin{small}
+\begin{verbatim}
+#
+# Nastavení aplikace
+#
+BEGIN "Vls"
+  LogFile       = "/var/log/vls"        # log soubor
+  ScreenLog     = "disable"             # logovat na obrazovku
+  SystemLog     = "enable"              # logovat do systémového logu
+END
+
+#
+# Povolené příkazy pro telnetové uživatele
+#
+BEGIN "Groups"
+  monitor       = "help|browse|logout"
+  master        = "help|browse|start|resume|suspend|stop \
+                   |shutdown|logout|config|program|input|channel|show"
+END
+
+#
+# Uživatelé pro telnet
+#
+BEGIN "Users"
+  monitor       = "3BcKWoiQn0vi6:monitor"       # heslo nastaveno na 'monitor'
+  master        = "JKg2TpPerilnw:master"        # heslo nastaveno na 'bozo'
+END
+
+#
+# Nastavení telnet rozhraní
+#
+BEGIN "Telnet"
+  Domain        = "Inet4"              # Inet4 nebo Inet6
+  LocalAddress  = "127.0.0.1"          # Adresa lokálního rozhraní
+  LocalPort     = "9999"               # Použitý port
+  Use           = "true"               # Povolit telnet
+END
+\end{verbatim}
+\end{small}
+
+\vspace{10pt}
+
+Dále je obsažena definice zdrojů dat
+
+\vspace{10pt}
+
+\begin{small}
+\begin{verbatim}
+#
+# Zdroje toků dat
+#
+BEGIN "Inputs"
+  dvb0          = "dvb"                 # Video výstup z první DVB karty, 
+                                        # odpovídá .dvbrc souboru
+  dvb1          = "dvb"                 # Video výstup z druhé DVB karty, 
+                                        # odpovídá .dvbrc.1 souboru
+END
+
+#
+# Konfigurace video vstupů
+#
+BEGIN "dvb0"                           # Multiplex A CRA
+  Frequency = "506000000"              # Frekvence
+  DeviceNumber = "0"                   # Zařízení /dev/dvb/adapter<i>
+  SendMethod   = "0"                   # 0 - Posílat všechny toky k danému programu, 
+                                       # 1 - posílat jen MPEG2 data
+  IgnoreTimeout = "1"                  # Ignorovat timeout
+  TrickPlay = "normal"                 
+END
+BEGIN "dvb1"                           # Multiplex B CDG
+  Frequency = "674000000"              # Frekvence
+  DeviceNumber = "1"                   # Zařízení /dev/dvb/adapter<i>
+  SendMethod   = "0"                   # 0 - Posílat všechny toky k danému programu, 
+                                       # 1 - posílat jen MPEG2 data
+  IgnoreTimeout = "1"                  # Ignorovat timeout
+  TrickPlay = "normal"
+END
+\end{verbatim}
+\end{small}
+
+\vspace{10pt}
+
+Definice distribučních kanálů, nejdříve je v Channels seznam distribučních kanálů a pak má každý svou sekci s konfigurací. Na ukázku jsou zobrazeny varianty jak pro použití IPv4 tak IPv6.
+
+\vspace{10pt}
+
+\begin{small}
+\begin{verbatim}
+#
+# Seznam distribučních kanálů
+#
+BEGIN "Channels"
+  mcra_ct1        = "network"
+  mcra6_ct1       = "network"
+...
+END
+#
+# Konfigurace distribučních kanálů
+#
+BEGIN "mcra_ct1"               # Program CT1 z multiplexu CRA přes IPv4
+  Type      = "multicast"      # Medota vysílání je multicast
+  TTL       = "1"              # Dosah vysílání je pouze po nejbližší 
+                               # router (pouze vnitřní sít)
+  DstHost   = "239.194.12.1"   # Multicastova IP adresa, 
+                               # identifikátor multicast skupiny
+  DstPort   = "1234"           # Port
+  Interface = "eth0"           # Přes které síťové rozhraní chceme posílat data
+END
+BEGIN "mcra6_ct1"              # Program CT1 z multiplexu CRA přes IPv6
+  Domain    = "inet6"          # Typ IPv6
+  Type      = "multicast"      # Medota vysílání je multicast
+  TTL       = "1"              # Dosah vysílání je pouze po nejbližší 
+                               # router (pouze vnitřní sít)
+  DstHost   = "ff08::701"      # Multicastova IP adresa, 
+                               # identifikátor multicast skupiny
+                               # ff08 značí lokální multicast v ramci místní sítě a 
+                               # 701 je identifikátor skupiny
+  DstPort   = "1234"           # Port
+  Interface = "eth0"           # Přes které síťové rozhraní chceme posílat data
+END
+...
+
+\end{verbatim}
+\end{small}
+
+\vspace{10pt}
+
+Spouštění kanálů při startu VLS. Parametry --rtp zajišťuje vysílání synchronizačních údajů společně s UDP datovými pakety a díky tomu pak vysílání jde přehrávat i MPlayerem.
+
+\vspace{10pt}
+
+\begin{small}
+\begin{verbatim}
+#
+# Příkazy po spuštění
+#
+BEGIN "LaunchOnStartUp"
+  command0  = "start cra_ct1 mcra_ct1 dvb0 --rtp"
+   # Spuštění programu ČT1 (v .dvbrc musí být přesně cra_ct1) ze zdroje dvb0 
+   # přes distribuční kanál mcra_ct1
+  command1  = "start cra_ct1 mcra6_ct1 dvb0 --rtp"   
+   # Spuštění programu ČT1 (v .dvbrc musí být přesně cra_ct1) ze zdroje dvb0 
+   # přes distribuční kanál mcra6_ct1
+...
+END
+
+\end{verbatim}
+\end{small}
+
+\vspace{10pt}
+
+VLS je skvělý program pro serverové použití, nepotřebuje grafické knihovny, jeho konfigurace je přehledná. Vývoj jde ale rychleji kupředu v podobném projektu ze stejné dílny, který je zároveň jak klientským prohlížečem tak streamovacím serverem. Tento produkt se jmenuje VideoLAN Client VLC.
+
+\vspace{10pt}
+
+\section{Mini SAP server}
+
+Opět open source projekt, SAP(Session Announcment Protocol) je protokol pro oznamování změn ve skladbě vysílání. Uživatelé mohou zvolit 2 přístupy. Buď použíjí staticky vygenerovaný soubor .m3u, který obsahuje seznam kanálů, které v síti vysíláme, ale při každé změně musíme aktualizovat .m3u soubor a uživatelé si musí stáhnout někde aktuální verzi. Druhá možnost je použít tohoto programu, který běží na serveru obvykle tom který vysílá. A v jeho konfiguraci je také seznam kanálů, které vysíláme, ale pokaždé když provedeme změnu, tak se tato změna projeví ihned i všem uživatelům, kteří mají nastaveno používání playlistu ze SAP služby.
+
+\vspace{10pt}
+
+SAP server tyto informace posílá také pomocí multicast vysílání, podporuje také jak IPv4 tak IPv6 variantu.
+
+\vspace{10pt}
+
+Mini-SAP-server lze provozovat pod operačním systémem Linux a Mac OS X. 
+
+\vspace{10pt}
+
+Instalace je snadná, po stažení zdrojových kódů by měla stačit obvyklá sekvence ./configure \&\& make \&\& make install. A možná bude k dispozici i instalační balík přímo z distribuce.
+
+\vspace{10pt}
+
+Konfigurace je opět celkem přímočará, v souboru /etc/sap.cfg má každý kanál takovou sekci: 
+
+\vspace{10pt}
+
+\begin{small}
+\begin{verbatim}
+[program]
+type=rtp
+name=CRA CT1
+user=Masarka
+machine=zeus.mk.cvut.cz
+site=http://dvbgrab.mk.cvut.cz/stream
+address=239.194.12.1
+port=1234
+program_ttl=32
+program_ipversion=4
+playlist_group=Masarka
+\end{verbatim}
+\end{small}
+
+\vspace{10pt}
+
+Mini SAP Server je velmi snadno použitelný a pro uživatele velmi pohodlný doplněk vysílání. VLC má vysílání SAP informací dokonce zabudováno v sobě. 
+
+\vspace{10pt}
+
+\section{VideoLAN Client}
+
+Další projekt s otevřeným kódem, který podporuje mnoho platforem: Linux, Windows, Mac OS X, BeOS, *BSD, Solaris, Familiar Linux, Yopy/Linupy and QNX. VLC nepracuje na Mac OS 9 a pravděpodobně ani nikdy nebude.
+
+\vspace{10pt}
+
+Umí přahrávat:
+soubory z disků a mechanik (formáty MPEG-1, MPEG-2, MPEG-4/DivX apod.)
+DVD disky, VCD soubory
+ze satelitních/pozemních karet digitálního vysílání DVB-S/DVB-T
+z analogových karet přes rozhraní v4l(video for linux)
+
+\vspace{10pt}
+
+Umí také ale vysílat stejně jako VLS.
+
+\vspace{10pt}
+
+Instalace je velmi snadná. K dispozici jsou instalační balíky pro mnoho operačních systémů.
+
+\vspace{10pt}
+
+Konfigurace klienta obecně není potřeba. 
+
+\vspace{10pt}
+
+Trošku pohodlí může přidat vytvoření zástupce/skriptu, který při spuštění načte námi používaný playlist z .m3u souboru, nebo zapne podporu získávání playlistu ze SAP událostí. Klienti si uloží staticky playlist do svého domovského adresáře jako .vlc.m3u a pak do definice Cíl v zástupci ve windows resp. do nějakého startovacího skriptu v linuxu přidají parametry. VLC pak po startu hned obsahuje použitelný playlist a po nějaké prodlevě se doplní ještě SAP playlist.
+
+\vspace{10pt}
+
+\begin{small}
+\begin{verbatim}
+C:\Program Files\VideoLAN\vlc.exe -S sap %%HOMEPATH%%/.vlc.m3u
+resp.
+/usr/bin/vlc -S sap ~/.vlc.m3u
+\end{verbatim}
+\end{small}
+
+\vspace{10pt}
+
+Konfigurace VLC pro použití na vysílání do sítě
+
+\vspace{10pt}
+
+Vše je v jednom souboru, který uložíme například do /etc/videolan/vlm/vlm.cfg.
+
+\vspace{10pt}
+
+\begin{small}
+\begin{verbatim}
+# Vytvoření nového zdroje dat
+new CRA broadcast enabled
+
+# Nastavíme typ zdroje na DVB
+setup CRA input dvb:
+
+# Nastavení DVB parametrů viz tabulka.
+setup CRA option dvb-adapter=0
+setup CRA option dvb-frequency=506000000
+setup CRA option dvb-bandwidth=8
+setup CRA option dvb-transmission=8
+setup CRA option dvb-guard=8
+setup CRA option dvb-hierarchy=-1
+setup CRA option dvb-modulation=64
+
+# Chceme data nechávat v transport streamu a 
+# posílat je po jednotlivých programech
+setup CRA option ts-es-id-pid
+
+# Seznam identifikačních čísel programů, které nás zajímají
+setup CRA option programs=1,2,3,4,5,10,11,12,13,14,15,16,1000
+
+# Nastavení výstupů
+
+# Použijeme modul duplicate, který z multiplexu vybere toky 
+# odpovídající programu podle klauzule select a ty pošle i
+# do modulu std který je definován v klauzuli dst
+
+# std modul nastavíme pro typ vysílání rtp, mux=ts znamená 
+# nekonvertovat, v url je multicastová IP a port
+
+# sap zajistí vysílání SAP událostí pro daný program, 
+# group a name pak udávají jak se bude program
+# zobrazovat v klientu po povoleni SAP playlistu
+
+setup CRA output #duplicate
+{
+dst=std{access=rtp,mux=ts,url=239.194.12.1:1234, \
+  sap,group="Masarka-CRA",name="CT1"},select="program=1"
+,dst=std{access=rtp,mux=ts,url=239.194.12.2:1234, \
+  sap,group="Masarka-CRA",name="CT2"},select="program=2"
+,dst=std{access=rtp,mux=ts,url=239.194.12.3:1234, \ 
+  sap,group="Masarka-CRA",name="CT24"},select="program=3"
+,dst=std{access=rtp,mux=ts,url=239.194.12.4:1234, \
+  sap,group="Masarka-CRA",name="CT4"},select="program=4"
+,dst=std{access=rtp,mux=ts,url=239.194.12.5:1234, \
+  sap,group="Masarka-CRA",name="Nova"},select="program=5"
+,dst=std{access=rtp,mux=ts,url=239.194.12.6:1234, \
+  sap,group="Masarka-CRA",name="CRO1"},select="program=10"
+,dst=std{access=rtp,mux=ts,url=239.194.12.7:1234, \
+  sap,group="Masarka-CRA",name="CRO2"},select="program=11"
+,dst=std{access=rtp,mux=ts,url=239.194.12.8:1234, \
+  sap,group="Masarka-CRA",name="CRO3"},select="program=12"
+,dst=std{access=rtp,mux=ts,url=239.194.12.9:1234, \
+  sap,group="Masarka-CRA",name="CRO4"},select="program=13"
+,dst=std{access=rtp,mux=ts,url=239.194.12.10:1234, \
+  sap,group="Masarka-CRA",name="Ddur"},select="program=14"
+,dst=std{access=rtp,mux=ts,url=239.194.12.11:1234, \
+  sap,group="Masarka-CRA",name="Leonardo"},select="program=15"
+,dst=std{access=rtp,mux=ts,url=239.194.12.12:1234, \
+  sap,group="Masarka-CRA",name="Cesko"},select="program=16"
+,dst=std{access=rtp,mux=ts,url=239.194.12.13:1234, \
+  sap,group="Masarka-CRA",name="MHP"},select="program=1000"
+}
+\end{verbatim}
+\end{small}
+
+\vspace{10pt}
+
+Spouštění po startu zajistíme například přidáním spouštěcího skriptu do /etc/init.d/vlm, který v podstatě přečte konfiguraci například z /etc/sysconfig/dvb.
+
+\vspace{10pt}
+
+\begin{small}
+\begin{verbatim}
+VLM_CONFIG_FILE=/etc/videolan/vlm/vlm.cfg
+VLM_LOG_FILE=/var/log/vlm.log
+VLM_TELNET_PORT=7777
+VLM_TELNET_PASSWORD=password
+\end{verbatim}
+\end{small}
+
+\vspace{10pt}
+
+a pak spustí VLC v režimu VLM (VideoLAN Manager) pouze s telnetovým rozhraním.
+
+\vspace{10pt}
+
+\begin{small}
+\begin{verbatim}
+VLCSERVER=/usr/bin/vlc
+daemon --user vlc "$VLCSERVER" -d -vvv --logfile $VLM_LOG_FILE --file-logging \
+  --vlm-conf $VLM_CONFIG_FILE --intf telnet --telnet-port $VLM_TELNET_PORT \
+  --telnet-password $VLM_TELNET_PASSWORD 2> /dev/null
+\end{verbatim}
+\end{small}
+
+\vspace{10pt}
+
+Kontrolu zda vše správně běží můžeme provést přihlášením na telnet \begin{small}\begin{verbatim}telnet server port\end{verbatim}\end{small} a zadáním příkazu \begin{small}\begin{verbatim}show\end{verbatim}\end{small}. Objeví se seznam zdrojů a jejich stav. Zadáním \begin{small}\begin{verbatim}show název\end{verbatim}\end{small}, zobrazíme podrobnější údaje pro daný zdroj a pomocí \begin{small}\begin{verbatim}control název stop\end{verbatim}\end{small} ho můžeme například zatavit.
+
+\vspace{10pt}
+
+Nyní je předpokládám vidět rozdíl v jednoduchosti úprav konfigurace VLS a VLC. Například přidání nového televizního v kanálu je ve VLC jeden nový řádek, ve kterém nastavíme select na zjištěné ID kanálu a zvolíme multicast IP adresu a skupinu a název pro SAP. U VLS přidání jednoho kanálu, znamená přidání řádku do odpovídajícího .dvbrc souboru. Odteď si musíme pamatovat jaký název jsme mu přiřadili. V souboru vls.conf přidáme nový distribuční kanál a zvolíme multicast adresu a port. Nyní už si musíme pamatovat jak název kanálu v .dvbrc, tak název distribučního kanálu ve vls.conf a IP adresu a port. To využijeme při přidávání nového kanálu do automatického spouštění po startu. IP adresu a port použijeme ještě při úpravě konfigurace SAP serveru.
+
+\vspace{10pt}
+
+\section {MPlayer}
+
+MPlayer je dalším přehrávačem, který můžeme použít pro příjem vysílání z lokální sítě. A zároveň je nejoblíbenějším Linuxovým video přehrávačem. Podporuje velmi mnoho různých zdrojů v mnoha formátech a samozřejmě také umí přijímat multicastové vysílání z lokální sítě. Jedinou podmínkou je dodržení protokolu vysílání rtp:// místo výchozího udp://. Pohodlné je vytvoření souštecího skriptu pro každý televizní kanál zvlášť.
+
+\vspace{10pt}
+
+Instalace je snadná, buď použijeme distribuční balík, nebo opět kompilací zdrojových kódů ze stránek \cite{mplayerURL}. 
+
+\vspace{10pt}
+
+Konfigurace.. spouštěcí skripty mohou vypadat například takto:
+mplayer -framedrop rtp://239.194.12.1:1234 
+pro příjem vysílání z multicastové adresy 239.194.12.1. A skript pak pojmenujeme například tv\_ct1.
+
+\vspace{10pt}
+
+MPlayer je dalším pohodlným přehrávačem, který ale nemá tak jednoduché a přehledné grafické prostředí a nepodporuje SAP playlist.
+
+\vspace{10pt}
+

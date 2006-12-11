@@ -1,0 +1,48 @@
+
+\chapter{Postup instalace}
+
+\section{DVBgrab}
+
+Budeme potřebovat stáhnout zdrojové kódy, nejaktuálnější verze je v subversion repozitáři, který lze stáhnout příkazem
+\begin{small}\begin{verbatim}svn export --username anonymous http://martinja.mk.cvut.cz/svn/dvbgrab/trunk\end{verbatim}\end{small}
+pokud máme nainstalovaný balík subversion.
+K dispozici jsou i samostatné instalační balíky různých verzí např. dvbgrab-20051128.tgz.
+
+\vspace{10pt}
+
+Instalační balík obsahuje adresář, který je třeba nahrát na server, kde bude provozováno webové rozhraní do adresáře apache (dokument root), obvykle jako /var/www/dvbgrab a podadresář backend patří nahrát na záznamový server, tam je opět asi nejlepší založit nového uživatele např. dvbgrab a do jeho domovského adresáře nakopírovat soubory z adresáře backend.
+
+\vspace{10pt}
+
+Konfigurace se provádí spuštěním configure.sh pro povolení zápisu do konfiguračních souborů a poté ve webovém prohlížeči na stránce http://název\_serveru/dvbgrab/setup.php , když je konfigurace dokončena, je třeba spustit skript secure.sh, který nastaví zpět práva konfiguračního souboru config.php jen pro čtení a tento konfigurační soubor je třeba zkopírovat i na záznamový server aby měl stejnou verzi.
+
+\vspace{10pt}
+
+Na webovém serveru je ještě třeba zajistit instalaci ADOdb a to buď jako podadresář /var/www/dvbgrab nebo pokud jsme instalovali z distribučního balíku tak bude někde v /usr. Cestu k ADOdb je třeba ještě donastavit v dblib.php a to jak pro webový, tak pro záznamový server.
+
+\vspace{10pt}
+
+Také se může hodit změnit jazykovou mutaci, celého webového rozhraní. Připraveny jsou soubory pro českou a anglickou lokalizaci. Přepnutí se provede v souboru language.inc.php, plánováno je přepínání na úrovni uživatele (např. volbou ikony vlajky a zapamatováním v cookie prohlížece), případně detekování preferovaného jazyka z nastavení locale prohlížeče.
+
+\vspace{10pt}
+
+Na databázovém serveru je třeba založit databáze s tabulkami. Zakládací skript je připraven pro MySQL a PostgreSQL v sql/mysql.sql resp. sql/postgres.sql. Taky založíme nového databázového uživatele a přiřadíme mu práva na tyto tabulky. U MySQL je důležité zachovat kódování textů ISO-8859-2, které webové rozhraní předpokládá.
+
+\vspace{10pt}
+
+Na některém serveru je také třeba do cronu přidat automatické spouštění aktualizace televizního programu (obvykle se o to stará server s databází). Skript zaznam.php se spouští pravidelně každý týden (třeba v sobotu) a parametrem je počet zpracovávaných dnů (obvykle je k dispozici na 10 dní) 
+
+\vspace{10pt}
+
+Na záznamovém serveru v adresáři s obsahem backend je třeba zajistit spouštění 2 skriptů, grab\_loop.php a encode\_loop.ph. To lze zajistit buď definováním nové služby a přiřazením do spouštění ve výchozím runlevelu. Nebo některé verze cronu to umí přes příznak restart. Také je dobré v cronu zajistit denní spouštění send\_daily\_report.php, které posílá denně seznam nahraných pořadů.
+
+\vspace{10pt}
+
+Také je potřeba nastavit apache, aby v nějakém adresáři v document root mohl zakládat adresáře jednotlivým uživatelům a v těch adresářích vždy založí i .htaccess soubor, který omezuje přístup k této složce jen na IP adresu, ze které se uživatel registroval. Do těchto uživatelských adresářů se potom umisťují symbolické odkazy, které mají částečně generované názvy a odkazují do adresáře se všemi hotovými pořady (obvykle třeba /pub/grab).
+
+\vspace{10pt}
+
+Poslední úprava je potřeba ve skriptu dvbgrab, kde je nutno nastavit k odpovídajícím názvům kanálů odpovídající IP adresy (multicastové skupiny). Toto se ale možná přesune do definice pořadu v databázi.
+
+\vspace{10pt}
+
