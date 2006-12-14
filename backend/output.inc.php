@@ -75,9 +75,7 @@ function mark_deleted_grabs() {
  * Deletes the oldest grabs to ensures enough free space on disk storage.
  */
 function ensure_free_space() {
-#    $cmd = "./remove_oldnamed.py _Config_grab_storage_size '_Config_grab_storage/DVB-*.mpg' '_Config_grab_storage/DVB-*.avi' '_Config_grab_root/*/DVB-*.mpg' '_Config_grab_root/*/DVB-*.avi'";
-#    system($cmd);
-
+  cleanSpace();
   mark_deleted_grabs();
 }
 
