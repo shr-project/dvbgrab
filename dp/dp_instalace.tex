@@ -1,7 +1,9 @@
+\chapter{Instalace a údržba}
 
-\chapter{Postup instalace}
-
-\section{DVBgrab}
+\section{Potřebné knihovny a pomocné programy}
+\section{Stažení DVBgrabu}
+\section{Založení databáze}
+\section{Konfigurace DVBgrabu}
 
 Budeme potřebovat stáhnout zdrojové kódy, nejaktuálnější verze je v subversion repozitáři, který lze stáhnout příkazem
 \begin{small}\begin{verbatim}svn export --username anonymous http://martinja.mk.cvut.cz/svn/dvbgrab/trunk\end{verbatim}\end{small}
@@ -45,4 +47,4 @@ Také je potřeba nastavit apache, aby v nějakém adresáři v document root mo
 Poslední úprava je potřeba ve skriptu dvbgrab, kde je nutno nastavit k odpovídajícím názvům kanálů odpovídající IP adresy (multicastové skupiny). Toto se ale možná přesune do definice pořadu v databázi.
 
 \vspace{10pt}
-
+\input{dp_udrzba}

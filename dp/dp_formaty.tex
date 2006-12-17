@@ -1,0 +1,210 @@
+\chapter{Formáty pro ukládání audio-video}
+
+\vspace{10pt}
+
+Audio-video data se ukládájí v souborovém a přenášejí v síťovém formátu, obecně tomu říkáme kontejner. Kontejner zajišťuje synchronizaci různých složek (audio, video, titulky) a může podporovat například různé kapitoly v rámci jednoho souboru (známé z DVD). Kontejner umí pracovat s určitými typy audio a video kodeků. Kodeky určují jakým způsobem jsou data digitalně uložena. 
+
+\vspace{10pt}
+
+\section{Organizace ovlivňující audio-video formáty současnosti}
+
+\vspace{10pt}
+
+\textbf{MPEG}
+
+Motion Pictures Expert Group je název standartizační skupiny ISO. V normách je v různých částech vždy obsažena jak definice kontejneru, tak audio i video kodeků.
+
+\vspace{10pt}
+
+\textbf{VCEG}
+
+Video Coding Experts Group, skupina pro navrh audio-video standartu skupiny ITU-T.
+
+\vspace{10pt}
+
+\textbf{Firmy Microsoft, Apple a další}
+
+\vspace{10pt}
+
+\textbf{Neziskové organizace a dobrovolnící vytvářející svobodné implementace, obvykle kompatibilní s některým standartem.}
+
+\vspace{10pt}
+
+\section{Nejznámější kontejnery}
+
+\vspace{10pt}
+
+\textbf{MPEG-1}
+
+Je nejstarším standartem, využívá se například u Video CD (VCD). Jeho kvalita je zhruba srovnatelná s kvalitou záznamu na analogové VHS kazetě. Součástí toho standartu je i známý audio kodek MP3 což je zkratka za MPEG-1 Part 3 Layer 3 (MPEG-1 Audio Layer 3). Přehrávání a nahrávání tohoto formátu je hardwarově nejméně náročné a také je to formát nejvíce kompatibilní.
+
+\vspace{10pt}
+
+\textbf{MPEG-2}
+
+Nástupce MPEG-2 nově přináší podporu pro neprokládané video a 2 různé kontejnery pro vkládání audio-video dat.
+
+\vspace{10pt}
+
+\textbf{MPEG-2 TS}
+
+Transport stream neboli kontejner pro přenášení signálu po méně spolehlivém kanálu se používá například v DVB vysílání. 
+
+\vspace{10pt}
+
+\textbf{MPEG-2 PS}
+
+Program stream je naopak navržen pro použití na spolehlivém médiu jako je DVD a SuperVideo CD (SVCD).
+
+\vspace{10pt}
+
+\textbf{MPEG-2 VOB}
+
+Rozšíření MPEG-2 používané na DVD discích. Umožnuje definovat jednotlivé kapitoly, podpora pro titulky ve formátu VobSub a také pro ne-MPEG audio kodeky jako je často používaný AC3 pro prostorový zvuk 5.1.
+
+\vspace{10pt}
+
+\textbf{MPEG-3}
+
+Původně definovaný pro televizní vysílání s vysokým rozlišením HDTV. Místo tohoto formátu se ale pro HDTV používá mírně vylepšený MPEG-2.
+
+\vspace{10pt}
+
+\textbf{MPEG-4 MP4}
+
+Nejnovější formát z rodiny MPEG standartů. Největším rozdílem proti předchůdcům je použití kodeků z vysokou kompresí pro audio i video. Také je zahrnuta podpora pro systém ochrany autorských práv DRM (Digital Rights Management). Používá se nejčasteji pro uchování audio-video na počítači a tam kde je třeba zajistit co nejmenší datový tok, třeba u DVB vysílání pro přenosná zařízení (DVB-H). Definuje 2 skupiny video kodeků s vysokou kompresí MPEG-4 ASP a MPEG-4 AVC.
+
+\vspace{10pt}
+
+\textbf{AVI}
+
+Audio Video Interleave, souborový kontejner navržený firmou Microsoft podobný formátu MPEG-4.
+
+\vspace{10pt}
+
+\textbf{ASF} 
+
+Advanced Systems Format dříve Advanced Streaming Format, přenosový kontejner navržený firmou Microsoft.
+
+\vspace{10pt}
+
+\textbf{QuickTime}
+
+Kontejner od firmy Apple. Používá přípony .mov a .qt. Byl základem pro tvorbu standartu MP4.
+
+\vspace{10pt}
+
+\textbf{OGG/OGM}
+
+Svobodná varianta vyvinutá v organizaci Xiph.Org \cite{xiphURL}.
+
+\vspace{10pt}
+
+\textbf{Matroska}
+
+Další svobodná varianta s popisem složek ve formátu EBML (Extensible Binary Meta Language - binární obdoba XML). Podobá se QuickTime, MP4 a ASF.
+
+\vspace{10pt}
+
+\textbf{3GP}
+
+Převážně pro přenosná zařízení jako telefony a PDA navržený organizací 3GPP.
+
+\vspace{10pt}
+
+\textbf{NUT} (z projektu MPlayer/FFmpeg), \textbf{FLV} (video z Flash playeru od Adobe), \textbf{RealMedia}, ..
+
+\vspace{10pt}
+
+\section{Nejpoužívanější video kodeky:}
+
+\vspace{10pt}
+
+\textbf{MPEG-1 Video}
+
+Nejstarší a vhodný spíše pro video s nízkým rozlišením, podporuje pouze neprokládané video (progressive scan).
+
+\vspace{10pt}
+
+\textbf{MPEG-2 Video}
+
+Kompatibilní s MPEG-1 Video, ale při toku více než 3Mbit/s již efektivnější a také podporuje prokládané video (interlaced) známé z televizního vysílání. Definuje různé profily (typy snímků P, I, B; rozložení YUV a kanálů) a úrovně (rozlišení, framerate, bitrate). Kombinací profilů a levelů získáme škálu různě kvalitních variant použitelných od bezdrátových zařízení po kvalitní zařízení pro vysoké rozlišení (HD).
+
+\vspace{10pt}
+
+\textbf{MPEG-4 ASP}
+
+Advanced Simple Profile, odpovídá standartu VCEG H.263 (implementace XviD, DivX, 3ivx, QuickTime, libavcodec).
+
+\vspace{10pt}
+
+\textbf{MPEG-4 AVC}
+
+Advanced Video Coding, vznikl spoluprací skupin MPEG a VCEG a odpovídá H.264 (implementace x264, libavcodec) používaný pro DVD s vysokým rozlišením (HD DVD) a pravděpodobně použitý pro BlueRay video disky, lze také použít pro vysílání DVB ve vysokém rozlišení.
+
+\vspace{10pt}
+
+\textbf{Theora}
+
+Svobodný kodek kvalitativně srovnatelný s MPEG-4 ASP i MPEG-4 AVC.
+
+\vspace{10pt}
+
+\textbf{WMV}
+
+Windows Media Video, odpověd Microsoftu na kodeky MPEG-4 ASP.
+
+\vspace{10pt}
+
+\textbf{RealVideo}, \textbf{MJPEG}, ..
+
+\vspace{10pt}
+
+\section{Nejpoužívanější audio kodeky:}
+
+\vspace{10pt}
+
+\textbf{MPEG-1 Layer 2 Audio}
+
+Nižší komprese.
+
+\vspace{10pt}
+
+\textbf{MPEG-1 Layer 3 Audio}
+
+Vyšší ztrátová komprese, rozšířená podpora v přehrávačích, známý jako MP3.
+
+\vspace{10pt}
+
+\textbf{AAC}
+
+Advanced Audio Coding, definovaný v MPEG-2 část 7 a MPEG-4 část 3 (podle implementace).
+
+\vspace{10pt}
+
+\textbf{AC3}
+
+Adaptive Transform Coder 3, až 6 kanálový zvuk Dolby Digital.
+
+\vspace{10pt}
+
+\textbf{FLAC}
+
+Free Lossless Audio Codec, svobodná alternativa beze ztrátového audio kodeku.
+
+\vspace{10pt}
+
+\textbf{Vorbis}
+
+Svobodná náhrada kodeku MP3, také se ztrátovou kompresí.
+
+\vspace{10pt}
+
+\textbf{Speex}
+
+Svobodná ztrátová komprese optimalizována pro uchování a přenos lidské řeci.
+
+\vspace{10pt}
+
+\textbf{WMA}, \textbf{RealAudio}, \textbf{ATRAC}, ..
+

@@ -1,4 +1,3 @@
-
 \chapter{Testování}
 
 V rámci předmětu Styk člověka s počítačem jsem provedl i test tohoto systému.
@@ -9,7 +8,7 @@ Když byl systém provozován přibližně rok na Masarykově koleji a měl regi
 
 \vspace{10pt}
 
-Systém je zaměřený převážně na studentské prostředí, proto nebylo do testu zařazeno více osob včetně osob, které systém nikdy nepoužili.
+Systém je zaměřený převážně na studentské prostředí, proto nebylo do testu zařazeno více osob ani osoby, které systém nikdy nepoužili (zdrojem e-mailových adres na které byla rozesílána žádost byla právě databáze uživatelů DVBgrabu.
 
 \vspace{10pt}
 
@@ -17,23 +16,23 @@ Na email odpovědělo sice pouze asi 10 osob, přesto byly nalezeny, některé v
 
 \vspace{10pt}
 
-\section{Připomínky a reakce na ně}
+\section{Připomínky a reakce}
 
 \begin{bf}Připomínka:\end{bf} Všechny díly seriálu by mělo být možno objednat jedním tlačítkem.
 
-\begin{bf}Reakce:\end{bf} Nyní je možnost vyhledat v televizním programu podle názvu, takže všechny díly daného seriálu lze nalézt podle zadané části názvu, a pak objednat snadno a rychle v seznamu výsledků hledání. To je univerzálnější a navíc není potřeba z programu detekovat co je a co není seriál a také není třeba zaznamenávat tyto seriálové požadavky mimo rozsah programu, který známe předem. (když objednám seriál který má 4 díly v programu, který už je načten a další 4 v programu, který se načte až při příští aktualizaci, tak bych musel udržovat další tabulku ?dlouhodobých požadavků?.
+\begin{bf}Reakce:\end{bf} Nyní je možnost vyhledat v televizním programu podle názvu, takže všechny díly daného seriálu lze nalézt podle zadané části názvu, a pak objednat snadno a rychle přímo ze seznamu výsledků hledání. To je univerzálnější a navíc není potřeba z programu detekovat co je a co není seriál a také není třeba zaznamenávat tyto seriálové požadavky mimo rozsah programu, který známe předem. (když objednám seriál který má 4 díly v programu, který už je načten a další 4 v programu, který se načte až při příští aktualizaci, tak bych musel udržovat další tabulku "dlouhodobých požadavků".
 
 \vspace{10pt}
  
 \begin{bf}Připomínka:\end{bf} Odkazy na nahrané pořady uveřejňovat po přihlášení přímo na stránkách. 
 
-\begin{bf}Reakce:\end{bf} Nyní se odkaz odešle po nahrání jen na emaily uživatelů, kteří si to objednali. Pokud email smažou a odkaz si neuloží tak nemají možnost se k záznamu dostat (kontrola IP adresy uživatele a generovaná část názvu pořadu). Tato část bude po několika úpravách implementována, protože značně zjednoduší použití systému a seznam nahraných pořadů pro jednotlivé uživatele již je na webu k dispozici, stačí přidat název souboru pro jednotlivé požadavky, který se vyplní po úspěšném nahrání a na webu přidat do seznamu sloupec s odkazem.
+\begin{bf}Reakce:\end{bf} Odkaz se původně pouze odeslal po nahrání na emaily uživatelů, kteří si to objednali. Pokud email smažou a odkaz si neuloží tak nemají možnost se k záznamu dostat (kontrola IP adresy uživatele a generovaná část názvu pořadu). Tato připomínka byla nakonec implementována, protože značně zjednodušila použití systému a seznam nahraných pořadů pro jednotlivé uživatele již byl na webu k dispozici, tak byl pouze doplněn o odkazy na jejich stažení. Také uživatelské adresáře jsou nyní zakládány s volbou na generování indexů (stačí zadat správný adresář a pokud uživatel má právo přístupu podle IP adresy tak je mu vypsán i jeho obsah.
 
 \vspace{10pt}
 
 \begin{bf}Připomínka:\end{bf} Uživatelé si občas neuvědomují, že zadání správného mailu je podmínkou pro použití systému. Při registraci zadají nějakou hloupost a pak marně čekají jak se dozví o úspěšném nahrání pořadu.
 
-\begin{bf}Reakce:\end{bf} Tady by mohlo stačit výraznější varování v registračním formuláři, protože bohužel souhrnné informace o tom jak to celé funguje (půl strany textu na úvodní stránce) asi nikdo nečte.
+\begin{bf}Reakce:\end{bf} Tady by mohlo stačit výraznější varování v registračním formuláři, protože bohužel souhrnné informace o tom jak to celé funguje (půl strany textu na úvodní stránce) asi nikdo nečetl.
 
 \vspace{10pt}
 
@@ -49,21 +48,21 @@ Na email odpovědělo sice pouze asi 10 osob, přesto byly nalezeny, některé v
 
 \vspace{10pt}
 
-\begin{bf}Připomínka:\end{bf} Lepší vysvětlení co znamená ?nagrabovat? a ?nagrabovat do TS?. 
+\begin{bf}Připomínka:\end{bf} Lepší vysvětlení co znamená "nagrabovat" a "nagrabovat do TS". 
 
-\begin{bf}Reakce:\end{bf} V úvodních informacích je napsáno, že po vybrání pořadu se objedná nahrávka s komprimací do MPEG4. Pokud uživatel chce provádět na nahrávce další úpravy je pro něj výhodnější nahrávku nekomprimovat a zanechat ve formátu MPEG2-TS. Protože není na seznamu pořadů moc místa, tak je uveden pouze odkaz ?nagrabovat? a po potvrzení dialogu "Doopravdy chcete nahrát pořad abc?? se odkaz změní na ?zrušit grab? a vedle se zobrazí ?do TS?, čímž se zruší objednávka buď úplně nebo se zruší její komprimace (využitelné pro cca 5\% uživatelů). Navrhované řešení bylo nahradit dialog s ?ANO?, ?NE? kompletní novou podstránkou s formulářem, který by zobrazoval detail zvoleného pořadu a obsahoval i popis co je MPEG4, MPEG-TS a jak se o nahrání uživatel dozví. Na formuláři by pak mohli být tlačítka ?Zruš grab?, ?Grabuj do MPEG4?, ?Grabuj do MPEG-TS? a ?Storno?. Toto by sice bylo možné, ale na původním způsobu jsem oceňoval rychlost použití. Klik na název pořadu, enter na klávesnici pro volbu ?ANO? a už bylo objednáno. Takhle než se zobrazí formulář se spoustou opakujících se informací (popis formátů, způsob doručení odkazu pro stažení), zvolit správné tlačítko a počkat na opětovné vykreslení celého televizního programu bude velmi zdržující.
+\begin{bf}Reakce:\end{bf} V úvodních informacích bylo napsáno, že po vybrání pořadu se objedná nahrávka s komprimací do MPEG4. Pokud uživatel chce provádět na nahrávce další úpravy je pro něj výhodnější nahrávku nekomprimovat a zanechat ve formátu MPEG2-TS. Protože není na seznamu pořadů moc místa, tak je uveden pouze odkaz "nagrabovat" a po potvrzení dialogu "Doopravdy chcete nahrát pořad abc?" se odkaz změní na "zrušit grab" a vedle se zobrazí "do TS", čímž se zruší objednávka buď úplně nebo se zruší její komprimace (využitelné pro cca 5\% uživatelů). Navrhované řešení bylo nahradit dialog s "ANO", "NE" kompletní novou podstránkou s formulářem, který by zobrazoval detail zvoleného pořadu a obsahoval i popis co je MPEG4, MPEG-TS a jak se o nahrání uživatel dozví. Na formuláři by pak mohli být tlačítka "Zruš grab", "Grabuj do MPEG4", "Grabuj do MPEG-TS" a "Storno". Toto by sice bylo možné, ale na původním způsobu jsem oceňoval rychlost použití. Klik na název pořadu, enter na klávesnici pro výchozí volbu "ANO" a už bylo objednáno. Takhle než se zobrazí formulář se spoustou opakujících se informací (popis formátů, způsob doručení odkazu pro stažení), zvolit správné tlačítko a počkat na opětovné vykreslení celého televizního programu bude velmi zdržující. Celý systém se nakonec vyřešil volbou preferované komprese v nastavení uživatelského profilu. Televizní program ted obsahuje pouze odkazy pro objednání a zrušení.
 
 \vspace{10pt}
 
-\begin{bf}Připomínka:\end{bf} Jeden uživatel si také stěžoval na nemožnost změnit si dodatečně email adresu. 
+\begin{bf}Připomínka:\end{bf} Jeden uživatel si také stěžoval na nemožnost změnit si dodatečně email adresu.
 
-\begin{bf}Reakce:\end{bf} Tato možnost tam je ?schována? v menu nastavení. Bohužel nenapadá mě výstiženější název pro podstránku, kde se nastavují parametry účtu.
+\begin{bf}Reakce:\end{bf} Tato možnost tam je "schována" v menu nastavení. Bohužel nenapadá mě výstiženější název pro podstránku, kde se nastavují parametry uživatelského účtu.
 
 \vspace{10pt}
 
 \section{Vyhodnocení implementovaných připomínek - anketa}
 
-Pro zjištění jak uživatelé hodnotí provedené změny jsem opět rozeslal na seznam registrovaných členů email s žádostí o vyplnění krátké ankety, kterou jsem začlenil do webového rozhraní DVBgrabu. Každá odpověd se zkládala z číselného ohodnocení 1=Rozhodně ANO až 5=Rozhodně NE a textového komentáře.
+Pro zjištění jak uživatelé hodnotí provedené změny a některé pouze navrhované, jsem opět rozeslal na seznam registrovaných členů email s žádostí o vyplnění krátké ankety, kterou jsem začlenil do webového rozhraní DVBgrabu. Každá odpověd se zkládala z číselného ohodnocení 1=Rozhodně ANO až 5=Rozhodně NE a textového komentáře.
 
 \vspace{10pt}
 
@@ -73,25 +72,25 @@ Anketa dopada takto:
 
 \begin{bf}Otázka:\end{bf}: Odkazy na stažení grabů budou nyní dostupné přímo z menu "Moje graby". Je tato vlastnost pro Vás přínosná?
 
-\begin{bf}Odpovědi:\end{bf} Všichni novou možnost uvítali, pouze 2 ohodnotili 4, z toho jeden byl "věčným nespokojencem".
+\begin{bf}Odpovědi:\end{bf} Všichni novou možnost uvítali, pouze 2 ohodnotili "spíše ano", z toho jeden byl "věčným nespokojencem".
 
 \vspace{10pt}
 
 \begin{bf}Otázka:\end{bf} Nyní můžete objednávat seriály přes vyhledání v tv programu a v seznamu výsledků, rychlým klikáním na jednotlivé díly. Chtěli byste mít i možnost objednat všechny díly seriálu jedním tlačítkem, které by ale dost problematicky poznávalo co je a co není seriál a také by muselo složitě řesit objednávání seriálů na dobu delší než na kolik se načítá tv program. Potřebujete tuto funkčnost?
 
-\begin{bf}Odpovědi:\end{bf} Opět se většina shodla ohodnocení 4-5 a "věčný nespokojenec" by požadoval i tuto funkci.
+\begin{bf}Odpovědi:\end{bf} Opět se většina shodla na ohodnocení "rozhodne ano" a "spíše ano" a "věčný nespokojenec" by požadoval i tuto funkci.
 
 \vspace{10pt}
 						
 \begin{bf}Otázka:\end{bf} Je ze současných textů už zřejmé, že správný email je podmínkou použitelnosti DVBgrabu?
 
-\begin{bf}Odpovědi:\end{bf} Všichni potvrdili, že situace už je napravena, "věčně nespokojeny" opět doplnuje, že s odkazy na graby z menu je už mail jenom doplnkovou podmínkou.
+\begin{bf}Odpovědi:\end{bf} Všichni potvrdili, že situace už je napravena, "věčně nespokojeny" opět doplňuje, že s odkazy na graby z menu je už mail jenom doplnkovou podmínkou.
 							
 \vspace{10pt}
 
 \begin{bf}Otázka:\end{bf} Je ze současných textů už zřejmé co myslím MPEG4 a transport stream TS a co je výchozí volbou při grabování?
 
-\begin{bf}Odpovědi:\end{bf} Vyhodnocení je sporné, ale spíše pozitivní reakce, součástí komentářů byly i 2 dobré nápady na vylepšení.
+\begin{bf}Odpovědi:\end{bf} Vyhodnocení je sporné, ale spíše pozitivní reakce, součástí komentářů byly i 2 použitelné nápady na vylepšení.
 							
 \vspace{10pt}
 
@@ -121,14 +120,14 @@ Anketa dopada takto:
 
 \section{Vyhodnocení ankety}
 
-Uživatelé byli dotazování na konkrétní body a konkrétní funkce, protože možnost vyjádřit se k systému jako celku měli v prvním kole emailů. Také se projevil ?věčný nespokojenec?, který nebyl spokojen vcelku s ničím, ale vzhledem k tomu, že svým názorem značně vyčníval mimo průměr, mohl být jeho názor vyřazen.
+Uživatelé byli dotazování na konkrétní body a konkrétní funkce, protože možnost vyjádřit se k systému jako celku měli v prvním kole emailů. Také se projevil profil testované osoby "věčný nespokojenec", který nebyl spokojen vcelku s ničím, ale vzhledem k tomu, že svým názorem značně vyčníval mimo průměr, mohl být jeho názor brán jako neobjektivní.
 
 \vspace{10pt}
 
-\section{Závěr}
+\section{Závěr z testování}
 
-I přes účast pouze několika málo uživatelů se podařilo dát dohromady několik návrhů na vylepšení, které mohou daný systém zlepšit, zpřehlednit a urychlit, proto si myslím, že testování se rozhodně vyplatilo. Navíc když bylo provedeno touto formou, tak nevyžadovalo žádné velké úsilí navíc. Také bylo objeveno několik drobných chyb v programu.
+I přes účast pouze několika málo uživatelů se podařilo dát dohromady několik návrhů na vylepšení, které mohou daný systém zlepšit, zpřehlednit a urychlit. I tato jednoduchá forma testování se rozhodně vyplatila. Touto formou to vyžadovalo minimální úsilí navíc. Také bylo objeveno několik drobných chyb v programu.
 
 \vspace{10pt}
 
-Kdyby byl test proveden na ruznorodém vzorku uživatelů (nejenom studenti technické školy) mohly se objevit i úplně jiné problémy, ale toto jsem netestoval, protože zatím nehodlám uveřejnit systému i pro tyto cílové skupiny uživatelů.
+Kdyby byl test proveden na různorodém vzorku uživatelů (nejenom studenti technické školy) mohly se objevit i úplně jiné problémy, ale toto jsem netestoval, protože zatím nehodlám uveřejnit systému i pro jiné cílové skupiny uživatelů.
