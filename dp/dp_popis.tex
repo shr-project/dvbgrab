@@ -5,7 +5,7 @@ Systém je založen na starším projektu TVgrab, který implementoval nahrává
 \vspace{10pt}
 
 \section{Servery}
-Systém využívá ke svému běhu 2 různé servery i když to není nutností. Na jednom běží databáze a webové rozhraní. Na druhém potom vysílání signálu do lokální sítě, záznam na disk a distribuce nahraných pořadů.
+Systém využívá ke svému běhu 2 různé servery, i když to není nutností. Na jednom běží databáze a webové rozhraní. Na druhém potom vysílání signálu do lokální sítě, záznam na disk a distribuce nahraných pořadů.
 
 \vspace{10pt}
 
@@ -13,7 +13,7 @@ Systém využívá ke svému běhu 2 různé servery i když to není nutností.
 
 \vspace{10pt}
 
-Jako databázový server lze použít téměř libovolnou SQL databázi, protože systém využívá knihovny ADOdb, která podporuje v současné době zhruba 15 různých databázových strojů. Systém byl provozován na MySQL databázi, nyní na PostgreSQL. Kvůli použití ADOdb je nutné vždy volat SQL kód jen s použitím ADOdb funkcí (třeba pro formátování datumu v SQL selectech musí být vždy volána odpovídající ADOdb funkce, která vygeneruje funkci odpovídající aktuálně použitému databázovému serveru.
+Jako databázový server lze použít téměř libovolnou SQL databázi, protože systém využívá knihovny ADOdb, která podporuje v současné době zhruba 15 různých databázových strojů. Systém byl provozován na MySQL databázi, nyní na PostgreSQL. Kvůli použití ADOdb je nutné vždy volat SQL kód jen s použitím ADOdb funkcí, třeba pro formátování datumu v SQL dotazech musí být vždy volána odpovídající ADOdb funkce, která vygeneruje funkci odpovídající aktuálně použitému databázovému serveru.
 
 \vspace{10pt}
 
@@ -21,11 +21,29 @@ Jako databázový server lze použít téměř libovolnou SQL databázi, protož
 
 \vspace{10pt}
 
-Webové prostředí je napsáno pomocí XHTML+PHP+JavaScript. Obsahuje jak uživatelské tak administrativní rozhraní převážně pro prvotní nastavení a případné změny v konfiguraci. Je napsáno s podporou více jazykových variant (čeština, slovenčtina, angličtina, francoužština), všechny zobrazované texty jsou definovány jako konstanty v souborech lang/lang.jazyk.php a jazyk se volí nejprve podle cookie (pokud uživatel někdy přepnul jazyk ručně kliknutím na ikonu vlajky), poté podle preferovaných jazyků z nastavení prohlížeče a pokud ani podle toho se nenajde vhodný a v databázi nemáme u uživatele uložený poslední použitý jazyk, tak se použije výchozí jazyk. Poslední použitý jazyk uživatele se musí ukládat také do databáze, protože když se například odesíla e-mail o úspěšném nahrání tak nemáme k dispozici uživatele, jeho cookies ani jeho prohlížeč.
+Webové prostředí je napsáno pomocí XHTML+PHP+JavaScript. Obsahuje jak uživatelské tak administrativní rozhraní převážně pro prvotní nastavení a případné změny v konfiguraci. Je napsáno s podporou více jazykových variant (čeština, slovenština, angličtina, francouzština). Všechny zobrazované texty jsou definovány jako konstanty v souborech lang/lang.jazyk.php.
 
 \vspace{10pt}
 
-Z důvodu více jazyčného webového rozhraní, je třeba zajistit také kódování v databázi nastavené na utf-8, aby podporovala všechny přípustné varianty.
+Jazyk se volí postupně podle těchto pravidel: 
+
+\vspace{10pt}
+
+1) podle cookie, pokud uživatel někdy přepnul jazyk ručně kliknutím na ikonu vlajky
+
+2) podle preferovaných jazyků v nastavení prohlížeče
+
+3) v databázi hledáme poslední použitý jazyk daného uživatele
+
+4) výchozí jazyk definovaný v globální konfiguraci
+
+\vspace{10pt}
+
+Nakonec se zvolený jazyk uloží do databáze k uživateli jako poslední použitý jazyk. To se využívá například při odesílání e-mailu o úspěšném nahrání, kdy nemáme k dispozici uživatele, jeho cookies ani jeho prohlížeč.
+
+\vspace{10pt}
+
+Z důvodu vícejazyčného webového rozhraní je třeba zajistit také kódování v databázi nastavené na UTF-8, aby podporovala všechny přípustné varianty.
 
 \vspace{10pt}
 
@@ -33,21 +51,26 @@ Z důvodu více jazyčného webového rozhraní, je třeba zajistit také kódov
 
 \vspace{10pt}
 
-O nahrávání se starají 2 nekonečné smyčky naprogramované také v PHP, jedna se stará o záznam (grab\_loop), druhá o komprimaci (encode\_loop). Záznamová smyčka se nastartuje po startu systému a po krátkych časových intervalech kontroluje, zda na některém kanálu nezačíná nějaký objednaný pořad, pokud ano, spustí na pozadí nový proces, který zajistí záznam tohoto pořadu (grab\_process, kterému se předává pouze ID záznamu v databázi) a sama pokračuje dál ve své činnosti.
+O nahrávání se starají 2 nekonečné smyčky naprogramované také v PHP, jedna se stará o záznam (grab\_loop), druhá o komprimaci (encode\_loop). Záznamová smyčka se nastartuje po startu systému a po krátkych časových intervalech kontroluje, zda na některém kanálu nezačíná nějaký objednaný pořad. 
+Pokud ano, spustí na pozadí nový proces, který zajistí záznam tohoto pořadu (grab\_process, kterému se předává pouze ID záznamu v databázi) a sama pokračuje dál ve své činnosti.
 
-Komprimační smyčka je odlišná, startuje se sice také po startu systému, ale protože nemá smysl pouštět paralelně příliš mnoho komprimačních procesů, tak vždy kontroluje, zda existuje v databázi nějaký nevyřízený požadavek na formát, do kterého se zrovna nic nekomprimuje, vybere nejstarší podle data vysílání pořadu a spoustí nový proces (encode\_process, kterému předává jak ID požadavku, tak formát jaký se má použit). To znamena, že kolik různých formátů si uložíme do databázové tabluky encoder tolik komprimačních procesů může běžet paralelně.
-
-\vspace{10pt}
-
-Vlastní záznam na disk je prováděn pomocí programu dumprtp, z balíku dvbstream, který ukládá datový tok ze zadané IP adresy a portu do souboru. V záznamovém procesu se nejdříve všechny požadavky na daný pořad přepnou ze stavu "naplánován" do stavu "ukládá se". Poté je dumprtp spouštěn jako volání podprocesu na pozadí a poté je počítán čas až do konce pořadu, kdy se pošle procesu dumprtp signál TERM k ukončení. Data se nijak netransformují, takže zůstanou uložena jako MPEG-TS (transport stream). To umožňuje paralelní zápis několika pořadu na disk, protože je to operace relativně nenáročná. Transport stream je, ale optimalizovaný spíše pro přenos audio video signálů, než pro jejich přehrávání (neobsahuje příliš často klíčové snímky, takže například při posunech je dlouhá odezva než se obnoví obraz). Z jaké IP adresy a portu se má ukládat je nyní určeno v databázi v definici televizního kanálu.
+Komprimační smyčka je odlišná, startuje se sice také po startu systému, ale protože nemá smysl pouštět paralelně příliš mnoho komprimačních procesů, tak vždy kontroluje, zda existuje v databázi nějaký nevyřízený požadavek na formát, do kterého se zrovna nic nekomprimuje. Pokud ano, vybere nejstarší podle data vysílání pořadu a spustí nový proces (encode\_process, kterému předává ID požadavku a formát, jaký se má použít). To znamená, že kolik různých formátů si uložíme do databázové tabulky encoder, tolik komprimačních procesů může běžet paralelně.
 
 \vspace{10pt}
 
-Jmenné konvence pro název nahrávky jsou DVB- jako předpona, pak datum ve formátu Ymd-Hi (rok, měsíc, den, hodiny, minuty), tak aby se adresář s nahrávkami dal řadit chronologicky podle abecedy, dále následuje jméno kanálu (po odstranění diakritiky) a název pořadu, buď po odstranění diakritiky nebo jenom ID záznamu, pokud to je v konfiguraci nastaveno (přesné jméno pořadu včetně diakritiky je pak až v popisném XML souboru viz dále. Nekomprimované nahrávky mají příponu .ts jako transport stream.
+Vlastní záznam na disk je prováděn pomocí programu dumprtp, z balíku dvbstream, který ukládá datový tok ze zadané IP adresy a portu do souboru. V záznamovém procesu se nejdříve všechny požadavky na daný pořad přepnou ze stavu "naplánován" do stavu "ukládá se". Poté je dumprtp spouštěn jako volání podprocesu na pozadí a poté je počítán čas až do konce pořadu, kdy se pošle procesu dumprtp signál TERM k ukončení. 
 
 \vspace{10pt}
 
-Po ukončení dumprtp je ještě zkontroluje zda má nahrávka nějakou rozumnou nenulovou velikost a informace o uložení se aktualizuje v databázi (všechny požadavky na tento pořad přejdou ze stavu "ukládá se" do stavu "uložen".
+Data se při ukládání netransformují, takže zůstanou uložena jako MPEG-TS (transport stream). To umožňuje paralelní zápis několika pořadů na disk, protože je to operace relativně nenáročná. Transport stream je optimalizovaný spíše pro přenos audio video signálů, než pro jejich přehrávání (neobsahuje příliš často klíčové snímky, takže například při posunech je dlouhá odezva než se obnoví obraz). Z jaké IP adresy a portu se má ukládat, je nyní určeno v databázi v definici televizního kanálu.
+
+\vspace{10pt}
+
+Jmenné konvence pro název nahrávky jsou DVB- jako předpona, pak datum ve formátu Ymd-Hi (rok, měsíc, den, hodiny, minuty) tak, aby se adresář s nahrávkami dal řadit chronologicky podle abecedy, dále následuje jméno kanálu (po odstranění diakritiky) a název pořadu, buď po odstranění diakritiky nebo jenom ID záznamu, pokud to je v konfiguraci nastaveno (přesné jméno pořadu včetně diakritiky je pak až v popisném XML souboru viz dále. Nekomprimované nahrávky mají příponu .ts jako transport stream.
+
+\vspace{10pt}
+
+Po ukončení dumprtp se ještě zkontroluje, zda má nahrávka nějakou rozumnou nenulovou velikost a informace o uložení se aktualizuje v databázi (všechny požadavky na tento pořad přejdou ze stavu "ukládá se" do stavu "uložen".
 
 \vspace{10pt}
 
@@ -57,7 +80,7 @@ Po ukončení dumprtp je ještě zkontroluje zda má nahrávka nějakou rozumnou
 
 Součástí DVB vysílání jsou i informace o vysílaných pořadech.
 
-Tyto informace jsou vysílány jako součást MPEG-2 dat pomocí protokolu PMCP (Programming Metadata Communication Protocol) což jsou do XML balené data z PSIP (Program and System Information Protocol).
+Tyto informace jsou vysílány jako součást MPEG-2 dat pomocí protokolu PMCP (Programming Metadata Communication Protocol), což jsou do XML balené data z PSIP (Program and System Information Protocol).
 
 \vspace{10pt}
 
@@ -85,11 +108,11 @@ Tabulky EIT a ETT používá v MHP (Multimedia Home Platform - aplikační rozš
 
 \vspace{10pt}
 
-Pokud toto nemáme k dispozici musí nahrávání začínat několik minut před plánovaným začátkem pořadu (lze konfigurovat kolik) a také lze nastavit kolik minut se má nahrávat po plánovaném konci pořadu.
+Pokud toto nemáme k dispozici, musí nahrávání začínat několik minut před plánovaným začátkem pořadu (lze konfigurovat kolik) a také lze nastavit kolik minut se má nahrávat po plánovaném konci pořadu.
 
 \vspace{10pt}
 
-Pokud bychom chtěli využít informace z EIT přímo v DVBgrabu tak bychom museli nejdřive zajistit jejich distribuci z vysílajícího serveru do lokální sítě.
+Pokud bychom chtěli využít informace z EIT přímo v DVBgrabu, tak bychom museli nejdříve zajistit jejich distribuci z vysílajícího serveru do lokální sítě.
 
 \vspace{10pt}
 
@@ -97,19 +120,19 @@ Podle zástupců Czech Digital Group jsou prý tyto údaje již dostupné. Pokud
 
 \vspace{10pt}
 
-Pokud by v EIT byly obsaženy i značky začátku a konce televizní reklamy tak by šlo podle nich vypínat a zapínat záznam a tím zajistit automatické vystřihování reklamy. Případně by bylo možná naprogramovat nějaký vlastní algoritmus pro poznávání reklamy (třeba podle podobnosti s dodanou počáteční a koncovou znělkou). Tento algoritmus by byl pravděpodobně dosti hardwarově náročný, což by při několika paralelních záznamech mohlo vést již ke ztrátám snímku, proto nebyl použit. Také tyto algoritmy nemusí být v souladu se zákonem (automatický systém na vystřihování reklamy byl součástí software DVD rekordérů KISS a musel být odstraněn a zůstalo pouze automatické přetáčení reklamy při sledování ze záznamu).
+Pokud by v EIT byly obsaženy i značky začátku a konce televizní reklamy, tak by šlo podle nich vypínat a zapínat záznam a tím zajistit automatické vystřihování reklamy. Případně by bylo možné naprogramovat nějaký vlastní algoritmus pro poznávání reklamy (třeba podle podobnosti s dodanou počáteční a koncovou znělkou). Tento algoritmus by byl pravděpodobně dosti hardwarově náročný, což by při několika paralelních záznamech mohlo vést až ke ztrátám snímku, proto nebyl použit. Také tyto algoritmy nemusí být v souladu se zákonem (automatický systém na vystřihování reklamy byl součástí software DVD rekordérů KISS a musel být odstraněn a zůstalo pouze automatické přetáčení reklamy při sledování ze záznamu).
 
 \section{Komprimace záznamů}
 
-Komprimační smyčka postupně prochází přes všechny formáty (encodery) a zkoumá zda pro ty, které aktuálně neběží (nemají v databázi uložené své číslo procesu PID), neexistuje nějaký čekající požadavek ve stavu "uložen". Pokud ano, vybere se opět nejstarší. Založí se nový proces na pozadí, který komprimaci zajistí. Komprimační proces nejdříve opět změní stav požadavku v databázi z "uložen" na "komprimuje se". Poté spustí skript jehož jméno je opět uvedeno v databázi a který musí být uložen v adresáři encoders, tomuto skriptu předá název nahraného pořadu, který do databáze uložil předcházející záznamový process a z původního jména vytvoří název cílového souboru připojením definované přípony z databáze. Po úspěšné komprimaci je z .ts souboru vytvořen například .avi soubor ve formátu MPEG-4, znovu se zkontroluje zda výsledý soubor má rozumnou velikost a pokud ano, dojde k uveřejnění nahrávky požadujícím uživatelům. 
+Komprimační smyčka postupně prochází přes všechny formáty (encodery) a zkoumá, zda pro ty, které aktuálně neběží (nemají v databázi uložené své číslo procesu PID), neexistuje nějaký čekající požadavek ve stavu "uložen". Pokud ano, vybere opět nejstarší. Založí na pozadí nový proces, který komprimaci zajistí. Komprimační proces nejdříve opět změní stav požadavku v databázi z "uložen" na "komprimuje se". 
+Poté spustí skript, jehož jméno je opět uvedeno v databázi a který musí být uložen v adresáři encoders, tomuto skriptu předá název nahraného pořadu, který do databáze uložil předcházející záznamový proces a z původního jména vytvoří název cílového souboru připojením definované přípony z databáze. Po úspěšné komprimaci je z .ts souboru vytvořen například .avi soubor ve formátu MPEG-4, znovu se zkontroluje, zda výsledný soubor má rozumnou velikost a pokud ano, dojde k uveřejnění nahrávky požadujícím uživatelům. 
 
 \vspace{10pt}
 
 \section{Komprimační formáty}
 
-Komprimaci zajištuje program mencoder, který podporuje velmi mnoho formátů. Některé základní jsem uvedl v příloze.
-
-Protože nemá smysl umožnovat uživateli komprimovat nahrávky do libovolné přípustné kombinace kontejner, video, audio kodek. 
+Komprimaci zajišťuje program mencoder, který podporuje velmi mnoho formátů. Některé základní jsem uvedl v příloze.
+Protože nemá smysl umožňovat uživateli komprimovat nahrávky do libovolné přípustné kombinace kontejner, video, audio kodek. 
 
 \vspace{10pt}
 
@@ -119,7 +142,7 @@ Tak je připraveno pouze pár zajímavých kombinací a to:
 
 MPEG-2 TS - formát v jakém přijímáme DVB signál ze sítě, soubor bude mít příponu .mpg.
 
-AVI/MPEG-4 ASP (z libavcodec)/MP3 - běžně používaný zkomprimovaný soubor, hodina záznamu odpovídá zhruba 700MB. Předdefinované varianty s různým měřítkem (různé rozlišení), soubor bude mít příponu .avi.
+AVI/MPEG-4 ASP (z libavcodec)/MP3 - běžně používaný komprimovaný soubor, hodina záznamu odpovídá zhruba 700MB. Předdefinované varianty s různým měřítkem (různé rozlišení), soubor bude mít příponu .avi.
 
 \vspace{10pt}
 
@@ -129,7 +152,7 @@ Dále by bylo vhodné použít:
 
 OGG/Theora/Vorbis - svobodná obdoba předchozí kombinace s trošku efektivnějším poměrem kvality a velikosti souboru, s příponou .ogg.
 
-MP4/MPEG-4 AVC (z x264)/AAC - nejvyžší kvalita, pokud budeme mít dostatečně kvalitní zdroj, přípona by byla .mp4.
+MP4/MPEG-4 AVC (z x264)/AAC - nejvyšší kvalita, pokud budeme mít dostatečně kvalitní zdroj, přípona by byla .mp4.
 
 \vspace{10pt}
 
@@ -140,28 +163,29 @@ MP4/MPEG-4 AVC (z x264)/AAC - nejvyžší kvalita, pokud budeme mít dostatečn�
 \textbf{Popisný XML soubor}
 
 Vytvoření XML souboru popisujícího detaily nahrávky. Obsahující název pořadu s diakritikou, název kanálu s diakritikou, začátek a konec pořadu podle televizního programu, začátek a konec nahrávání, použitý komprimační formát, výsledná velikost souboru v kB a MD5 součet pro kontrolu bezchybného stažení.
+TODO!
 
 \vspace{10pt}
 
 \textbf{Kontrola a případné založení uživatelského adresáře}
 
-Během vytváření symbolických odkazů, dojde také ke kontrole, zda je uživatelský adresář již založen a případně také k přegenerování souboru .htaccess, který určuje ze kterých IP adres smí uživatel své nahrávky stahovat (tato IP adresa je vždy pouze jedna a je uložena v databázi u informací o uživateli. Uživatel má možnost přes webové rozhraní zadat její změnu, proto musí docházet k přegenerovávání těchto .htaccess souborů. Druhá varianta je přegenerovávání souboru pouze pokud nějaká změna skutečně nastala, to rozhoduje údržbový skript pouštěný pomocí plánovače cron. 
+Během vytváření symbolických odkazů dojde také ke kontrole, zda je uživatelský adresář již založen a případně také k přegenerování souboru .htaccess, který určuje, ze kterých IP adres smí uživatel své nahrávky stahovat (tato IP adresa je vždy pouze jedna a je uložena v databázi u informací o uživateli). Uživatel má možnost přes webové rozhraní zadat její změnu, proto musí docházet k přegenerování těchto .htaccess souborů. Druhá varianta je přegenerování souboru pouze pokud nějaká změna skutečně nastala, to rozhoduje údržbový skript pouštěný pomocí plánovače cron. 
 
 \vspace{10pt}
 
-Oba přísupy mají nějaké výhody, ale i nevýhody. První je nevýhodný například pro uživatele, který při pokusu o stažení nahrávky zjistí, že má zaregistrovanou neaktuální IP a další nahrávku zatím neplánuje. Druhý naopak nepotěší uživatele, který ráno zadá změnu IP v poledne se mu uloží nahrávka a až do půlnoci nejde stáhnout, když se údržbové skripty budou pouštět jen 1x denně o půlnoci. Řešením je buď dostatečně časté pouštění údržbý nebo kombinace obou přístupů. Výchozí nastavení generuje .htaccess soubory v obou případech.
+Oba přístupy mají nějaké výhody, ale i nevýhody. První je nevýhodný například pro uživatele, který při pokusu o stažení nahrávky zjistí, že má zaregistrovanou neaktuální IP a další nahrávku zatím neplánuje. Druhý naopak nepotěší uživatele, který ráno zadá změnu IP, v poledne se mu uloží nahrávka a až do půlnoci nejde stáhnout, když se údržbové skripty budou pouštět jen 1x denně o půlnoci. Řešením je buď dostatečně časté pouštění údržby nebo kombinace obou přístupů. Výchozí nastavení generuje .htaccess soubory v obou případech.
 
 \vspace{10pt}
 
 \textbf{Vytvoření symbolického odkazu}
 
-Vytvoření symbolického odkazu z uživatelova adresáře do sdíleného prostoru ve kterém jsou uložené všechny nahrávky (jak na nahrávku tak na odpovídající XML soubor).
+Vytvoření symbolického odkazu z uživatelova adresáře do sdíleného prostoru, ve kterém jsou uložené všechny nahrávky (jak na nahrávku, tak na odpovídající XML soubor).
 
 \vspace{10pt}
 
 \textbf{Odeslání e-mailu a označení v databázi}
 
-Odeslání informačního e-mailu všem uživatelům, kteří tuto nahrávku v tomto formátu požadovali. A ve všech uživatelských požadavků v databázi je nastaveno jméno souboru s nahrávkou jak bude přístupné přes http server, to je pak použito pro generování odkazů na stažení v sekci "moje graby".
+Odeslání informačního e-mailu všem uživatelům, kteří tuto nahrávku v tomto formátu požadovali. A u všech uživatelských požadavků je v databázi nastaveno jméno souboru s nahrávkou, jak bude přístupná přes http server, to je pak použito pro generování odkazů na stažení v sekci "moje graby".
 
 \vspace{10pt}
 
@@ -169,7 +193,7 @@ Odeslání informačního e-mailu všem uživatelům, kteří tuto nahrávku v t
 
 \vspace{10pt}
 
-Distribuce nahrávek mezi uživatele je zajištěna přes http server apache (nyní ve verzi 2.2.x, která již nemá problémy se soubory většími než 2GB). Alternativně lze použít i nějaký ftp server, který umí autentifikovat uživatele nejlépe proti použité databázi. Pokud potřebujeme generovat uživatelské účty pro ftp server máme k dispozici pouze uživatelská jména a md5 součty jejich hesel (musíme číst i md5 z externí databáze pro autorizace). 
+Distribuce nahrávek mezi uživatele je zajištěna přes http server apache (nyní ve verzi 2.2.x, která již nemá problémy se soubory většími než 2GB). Alternativně lze použít i nějaký ftp server, který umí autentifikovat uživatele nejlépe proti použité databázi. Pokud potřebujeme generovat uživatelské účty pro ftp server, máme k dispozici pouze uživatelská jména a md5 součty jejich hesel (musíme číst i md5 hesel z externí autorizační databáze).
 
 \vspace{10pt}
 
@@ -177,23 +201,23 @@ Distribuce nahrávek mezi uživatele je zajištěna přes http server apache (ny
 
 \vspace{10pt}
 
-Stahování aktuálního TV programu je zajištěno přes různé moduly. V adresáři tvgrabbers jsou jednotlive php skripty. V distribuci je skript tv\_grab\_novinky\_cz/tv\_grab\_novinky\_cz.php, který načítá data ze serveru novinky.cz, stažený html kód je zpracován pomocí regulárních výrazů a jednotlivé pořady jsou uloženy do databáze. Tento skript umí pouze několik programů (čt1, čt2, nova, prima), pro načítání jiných je nutné skript editovat.
+Stahování aktuálního TV programu je zajištěno přes různé moduly. V adresáři tvgrabbers jsou jednotlivé php skripty. V distribuci je skript tv\_grab\_novinky\_cz/tv\_grab\_novinky\_cz.php, který načítá data ze serveru novinky.cz, stažený html kód je zpracován pomocí regulárních výrazů a jednotlivé pořady jsou uloženy do databáze. Tento skript umí pouze několik programů (čt1, čt2, nova, prima), pro načítání jiných je nutné skript editovat.
 
 \vspace{10pt}
 
-XMLTV - dalším skriptem v distribuci je xmltv\_to\_db.php, který lze použít pro vkládání XML souboru ve formátu XMLTV do databázové tabulky television. Nejdříve popíšu co je to XMLTV. XMLTV je specifikace jak zapisovat televizni program do XML souborů. Tuto specifikaci využívá velmi mnoho programů viz \cite{xmltvURL}. Na stránkách XMLTV lze stáhnout též instalační balík, který obsahuje stahovací skripty pro poměrně mnoho zemí. Bohužel není obsažen skript po Českou Republiku, z důvodu, které uvedu v následující sekci.
+XMLTV - dalším skriptem v distribuci je xmltv\_to\_db.php, který lze použít pro vkládání XML souboru ve formátu XMLTV do databázové tabulky television. Nejdříve popíšu, co je to XMLTV. XMLTV je specifikace, jak zapisovat televizní program do XML souborů. Tuto specifikaci využívá velmi mnoho programů viz. \cite{xmltvURL}. Na stránkách XMLTV lze stáhnout též instalační balík, který obsahuje stahovací skripty pro poměrně mnoho zemí. Bohužel není obsažen skript po Českou republiku z důvodu, který uvedu v následující sekci.
 
 \vspace{10pt}
 
-Každý stahovací skript musí být před prvním použítím nakonfigurován (např. tv\_grab\_cz --conf pro skript tv\_grab\_cz). Konfigurace se obvykle skládá z několika obecných dotazů. A dále seznam televizních kanálů, které umí stahovat, pro každý kanál uživatel volí, zda se má stahovat či ne. Poté stačí spustit skript s parametrem udávajícím na kolik dnů dopředu má stahovat, případně od kolikáteho dne začít (např. tv\_grab\_cz --days 10, stáhne na 10 dní dopředu pro všechny povolené kanály jejich program). Výstupem skriptu je správně formátovaný soubor XML, který ale potřebujeme ale transformovat do databáze.
+Každý stahovací skript musí být před prvním použítím nakonfigurován (např. tv\_grab\_cz --conf pro skript tv\_grab\_cz). Konfigurace se obvykle skládá z několika obecných dotazů. Dále se vypisuje seznam televizních kanálů, které umí stahovat a pro každý kanál uživatel volí, zda se má stahovat či ne. Poté stačí spustit skript s parametrem udávajícím, na kolik dnů dopředu má stahovat, případně od kolikáteho dne začít (např. tv\_grab\_cz --days 10, stáhne na 10 dní dopředu pro všechny povolené kanály jejich program). Výstupem skriptu je správně formátovaný soubor XML, který ještě potřebujeme transformovat do databáze.
 
 \vspace{10pt}
 
-Protože se nám hodí i koncove časy pořadů, pomůže nám pomocný skript z balíku XMLTV tv\_sort, ten nejen chronologicky seřadí pořady v rámci kanálu, ale také každý pořad doplní koncovým časem (podle počátečního času chronologicky následujícího pořadu). Bohužel tohle selhává u posledních pořadu v rámci dne, kdy následujícím pořadem je až první ranní pořad dalšího dne. Tyto situace se snaží detekovat systém až při vytváření požadavku na nahrání a pokud pořad začíná mezi 1. a 5. hodinou ranní a trvá déle než 4 hodiny tak se koncový čas nastaví jen na počáteční + definovaná konstanta (výchozí hodnota je +2 hodiny). Pokud koncové časy nemáme v databázi vůbec (např. po použití modulu tv\_grab\_novinky\_cz.php, tak se koncový čas určuje také při vytváření požadavku na nahrání.
+Protože se nám hodí i koncové časy pořadů, pomůže nám pomocný skript z balíku XMLTV tv\_sort, ten nejen chronologicky seřadí pořady v rámci kanálu, ale také každý pořad doplní koncovým časem (podle počátečního času chronologicky následujícího pořadu). Bohužel tohle selhává u posledních pořadů v rámci dne, kdy následujícím pořadem je až první ranní pořad dalšího dne. Tyto situace se snaží detekovat systém až při vytváření požadavku na nahrání a pokud pořad začíná mezi 1. a 5. hodinou ranní a trvá déle než 4 hodiny, tak se koncový čas nastaví jen na čas počáteční + definovaná konstanta (výchozí hodnota je +2 hodiny). Pokud koncové časy nemáme v databázi vůbec (např. po použití modulu tv\_grab\_novinky\_cz.php, tak se koncový čas určuje také při vytváření požadavku na nahrání.
 
 \vspace{10pt}
 
-Takto předzpracovaný program již můžeme zpracovávat pomocí skriptu xmltv\_to\_db.php. Ten složí pro každý element <programme> 2 SELECT dotazy a INSERT pro vložení a UPDATE pro aktualizaci. První dotaz zjistí, zda v danou dobu na daném kanálu již existuje v databázi pořad se stejným jménem, pokud ano element je ignorován. Jinak se provede druhý dotaz, který zjišťuje zda neexistuje v tu dobu pořad s jiným jménem, pokud ano použije se vygenerovany UPDATE, pokud ne použije se INSERT. Pokud se ve vstupním souboru objeví například pořad na kanálu, jehož xmltv id nemáme v databázi DVBgrabu registrováno, vypíše se varování a pořad se také nevkládá.
+Takto předzpracovaný program již můžeme zpracovávat pomocí skriptu xmltv\_to\_db.php. Ten složí pro každý element <programme> 2 SELECT dotazy, INSERT pro vložení a UPDATE pro aktualizaci. První dotaz zjistí, zda v danou dobu na daném kanálu již existuje v databázi pořad se stejným jménem, pokud ano, element je ignorován. Jinak se provede druhý dotaz, který zjišťuje, zda neexistuje v tu dobu pořad s jiným jménem, pokud ano, použije se vygenerovaný UPDATE, pokud ne, použije se INSERT. Pokud se ve vstupním souboru objeví například pořad na kanálu, jehož xmltv id nemáme v databázi DVBgrabu registrováno, vypíše se varování a pořad se také nevkládá.
 
 \vspace{10pt}
 
@@ -201,16 +225,16 @@ Takto předzpracovaný program již můžeme zpracovávat pomocí skriptu xmltv\
 
 \vspace{10pt}
 
-V zahraničí je běžné, že dostupnost XMLTV formátu programu je částečně podporováné i státem. 
+V zahraničí je běžné, že dostupnost XMLTV formátu programu je částečně podporovaná i státem. 
 
 \vspace{10pt}
 
-U nás tomu bohužel tak není a kvůli tomu v XMLTV distribuci stahovací skript pro Českou Republiku v dohledné době asi nenajdeme. Dokonce tam jistou dobu byl již i obsažen. Bohužel firma provozující servery, které sloužili jako zdroj programu, pro jinou firmu, která zajišťovala transformaci z HTML formátu do XMLTV, nebyla této aktivitě příznivě nakloněna a tak byl projekt českého XMLTV pod hrozbou žaloby zastaven.
+U nás tomu bohužel tak není a kvůli tomu v XMLTV distribuci stahovací skript pro Českou republiku v dohledné době asi nenajdeme. Dokonce tam jistou dobu byl již i obsažen. Bohužel firma provozující servery, které sloužili jako zdroj programu pro jinou firmu, která zajišťovala transformaci z HTML formátu do XMLTV, nebyla této aktivitě příznivě nakloněna a tak byl projekt českého XMLTV pod hrozbou žaloby zastaven.
 
 \vspace{10pt}
 
-Bohužel i mě jako tvůrci DVBgrabu byla zaslána, žádost o urychlené odstranění načítání televizního programu ze stránek http://www.ceskenoviny.cz jejichž provozovatelem je Česká tisková kancelář (ČTK), jinak by záležitost řešilo právní oddělení ČTK. Proto nová verze DVBgrabu nebude distribuována včetne českého XMLTV modulu a správce systému je pak nucen použít skript tv\_grab\_novinky\_cz.php (za předpokladu, že snad přátelštější provozovatel http://www.seznam.cz nepříjde s žádostí o odstranění) a nebo si zajistit xmltv zdroj svépomocí.
+Bohužel i mě jako tvůrci DVBgrabu byla zaslána žádost o urychlené odstranění načítání televizního programu ze stránek http://www.ceskenoviny.cz, jejichž provozovatelem je Česká tisková kancelář (ČTK), jinak by záležitost řešilo právní oddělení ČTK. Proto nová verze DVBgrabu nebude distribuována včetně českého XMLTV modulu a správce systému je pak nucen použít skript tv\_grab\_novinky\_cz.php (za předpokladu, že snad přátelštější provozovatel http://www.seznam.cz nepřijde s žádostí o odstranění) a nebo si zajistit xmltv zdroj svépomocí.
 
 \vspace{10pt}
 
-Doufejme, že co nejdříve si některý portál nabízející online tv program v HTML podobobě, všimne tohoto nedostatku na trhu a doplní své portfolio služeb například o placený přístup k XMLTV formátu jejich programu.
+Doufejme, že co nejdříve si některý portál nabízející online tv program v HTML podobě všimne na trhu tohoto nedostatku a doplní své portfolio služeb například o placený přístup k XMLTV formátu jejich programu.

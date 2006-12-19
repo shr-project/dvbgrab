@@ -3,9 +3,9 @@
 Pro DVBgrab potřebujeme nějaký dostatečně stabilní zdroj televizního vysílání po lokální síti. To může běžet na druhém serveru. Ale může to být i úplně nezávislé na DVBgrabu.
 
 \vspace{10pt}
-\section{DVB v České Republice}
+\section{DVB v České republice}
 
-V současné době v České Republice vysílají DVB signál organizace Czech Digital Group (CDG), České Radiokomunikace (CRA) a Český Telecom (CTc). Každá organizace představuje jeden multiplex, což v DVB znamená balík televizních, rozhlasových a datových kanálů, který je vysílán v rámci jedné frekvence po celém území.
+V současné době v České republice vysílají DVB signál organizace Czech Digital Group (CDG), České Radiokomunikace (CRA) a Český Telecom (CTc). Každá organizace představuje jeden multiplex, což v DVB znamená balík televizních, rozhlasových a datových kanálů, který je vysílán v rámci jedné frekvence po celém území.
 
 Multiplex CRA je nyní zaměřen na pořady České Televize, CDG má navíc k dispozici televizi Nova, Prima, Očko, 24CZ apod., CTc mají Českou Televizi, Očko, Novu.
 
@@ -31,11 +31,11 @@ $DVB-H$ & přenosné zařízení & MPEG-4 AVC & QFDM,QPSK,QAM+\\
 \label{tab:tab1}
 \end{table}
 
-Variantu volíme podle dostupnosti v naší lokalitě, v Praze je nejsnažší využít variantu DVB-T.
+Variantu volíme podle dostupnosti v naší lokalitě, v Praze je nejsnazší využít variantu DVB-T.
 
 \vspace{10pt}
 
-Pokrytí Prahy signálem DVB-T je velmi dobré, přesto se mohou objevit problémy s použitými zesilovači, které jsou obvykle vyladěny pro zesilování frekvencí běžných pro analogové televizní vysílání a frekvence DVB-T (nad 500MHz) účinně ořezávají. Proto je v případě špatného příjmu jako první zkontrolovat použité zesilovače.
+Pokrytí Prahy signálem DVB-T je velmi dobré, přesto se mohou objevit problémy s použitými zesilovači, které jsou obvykle vyladěny pro zesilování frekvencí běžných pro analogové televizní vysílání a frekvence DVB-T (nad 500MHz) účinně ořezávají. Proto je v případě špatného příjmu jako první potřeba zkontrolovat použité zesilovače.
 
 Systém, který běží na Masarykově koleji, používá signál ze 2 DVB-T karet, jedna je naladěna na multiplex CDG a druhá na CRA. 
 
@@ -44,7 +44,7 @@ Grabovací systém bude samozřejmě fungovat na libovolné kombinaci digitáln�
 \section{Programy na vysílání}
 
 \vspace{10pt}
-Pro vysílání po sítí se používají programy z projektu VideoLAN \cite{videolanURL}. Jejich použití je následující:
+Pro vysílání po síti se používají programy z projektu VideoLAN \cite{videolanURL}. Jejich použití je následující:
 
 \vspace{10pt}
 
@@ -69,22 +69,19 @@ Každá DVB-T karta má potom na svém tuneru naladěnu frekvenci multiplexu a p
 
 \vspace{10pt}
 
-Ovladače těchto karet jsou k dispozici na stránkách projektu linuxtv \cite{linuxtvURL} a také jsou součástí jádra systému řady 2.6. V novějších jádrech než j
-e 2.6.9 se promítlo mnoho změn v ovladačích, proto je potřeba stáhnout i novější verze firmware karty, která se nahrává při načítání ovladače.
+Ovladače těchto karet jsou k dispozici na stránkách projektu linuxtv \cite{linuxtvURL} a také jsou součástí jádra systému řady 2.6. V novějších jádrech než je 2.6.9 se promítlo mnoho změn v ovladačích, proto je potřeba stáhnout i novější verze firmware karty, která se nahrává při načítání ovladače.
 
 \vspace{10pt}
 
-Pro zprovoznění vysílání je vhodné nainstalovat ještě několik uživatelských aplikací jako media-tv/linuxtv-dvb,linuxtv-dvb-apps,linuxtv-dvb-headers,libdvbpsi
-,dvbsnoop pro Gentoo nebo dvb-utils,dvbsnoop,dvbstream,dvbtune,libdvb-dev,libdvbpsi3,libdvbpsi3-dev pro Debian.
+Pro zprovoznění vysílání je vhodné nainstalovat ještě několik uživatelských aplikací jako media-tv/linuxtv-dvb, linuxtv-dvb-apps, linuxtv-dvb-headers, libdvbpsi, dvbsnoop pro Gentoo nebo dvb-utils, dvbsnoop, dvbstream, dvbtune, libdvb-dev, libdvbpsi3, libdvbpsi3-dev pro Debian.
 
 \section{Získání seznamu dostupných kanálů}
 
-Získání seznamu pořadů v multiplexu popíšu již v této sekci, i když daný postup lze zjednodušit pokud použijeme přímo VideoLanClient(VLC) místo složitější kombinace VideoLanServer(VLS)+miniSAPserver.
+Získání seznamu pořadů v multiplexu popíšu již v této sekci, i když daný postup lze zjednodušit, pokud použijeme přímo VideoLanClient(VLC) místo složitější kombinace VideoLanServer(VLS)+miniSAPserver.
 
 \vspace{10pt}
 
-Pro zjištění dostupných kanálů lze použít například příkaz scan z balíku dvb-utils. Nejdříve je třeba připravit soubor s výchozím nastavením tuneru, aby kart
-a věděla, ve kterém multiplexu chceme kanály vyhledávat.
+Pro zjištění dostupných kanálů lze použít například příkaz scan z balíku dvb-utils. Nejdříve je třeba připravit soubor s výchozím nastavením tuneru, aby karta věděla, ve kterém multiplexu chceme kanály vyhledávat.
 
 \vspace{10pt}
 
@@ -129,7 +126,7 @@ Hierarchický mód 	&	ne		&       ne		&       ne		\\
 
 \vspace{10pt}
 
-Takže výchozí nastavení pak vypadá následovně (můžeme zadat všechny multiplexy najednou do jednoho souboru)
+Takže výchozí nastavení pak vypadá následovně (můžeme zadat všechny multiplexy najednou do jednoho souboru).
 
 \vspace{10pt}
 
@@ -145,7 +142,7 @@ T 818000000 8MHz 2/3 1/2 QAM64 8k 1/8 NONE
 
 \vspace{10pt}
 
-Výstup programu scan poté vypadá nějak takto:
+Výstup programu scan poté vypadá přibližně takto:
  
 \vspace{10pt}
 
@@ -217,9 +214,11 @@ pro Czech Digital Group
 
 \vspace{10pt}
 
-MPEG-2 transport stream je balíkem elementarních kanálů (MPEG-2 ES - Elementary stream) a informačních tabulek.
+MPEG-2 transport stream je balíkem elementárních kanálů (MPEG-2 ES - Elementary stream) a informačních tabulek.
 
 Každá složka je jednoznačně určena identifikačním číslem PID (13 bitové identifikační číslo složky, unikátní v rámci multiplexu). Podle PID se určuje, které pakety patří k sobě.
+
+\vspace{10pt}
 
 \textbf{PAT - Program Association Table} je první informační tabulkou, která je vždy vysílána s PID 0x0. Obsahuje pro každý kanál v multiplexu PID, kde je vysílána jeho PMT tabulka.
 
@@ -229,10 +228,16 @@ Každá složka je jednoznačně určena identifikačním číslem PID (13 bitov
 
 Na vyhrazeném \textbf{PIDu 0x1FFF} mohou být ještě vysílány prázdné pakety, které slouží jenom na doplnění vysílání do určité velikosti, aby byla dodržena konstantní velikost (constant bitrate).
 
-Příkaz scan mám tedy vypsal informační tabulky PAT a PMT. Každý řádek je tedy jednou tabulkou PMT. V prvním sloupci je název kanálu, poté jsou parametry společné pro celý multiplex a zajímavé jsou pak poslední číselné sloupce oddělené dvojtečkou.
+\vspace{10pt}
+
+Příkaz scan nám tedy vypsal informační tabulky PAT a PMT. Každý řádek je tedy jednou tabulkou PMT. V prvním sloupci je název kanálu, poté jsou parametry společné pro celý multiplex a zajímavé jsou pak poslední číselné sloupce oddělené dvojtečkou.
+
+\vspace{10pt}
 
 Úplně poslední určuje PID této PMT tabulky = identifikátor kanálu.
-Předcházející čísla jsou PID jednotlivých složek programu a to v pořadí video,audio.
+Předcházející čísla jsou PID jednotlivých složek programu a to v pořadí video, audio.
+
+\vspace{10pt}
 
 Přehledně je to zobrazeno na následujícím obrázku \ref{fig:PATaPMT}, převzatém z \cite{digitvURL}.
 
@@ -264,7 +269,7 @@ Pro provozování DVBgrabu je nejdůležitější vysílání pomocí multicastu
 \begin{bf}Výhody:\end{bf} snadná konfigurace pro málo uživatelů, možnost definovat povolené adresy
 
 
-\begin{bf}Nevýhody:\end{bf} data se posílají tolikrát kolik je uživatelů, značně zatežuje sít
+\begin{bf}Nevýhody:\end{bf} data se posílají tolikrát, kolik je uživatelů, značně zatěžuje síť
 
 \vspace{10pt}
 
@@ -274,10 +279,10 @@ Pro provozování DVBgrabu je nejdůležitější vysílání pomocí multicastu
 \begin{bf}Popis:\end{bf} vysílání pro skupinu IP adres
 
 
-\begin{bf}Výhody:\end{bf} do skupiny se klient může přihlašovat a odhlašovat pomocí IGMP paketů, takže dostává data jen z těch stanic, které sleduje.
+\begin{bf}Výhody:\end{bf} do skupiny se klient může přihlašovat a odhlašovat pomocí IGMP paketů, takže dostává data jen z těch stanic, které sleduje
 
 
-\begin{bf}Nevýhody:\end{bf} pro funkční a efektivní multicast vysílání je potřeba, aby switche podporovali IGMP snooping, což je mechanismus přeposílání packetů pouze na ty porty, ze kterých přišel přihlašovací paket do dané skupiny, jinak se to šíří v rámci switche jako broadcast.
+\begin{bf}Nevýhody:\end{bf} pro funkční a efektivní multicast vysílání je potřeba, aby switche podporovali IGMP snooping, což je mechanismus přeposílání packetů pouze na ty porty, ze kterých přišel přihlašovací paket do dané skupiny, jinak se to šíří v rámci switche jako broadcast
 
 \vspace{10pt}
 
@@ -296,7 +301,7 @@ Pro provozování DVBgrabu je nejdůležitější vysílání pomocí multicastu
 
 \section{Seznam kanálů pro uživatele}
 
-Když máme seznam pořadů a přidělíme jim adresy na kterých je budeme vysílat, je vhodné vytvořit také statický playlist. Ten se bude hodit uživatelům, kteří nebudou používat přehrávač s podporou SAP playlistu. Playlist M3U obyčejný textový soubor obvykle s příponout .m3u obsahující pro každý pořad jeho název (za EXTINF) a adresu (následující řádek), viz ukázka:
+Když máme seznam pořadů a přidělíme jim adresy, na kterých je budeme vysílat, je vhodné vytvořit také statický playlist. Ten se bude hodit uživatelům, kteří nebudou používat přehrávač s podporou SAP playlistu. Playlist M3U je obyčejný textový soubor obvykle s příponou .m3u obsahující pro každý pořad jeho název (za EXTINF) a adresu (následující řádek), viz ukázka:
 
 \vspace{10pt}
 
@@ -318,9 +323,13 @@ rtp://@[ff08::701]
 
 Pro vysílání můžeme použít buď VLS (VideoLan Server) nebo VLC (VideoLan Client). Zásadní rozdíl je ve složitosti konfigurace a udržovanosti projektu. VLS není již několik let aktivně vyvíjen, VLC už podporuje všechny jeho funkce a nyní i mnohem více.
 
-VLS má složitějsí konfiguraci, kde je potřeba definovat správně seznam kanálu pro jednotlivé karty v souborech .dvbrc.N. Také neobsahuje integrovany SAP server jako VLC. To pro nás znamená další práci s konfigurací SAP serveru. Vlastní konfigurace v souboru vls.cfg je sice přehledná, ale přesto dost náchýlná k chybám při úpravách. Velkou výhodou VLS je při použítí na serverech bez grafického prostředí, protože ani jeho binární balícky nezávisejí na žádných grafických knihovnách.
+\vspace{10pt}
 
-VLC má mnohem snažší konfiguraci nepodporuje .dvbrc.N soubory (což sice znamená, že nemůžeme definovat pro programy symbolické názvy, ale taky to ušetří práci s vytvářením těchto souborů, pokud se skladba programů v multiplexu častěji mění). Má integrovaný SAP server, takže je vše schováno přehledně v jednom souboru. Nevýhoda u binárních instalačních balíčků se dá obejít buď překompilováním VLC do balíčku bez podpory X serveru nebo například u distribuce Gentoo je to jen o správné volbě USE flagů při instalaci.
+VLS má složitějsí konfiguraci, kde je potřeba definovat správně seznam kanálů pro jednotlivé karty v souborech .dvbrc.N. Také neobsahuje integrovaný SAP server jako VLC. To pro nás znamená další práci s konfigurací SAP serveru. Vlastní konfigurace v souboru vls.cfg je sice přehledná, ale přesto dost náchylná k chybám při úpravách. Velkou výhodou VLS je při použití na serverech bez grafického prostředí, protože ani jeho binární balíčky nezávisejí na žádných grafických knihovnách.
+
+\vspace{10pt}
+
+VLC má mnohem snažší konfiguraci, nepodporuje .dvbrc.N soubory (což sice znamená, že nemůžeme definovat pro programy symbolické názvy, ale taky to ušetří práci s vytvářením těchto souborů, pokud se skladba programů v multiplexu častěji mění). Má integrovaný SAP server, takže je vše schováno přehledně v jednom souboru. Nevýhoda u binárních instalačních balíčků se dá obejít buď překompilováním VLC do balíčku bez podpory X serveru nebo například u distribuce Gentoo je to jen o správné volbě USE flagů při instalaci.
 
 \section{Popis VideoLAN Serveru}
 
@@ -332,7 +341,7 @@ Open source projekt, který umí vysílat do sítě mnoha různými způsoby a z
 
 \vspace{10pt}
 
-statické soubory na disku, nebo nějakém médiu (ve formátu MPEG-1, MPEG-2, MPEG-4),
+statické soubory na disku nebo nějakém médiu (ve formátu MPEG-1, MPEG-2, MPEG-4),
 
 disky DVD v DVD mechanikách,
 
@@ -354,7 +363,7 @@ na všechny adresy v určité síti - broadcast
 
 na všechny počítače, které se přihlásí k odběru dané skupiny - multicast
 
-a to vše jak ve variantě IPv4 tak v modernější IPv6
+a to vše jak ve variantě IPv4, tak v modernější IPv6
 
 \vspace{10pt}
 
@@ -362,7 +371,7 @@ Hardwarové nároky jsou přibližně Pentium 100 MHz a 32MB RAM pro vysílání
 
 \vspace{10pt}
 
-VLS lze používat jak ve verzi pro MS Windows tak pro Linux. K dispozici jsou samozřejmě i zdrojové kódy.
+VLS lze používat jak ve verzi pro MS Windows, tak pro Linux. K dispozici jsou samozřejmě i zdrojové kódy.
 
 \vspace{10pt}
 
@@ -376,7 +385,7 @@ Linuxové distribuce obvykle obsahují předpřipravené instalační balíčky 
 
 Tady budeme potřebovat znát PID tabulek PMT pro všechny programy, to bylo popsáno ve zvláštní sekci.
 
-Tyto údaje potřebujeme zkonvertovat do formátu konfiguračního souboru kanálů pro VLS (.dvbrc). Tyto soubory obsahují na prvních řádcích definici multiplexu a jeho parametrů viz. \ref{tab:mplexy}. Pak každý kanál má nastaveno jméno v parametru NAME a poté v SID je identifikační číslo toku s odpovídající tabulkou PMT.
+Tyto údaje potřebujeme zkonvertovat do formátu konfiguračního souboru kanálů pro VLS (.dvbrc). Tyto soubory obsahují na prvních řádcích definici multiplexu a jeho parametrů viz. tabulka \ref{tab:mplexy}. Pak každý kanál má nastaveno jméno v parametru NAME a poté v SID je identifikační číslo toku s odpovídající tabulkou PMT.
 
 Takže výsledek vypadá asi takto:
 
@@ -437,7 +446,7 @@ pro Czech Digital Group.
 
 \vspace{10pt}
 
-Tyto dva soubory pojmenujeme .dvbrc pro první DVB kartu a .dvbrc.1 pro druhou. Soubory uložíme do domovského adresáře uživatele pod kterým budeme chtít VLS spouštět. Pravděpodobně vytvoříme speciálního neprivilegovaného uživatele třeba vls s domovským adresářem například /var/lib/vls.
+Tyto dva soubory pojmenujeme .dvbrc pro první DVB kartu a .dvbrc.1 pro druhou. Soubory uložíme do domovského adresáře uživatele, pod kterým budeme chtít VLS spouštět. Pravděpodobně vytvoříme speciálního neprivilegovaného uživatele, např. vls s domovským adresářem /var/lib/vls.
 
 \vspace{10pt}
 
@@ -445,7 +454,7 @@ Vlastní konfigurační soubor VLS je obvykle /etc/videolan/vls.conf.
 
 \vspace{10pt}
 
-Na začátku obsahuje společné nastavení jako telnet rozhraní pro správu vls po spuštění. Která myslím nepotřebuje dodatečný komentář.
+Na začátku obsahuje společné nastavení jako telnet rozhraní pro správu vls po spuštění. Tato část myslím nepotřebuje dodatečný komentář.
 
 \vspace{10pt}
 
@@ -491,7 +500,7 @@ END
 
 \vspace{10pt}
 
-Dále je obsažena definice zdrojů dat a jejich konfigurace
+Dále je obsažena definice zdrojů dat a jejich konfigurace.
 
 \vspace{10pt}
 
@@ -531,7 +540,7 @@ END
 
 \vspace{10pt}
 
-Definice distribučních kanálů, nejdříve je v Channels seznam distribučních kanálů a pak má každý svou sekci s konfigurací. Na ukázku jsou zobrazeny varianty jak pro použití IPv4 tak IPv6.
+Definice distribučních kanálů - nejdříve je v sekci Channels seznam distribučních kanálů a pak má každý svou sekci s konfigurací. Na ukázku jsou zobrazeny varianty jak pro použití IPv4, tak IPv6.
 
 \vspace{10pt}
 
@@ -600,21 +609,25 @@ END
 
 \vspace{10pt}
 
-VLS je skvělý program pro serverové použití, nepotřebuje grafické knihovny, jeho konfigurace je přehledná. Vývoj jde ale rychleji kupředu v podobném projektu ze stejné dílny, který je zároveň jak klientským prohlížečem tak streamovacím serverem. Tento produkt se jmenuje VideoLAN Client.
+VLS je skvělý program pro serverové použití, nepotřebuje grafické knihovny, jeho konfigurace je přehledná. Vývoj jde ale rychleji kupředu v podobném projektu ze stejné dílny, který je zároveň jak klientským prohlížečem, tak streamovacím serverem. Tento produkt se jmenuje VideoLAN Client.
 
 \vspace{10pt}
 
 \section{Mini SAP server}
 
-Opět open source projekt, SAP (Session Announcment Protocol) je protokol pro oznamování změn ve skladbě vysílání. 
-
-Uživatelé mohou zvolit 2 přístupy. Buď použíjí staticky vygenerovaný soubor .m3u, který obsahuje seznam kanálů, které v síti vysíláme, ale při každé změně musíme aktualizovat .m3u soubor a uživatelé si musí stáhnout někde aktuální verzi.
-
-Druhá možnost je použít tento protokol (jak na straně serveru tak klienta). V konfiguraci serveru pro tento protokol je opět seznam kanálů, které vysíláme, ale pokaždé když provedeme změnu, tak se tato změna projeví ihned i všem uživatelům, kteří mají nastaveno používání playlistu získaného ze SAP protokolu.
+Opět open source projekt, SAP (Session Announcement Protocol) je protokol pro oznamování změn ve skladbě vysílání. 
 
 \vspace{10pt}
 
-SAP server periodicky vysílá aktuální playlist také pomocí multicast vysílání, podporuje jak IPv4 tak IPv6 variantu.
+Uživatelé mohou zvolit 2 přístupy. Buď použijí staticky vygenerovaný soubor .m3u, který obsahuje seznam kanálů, které v síti vysíláme, ale při každé změně musíme aktualizovat .m3u soubor a uživatelé si musí stáhnout někde aktuální verzi.
+
+\vspace{10pt}
+
+Druhá možnost je použít tento protokol (jak na straně serveru tak klienta). V konfiguraci serveru pro tento protokol je opět seznam kanálů, které vysíláme, ale pokaždé, když provedeme změnu, tak se tato změna projeví ihned i všem uživatelům, kteří mají nastaveno používání playlistu získaného ze SAP protokolu.
+
+\vspace{10pt}
+
+SAP server periodicky vysílá aktuální playlist také pomocí multicast vysílání, podporuje jak IPv4, tak IPv6 variantu.
 
 \vspace{10pt}
 
@@ -626,7 +639,7 @@ Instalace je snadná, po stažení zdrojových kódů by měla stačit obvyklá 
 
 \vspace{10pt}
 
-Konfigurace je celkem přímočará, v souboru /etc/sap.cfg má každý kanál svou sekci viz ukázka: 
+Konfigurace je celkem přímočará, v souboru /etc/sap.cfg má každý kanál svou sekci viz. ukázka: 
 
 \vspace{10pt}
 
@@ -637,12 +650,12 @@ type=rtp                                # protokol vysílání RTP
 name=CRA CT1                            # název kanálu zobrazovaný uživateli
 user=Masarka                            # jméno subjektu, který kanál vysílá
 machine=zeus.mk.cvut.cz                 # jméno serveru, ze kterého je kanál vysílán
-playlist_group=Masarka                  # složka do které se daný kanál zařadí u klienta
+playlist_group=Masarka                  # složka, do které se daný kanál zařadí
 site=http://dvbgrab.mk.cvut.cz/stream   # stránky s informacemi o vysílání
 address=239.194.12.1                    # IP adresa pro přihlášení kanálu
-port=1234                               # port na který jsou posílána data
+port=1234                               # port, na který jsou posílána data
 program_ttl=32                          # TimeToLive multicast paketů
-program_ipversion=4                     # Použitá verze IP protokolu
+program_ipversion=4                     # použitá verze IP protokolu
 \end{verbatim}
 \end{small}
 
@@ -654,11 +667,11 @@ Mini SAP Server je velmi snadno použitelný a pro uživatele velmi pohodlný do
 
 \section{Popis VideoLAN Client}
 
-Další projekt s otevřeným kódem, který podporuje mnoho platforem: Linux, Windows, Mac OS X, BeOS, *BSD, Solaris, Familiar Linux, Yopy/Linupy and QNX. VLC nepracuje na Mac OS 9 a pravděpodobně ani nikdy nebude.
+Další projekt s otevřeným kódem, který podporuje mnoho platforem: Linux, Windows, Mac OS X, BeOS, *BSD, Solaris, Familiar Linux, Yopy/Linupy and QNX. VLC nepracuje na Mac OS\ 9 a pravděpodobně ani nikdy nebude.
 
 \vspace{10pt}
 
-\textbf{Umí přahrávat}
+\textbf{Umí přehrávat}
 
 soubory z disků a mechanik (formáty MPEG-1, MPEG-2, MPEG-4/DivX apod.)
 
@@ -684,7 +697,7 @@ Konfigurace klienta obecně není potřeba.
 
 VLC je nejspolehlivějším přehrávačem pro přehrávání záznamů z DVBgrabu v prostředí Microsoft Windows, protože je založen na stejné implementaci kodeků FFmeg/libavcodec jako komprimační nástroj mencoder.
 
-Trošku pohodlí může přidat vytvoření zástupce/skriptu, který při spuštění načte námi používaný statický playlist z .m3u souboru a zapne podporu získávání playlistu ze SAP událostí. Klienti si uloží staticky playlist do svého domovského adresáře jako .vlc.m3u a pak do definice Cíl v zástupci ve windows resp. do nějakého startovacího skriptu v linuxu přidají parametr -S sap pro podporu SAP playlistu a nakonec přidají cestu k uloženému soboru .m3u. VLC pak po startu hned obsahuje použitelný playlist ze souboru a po nějaké prodlevě se doplní ještě SAP playlist.
+Trošku pohodlí může přidat vytvoření zástupce/skriptu, který při spuštění načte námi používaný statický playlist z .m3u souboru a zapne podporu získávání playlistu ze SAP událostí. Klienti si uloží staticky playlist do svého domovského adresáře jako .vlc.m3u a pak do definice Cíl v zástupci ve windows resp. do nějakého startovacího skriptu v linuxu přidají parametr -S sap pro podporu SAP playlistu a nakonec přidají cestu k uloženému souboru .m3u. VLC pak po startu hned obsahuje použitelný playlist ze souboru a po nějaké prodlevě se doplní ještě SAP playlist.
 
 \vspace{10pt}
 
@@ -714,7 +727,7 @@ new CRA broadcast enabled
 # Nastavíme typ zdroje na DVB
 setup CRA input dvb:
 
-# Nastavení DVB parametrů viz tabulka.
+# Nastavení DVB parametrů viz. tabulka.
 setup CRA option dvb-adapter=0
 setup CRA option dvb-frequency=506000000
 setup CRA option dvb-bandwidth=8
@@ -734,14 +747,14 @@ setup CRA option programs=1,2,3,4,5,10,11,12,13,14,15,16,1000
 
 # Použijeme modul duplicate, který z multiplexu vybere toky
 # odpovídající programu podle klauzule select a ty pošle i
-# do modulu std který je definován v klauzuli dst
+# do modulu std, který je definován v klauzuli dst
 
 # std modul nastavíme pro typ vysílání rtp, mux=ts znamená
 # nekonvertovat, v url je multicastová IP a port
 
 # sap zajistí vysílání SAP událostí pro daný program,
-# group a name pak udávají jak se bude program
-# zobrazovat v klientu po povoleni SAP playlistu
+# group a name pak udávají, jak se bude program
+# zobrazovat v klientu po povolení SAP playlistu
 
 setup CRA output #duplicate
 {
@@ -807,19 +820,23 @@ daemon --user vlc "$VLCSERVER" -d -vvv --logfile $VLM_LOG_FILE --file-logging \
 
 \vspace{10pt}
 
-Kontrolu zda vše správně běží můžeme provést přihlášením na telnet \begin{small}\begin{verbatim}telnet server port\end{verbatim}\end{small} a zadáním příkazu \begin{small}\begin{verbatim}show\end{verbatim}\end{small}. Objeví se seznam zdrojů a jejich stav. Zadáním \begin{small}\begin{verbatim}show název\end{verbatim}\end{small}, zobrazíme podrobnější údaje pro daný zdroj a pomocí \begin{small}\begin{verbatim}control název stop\end{verbatim}\end{small} ho můžeme například zatavit.
+Kontrolu, zda vše správně běží, můžeme provést přihlášením na telnet \begin{small}telnet server port\end{small} a zadáním příkazu \begin{small}show\end{small}. Objeví se seznam zdrojů a jejich stav. Zadáním \begin{small}show název\end{small}, zobrazíme podrobnější údaje pro daný zdroj a pomocí \begin{small}control název stop\end{small} ho můžeme například zatavit.
 
 \vspace{10pt}
 
-Nyní je předpokládám vidět rozdíl v jednoduchosti úprav konfigurace VLS a VLC. Například přidání nového televizního v kanálu je ve VLC jeden nový řádek, ve kterém nastavíme select na zjištěné ID kanálu a zvolíme multicast IP adresu a skupinu a název pro SAP.
+Nyní je předpokládám vidět rozdíl v jednoduchosti úprav konfigurace VLS a VLC. Například přidání nového televizního kanálu je ve VLC jeden nový řádek, ve kterém nastavíme select na zjištěné ID kanálu, zvolíme multicast IP adresu, skupinu a název pro SAP.
 
-U VLS přidání jednoho kanálu, znamená přidání řádku do odpovídajícího .dvbrc souboru. Odteď si musíme pamatovat jaký název jsme mu přiřadili. V souboru vls.conf přidáme nový distribuční kanál a zvolíme multicast adresu a port. Nyní už si musíme pamatovat jak název kanálu v .dvbrc, tak název distribučního kanálu ve vls.conf a IP adresu a port. To využijeme při přidávání příkazu na spuštění vysílání nového kanálu po startu VLS. A IP adresu a port budeme ještě jednou potřebovat při úpravě konfigurace SAP serveru.
+\vspace{10pt}
+
+U VLS přidání jednoho kanálu znamená přidání řádku do odpovídajícího .dvbrc souboru. Odteď si musíme pamatovat, jaký název jsme mu přiřadili. V souboru vls.conf přidáme nový distribuční kanál a zvolíme multicast adresu a port. Nyní už si musíme pamatovat jak název kanálu v .dvbrc, tak název distribučního kanálu ve vls.conf a IP adresu a port. To využijeme při přidávání příkazu na spuštění vysílání nového kanálu po startu VLS. A IP adresu a port budeme ještě jednou potřebovat při úpravě konfigurace SAP serveru.
 
 \vspace{10pt}
 
 \section {MPlayer jako přehrávač vysílané televize}
 
-MPlayer je dalším přehrávačem, který můžeme použít pro příjem vysílání z lokální sítě. A zároveň je nejoblíbenějším Linuxovým video přehrávačem. Podporuje velmi mnoho různých zdrojů v mnoha formátech a samozřejmě také umí přijímat multicastové vysílání z lokální sítě. Jedinou podmínkou je dodržení protokolu vysílání rtp:// místo výchozího udp://. Neumí využívat playlist získávaný ze SAP protokolu, proto je pro pohodlné spouštění dobré vytvořit souštecí skript nebo spouštěcí skripty pro každý televizní kanál zvlášť.
+MPlayer je dalším přehrávačem, který můžeme použít pro příjem vysílání z lokální sítě. A zároveň je nejoblíbenějším Linuxovým video přehrávačem. Podporuje velmi mnoho různých zdrojů v mnoha formátech a samozřejmě také umí přijímat multicastové vysílání z lokální sítě. Jedinou podmínkou je dodržení protokolu vysílání rtp:// místo výchozího udp://. Neumí využívat playlist získávaný ze SAP protokolu, proto je pro pohodlné spouštění dobré vytvořit spouštecí skript nebo spouštěcí skripty pro každý televizní kanál zvlášť.
+\vspace{10pt}
+
 
 \vspace{10pt}
 
@@ -827,7 +844,7 @@ Instalace je snadná, buď použijeme distribuční balík, nebo opět kompilac�
 
 \vspace{10pt}
 
-Konfigurace.. spouštěcí skripty mohou vypadat například takto:
+Konfigurace: spouštěcí skripty mohou vypadat například takto:
 
 tv\_nova.sh: mplayer -framedrop rtp://239.194.12.1:1234
 

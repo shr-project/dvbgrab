@@ -1,6 +1,6 @@
 \chapter{Příjem multicastového vysílání z vnější sítě}
 
-Na Internetu je dostupných i mnoho dalších televizních kanálů, které jsou vysílány pro veřejnost. Příjem je ale problematický, protože musí být zaručeno směrování multicastu z veřejného Internetu až do naší sítě. Je třeba vyřešit kompatibilitu multicastových démonů na routerech založených na Linuxu s Cisco routery. Tak aby mezi v naší síti a v síti poskytovatele připojení byla na každém sousedním routeru spuštěna služba pro směrování multicast dat. Případně lze vytvořit tunel, kterým jsou některé multicastové skupiny vysílány jako klasické unicast pakety. Směrování multicast paketů a správu skupin obvykle poskytuje pim démon na cisto routerech, na linuxových pak například pimd nebo mrouted.
+Na Internetu je dostupných i mnoho dalších televizních kanálů, které jsou vysílány pro veřejnost. Příjem je ale problematický, protože musí být zaručeno směrování multicastu z veřejného Internetu až do naší sítě. Je třeba vyřešit kompatibilitu multicastových démonů na routerech založených na Linuxu s Cisco routery. Tak aby v naší síti a v síti poskytovatele připojení byla na každém sousedním routeru spuštěna služba pro směrování multicast dat. Případně lze vytvořit tunel, kterým jsou některé multicastové skupiny vysílány jako klasické unicast pakety. Směrování multicast paketů a správu skupin obvykle poskytuje pim démon na cisco routerech, na linuxových pak například pimd nebo mrouted.
 
 \vspace{10pt}
 
@@ -12,11 +12,11 @@ Pro operační systém Linux se nejčastěji používají 2 multicastové směro
 
 \vspace{5pt}
 
-Poslední verze která se používá je alpha verze z roku 1999. Podporuje směrovací protokol DVMRP a MOSPF. Hodí se pro více využité multicastové skupiny nebo pro sítě s velkým přenosovým pásmem.
+Poslední verze, která se používá, je alpha verze z roku 1999. Podporuje směrovací protokol DVMRP a MOSPF. Hodí se pro více využité multicastové skupiny nebo pro sítě s velkým přenosovým pásmem.
 
 \vspace{10pt}
 
-Pokud jsou skupiny využívané zřídka tak toto schéma přestává být efektivní. Proto vznikla odnož pim démona:
+Pokud jsou skupiny využívané zřídka, tak toto schéma přestává být efektivní. Proto vznikla odnož pim démona:
 
 \vspace{10pt}
 
@@ -32,7 +32,7 @@ Implementace pim démona s otevřeným kódem
 
 Zastaralý: \textbf{Pimd USC site} (samostatný PIM-SM + úprava jádra systému)
 
-Zastaralý: \textbf{PIM-SM GateD} implmentace od ISI.
+Zastaralý: \textbf{PIM-SM GateD} implementace od ISI.
 
 \textbf{PIM-DM GateD} implementace z Oregonské univerzity
 
