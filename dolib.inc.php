@@ -4,6 +4,9 @@ require_once("config.php");
 require_once("loggers.inc.php");
 require_once("adodb/adodb.inc.php");
 
+// log every SQL call or SYS call to log file
+$logToFile = false;
+
 $DB = NewADOConnection(_Config_db_type);
 if (!$DB->Connect(_Config_db_host, _Config_db_user, _Config_db_pass, _Config_db_name)) {
   print "Sorry, cannot connect to database";
@@ -25,10 +28,12 @@ function rappend($v, $w) {
 
 function do_cmd($cmd) {
   global $logsys;
+  global $logToFile;
   exec($cmd, $output, $rVal);
   $outputStr = array_reduce($output,"rappend");
-
-  $logsys->log("SYS:\"$cmd\" returned $rVal and \n<output>\n$outputStr\n</output>");
+  if ($logToFile) {
+    $logsys->log("SYS:\"$cmd\" returned $rVal and \n<output>\n$outputStr\n</output>");
+  }
   return $outputStr;
 }
 
@@ -37,7 +42,10 @@ function do_cmd($cmd) {
 function do_sql($sql) {
   global $DB;
   global $logsql;
-  $logsql->log("SQL:\"".$sql."\"");
+  global $logToFile;
+  if ($logToFile) {
+    $logsql->log("SQL:\"".$sql."\"");
+  }
   if (!($rs = $DB->Execute($sql))) {
     handle_error("SQL: {$sql}[br]".$DB->ErrorMsg().": ".$DB->ErrorNo());
     if (!$DB->IsConnected( )) {
