@@ -126,9 +126,9 @@ define("_MsgAccountChangesNotice","Les changements exiges a enregistre et l`emai
 define("_MsgAccountNoChangesNotice","Aucun changement a envoye.");
 
 define("_MsgMenuTvProgram","Le programme de TV");
-define("_MsgMenuPlanSched","Les planifies enregistrements.");
-define("_MsgMenuPlanDone","Les pretes enregistrements.");
-define("_MsgMenuPlanMygrab","Mes enregistrements");
+define("_MsgMenuPlanSched","Les planifies enreg.");
+define("_MsgMenuPlanDone","Les pretes enreg.");
+define("_MsgMenuPlanMygrab","Mes enreg.");
 define("_MsgMenuPlanAccount","L`arrangement");
 define("_MsgMenuEmailUs","Ecrirez nous.");
 define("_MsgMenuNews","Les nouveaus");
