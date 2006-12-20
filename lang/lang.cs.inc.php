@@ -1,3 +1,4 @@
+<?
 
 define("_MsgGlobalTitle",":: projekt DVBgrab ::");
 define("_MsgGlobalRetry","Znova");
