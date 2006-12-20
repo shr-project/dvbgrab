@@ -1,5 +1,7 @@
 -=DVBgrab=-
 2006
+ - France translation done (Thanks to Zuzana Moravcova)
+ - 2006-12-08 project moved to http://dvbgrab.sourceforge.net (web and subversion repository)
  - Cleanup
  - All request are distributed with XML info file and can be show with XSL transformation.
  - Grab and television detail fetched by asynchronous XML request

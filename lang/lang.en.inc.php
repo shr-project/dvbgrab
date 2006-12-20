@@ -78,7 +78,7 @@ define("_MsgJsonGrbDateEnd","Record stop");
 define("_MsgJsonReqOutput","Name");
 define("_MsgJsonReqOutputMd5","MD5");
 define("_MsgJsonReqOutputEnc","Codec");
-define("_MsgJsonReqOutputEnc","Size");
+define("_MsgJsonReqOutputSize","Size");
 
 define("_MsgAccountValidateLogin","Username required");
 define("_MsgAccountValidatePass","Password required");
@@ -210,6 +210,7 @@ define("_MsgSetupAuth","External sql query for user authentication. Registration
 define("_MsgSetupAuthDbUsed","Using external user/pass or store it in own userinfo table (0 dont use, 1 use)");
 define("_MsgSetupAuthDbUsedOnly","Allow only externaly authenticated users to register and use DVBgrab (0 no, 1 yes)");
 define("_MsgSetupAuthDbSelect","Select used in query, in this string are 2 replaced strings dvbgrab_username is replaced with username used here and dvbgrab_password is md5 of password.");
+define("_MsgSetupAuthDbUserSelect","SQL query looking for user with username raplaced in string dvbgrab_username."); 
 define("_MsgSetupErrorStatus","Verbosity of errors:");
 define("_MsgSetupErrorStatus0","* 0 - Every error is written to page");
 define("_MsgSetupErrorStatus1","* 1 - Every error is send to error mail");
@@ -268,7 +269,6 @@ define("_MsgXmlTvFormatErrorNotAll","Not found all required elements");
 define("_MsgXmlTvIgnored","Ignored, duplicity");
 define("_MsgXmlTvInserted","Inserted");
 define("_MsgXmlTvUpdated","Updated");
-define("_MsgXmlTvSuccess;","Tv schedule successfully updated");
-define("_MsgXmlTvFailed;","Tv schedule updated with errors");
-
+define("_MsgXmlTvSuccess","Tv schedule successfully updated");
+define("_MsgXmlTvFailed","Tv schedule updated with errors");
 ?>

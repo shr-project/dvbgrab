@@ -1,7 +1,7 @@
 INSERT INTO param(par_key, par_val) VALUES ('last_account_update', '0000-00-00 00:00:00');
 
-INSERT INTO tvgrabber(tvg_id,tvg_name,tvg_cron_time,tvg_cron_cmd) VALUES(1,'PHP tv_grab_novinky_cz (poller ČT1,ČT2,Nova,Prima)','0 23 * * 6','cd /var/www/dvbgrab/tvgrabbers/tv_grab_novinky_cz; ./tv_grab_novinky_cz.php');
-INSERT INTO tvgrabber(tvg_id,tvg_name,tvg_cron_time,tvg_cron_cmd) VALUES(2,'tv_grab_cz','0 23 * * 6','cd /var/www/dvbgrab/tvgrabbers/; tv_grab_cz/tv_grab_cz --days 10 | ./xmltv_to_db.php');
+INSERT INTO tvgrabber(tvg_id,tvg_name,tvg_cron_time,tvg_cron_cmd,tvg_enabled) VALUES(1,'PHP tv_grab_novinky_cz (poller ČT1,ČT2,Nova,Prima)','0 23 * * 6','cd /var/www/dvbgrab/tvgrabbers/tv_grab_novinky_cz; ./tv_grab_novinky_cz.php',0);
+INSERT INTO tvgrabber(tvg_id,tvg_name,tvg_cron_time,tvg_cron_cmd,tvg_enabled) VALUES(2,'tv_grab_cz','0 23 * * 6','cd /var/www/dvbgrab/tvgrabbers/; tv_grab_cz/tv_grab_cz --days 10 | ./xmltv_to_db.php',0);
 
 INSERT INTO channel(chn_id,chn_name,chn_xmltv_name,chn_logo,chn_order,chn_ip,chn_port,tvg_id) VALUES (1,'ČT1','ct1.365dni.cz','ct1p.gif', 1, '239.194.12.1', 1234, 1);
 INSERT INTO channel(chn_id,chn_name,chn_xmltv_name,chn_logo,chn_order,chn_ip,chn_port,tvg_id) VALUES (2,'ČT2','ct2.365dni.cz','ct2p.gif', 2, '239.194.12.2', 1234, 1);

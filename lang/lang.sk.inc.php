@@ -211,7 +211,6 @@ define("_MsgSetupAuthDbUsed","Používať externú databázu alebo ukladať už�
 define("_MsgSetupAuthDbUsedOnly","Povoliť registráciu a používanie DVBgrabu LEN užívateľom z externej databázy (0 nie, 1 áno)");
 define("_MsgSetupAuthDbSelect","SQL dopyt na užívateľa, v tomto reťazci sa nahradia 2 reťazce, dvbgrab_username je nahradené zadaným užívateľským menom a dvbgrab_password je md5 zadaného hesla.");
 define("_MsgSetupAuthDbUserSelect","SQL dopyt na užívateľa, či existuje, v tomto reťazci sa nahradí len dvbgrab_username.");
-
 define("_MsgSetupErrorStatus","Množstvo informácií o vzniknutej chybe:");
 define("_MsgSetupErrorStatus0","* 0 - Každá chyba je vypísaná na stránke");
 define("_MsgSetupErrorStatus1","* 1 - Každá chyba je odoslaná na chybový email");

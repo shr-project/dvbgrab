@@ -1,4 +1,4 @@
 DVBgrab TODO:
-1) Analyzovat hlavicky prijímaného toku dat. Televize vysila informace o presném casu zacátku a konci poradu. Kdyby se informace získaná z televizního programu dostupného na internetu korigovala podle techto hlavicek, nebylo by treba spoustit nahrávání nekolik minut predem a ukoncovat nekolik minut pozdeji. Podle zástupce Czech Digital Group jsou prý tyto údaje uz dostupné. Pokud jim televize údaje dodá, tak je pouze prevedou do formátu vhodného pro EIT (Event Interface Table) a ulozí do toku dat.
-2) uverejnit na sourceforge ;-)
-3) obhajit jako DP
+1) Uzivatelske ucty pro ftp, pokud demonu staci pro definici uzivatele jmeno + md5
+2) Obhajit jako DP
+3) Analyzovat hlavicky prijímaného toku dat. Televize vysila informace o presném casu zacátku a konci poradu. Kdyby se informace získaná z televizního programu dostupného na internetu korigovala podle techto hlavicek, nebylo by treba spoustit nahrávání nekolik minut predem a ukoncovat nekolik minut pozdeji. Podle zástupce Czech Digital Group jsou prý tyto údaje uz dostupné. Pokud jim televize údaje dodá, tak je pouze prevedou do formátu vhodného pro EIT (Event Interface Table) a ulozí do toku dat.
