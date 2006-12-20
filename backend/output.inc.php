@@ -149,8 +149,8 @@ function report_grab_success($req_id, $target_name, $target_name_xml) {
     }
     
     $usr_target = publish_user_grab($target_name, $target_name_xml, $usr_name, $usr_ip);
-    $usr_target_url = "http://"._Config_hostname."$usr_name/$target_name";
-    $usr_target_url_xml = "http://"._Config_hostname."$usr_name/$target_name_xml";
+    $usr_target_url = _Config_hostname."/$usr_name/$target_name";
+    $usr_target_url_xml = _Config_hostname."/$usr_name/$target_name_xml";
     
     $update = "update userreq set urq_output='$usr_target_url' where urq_id=".$urq_id;
     do_sql($update);

@@ -12,6 +12,7 @@ DVBGRAB_HOME=/var/www/html/dvbgrab/backend
 DVBGRAB_USER=dvbgrab
 GRABLOOP=$DVBGRAB_HOME/grab_loop.php
 ENCODELOOP=$DVBGRAB_HOME/encode_loop.php
+PRINTQUEUE=$DVBGRAB_HOME/encode_queue_print.php
 RESTOREQUEUE=$DVBGRAB_HOME/encode_queue_restore.php
 LOCKFILE_G=$DVBGRAB_HOME/grab_loop.running
 LOCKFILE_E=$DVBGRAB_HOME/encode_loop.running
@@ -83,6 +84,7 @@ case "$1" in
 	RETVAL=$? 
         status `basename "$ENCODELOOP"`
 	RETVAL=`expr $RETVAL + $?` 
+        $PRINTQUEUE
         ;;
     restart)
 	stop_grab
