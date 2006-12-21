@@ -48,7 +48,7 @@ Pro vysílání po síti se používají programy z projektu VideoLAN \cite{vide
 
 \vspace{10pt}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \begin{center}
 \includegraphics[width=15cm]{images/videolan.eps}
 \caption{Využití programů z projektu VideoLAN}
@@ -829,6 +829,18 @@ Nyní je předpokládám vidět rozdíl v jednoduchosti úprav konfigurace VLS a
 \vspace{10pt}
 
 U VLS přidání jednoho kanálu znamená přidání řádku do odpovídajícího .dvbrc souboru. Odteď si musíme pamatovat, jaký název jsme mu přiřadili. V souboru vls.conf přidáme nový distribuční kanál a zvolíme multicast adresu a port. Nyní už si musíme pamatovat jak název kanálu v .dvbrc, tak název distribučního kanálu ve vls.conf a IP adresu a port. To využijeme při přidávání příkazu na spuštění vysílání nového kanálu po startu VLS. A IP adresu a port budeme ještě jednou potřebovat při úpravě konfigurace SAP serveru.
+
+\vspace{10pt}
+
+Ukázka konfiguračního souboru pro VLM včetně startovacího skriptu je v instalačním balíku DVBgrabu v podadresáři service.
+
+\textbf{vlm} je startovací skript služby do /etc/init.d/vlm, 
+
+\textbf{dvb} je konfigurační soubor služby do /etc/sysconfig/dvb
+
+\textbf{vlm.cfg} je konfigurační soubor pro VLC, standardně do /etc/videolan/vlm/vlm.cfg,
+
+\textbf{vlm.cfg.human.readable} je stejný soubor jen doplněn o mezery a ukončení řádků, pro vyšší přehlednost, ale POZOR, mezery a konce řádků musí být před použitím odstraněny.
 
 \vspace{10pt}
 

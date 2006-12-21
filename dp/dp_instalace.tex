@@ -14,7 +14,7 @@ Je rozhraní mezi aplikací a uživatelem, v tomto případě tedy webová aplik
 
 \textbf{Backend}
 
-Je ta část aplikace, která běží na pozadí a zajišťuje vlastní vyhotovování nahrávek. Ze serveru, kde běží backend, se také poté distribují výsledky. Pokud bychom neměli dostatek místa, je možná aplikaci dále rozdělit na další server, který by se staral o distribuci a nahrávky by se po uložení ukládaly na distribuční server třeba pomocí NFS sdílení. Naopak pokud budeme chtít může běžet backend na stejném serveru jako frontend.
+Je ta část aplikace, která běží na pozadí a zajišťuje vlastní vyhotovování nahrávek. Ze serveru, kde běží backend, se také poté distribuují výsledky. Pokud bychom neměli dostatek místa, je možné aplikaci dále rozdělit na další server, který by se staral o distribuci a nahrávky by se po uložení ukládaly na distribuční server třeba pomocí NFS sdílení. Naopak pokud budeme chtít, může běžet backend na stejném serveru jako frontend.
 
 \vspace{10pt}
 
@@ -39,13 +39,13 @@ Minimálně pro backend server je dobré použít buď verzi 1.x nebo až 2.2, p
 
 \textbf{PHP}
 
-Na webovém serveru je potřeba modul do apache. Na záznamovém stačí PHP interpretr přístupný z příkazového řádku. Obvykle instalace stejně obsahuje oba. Aplikace byla otestována jak na PHP verze 4 tak 5, v PHP musí být povoleny některé rozšíření viz. dále.
+Na webovém serveru je potřeba modul do apache. Na záznamovém stačí PHP interpret přístupný z příkazového řádku. Obvykle instalace stejně obsahuje oba. Aplikace byla otestována jak na PHP verze 4 tak 5, v PHP musí být povoleny některé rozšíření viz. dále.
 
 \vspace{10pt}
 
 \textbf{php-pear-Log}
 
-Logovací systém, obdoba log4j pro Javu. Je potřeba na obou serverech a přes něj jsou zapisovány veškeré záznamy do logovacích souborů. Logovací soubory se používají 4 jsou v podadresáři log.
+Logovací systém, obdoba log4j pro Javu. Je potřeba na obou serverech a jsou přes něj zapisovány veškeré záznamy do logovacích souborů. Logovací soubory se používají 4 a jsou v podadresáři log.
 
 dvbgrab.log - obecné hlášky systému.
 
@@ -61,7 +61,7 @@ Logování SQL a systémových příkazů může generovat poměrně velké logy
 
 \textbf{php-json}
 
-Podpora pro JSON (JavaScript Object Notation) do PHP. JSON je použit pro dotazy na detail televizního pořadu nebo grabu v seznamu grabů. Je to alternativní notace která je vrácena na volání XMLHttpRequestu z javascriptu. Toto rozšíření usnadňuje generování JSON odpovědi ve skriptu, který z databáze detail načítá a zpracování přijaté odpovědi ve webové stránce.
+Podpora pro JSON (JavaScript Object Notation) do PHP. JSON je použit pro dotazy na detail televizního pořadu nebo grabu v seznamu grabů. Je to alternativní notace, která je vrácena na volání XMLHttpRequestu z javascriptu. Toto rozšíření usnadňuje generování JSON odpovědi ve skriptu, který z databáze detail načítá a zpracování přijaté odpovědi ve webové stránce.
 
 \vspace{10pt}
 
@@ -72,13 +72,13 @@ Knihovna pro abstraktní přístup k různým databázím. Všechna volání do 
 \vspace{10pt}
 
 \textbf{XMLTV}
-Pokud chcete použít XMLTV modul pro načítání televizního programu bude potřeba nainstalovat tento balík. Buď v něm přímo najdete stahovací skript pro požadované programy, nebo se bude hodit alespon skript tv\_sort.
+Pokud chcete použít XMLTV modul pro načítání televizního programu, bude potřeba nainstalovat tento balík. Buď v něm přímo najdete stahovací skript pro požadované programy, nebo se bude hodit alespoň skript tv\_sort.
 
 \vspace{10pt}
 
 \textbf{Databáze}
 
-DVBgrab by měl fungovat s libovolnou databází, která je podporována v adodb. Otestovaný je na postgresql a mysql, také skripty pro založení databáze jsou připraveny v syntaxy pro mysql a postgresql.
+DVBgrab by měl fungovat s libovolnou databází, která je podporována v adodb. Otestovaný je na postgresql a mysql, také skripty pro založení databáze jsou připraveny v syntaxi pro mysql a postgresql.
 
 \vspace{10pt}
 
@@ -90,7 +90,7 @@ DVBgrab je dostupný na na sourceforge.net. K dispozici jsou jak jednotlivé uve
 
 Odkaz na jednotlivé verze naleznete na stránkách projektu http://dvbgrab.sourceforge.net/.
 
-Pro export vývojového repozitáře použijte následující:
+Pro export z repozitáře subversion použijte následující:
 
 \vspace{10pt}
 
@@ -116,21 +116,29 @@ https://dvbgrab.svn.sourceforge.net/svnroot/dvbgrab/trunk dvbgrab
 
 V podadresáři sql jsou připraveny skripty convert.sh, mysql.sql, postgres.sql, data.sql.
 
-convert.sh - je pro konverzi databázových dat z dvbgrab-1.0 na dvbgrab-2.0, přesto tato konverze není doporučena a je bezpečnější převést pouze uživatelské účty. Obě verze dvbgrabu nechat spuštěné nějakou dobu paralelně (starý dvbgrab nechat dostupný třeba pod jiným názvem) a aktuální požadavky nechat vyřešit v původní verzi a až budou zpracovány tak starou verzi zrušit a ponechat pouze novou.
+\vspace{10pt}
 
-mysql.sql - založí všechny potřebné tabulky pro dvbgrab na mysql
+\textbf{convert.sh} - je pro konverzi databázových dat z dvbgrab-1.0 na dvbgrab-2.0, přesto tato konverze není doporučena a je bezpečnější převést pouze uživatelské účty. Obě verze dvbgrabu nechat spuštěné nějakou dobu paralelně (starý dvbgrab nechat dostupný třeba pod jiným názvem) a aktuální požadavky nechat vyřešit v původní verzi a až budou zpracovány, tak starou verzi zrušit a ponechat pouze novou.
 
-postgres.sql - založí všechny potřebné tabulky pro dvbgrab na postgresql
+\vspace{10pt}
 
-data.sql - do tabulek vloží několik výchozích záznamů. 
+\textbf{mysql.sql} - založí všechny potřebné tabulky pro dvbgrab na mysql
+
+\vspace{10pt}
+
+\textbf{postgres.sql} - založí všechny potřebné tabulky pro dvbgrab na postgresql
+
+\vspace{10pt}
+
+\textbf{data.sql} - do tabulek vloží několik výchozích záznamů. 
 
 Do tabulky param vloží datum poslední aktualizace uživatelských účtů (někdy v minulosti). 
 
 Do tabulky tvgrabber přidá 2 záznamy skriptů na stahování televizního programu. Tyto záznamy lze dále upravovat přes webové konfigurační rozhraní, ale můžeme je upravit již tady. Minimálně by bylo dobré zvolit nějaké náhodné časy spouštění v cronu, aby se všechny instalace dvbgrabu nepřipojovaly na servery s programem současně. Do tabulky encoder přidá 5 záznamů, 1 pro MPEG-2 a 4 pro MPEG-4 s různě velkým rozlišením záznamu. 
 
-Pak do channel přidá televizní kanály (ČT1, ČT2, Nova, Prima), zde je dobré zkontorlovat IP adresy a porty, ze kterých má dané kanály ukládat a také se ujistit, že případný xmltv modul používá stejné ID kanálu jako je v této tabulce. Pokud přidáváme nový kanál tak určíme také název souboru s logem a logo uložíme do adresáře images.
+Pak do channel přidá televizní kanály (ČT1, ČT2, Nova, Prima), zde je dobré zkontrolovat IP adresy a porty, ze kterých má dané kanály ukládat a také se ujistit, že případný xmltv modul používá stejné ID kanálu jako je v této tabulce. Pokud přidáváme nový kanál, tak určíme také název souboru s logem a logo uložíme do adresáře images.
 
-Nakonec do tabulky news můžeme přidat několik zpráv uživatelům, které se budou zobrazovat ve webovém rozhrení v sekci novinky.
+Nakonec do tabulky news můžeme přidat několik zpráv uživatelům, které se budou zobrazovat ve webovém rozhraní v sekci novinky.
 
 \vspace{10pt}
 
@@ -142,8 +150,12 @@ Stažený adresář uložíme na webový server do zvolené cesty (např: /var/w
 
 \vspace{10pt}
 
-Jako výchozí použíjeme distribuční konfigurační soubor config.php.dist, který překopíuujeme jako config.php.
-Chceme-li použít webové konfiguračního rozhraní je třeba nastavit právo na zápis i pro uživatele, pod kterým běží webový server, to můžeme zajistit spuštěním skriptu configure.sh. Nyní již můžeme použít administrační rozhraní, které by mělo být dostupné na URL http://dvbgrab.domena.cz/setup.php. Případně můžeme vše nastavit přímo editací souboru config.php.
+Jako výchozí použijeme distribuční konfigurační soubor config.php.dist, který překopírujeme jako config.php.
+Zkontrolujeme, že odkaz adodb ukazuje na knihovnu php-adodb, případně upravíme cíl odkazu, aby odpovídal umístění naší adodb (podle distribuce).
+
+\vspace{10pt}
+
+Chceme-li použít webové konfigurační rozhraní, je třeba nastavit právo na zápis i pro uživatele, pod kterým běží webový server, to můžeme zajistit spuštěním skriptu configure.sh. Nyní již můžeme použít administrační rozhraní, které by mělo být dostupné na URL\linebreak[4] http://dvbgrab.domena.cz/setup.php. Případně můžeme vše nastavit přímo editací souboru config.php.
 
 \vspace{10pt}
 
@@ -159,7 +171,7 @@ Určuje název databáze, kterou jsme pro dvbgrab založili.
 
 \textbf{db\_type}
 
-Určuje typ databázového serveru jeden z (access, ado, ado\_access, ado\_mssql, db2, odbc\_db2, vfp, fbsql, ibase, firebird, borland\_ibase, informix, informix72, ldap, mssql, mssqlpo, mysql, mysqlt, maxsql, oci8, oci805, oci8po, odbc, odbc\_mssql, odbc\_oracle, odbtp, odbtp\_unicode, netezza. pdo, postgres, postgres64, postgres7, postgres8, sapdb, sqlanywhere, sqlite, sqlitepo, sybase, sybase\_ase).
+Určuje typ databázového serveru, jeden z (access, ado, ado\_access, ado\_mssql, db2, odbc\_db2, vfp, fbsql, ibase, firebird, borland\_ibase, informix, informix72, ldap, mssql, mssqlpo, mysql, mysqlt, maxsql, oci8, oci805, oci8po, odbc, odbc\_mssql, odbc\_oracle, odbtp, odbtp\_unicode, netezza. pdo, postgres, postgres64, postgres7, postgres8, sapdb, sqlanywhere, sqlite, sqlitepo, sybase, sybase\_ase).
 
 \vspace{10pt}
 
@@ -183,7 +195,7 @@ Heslo pro přístup do databáze.
 
 \textbf{auth\_db\_used}
 
-Určuje zda uživatelé budou mít možnost používat heslo z nějaké jiné externí databáze. To znamená, že pokud máme třeba databázi uživatelů lokální sítě a v ní již hesla pro nějaké jiné služby tak můžeme ověřovat uživatele tam.
+Určuje, zda uživatelé budou mít možnost používat heslo z nějaké jiné externí databáze. To znamená, že pokud máme třeba databázi uživatelů lokální sítě a v ní již hesla pro nějaké jiné služby tak můžeme ověřovat uživatele tam.
 
 Registrace poté ověří zda takový uživatel existuje v externí databázi. Pokud existuje musí zadat stejné heslo jako má uživatel zvoleného jména v externí databázi. Pokud zadá správné může být zaregistrován a v databázi dvbgrabu je pak místo jeho hesla uloženo pouze slovo "extern", které značí že uživatel využívá externí heslo. Pokud heslo neodpovídá externí databázi je registrace zamítnuta. Pokud uživatel s daným jménem v externí databázi neexistuje, registrace může být provedena a heslo se ukládá do databáze dvbgrabu. Hodnota 1 znamená používat externí databází hodnota 0 nepoužívat.
 
@@ -193,7 +205,7 @@ Pro uživatele s externím heslem také platí omezení, že nelze přes dvbgrab
 
 \textbf{auth\_db\_used\_only}
 
-Určuje zda se mohou zaregistrovat a používat dvbgrab i jiní uživatelé než ti s externím heslem. Tím můžeme omezit dvbgrab jen na uživatele, kteří jsou registrováni v naší externí databázi (třeba pouze registrovaní uživatelé lokální sítě). Hodnota 1 opět znamená pouze s externím heslem, hodnota 0 i jíní.
+Určuje zda se mohou zaregistrovat a používat dvbgrab i jiní uživatelé než ti s externím heslem. Tím můžeme omezit dvbgrab jen na uživatele, kteří jsou registrováni v naší externí databázi (třeba pouze registrovaní uživatelé lokální sítě). Hodnota 1 znamená pouze ti s externím heslem, hodnota 0 i jiní.
 
 \vspace{10pt}
 
@@ -235,7 +247,7 @@ SQL dotaz na ověření hesla uživatele, v tomto řetězci se nahradí 2 řetě
 
 \textbf{auth\_db\_user\_select}
 
-SQL dotaz na uživatele, jestli existuje v externí databázi. V tomto řetězci se nahradí pouze dvbgrab\_username. Pokud se vrátí alespoň jeden řádek uživatel v externí databázi existuje. Vrácené řádky by měli mít strukturu uživatelské jméno, heslo v MD5, uživatelský e-mail, ip adresa. Pokud nějaké sloupce nemůžeme podle externí databáze určit vrátíme v odpovídajícím sloupci NULL.
+SQL dotaz na uživatele, jestli existuje v externí databázi. V tomto řetězci se nahradí pouze dvbgrab\_username. Pokud se vrátí alespoň jeden řádek, uživatel v externí databázi existuje. Vrácené řádky by měli mít strukturu uživatelské jméno, heslo v MD5, uživatelský email, ip adresa. Pokud nějaké sloupce nemůžeme podle externí databáze určit, vrátíme v odpovídajícím sloupci NULL.
 
 \vspace{10pt}
 
@@ -243,173 +255,174 @@ SQL dotaz na uživatele, jestli existuje v externí databázi. V tomto řetězci
 
 Množství informací o vzniklé chybě:
 
-* 0 - Každá chyba je vypsána do stránky
+* 0 - Každá chyba je vypsána do stránky.
 
-* 1 - Každá chyba je odeslána na chybový email
+* 1 - Každá chyba je odeslána na chybový email.
 
-* 2 - Každá chyba je ignorována. Toto je výchozí nastavení
+* 2 - Každá chyba je ignorována. Toto je výchozí nastavení.
 
 \vspace{10pt}
 
 \textbf{error\_email}
 
-Email kam budou odesílány informace o chybách webového rozhraní
+Email, kam budou odesílány informace o chybách webového rozhraní.
 
 \vspace{10pt}
 
 \textbf{admin\_email}
 
-Email kam budou odesílány informace o chybách v grabovacím systému
+Email, kam budou odesílány informace o chybách v grabovacím systému a ze kterého budou emaily chodit uživatelům.
 
 \vspace{10pt}
 
 \textbf{report\_email}
 
-Email kam bodou odesílány souhrné informace o využití systému
+Email, kam bodou odesílány souhrné informace o využití systému.
 
 \vspace{10pt}
 
 \textbf{proxy\_server}
 
-IP adresa HTTP proxy serveru, pokud musí být použit pro přístup k vnějším www stránkám
+IP adresa HTTP proxy serveru, pokud musí být použit pro přístup k vnějším www stránkám (pro stahovače televizního programu).
 
 \vspace{10pt}
 
 \textbf{proxy\_port}
 
-Port pro HTTP proxy
+Port pro HTTP proxy.
 
 \vspace{10pt}
 
 \textbf{grab\_history}
 
-Kolik dnů se mají uchovávat nagrabované pořady pro stažení
+Kolik dnů se mají uchovávat nagrabované pořady pro stažení.
 
 \vspace{10pt}
 
 \textbf{tv\_days}
 
-Kolik dnů dopředu má být k dispozici tv program
+Na kolik dnů dopředu se má načítat televizní program.
 
 \vspace{10pt}
 
 \textbf{midnight}
 
-Kterou hodinu budeme považovat za půlnoc při rozdělování pořadů do jednotlivých dnů
+Kterou hodinu budeme považovat za půlnoc při rozdělování pořadů do jednotlivých dnů. (Televizní den potom chápeme například od páté hodiny ranní do páté hodiny další den.
 
 \vspace{10pt}
 
 \textbf{hour\_frac\_item}
 
-Do jak velikých úseků budeme seskupovat seznam pořadů. 24 by mělo být dělitelné hodnotou beze zbytku.
+Do jak velikých úseků budeme seskupovat seznam pořadů. 24 by mělo být dělitelné hodnotou beze zbytku. To umožňuje vertikální zarovnavaní všech televizních kanálů.
 
 \vspace{10pt}
 
 \textbf{grab\_quota}
 
-Kolik grabů může zadat uživatel týdně
+Kolik grabů může zadat uživatel týdně.
 
 \vspace{10pt}
 
 \textbf{user\_inactivity\_limit}
 
-Po kolika dnech neaktivity bude uživatelský účet zrušen
+Po kolika dnech neaktivity bude uživatelský účet zrušen.
 
 \vspace{10pt}
 
 \textbf{dvbgrab\_log}
 
-Do jakého souboru se mají ukládat informace o průběhu grabování
+Do jakého souboru se mají ukládat informace o průběhu grabování.
 
 \vspace{10pt}
 
 \textbf{grab\_date\_start\_shift}
 
-O kolik minut se má posunout začátek nahrávání pořadu
+O kolik minut se má posunout začátek nahrávání pořadu, proti plánovanému začátku televizního pořadu.
 
 \vspace{10pt}
 
 \textbf{grab\_date\_stop\_shift}
 
-O kolik minut se má posunout konec nahrávání pořadu
+O kolik minut se má posunout konec nahrávání pořadu, proti plánovanému konci televizního pořadu.
 
 \vspace{10pt}
 
 \textbf{record\_time\_after\_last}
 
-Jak dlouho nahrávat pořad pokud neznáme následující (třeba poslední pořad v noci má následující až druhý den ráno) [s]
+Jak dlouho nahrávat zvolený pořad, pokud neznáme následující (třeba poslední pořad v noci má následující až druhý den ráno). Zadáváme v sekundách.
 
 \vspace{10pt}
 
 \textbf{hostname}
 
-Název počítače kde se budou pořady nahrávat
+Název počítače, ze kterého distribuujeme hotové nahrávky. Případně to může být i celá úvodní část URL (pokud nemáme virtuální host v apache nastaven do uživatelského adresáře). Nekončí lomítkem, takže např: "http://grab.domena".
 
 \vspace{10pt}
 
 \textbf{grab\_storage}
 
-Adresář do kterého se budou nahrávat pořady
+Adresář, do kterého se budou nahrávat pořady. Je to sdílený adresář všech uživatelů. Nekončí lomítkem.
 
 \vspace{10pt}
 
 \textbf{grab\_storage\_size}
 
-Kolik GB prostoru máme vyhrazeno pro nahrané pořady
+Kolik GB prostoru máme vyhrazeno pro nahrané pořady. (Omezení velikosti pro adresář grab\_storage).
 
 \vspace{10pt}
 
 \textbf{grab\_storage\_min\_size}
 
-Minimální množství místa na grabovacím disku, při kterém začneme promazávat starší graby
+Minimální množství volného místa na grabovacím disku, při kterém začneme promazávat starší graby.
 
 \vspace{10pt}
 
 \textbf{grab\_root}
 
-Adresář kam se budou ukládat odkazy na hotové pořady. Musí být přístupný pro http server
+Adresář, kam se budou ukládat odkazy na hotové pořady. Musí být přístupný pro http server. V tomto adresáři se budou zakládat uživatelské adresáře. Nekončí lomítkem.
 
 \vspace{10pt}
 
 \textbf{grab\_backend\_lang}
 
-Jazyk používaný v backend skriptech (cs,en,fr,..)
+Jazyk používaný v backend skriptech (cz, sk, en, fr, ..), tento se použije pouze v případě, že se zpráva posílá správci DVBgrabu nebo uživateli, který nemá jestě uložen svůj naposledy použitý jazyk.
 
 \vspace{10pt}
 
 \textbf{grab\_backend\_strip\_diacritics}
 
-1 pokud se má zkoušet použít název pořadu bez diakritiky jako název grabu a 0 pokud se má použít tel\_id
-
-Konfigurace se provádí spuštěním configure.sh pro povolení zápisu do konfiguračních souborů a poté ve webovém prohlížeči na stránce http://název\_serveru/dvbgrab/setup.php , když je konfigurace dokončena, je třeba spustit skript secure.sh, který nastaví zpět práva konfiguračního souboru config.php jen pro čtení a tento konfigurační soubor je třeba zkopírovat i na záznamový server aby měl stejnou verzi.
+Příznak zda se má z nahraných souborů odstraňovat diakritika, nebo jestli součástí názvu nahrávky je pouze ID číslo záznamu. Diakritika na některých souborových systémech nemusí být podporována nebo nastavena na UTF-8, ve kterém máme názvy pořadů. Proto se používá odstranění diakritiky, které ale nelze vyřesit úplně univerzálně pro všechny znaky z UTF-8. Pro češtinu funguje dobře, v čínštině by bylo lepší použít jen ID a název pořadu včetně diakritiky pak máme v přidruženém, popisném XML souboru. Hodnota 0 určuje použití ID, hodnota 1 název pořadu.
 
 \vspace{10pt}
 
-Na webovém serveru je ještě třeba zajistit instalaci ADOdb a to buď jako podadresář /var/www/dvbgrab nebo pokud jsme instalovali z distribučního balíku tak bude někde v /usr. Cestu k ADOdb je třeba ještě donastavit v dblib.php a to jak pro webový, tak pro záznamový server.
+V poslední části je definice stahovačů televizního programu. Předdefinované můžeme povolovat nebo zakazovat. Také můžeme definovat nový. Každý stahovač má 3 důležité parametry:
 
 \vspace{10pt}
 
-Také se může hodit změnit jazykovou mutaci, celého webového rozhraní. Připraveny jsou soubory pro českou a anglickou lokalizaci. Přepnutí se provede v souboru language.inc.php, plánováno je přepínání na úrovni uživatele (např. volbou ikony vlajky a zapamatováním v cookie prohlížece), případně detekování preferovaného jazyka z nastavení locale prohlížeče.
+\textbf{tvg\_name}
+
+Jméno stahovače.
 
 \vspace{10pt}
 
-Na databázovém serveru je třeba založit databáze s tabulkami. Zakládací skript je připraven pro MySQL a PostgreSQL v sql/mysql.sql resp. sql/postgres.sql. Taky založíme nového databázového uživatele a přiřadíme mu práva na tyto tabulky. U MySQL je důležité zachovat kódování textů ISO-8859-2, které webové rozhraní předpokládá.
+\textbf{tvg\_cron\_time}
+
+Čas naplánovaného spouštění pomocí cron démona. Zadává se přímo syntaxe cronu, tzn. 5 čísel udávajících v pořadí minutu, hodinu, den v měsíci, měsíc, den v týdnu. Místo čísla můžeme použít buď hvězdičku (značí, že na daném údaji nezáleží) nebo */N, kde N určuje násobek jednotky, ve které se to má spoustět (*/5 u minut znamená každý celý násobek 5 minut). Hodnota "0 23 * * 6" potom znamená, že se stahovač má spouštět každou sobotu, v 23:00. Tyto údaje volíme nejlépe na nějakou noční dobu, kdy servery poskytovatele nebudou tolik zatíženy a také se je snažíme volit pokud možno náhodně, aby se minimalizovala pravděpodobnost, že všechny instalace DVBgrabu stahují ze stejných serverů ve stejný okamžik.
 
 \vspace{10pt}
 
-Na některém serveru je také třeba do cronu přidat automatické spouštění aktualizace televizního programu (obvykle se o to stará server s databází). Skript zaznam.php se spouští pravidelně každý týden (třeba v sobotu) a parametrem je počet zpracovávaných dnů (obvykle je k dispozici na 10 dní) 
+\textbf{tvg\_cron\_cmd}
+
+Příkaz, který má cron démon spouštět. Obvykle bude začínat nastavením pracovního adresáře ke stahovacím skriptům, aby stahovací skripty mohli načítat pomocné knihovny z DVBgrabu na základě jejich relativních cest.
 
 \vspace{10pt}
 
-Na záznamovém serveru v adresáři s obsahem backend je třeba zajistit spouštění 2 skriptů, grab\_loop.php a encode\_loop.ph. To lze zajistit buď definováním nové služby a přiřazením do spouštění ve výchozím runlevelu. Nebo některé verze cronu to umí přes příznak restart. Také je dobré v cronu zajistit denní spouštění send\_daily\_report.php, které posílá denně seznam nahraných pořadů.
+Pokud jsme s konfigurací již spokojeni, použijeme tlačítko "Nastavit". To aktualizuje soubor config.php a vypíše nám informaci o aktuální konfiguraci pro cron démon. V té nahradíme "BACKEND\_DIR" za skutečný adresář, odkud budou spouštěny backend skripty a daný výpis si zkopírujeme do schránky. Na záznamovém serveru použijeme příkaz crontab -e na editaci konfigurace cron démona a vložíme text ze schránky. Tím máme zajištěno pravidelné volání údržbového skriptu, zasílání informací o využívání DVBgrabu a spouštění stahovačů televizního programu.
 
 \vspace{10pt}
 
-Také je potřeba nastavit apache, aby v nějakém adresáři v document root mohl zakládat adresáře jednotlivým uživatelům a v těch adresářích vždy založí i .htaccess soubor, který omezuje přístup k této složce jen na IP adresu, ze které se uživatel registroval. Do těchto uživatelských adresářů se potom umisťují symbolické odkazy, které mají částečně generované názvy a odkazují do adresáře se všemi hotovými pořady (obvykle třeba /pub/grab).
+Pokud máme záznamový server zvlášť, je potřeba přesunout adresář backend tam, to je nejlepší udělat pomocí archivátoru tar, který nám symbolické odkazy z adresáře backend na sdílené soubory nahradí jejich skutečnou kopií. Vzniklý archiv tar pak rozbalíme na cílovém serveru a podadresář adodb buď nahradíme správným symbolickým odkazem nebo ponecháme ten nakopírovaný z prvního serveru.
 
-\vspace{10pt}
+Automatické spouštění dvbgrabu při startu systému, zajišťuje skript service/dvbgrab, který upravíme podle aktuálního umístění skriptu dvbgrab\_service a nakopírujeme do adresáře podle distribuce (např. /etc/init.d/dvbgrab). Poté stačí naplánovat ve kterých runlevelech se má služba spouštět a kde zastavovat.
 
-Poslední úprava je potřeba ve skriptu dvbgrab, kde je nutno nastavit k odpovídajícím názvům kanálů odpovídající IP adresy (multicastové skupiny). Toto se ale možná přesune do definice pořadu v databázi.
-
-\vspace{10pt}
 \input{dp_udrzba}
