@@ -1,97 +1,53 @@
-
 \section{Údržba záznamového serveru}
-
 O údržbu se stará automaticky spouštěný skript clean.php.
 
-\vspace{10pt}
+\subsection{Mazání neaktivních uživatelů}
+Maže uživatele, kteří se po dobu několika dní (podle volby user\_inactivity\_limit) nepřihlásili \linebreak[4]k~DVBgrabu a ani si nic neobjednali. To zajistí zrušení uživatele a uvolnění jeho IP adresy po~jeho odstěhovaní z koleje (pokud předem sám nepoužije funkci na okamžité zrušení účtu). Také to ruší všechny jeho požadavky a jeho uživatelský adresář. O zrušení účtu se uživateli pošle e-mail.
 
-\textbf{Mazání neaktivních uživatelů}
+\subsection{Aktualizace uživatelských účtů}
+Při změně hesla nebo stahovací IP adresy uživatelem je v databázi nastaveno nové datum poslední změny. Tento skript při každém spuštění přegeneruje .htaccess soubory pro všechny uživatele, kteří měnili svá nastavení mezi posledním spuštěním skriptu a aktuálním časem. Poté posune datum poslední aktualizace na aktuální čas.
 
-Maže uživatele, kteří se po dobu několika dní (volba user\_inactivity\_limit) nepřihlásili k DVBgrabu a ani si nic neobjednávali. To zajistí zrušení uživatele a uvolnění jeho IP adresy po jeho odstěhovaní z koleje (pokud předem sám nepoužije funkci na okamžité zrušení účtu). Také to ruší všechny jeho požadavky a jeho uživatelský adresář. O zrušení účtu se uživateli pošle email.
-
-\vspace{10pt}
-
-\textbf{Aktualizace uživatelských účtů}
-
-Změna hesla nebo stahovací IP adresy uživatelem nastavuje v databázi datum poslední změny. Tento skript při každém spuštění pro všechny uživatele, kteří měnili nastavení mezi posledním spuštěním skriptu a aktuálním časem, přegeneruje .htaccess soubory v jejich adresářích. Poté posune datum poslední aktualizace na aktuální čas.
-
-\vspace{10pt}
-
-\textbf{Kontrola neznámých uživatelských účtů}
-
+\subsection{Kontrola neznámých uživatelských účtů}
 Skript zkontroluje, zda pro všechny adresáře existuje odpovídající databázový uživatel, pokud ne, mohou být smazány, případně alespoň vypsány na obrazovku.
-
-\vspace{10pt}
-
-\textbf{Mazání nepotřebných .ts souborů}
-
+\vfil
+\pagebreak
+\subsection{Mazání nepotřebných .ts souborů}
 Všechny graby se ukládají do souboru s .ts koncovkou. Při každém spuštění skriptu je u těchto souborů zkontrolováno, zda k nim existuje nejaký nevyřízený požadavek na komprimaci. Pokud ne, je .ts soubor smazán. Pokud ano, je do logovacího souboru zapsáno, který formát ještě chybí připravit.
 
-\vspace{10pt}
-
-\textbf{Kontrola volného místa}
-
+\subsection{Kontrola volného místa}
 V grabovacím adresáři se sleduje množství využitého prostoru a volné místo. 
 
-Nejstarší nahrávky se začnou mazat při překročení maximální povolené velikosti grabovacího adresáře (podle grab\_storage\_size), nebo pokud je volného místa méně než je opět nakonfigurovaná konstanta (grab\_storage\_min\_size). 
-Pokud je nutné mazat i graby, které jsou nagrabovány kratší dobu než je plánované uchovávání grabů (grab\_history), je správci zaslán varovný email.
+Nejstarší nahrávky se začnou mazat při překročení maximální povolené velikosti grabovacího adresáře (podle grab\_storage\_size), nebo pokud je volného místa méně, než je opět nakonfigurovaná konstanta (grab\_storage\_min\_size). 
 
-\vspace{10pt}
+Pokud je nutné mazat i graby, které jsou nagrabovány kratší dobu, než je plánované uchovávání grabů (grab\_history), je správci zaslán varovný e-mail.
 
-\textbf{Mazání starých dat}
-
+\subsection{Mazání starých dat}
 V databázi nepotřebujeme uchovávat televizní program několik let dozadu a zárověn je dobré zobrazovat na webu i hotové graby po jejich smazání. Proto jsou z databáze smazány jen data starší než je trojnásobek doby, po kterou se uchovávají graby (3 x grab\_history dní). Mažou se jak záznamy o uživatelských požadavcích, tak požadavky na formát, tak vlastní graby a televizní program.
 
-\section{Údržba uživatelů}
+\section{Ruční údržba uživatelů}
+Občas je nutné ručně rušit uživatele, kteří se například odstěhují a nezruší přitom svůj účet. Pokud jejich IP adresu dostane nový uživatel, který by se chtěl zaregistrovat na DVBgrabu dřív, než uplyne lhůta na automatické zrušení původního účtu z důvodu neaktivity, registrace selže z důvodu konfliktu IP. V těchto případech je nejlepším řešením ručně nastavit datum poslední aktivity původního účtu například rok dozadu, a tím je zajištěno zrušení účtu údržbovým skriptem, včetně zrušení jeho adresáře a odeslání informačního e-mailu.
 
-Občas je nutné ručně rušit uživatele, kteří se například odstěhují a nezruší přitom svůj účet. Pokud jejich IP adresu dostane nový uživatel, který by se chtel zaregistrovat na DVBgrabu dřív než uplyne lhůta na automatické zrušení původního účtu z důvodu neaktivity, registrace selže z důvodu konfliktu IP. V těchto případech je nejlepším řešením ručně nastavit datum poslední aktivity původního účtu například rok dozadu a tím je zajištěno zrušení účtu údržbovým skriptem, včetně zrušení jeho adresáře a odeslání informačního emailu.
-
-\vspace{10pt}
-
-Pro hromadné informování uživatelů je možné použít skript backend/send\_user\_info.php, ve kterém upravíme text zprávy a jeho spuštěním rozešleme zprávu včetně přihlašovacích údajů každému uživateli DVBgrabu. Toto je vhodné použít například po konverzi databáze z dvbgrabu verze 1 na verzi 2, kdy došlo ke změnám v pravidlech pro znaky v uživatelských jménech.
-
-\vspace{10pt}
+Pro hromadné informování uživatelů je možné použít skript backend/send\_user\_info.php, ve~kterém upravíme text zprávy a jeho spuštěním rozešleme zprávu včetně přihlašovacích údajů každému uživateli DVBgrabu. Toto je vhodné použít například po konverzi databáze z DVBgrabu verze 1 na verzi 2, kdy došlo ke změnám v pravidlech pro znaky v uživatelských jménech.
 
 \section{Údržba backend skriptů}
-
-\vspace{10pt}
-
-Veškeré spouštění a zastavování grabovacích nebo komprimačních smyček by se mělo provádět, přes skript dvbgrab\_service, který je součástí instalačního balíků. V tomto skriptu zkontrolujeme cestu k adresáři s backend skripty.
-
-\vspace{10pt}
+Veškeré spouštění a zastavování grabovacích nebo komprimačních smyček by se mělo provádět přes skript dvbgrab\_service, který je součástí instalačního balíku. V tomto skriptu zkontrolujeme cestu k adresáři s backend skripty.
 
 Skript dvbgrab\_service podporuje tyto parametry:
+\bitem
+\item \textbf{start} -- nastartuje záznamovou i komprimační smyčku
+\item \textbf{startg} -- nastartuje pouze záznamovou smyčku
+\item\textbf{starte} -- nastartuje pouze komprimační smyčku
+\item\textbf{stop} -- zastaví obě smyčky
+\item\textbf{stopg} -- zastaví pouze záznamovou smyčku
+\item\textbf{stope} -- zastaví pouze komprimační smyčku
+\item\textbf{restart} -- restartuje obě smyčky
+\item\textbf{restartg} -- restartuje pouze záznamovou smyčku
+\item\textbf{restarte} -- restartuje pouze komprimační smyčku
+\item\textbf{status} -- zobrazí, jestli smyčky běží. Poté pro jednotlivé komprimační formáty seznam grabů, které jsou ve frontě a také, které graby se právě ukládají
+\eitem
 
-\vspace{10pt}
+Zastavování komprimační složky je doplněno o obnovování fronty na komprimaci (skriptem backend/encode\_queue\_restore.php), což po zastavení smyčky vrátí stav požadavků ze stavu \quotedblbase Komprimuje se'' na stav \quotedblbase Nahraný'', díky tomu se mohou po opětovném spuštění smyčky opět vybrat ke zpracování.
 
-\textbf{start} - nastartuje záznamovou i komprimační smyčku
+Zobrazit frontu na komprimaci a aktuálně ukládané graby lze i ručně pomocí skriptu \linebreak[4] backend/encode\_queue\_print.php.
 
-\textbf{startg} - nastartuje pouze záznamovou smyčku
-
-\textbf{starte} - nastartuje pouze komprimační smyčku
-
-\textbf{stop} - zastaví obě smyčky
-
-\textbf{stopg} - zastaví pouze záznamovou smyčku
-
-\textbf{stope} - zastaví pouze komprimační smyčku
-
-\textbf{restart} - restartuje obě smyčky
-
-\textbf{restartg} - restartuje pouze záznamovou smyčku
-
-\textbf{restarte} - restartuje pouze komprimační smyčku
-
-\textbf{status} - zobrazí, jestli smyčky běží a poté pro jednotlivé komprimační formáty seznam grabů, které jsou ve frontě a také, které graby se právě ukládají
-
-\vspace{10pt}
-
-Zastavování komprimační složky je doplněno o obnovování fronty na komprimaci (skriptem backend/encode\_queue\_restore.php), což po zastavení smyčky vrátí stav požadavků ze stavu "Komprimuje se" na stav "Nahraný", tudíž po opětovném spuštění smyčky se mohou znovu vybrat ke zpracování.
-
-\vspace{10pt}
-
-Zobrazit frontu na komprimaci a aktuálně ukládané graby lze i ručně pomocí skriptu backend/encode\_queue\_print.php.
-
-\vspace{10pt}
-
-Pro spouštění a vypínání DVBgrabu při startu a zastavování operačního spouštění máme skript, který tento dvbgrab\_service volá, měl bý být v /etc/init.d/dvbgrab.
+Pro spouštění a vypínání DVBgrabu při startu a zastavování operačního spouštění máme skript, který tento dvbgrab\_service volá. Měl bý být v /etc/init.d/dvbgrab.

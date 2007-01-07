@@ -7,18 +7,18 @@
 \usepackage{graphicx}
 \input dp_macro.tex   % specialni makra pro formatovani diplomek
 
-\newcommand\DiplTitle{Systém automatického záznamu televizních pořadů - DVBgrab}
+\newcommand\DiplTitle{Systém pro řízení sběru a záznamu videosignálu šířeného \par\vspace{5pt} po~Internetu -- DVBgrab}
 \newcommand\FirstandFamilyName{Martin Jansa}
-\newcommand\Month{březen}
-\newcommand\Year{2006}
+\newcommand\Month{leden}
+\newcommand\Year{2007}
 \newcommand\Supervisor{Ing. Ivan Halaška}
 
 \newcommand\StudProgram{Informatika a výpočetní technika}
 \newcommand\Faculty{Fakulta elektrotechnická}
 \newcommand\University{České vysoké učení technické v Praze}
-
 \begin{document}
 \coverpagestarts
+\parskip 10pt
 \vspace*{\fill}
 
 \cleardoublepage %\thispagestyle{empty}
@@ -39,19 +39,20 @@ Prohlašuji, že jsem svou diplomovou práci vypracoval samostatně a použil js
 
 Nemám závažný důvod proti užití tohoto školního díla ve smyslu \S 60 Zákona č. 121/2000 Sb., o právu autorském, o právech souvisejících s právem autorským a o změně některých zákonů (autorský zákon).
 
-V Praze 6 dne 29. 3. 2006  \hfill \hbox to 70mm{\tiny\dotfill}
+V Praze 6 dne 7. 1. 2007  \hfill \hbox to 70mm{\tiny\dotfill}
  
 \cleardoublepage%\thispagestyle{empty}
 %*************************************************************************
 
 \chapter*{Abstract}
-The system is intended for easy recording of television shows. Data are taken from local network stream (ie. DVB-T from VideoLanServer). User has to register on the web interface and after login he can see television schedule for next week. Every program is shown as hypertext link and after the confirmation the request for program is saved in a database. There is a neverending loop on the server backend which is searching requests in a database and if any requested program starts, it runs dumping packets from data stream to disk. After finishing it sends an email with hypertext link to requesting users.
+The system is intended for easy recording of television shows. Data are taken from local network stream (ie. DVB-T from VideoLanServer). User has to register on the web interface and after login he can see television schedule for next week. Every program is shown as hypertext link and after the confirmation the request for program is saved in a database. There is a neverending loop on the server backend which is searching requests in a database and if any requested program starts, it runs dumping packets from data stream to disk. After finishing it sends an~e-mail with hypertext link to requesting users.
 \vglue60mm
 \chapter*{Abstrakt}
-Systém byl vytvořen za účelem usnadnění záznamu televizních pořadů, které jsou vysílány po lokální síti (například pomocí VideoLanServeru z DVB-T vysílání). Uživatel se zaregistruje na webovém rozhraní a po přihlášení si zobrazí televizní program na přibližně týden dopředu. Vybráním pořadu se jeho objednávka zaznamená v databázi. Na serveru běží nekonečná smyčka, která sleduje, zda v databázi není požadavek na pořad, který právě začíná. Při nálezu začne ukládat data z vysílání a po dokončení pošle odkaz na stažení všem uživatelům, kteří daný pořad požadovali.
+Systém byl vytvořen za účelem usnadnění záznamu televizních pořadů, které jsou vysílány po~lokální síti (například pomocí VideoLanServeru z DVB-T vysílání). Uživatel se zaregistruje na webovém rozhraní a po přihlášení si zobrazí televizní program na přibližně týden dopředu. Vybráním pořadu se jeho objednávka zaznamená v databázi. Na serveru běží nekonečná smyčka, která sleduje, zda v databázi není požadavek na pořad, který právě začíná. Při nálezu začne ukládat data z vysílání a po dokončení pošle odkaz na stažení všem uživatelům, kteří daný pořad požadovali.
 \cleardoublepage%\thispagestyle{empty}
 %*************************************************************************
 
+\parskip 0pt
 \tableofcontents
 \cleardoublepage%\thispagestyle{empty}
 %*************************************************************************
@@ -66,6 +67,7 @@ Systém byl vytvořen za účelem usnadnění záznamu televizních pořadů, kt
 \cleardoublepage%\thispagestyle{empty}
 %*************************************************************************
 
+\parskip 10pt
 \mainbodystarts
 \include{dp_ocekavame}
 \include{dp_popis}
@@ -98,7 +100,7 @@ Systém byl vytvořen za účelem usnadnění záznamu televizních pořadů, kt
 \begin{center}
 \includegraphics[width=12cm]{images/scrPrihlaseni.eps}
 \caption{Ukázka přihlášení}
-\label{fig:dvbgrab}
+\label{fig:scr1}
 \end{center}
 \end{figure}
 
@@ -108,17 +110,18 @@ Systém byl vytvořen za účelem usnadnění záznamu televizních pořadů, kt
 \begin{center}
 \includegraphics[width=12cm]{images/scrProgram.eps}
 \caption{Ukázka programu}
-\label{fig:dvbgrab}
+\label{fig:scr2}
 \end{center}
 \end{figure}
 
+\vfil
 \pagebreak
 
 \begin{figure}[ht]
 \begin{center}
 \includegraphics[width=12cm]{images/scrSeznam.eps}
 \caption{Ukázka seznamu grabů}
-\label{fig:dvbgrab}
+\label{fig:scr3}
 \end{center}
 \end{figure}
 
@@ -126,9 +129,12 @@ Systém byl vytvořen za účelem usnadnění záznamu televizních pořadů, kt
 \begin{center}
 \includegraphics[width=12cm]{images/scrNastaveni.eps}
 \caption{Ukázka nastavení účtu}
-\label{fig:dvbgrab}
+\label{fig:scr4}
 \end{center}
 \end{figure}
+
+\vfil
+\pagebreak
 
 \cleardoublepage
 %*************************************************************************

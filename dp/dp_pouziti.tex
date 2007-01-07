@@ -1,182 +1,102 @@
 \chapter{Uživatelská příručka}
 
-Uživatelská příručka včetně snímků obrazovky bude umístěna na stránkách projektu \linebreak[4]http://dvbgrab.sourceforge.net/, protože prostředí má černé pozadí a to by nebylo moc vhodné pro tisk.
-
-\vspace{10pt}
+Uživatelská příručka včetně snímků obrazovky bude později umístěna na stránkách projektu \linebreak[4]http://dvbgrab.sourceforge.net/, protože prostředí má černé pozadí, což by nebylo moc vhodné pro tisk.
 
 \section{Registrace}
 
-\vspace{10pt}
+Před prvním použitím je třeba si zaregistrovat svůj uživatelský účet. Registrace se provádí na~úvodní stránce aplikace. Ve formuláři registrace je třeba vyplnit:
 
-Před prvním použitím je třeba si zaregistrovat svůj uživatelský účet. Registrace se provádí na úvodní stránce aplikace. Ve formuláři registrace je třeba vyplnit:
+\subsection{Uživatelské jméno}
 
-\vspace{10pt}
+Přípustné jsou pouze malé alfanumerické znaky bez diakritiky (malá písmena abecedy a-z \linebreak[4]a~0-9). Tímto uživatelským jménem se budete poté přihlašovat a bude také zobrazeno u Vámi objednaných grabů. Pokud takové uživatelské jméno již existuje, bude vypsána chyba. 
 
-\textbf{Uživatelské jméno}
+Pokud se používají sdílená hesla s jinými projekty (například s heslem, které máte nastaveno u~správců sítě), tak zde zadávejte stejné sdílené uživatelské jméno. Například na Masarykově koleji má Petr Novák uživatelské jméno na e-mail a stránky koleje \quotedblbase novakp'' a heslo \quotedblbase 12345''. Když bude chtít využívat stejné heslo i na stránkách DVBgrabu, tak musí zadat opět uživatelské jméno \quotedblbase novakp'' a heslo \quotedblbase 12345''. Tím se ověří, že je to doopravdy Petr Novák a přiřadí se mu takzvaně externí heslo (nebude se ukládat v databázi DVBgrabu). Pokud si poté na stránkách koleje změní své heslo na 54321, tak se tato změna okamžitě projeví i v DVBgrabu. Tito uživatelé pak nemají v DVBgrabu dostupnou funkci pro poslání nového vygenerovaného hesla po zapomenutí starého a také si ho nemohou v menu nastavení měnit (to by mělo být zajištěno jinde).
 
-Přípustné jsou pouze malé alfanumerické znaky bez diakritiky (malá písmena abecedy a-z a 0-9). Tímto uživatelským jménem se budete poté přihlašovat a bude také zobrazeno u Vámi objednaných grabů. Pokud takové uživatelské jméno již existuje, bude vypsána chyba. 
+\subsection{Uživatelské heslo}
 
-\vspace{10pt}
+Pro použité znaky platí stejné omezení jako u uživatelského jména (malé alfanumerické znaky bez diakritiky). Heslo může být libovolné, jen uživatelé, kteří chtejí používat externí heslo viz. předchozí odstavec, musejí zadat svoje aktuální. Heslo se pro kontrolu zadává dvakrát. Ti, kteří nemají externí heslo, si mohou v případě zapomenutí nechat poslat nové na e-mail, který je následující položkou.
 
-Pokud se používají sdílená hesla s jinými projekty (například s heslem, které máte nastaveno u správců sítě), tak zde zadávejte stejné sdílené uživatelské jméno. Například na Masarykově koleji má Petr Novák uživatelské jméno na email a stránky koleje "novakp" a heslo "12345". Když bude chtít využívat stejné heslo i na stránkách DVBgrabu, tak musí zadat opět uživatelské jméno "novakp" a heslo "12345". Tím se ověří, že je to doopravdy Petr Novák a přiřadí se mu takzvaně externí heslo (nebude se ukládat v databázi DVBgrabu). Pokud si poté na stránkách koleje změní své heslo na 54321, tak se tato změna okamžitě projeví i v DVBgrabu. Tito uživatelé pak nemají v DVBgrabu dostupnou funkci pro poslání nového vygenerovaného hesla po zapomenutí starého a také si ho nemohou v menu nastavení měnit (to by mělo být zajištěno jinde).
+\subsection{Email}
 
-\vspace{10pt}
-
-\textbf{Uživatelské heslo}
-
-Pro použité znaky platí stejné omezení jako u uživatelského jména (malé alfanumerické znaky bez diakritiky). Heslo může být libovolné, jen uživatelé, kteří chtejí používat externí heslo viz. předchozí odstavec, musejí zadat svoje aktuální. Heslo se pro kontrolu zadává dvakrát. Ti, kteří nemají externí heslo, si mohou v případě zapomenutí nechat poslat nové na email, který je následující položkou.
-
-\vspace{10pt}
-
-\textbf{Email}
-
-Uživatelský email, na tento email budou zasílány oznámení o úspěšném nahrání pořadu (včetně odkazů na jeho stažení), případně o chybách, proto je nutné uvést email platný. Na tento email bude také zasláno heslo, pokud o to požádáte po zapomenutí.
-
-\vspace{10pt}
-
-\textbf{IP pro stahování}
+Uživatelský e-mail, na který e-mail budou zasílána oznámení o úspěšném nahrání pořadu (včetně odkazů na jeho stažení), případně o chybách. Proto je nutné uvést e-mail platný. Na tento e-mail bude také zasláno heslo, pokud o to požádáte po jeho zapomenutí.
+\vfil
+\pagebreak
+\subsection{IP pro stahování}
 
 Ta je vyplněna automaticky IP adresou, ze které se registrujete. V menu nastavení je pak umožněno ji dodatečně změnit. Z jedné IP adresy může být zaregistrován maximálně jeden uživatel. Pokud aplikace vypíše chybu, že již někdo byl z této adresy registrován, je nutné napsat tomuto uživateli zprávu, ať si změní IP adresu na svou vlastní, pokud nereaguje, kontaktujte správce aplikace (ten může kolidující účet zrušit).
 
-\vspace{10pt}
+\subsection{Video kodek}
 
-\textbf{Video kodek}
+Zde se nastavuje Vámi preferovaný způsob komprese hotových nahrávek. Seznam povolených formátů určuje správce aplikace. K dispozici je obvykle MPEG-2, což je formát s nízkou kompresí vhodný spíše pro další úpravy než pro uchování. Hodina pořadu je poté přibližně 1GB velká. MPEG-4 varianty poté zmenšují velikost na přibližně 500MB na hodinu a jejich parametr \quotedblbase scale'' určuje, jakým poměrem bude zmenšeno měřítko (MPEG-4 scale 0.125 znamená, že výsledné video bude mit velikost 1/8 originálu a výsledný soubor bude tedy mnohem menší).
 
-Zde se nastavuje Vámi preferovaný způsob komprese hotových nahrávek. Seznam povolených formátů určuje správce aplikace. K dispozici je obvykle MPEG-2, což jeformát s nízkou kompresí vhodný spíše pro další úpravy než pro uchování. Hodina pořadu je poté přibližně 1GB velká. MPEG-4 varianty poté zmenšují velikost na přibližně 500MB na hodinu a jejich parametr "scale" určuje, jakým poměrem bude zmenšeno měřítko (MPEG-4 scale 0.125 znamená, že výsledné video bude mit velikost 1/8 originálu a výsledný soubor bude tedy mnohem menší).
+Změny preferovaného kodeku jsou možná v menu nastavení a platí pravidlo, že na objednaný grab se použije ten kodek, který byl nastaven v době jeho objednání. Pokud máte MPEG-2 a objednáte pořad ABC a poté zjistíte, že si ho chcete nechat nahrát v MPEG-4, tak musíte změnit nastavení preferovaného kodeku, objednávku pořadu ABC zrušit a znovu objednat.
 
-\vspace{10pt}
-
-Změny preferovaného kodeku jsou možná v menu nastavení a platí pravidlo, že na objednaný grab se použije ten kodek, který byl nastaven v době jeho objednání. Pokud máte MPEG-2 a objednáte pořad ABC, který si po rozmyšlení chcete nechat nahrát v MPEG-4, tak musíte změnit nastavení preferovaného kodeku, objednávku pořadu ABC zrušit a znovu objednat.
-
-\vspace{10pt}
-
-\textbf{Icq, Jabber}
+\subsection{Icq, Jabber}
 
 Pokud chcete nechat ostatním uživatelům na sebe kontakt, vyplňte prosím i tyto kolonky.
 
-\vspace{10pt}
-
 Pokud se registrace z nejakého důvodu nepodaří, je vypsána informace s důvodem. Pokud se podaří, je vypsáno, že uživatel byl úspěšně registrován a je automaticky přihlášen.
-
-\vspace{10pt}
 
 \section{Přihlášení}
 
-\vspace{10pt}
-
 Pokud se uživatel hlásí z jiného počítače nebo prohlížeče než ze kterého se registroval, případně pokud vypršela platnost přihlášení, musí zadat znovu své přihlašovací jméno a heslo. Zadané údaje se uloží do cookies prohlížeče a pamatují se po dobu 2 let. Uživatelské jméno a heslo se také v cookies prohlížeče vymaže, pokud použijete odkaz na odhlášení z DVBgrabu. Proto pokud se přihlašujete z počítače, který využívá více uživatelů, je nutné se vždy před odchodem z DVBgrabu odhlásit (odkaz v pravém horním rohu).
 
-\vspace{10pt}
-
-Pokud zapomenete své heslo, je možné si nechat poslat nově vygenerované na zaregistrovaný email, stačí si správně pamatovat své uživatelské jméno a email, se kterým jste se registroval. Po přihlášení s novým heslem je vhodné si heslo změnit na lépe zapamatovatelné v menu nastavení.
-
-\vspace{10pt}
-
+Pokud zapomenete své heslo, je možné si nechat poslat nově vygenerované na zaregistrovaný \linebreak[4] e-mail. Stačí si správně pamatovat své uživatelské jméno a e-mail, se kterým jste se registroval. Po přihlášení s novým heslem je vhodné si heslo změnit na lépe zapamatovatelné v menu nastavení.
+\vfil
+\pagebreak
 \section{Objednání grabu}
 
-\vspace{10pt}
-
-Nejčastější činností je objednávání grabu, to se provádí v menu TV program. TV program se zobrazuje na několik dní dopředu, přepínání dne se provádí volbou v horní části stránky. V programu se také dá vyhledávat zadáním části názvu pořadu nebo jeho popisu. Jak v přehledu programu tak ve výsledcích hledání se graby objednávají kliknutím na název pořadu a potvrzením dialogového okna. Poté zvolený televizní pořad změní barvu svého pozadí (znázorňující, že grab je v naplánovaném stavu) a zobrazí se odkaz na zrušení grabu. Počet grabů za týden je omezen, aktuální počet objednaných grabů a limit je vidět v pravém horním rohu. Úplně stejně se dají objednávat také graby, které už někdo objednal před Vámi. Uživatelem naplánované graby jsou od ostatních odlišeny ikonou televize v levé části pořadu. Další informace o pořadu se zobrazují ve vyskakujícím oknu, které se zobrazuje po najetí myši na název pořadu. V tomto doplňkovém okně se zobrazují jak detaily pořadu, tak i informace o naplánovaném grabu, pokud je pořad někým objednán.
-
-\vspace{10pt}
+Nejčastější činností je objednávání grabu, to se provádí v menu TV program. TV program se zobrazuje na několik dní dopředu, přepínání dne se provádí volbou v horní části stránky. V~programu se také dá vyhledávat zadáním části názvu pořadu nebo jeho popisu. Jak v přehledu programu tak ve výsledcích hledání se graby objednávají kliknutím na název pořadu a potvrzením dialogového okna. Poté zvolený televizní pořad změní barvu svého pozadí (znázorňující, že grab je v naplánovaném stavu) a zobrazí se odkaz na zrušení grabu. Počet grabů za týden je omezen, aktuální počet objednaných grabů a limit je vidět v pravém horním rohu. Úplně stejně se dají objednávat také graby, které už někdo objednal před Vámi. Uživatelem naplánované graby jsou od ostatních odlišeny ikonou televize v levé části pořadu. Další informace o pořadu se zobrazují ve vyskakujícím oknu, které se zobrazuje po najetí myši na název pořadu. V tomto doplňkovém okně se zobrazují jak detaily pořadu, tak i informace o naplánovaném grabu, pokud je pořad někým objednán.
 
 Pořad lze objednat maximálně 30 minut po jeho začátku, samozřejmě pokud nikdo předtím neměl tento pořad objednaný, bude pořad nahráván až od okamžiku objednání.
 
-\vspace{10pt}
-
 Formát, ve kterém bude daný pořad uložen, je určen podle uživatelem preferovaného kodeku, který má nastaven v době objednávání (více viz. sekce Video kodek u registrace uživatele).
-
-\vspace{10pt}
 
 \section{Rušení grabu}
 
-\vspace{10pt}
-
-Rušit se dají pouze graby, které ještě nebyly odvysílány. Zrušení se provede v přehledu televizních pořadů kliknutím na odkaz "zrušit grab". Na aktuálně naplánované graby se lze rychle přepnout z menu "Moje graby".
-
-\vspace{10pt}
+Rušit se dají pouze graby, které ještě nebyly odvysílány. Zrušení se provede v přehledu televizních pořadů kliknutím na odkaz \quotedblbase zrušit grab''. Na aktuálně naplánované graby se lze rychle přepnout z menu \quotedblbase Moje graby''.
 
 \section{Sledování stavu}
-
-\vspace{10pt}
 
 Grab po objednání prochází několika stavy, nejdříve je pouze naplánovaný.
 
 Aktuální stav grabu je znázorněn pomocí barvy pozadí a přesněji podle textu, který je součástí detailního vyskakujícího okna.
 
-\vspace{10pt}
-
 Návaznost jednotlivých stavů grabu:
-
-\vspace{10pt}
-
-\textbf{Naplánovaný} - od prvního objednání libovolným uživatelem, až po začátek nahrávání.
-
-\textbf{Nahrává se} - do tohoto stavu by se měl dostat pár minut před očekávaným začátkem pořadu.
-
-\textbf{Nahraný} - několik minut po očekávaným koncem pořadu by se měl stav přepnout do tohoto stavu (od stavu "Nahrává se" je odlišen jen textem v okně s detailem).
-
-\textbf{Komprimuje se} - po nějaké době, může trvat i několik hodin než se zkomprimují starší, se daný pořad dostane na řadu a začne jeho komprimace do zvoleného formátu.
-
-\textbf{Zkomprimovaný} - po dokončení komprimace, tento stav je opět odlišen jen textem v detailu a obvykle netrvá dlouho.
-
-\textbf{Hotový} - grab je uveřejněný v uživatelském adresáři a uživateli byl zaslán oznamující email, taky by se měl zobrazit odkaz na stažení v menu "Moje graby".
-
-\textbf{Smazaný} - graby se na záznamovém serveru uchovávají jen po správcem definovanou dobu a ta může být ještě zkrácena v případě, že dochází volné místo na disku, při smazání grabu se jejich stav tedy přepíná na tento.
-
-\textbf{Promeškaný} - první chybový stav značící, že záznamový server pravděpodobne nebyl vůbec v provozu v době vysílání pořadu. Tyto graby již nebude možné získat.
-
-\textbf{Neúspěch} - druhý chybový stav, který může znamenat pouze chybu až při komprimaci, pokud je to chyba odstranitelná, je možné, že správce chybu odstraní a pořad bude později uveřejněn a ve stavu "Hotový".
-
-\textbf{Nedefinovaný} - poslední chybový stav, který nastává pouze při vyjimečných situacích. Všechny chybové stavy jsou vyznačeny stejnou barvou pozadí.
-
-\vspace{10pt}
+\bitem
+\item\textbf{Naplánovaný} -- od prvního objednání libovolným uživatelem, až po začátek nahrávání.
+\item\textbf{Nahrává se} -- do tohoto stavu by se měl dostat pár minut před očekávaným začátkem pořadu.
+\item\textbf{Nahraný} -- několik minut po očekávaným koncem pořadu by se měl stav přepnout do~tohoto stavu (od stavu \quotedblbase Nahrává se'' je odlišen jen textem v okně s detailem).
+\item\textbf{Komprimuje se} -- po nějaké době, může trvat i několik hodin než se zkomprimují starší, se daný pořad dostane na řadu a začne jeho komprimace do zvoleného formátu.
+\item\textbf{Zkomprimovaný} -- po dokončení komprimace, tento stav je opět odlišen jen textem v~detailu a obvykle netrvá dlouho.
+\item\textbf{Hotový} -- grab je uveřejněný v uživatelském adresáři a uživateli byl zaslán oznamující e-mail, taky by se měl zobrazit odkaz na stažení v menu \quotedblbase Moje graby''.
+\item\textbf{Smazaný} -- graby se na záznamovém serveru uchovávají jen po správcem definovanou dobu a ta může být ještě zkrácena v případě, že dochází volné místo na disku, při smazání grabu se jejich stav tedy přepíná na tento.
+\item\textbf{Promeškaný} -- první chybový stav značící, že záznamový server pravděpodobne nebyl vůbec v provozu v době vysílání pořadu. Tyto graby již nebude možné získat.
+\item\textbf{Neúspěch} -- druhý chybový stav, který může znamenat pouze chybu až při komprimaci, pokud je to chyba odstranitelná, je možné, že správce chybu odstraní a pořad bude později uveřejněn a ve stavu \quotedblbase Hotový''.
+\item\textbf{Nedefinovaný} -- poslední chybový stav, který nastává pouze při vyjimečných situacích. Všechny chybové stavy jsou vyznačeny stejnou barvou pozadí.
+\eitem
 
 \section{Stahování grabu}
-
-\vspace{10pt}
-
-Graby je nejjednodušší stahovat kliknutím na odkaz, který příjde v oznamovacím emailu. Dále je možné stahovat své graby ze seznamu v "Moje graby", kde je u hotových grabů v posledním sloupci uveden odkaz. Poslední možností je přímý přístup na URL s uživatelským adresářem (např. http://graby.domena/novakp), kde se také zobrazí všechny uživatelovy hotové soubory.
-
-\vspace{10pt}
+Graby je nejjednodušší stahovat kliknutím na odkaz, který přijde v oznamovacím e-mailu. Dále je možné stahovat své graby ze seznamu v \quotedblbase Moje graby'', kde je u hotových grabů v posledním sloupci uveden odkaz. Poslední možností je přímý přístup na URL s uživatelským adresářem (např. http://graby.domena/novakp), kde se také zobrazí všechny uživatelovy hotové soubory.
 
 Ke každému grabu jsou vždy 2 soubory, avi nebo mpg s vlastní nahrávkou a XML, ve kterém jsou další informace.
 
-\vspace{10pt}
-
 Bezchybné stažení lze zkontrolovat výpočtem MD5 staženého souboru a porovnáním s MD5 součtem uvedeným v XML souboru, případně alespoň velikost staženého souboru by se měla rovnat velikosti uvedené tamtéž.
 
-\vspace{10pt}
-
 V XML souboru si také můžete zkontrolovat začátek a konec pořadu a jeho nahrávání.
-
-\vspace{10pt}
 
 XML soubor je ve webovém prohlížeči zobrazován v přehledné podobě tabulky, která je z XML souboru vytvořena podle XSL šablony.
 
 Ta je v uživatelském adresáři vygenerována (podle jazyku, který uživatel používá na webovém rozhraní DVBgrabu) v souboru dvbgrab.xsl. Pokud chcete stejně zobrazovat i stažené XML soubory, zkopírujte k nim do adresáře i tento soubor.
 
-\vspace{10pt}
-
-Jméno souboru má následující strukturu, "DVB-" jako předpona, pak datum nahrávání ve formátu Ymd-Hi (rok, měsíc, den, hodiny, minuty) tak, aby se adresář s nahrávkami dal řadit chronologicky podle abecedy, dále následuje jméno kanálu (po odstranění diakritiky) a název pořadu, buď po odstranění diakritiky nebo jenom ID záznamu. Seriály také mohou obsahovat v názvu sekci definující číslo série, epizody a části, případně i celkový počet (např. S2/5E8P1/2 značí, že jde o osmý díl druhé epizody z pěti, část první ze dvou).
-
-\vspace{10pt}
+Jméno souboru má následující strukturu, \quotedblbase DVB-'' jako předpona, pak datum nahrávání ve~formátu Ymd-Hi (rok, měsíc, den, hodiny, minuty) tak, aby se adresář s nahrávkami dal řadit chronologicky podle abecedy. Dále následuje jméno kanálu (po odstranění diakritiky) a název pořadu, buď po odstranění diakritiky nebo jenom ID záznamu. Seriály také mohou obsahovat v názvu sekci definující číslo série, epizody a části, případně i celkový počet (např. S2/5E8P1/2 značí, že jde o osmý díl druhé epizody z pěti, část první ze dvou).
 
 \section{Přehrávání grabu}
-
-\vspace{10pt}
-
-Graby je nejlepší přehrávat v programu VLC (VideoLAN Client zdarma ke stažení na \linebreak[4]http://www.videolan.org/), protože ten využívá stejné kodeky jako DVBgrab. V linuxu problémy s kodeky obvykle nejsou.
-
-\vspace{10pt}
-
+Graby je nejlepší přehrávat v programu VLC (VideoLAN Client zdarma ke stažení na \linebreak[4]http://www.videolan.org/), protože ten využívá stejné kodeky jako DVBgrab. V Linuxu problémy s kodeky obvykle nejsou.
+\vfil
+\pagebreak
 \section{Změny nastavení účtu}
-
-\vspace{10pt}
-
 Ve webovém rozhraní je možno měnit několik parametrů uživatelského účtu. 
-
-\vspace{10pt}
 
 Přihlašovací jméno měnit nelze, chcete-li jiné, musíte účet zrušit a založit si nový. 
 
@@ -186,12 +106,8 @@ Změna stahovací IP adresy se nemusí projevit ihned. Pokud se změna neprojev�
 
 Změny video kodeku se projevují podle popisu v sekci registrace.
 
-O všech provedených změnách je zasílán informační email na uživatelovu aktuální adresu.
-
-\vspace{10pt}
+O všech provedených změnách je zasílán informační e-mail na uživatelovu aktuální adresu.
 
 \section{Zrušení účtu}
-
-\vspace{10pt}
-
-Pokud už DVBgrab nechcete nebo nebudete moci využívat, zrušte prosím svůj uživatelský účet v menu nastavení dole. To uvolní vaší stahovací IP adresu uživateli, který ji třeba dostane po Vás. Jinak bude Váš účet zrušen až po třeba 30 dnech neaktivity. Při rušení účtu se taky automaticky zruší všechny naplánované graby a uživatelský adresář s graby na stažení.
+Pokud už DVBgrab nechcete nebo nebudete moci využívat, zrušte prosím svůj uživatelský účet v dolní části stránky přístupné přes menu nastavení. To uvolní vaší stahovací IP adresu uživateli, který ji třeba dostane po Vás. Jinak bude Váš účet zrušen až po třeba 30 dnech neaktivity. Při rušení účtu se taky automaticky zruší všechny naplánované graby a uživatelský adresář s graby na stažení.
+\vfil
