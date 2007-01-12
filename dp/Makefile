@@ -1,11 +1,11 @@
-LATEX=latex
+LATEX=pdflatex
 BIBTEX=bibtex
 
 all: pdf
 	xpdf dp.pdf &
 
 pdf : dvi
-	dvipdf dp.dvi
+#	dvipdf dp.dvi
 
 dvi : dp_bibliography.bib dp_cd.tex dp_instalace.tex dp_macro.tex dp_ocekavame.tex dp_pojmy.tex dp_popis.tex dp_pouziti.tex dp_testovani.tex dp.tex dp_udrzba.tex dp_vysilani.tex
 	${LATEX} dp

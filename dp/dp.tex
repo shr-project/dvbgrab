@@ -1,12 +1,19 @@
 %\documentclass[11pt,oneside,a4paper]{mr}%one-page printing
 \documentclass[11pt,twoside,a4paper]{dp_format}%two-page printing
+\usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage[unicode]{hyperref}
 \usepackage[czech]{babel}
 %\usepackage[pdftex]{hyperref,graphicx}
+%\usepackage[pdftex]{hyperref}
+\usepackage[pdftex]{graphicx}
 \RequirePackage[T1]{fontenc}
 %\usepackage[latin2]{inputenc}
-\usepackage{graphicx}
+%\usepackage{graphicx}
 \input dp_macro.tex   % specialni makra pro formatovani diplomek
+
+\addcontentsline{toc}{chapter}{\protect\numberline{}{Diplomová práce}}
+\hypersetup{backref, colorlinks=true, unicode=true, urlbordercolor={1 1 1}, linkcolor={blue}, bookmarks=true, bookmarksopen=false, raiselinks=false, implicit=false }
 
 \newcommand\DiplTitle{Systém pro řízení sběru a záznamu videosignálu šířeného \par\vspace{5pt} po~Internetu -- DVBgrab}
 \newcommand\FirstandFamilyName{Martin Jansa}
@@ -99,7 +106,7 @@ Systém byl vytvořen za účelem usnadnění záznamu televizních pořadů, kt
 \chapter{Snímky obrazovky}
 \begin{figure}[ht]
 \begin{center}
-\includegraphics[width=12cm]{images/scrPrihlaseni.eps}
+\includegraphics[width=12cm]{images/scrPrihlaseni}
 \caption{Ukázka přihlášení}
 \label{fig:scr1}
 \end{center}
@@ -109,7 +116,7 @@ Systém byl vytvořen za účelem usnadnění záznamu televizních pořadů, kt
 
 \begin{figure}[ht]
 \begin{center}
-\includegraphics[width=12cm]{images/scrProgram.eps}
+\includegraphics[width=12cm]{images/scrProgram}
 \caption{Ukázka programu}
 \label{fig:scr2}
 \end{center}
@@ -120,7 +127,7 @@ Systém byl vytvořen za účelem usnadnění záznamu televizních pořadů, kt
 
 \begin{figure}[ht]
 \begin{center}
-\includegraphics[width=12cm]{images/scrSeznam.eps}
+\includegraphics[width=12cm]{images/scrSeznam}
 \caption{Ukázka seznamu grabů}
 \label{fig:scr3}
 \end{center}
@@ -128,7 +135,7 @@ Systém byl vytvořen za účelem usnadnění záznamu televizních pořadů, kt
 
 \begin{figure}[ht]
 \begin{center}
-\includegraphics[width=12cm]{images/scrNastaveni.eps}
+\includegraphics[width=12cm]{images/scrNastaveni}
 \caption{Ukázka nastavení účtu}
 \label{fig:scr4}
 \end{center}
