@@ -1,12 +1,12 @@
 \chapter{Vysílání do počítačové sítě}
 Pro DVBgrab potřebujeme nějaký dostatečně stabilní zdroj televizního vysílání po lokální síti. To může běžet na druhém serveru, ale může být i úplně nezávislé na DVBgrabu.
 
-\section{DVB v České republice}
+\section{Digitální vysílání v České republice}
 V současné době v České republice vysílají DVB signál organizace Czech Digital Group a.s. (CDG), RADIOKOMUNIKACE a.s. (dříve ČESKÉ RADIOKOMUNIKACE a.s., zkraceně CRA) a Český Telecom a.s. (CTc). Každá organizace představuje jeden multiplex, což v DVB znamená balík televizních, rozhlasových a datových kanálů, který je vysílán v rámci jedné frekvence po~celém území.
 
 Multiplex CRA je nyní zaměřen na pořady České televize (ČT1, ČT2, ČT24, ČT4 Sport), dále obsahuje TV Nova a 7 radiových programu Českého rozhlasu, CDG obsahuje televizi Prima, Top TV, TA3, Óčko, 24cz, TV NOE a radio Proglas, Evropa 2 a Classic. CTc měl Českou Televizi, Očko, Novu, nyní již jako Telefonica O2 vysílá pouze testovací datové toky DVB-T ve formátu MPEG-4 a testují vysílání s vysokým rozlišením HDTV.
 
-\section{Varianty DVB vysílání}
+\section{Varianty digitálního vysílání}
 \begin{table}[ht]
 \begin{center}
 \begin{tabular}{|c|l|l|l|}
@@ -245,7 +245,7 @@ VLS má složitějsí konfiguraci, kde je potřeba definovat správně seznam ka
 
 VLC má mnohem snažší konfiguraci a nepotřebuje .dvbrc.N soubory, což sice znamená, že nemůžeme definovat pro programy symbolické názvy, ale taky to ušetří práci s vytvářením těchto souborů, pokud se skladba programů v multiplexu častěji mění. VLC má integrovaný SAP server, takže je vše schováno přehledně v jednom souboru. Nevýhoda u binárních instalačních balíčků se dá obejít buď překompilováním VLC do balíčku bez podpory X serveru nebo například u~distribuce Gentoo záleží pouze na správné volbě USE flagů při instalaci.
 
-\section{Popis VideoLAN Server (VLS)}
+\section{Popis VideoLAN Server}
 Open source projekt, který umí vysílat do sítě mnoha různými způsoby a z mnoha různých zdrojů.
 
 \subsection{Zdroje}
@@ -500,7 +500,7 @@ program_ipversion=4                     # použitá verze IP protokolu
 
 Mini SAP Server je velmi snadno použitelný a pro uživatele velmi pohodlný doplněk vysílání. VLC má vysílání SAP informací dokonce zabudováno.
 
-\section{Popis VideoLAN Client (VLC)}
+\section{Popis VideoLAN Client}
 
 Další projekt s otevřeným kódem, který podporuje mnoho platforem: Linux, Windows, Mac OS X, BeOS, *BSD, Solaris, Familiar Linux, Yopy/Linupy and QNX. VLC nepracuje na Mac OS\ 9 a pravděpodobně ani nikdy nebude.
 \vfill

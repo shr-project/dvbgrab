@@ -1,4 +1,4 @@
-LATEX=cslatex
+LATEX=latex
 BIBTEX=bibtex
 
 all: pdf
@@ -8,10 +8,10 @@ pdf : dvi
 	dvipdf dp.dvi
 
 dvi : dp_bibliography.bib dp_cd.tex dp_instalace.tex dp_macro.tex dp_ocekavame.tex dp_pojmy.tex dp_popis.tex dp_pouziti.tex dp_testovani.tex dp.tex dp_udrzba.tex dp_vysilani.tex
-	latex dp
-	bibtex dp
-	latex dp
-	latex dp
+	${LATEX} dp
+	${BIBTEX} dp
+	${LATEX} dp
+	${LATEX} dp
 
 clean:  
 	rm -f *.aux
