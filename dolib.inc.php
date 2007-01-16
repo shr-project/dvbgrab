@@ -165,8 +165,9 @@ function send_mail($to, $subject, $body) {
   $header .= "Content-Type: text/plain; charset=UTF-8; format=flowed\r\n";
   $header .= "Content-Transfer-Encoding: 8bit\r\n";
   $header .= "Mime-Version: 1.0\r\n";
+  $header .= "Reply-To: "._Config_admin_email."\r\n";
 
-  mail($to, $subject, $body, $header);
+  mail($to, $subject, $body, $header,"-f"._Config_admin_email);
 }
 
 
