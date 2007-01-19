@@ -257,6 +257,8 @@ define("_MsgBackendSuccessSub","DVBgrab: Hotový grab");
 define("_MsgBackendGrabList","Seznam grabu za");
 define("_MsgBackendAccountCleaned","Uživatelský účet byl zrušen. Počet dnů neaktivity po kterém se účty ruší:");
 define("_MsgBackendAccountCleanedSub","Uživatelský účet byl zrušen");
+define("_MsgBackendAccountUpdated","Požadované změny v nastavení uživatelského účtu byly provedeny");
+define("_MsgBackendAccountUpdatedSub","Aktualizace uživatelského účtu");
 define("_MsgBackendFilesizeWarningSize","Na disku pro uchovávání grabů dochází místo, začínají se mazat i graby, které by ještě měli zůstat dostupné");
 define("_MsgBackendFilesizeWarningSizeSub","Není místo na disku pro graby");
 

@@ -257,6 +257,8 @@ define("_MsgBackendSuccessSub","DVBenregistrement: l`enregistrement acheve");
 define("_MsgBackendGrabList","La liste de l`enregistrement ");
 define("_MsgBackendAccountCleaned","Le compte de l`utilisateur a ete annuler. Le nombre des jours de l`inactivite dans quel le compte va etre annuler.");
 define("_MsgBackendAccountCleanedSub","Le compte de l`utilisateur a ete annuler.");
+define("_MsgBackendAccountUpdated","ENG{Required changes in user account settings are done}");
+define("_MsgBackendAccountUpdatedSub","ENG{Changes in user account settings}");
 define("_MsgBackendFilesizeWarningSize","La place ENG{On grab storage area is no free disk space}, nous commencons l`enregistrement, quel devrient etre accessible.");
 define("_MsgBackendFilesizeWarningSizeSub","Le place pour les enregistrements n`est pas a le disque");
 
