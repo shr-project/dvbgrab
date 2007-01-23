@@ -23,17 +23,15 @@ function updateAccount($usrName,$usr_ip,$usr_email, $usr_lang) {
     system($cmd);
   }
 
-  if (!file_exists("$usrDir/.htaccess")) {
-    if ($fp = fopen("$usrDir/.htaccess", 'w')) {
-      fwrite($fp, "Order deny,allow\n");
-      fwrite($fp, "Deny from all\n");
-      fwrite($fp, "Allow from $usr_ip\n");
-      fwrite($fp, "\n");
-      fwrite($fp, "Options +Indexes\n");
-      fclose($fp);
-    }
+  if ($fp = fopen("$usrDir/.htaccess", 'w')) {
+    fwrite($fp, "Order deny,allow\n");
+    fwrite($fp, "Deny from all\n");
+    fwrite($fp, "Allow from $usr_ip\n");
+    fwrite($fp, "\n");
+    fwrite($fp, "Options +Indexes\n");
+    fclose($fp);
   }
-  sendInfoUpdatedAccount($usr_name,$usr_ip,$usr_email, $usr_lang);
+  sendInfoUpdatedAccount($usrName,$usr_ip,$usr_email, $usr_lang);
 }
 
 function unknownAccount($usrName) {
@@ -65,8 +63,10 @@ function cleanSpace() {
   $sizeMin=_Config_grab_storage_min_size*1024*1024;
   $cmdFree = "df "._Config_grab_storage." | tail -n 1 | sed 's/[^ ]* *[0123456789]* *[0123456789]* *\([0123456789]*\) *.*/\\1/g'";
   $free=do_cmd($cmdFree);
-  $logdbg->log("Grab_storage size: ".$size);
-  $logdbg->log("Grab_storage free: ".$free);
+  $free = str_replace("\n", "", $free); 
+  $size = str_replace("\n", "", $size); 
+  $logdbg->log("Grab_storage size: $size/$sizeMax");
+  $logdbg->log("Grab_storage free: $free/$sizeMin");
   $firstday = time()-(_Config_grab_history*24*3600);
 
   while ($size > $sizeMax || $free < $sizeMin) {
@@ -79,14 +79,16 @@ function cleanSpace() {
     }
     $size = get_file_size(_Config_grab_storage);
     $free = do_cmd($cmdFree);
+    $free = str_replace("\n", "", $free); 
+    $size = str_replace("\n", "", $size); 
   }
-  $logdbg->log("Grab_storage size: ".$size);
-  $logdbg->log("Grab_storage free: ".$free);
+  $logdbg->log("Grab_storage size: $size/$sizeMax");
+  $logdbg->log("Grab_storage free: $free/$sizeMin");
 }
 
 function cleanTs() {
   global $logdbg;
-  $cmd = "/bin/ls "._Config_grab_storage."/*.ts";
+  $cmd = "/bin/ls "._Config_grab_storage."/*.ts 2>/dev/null";
   $tsList = do_cmd($cmd);
   $tok = strtok($tsList, " \n\t");
   while ($tok !== false) {
@@ -145,12 +147,17 @@ function deleteGrab($grab) {
     return;
   } 
   $logdbg->log("Removing grab: ".$grb_name);
-  $cmdRmGrab="rm -f "._Config_grab_storage."/$grb_name.mpg";
+  $cmdRmGrab="rm -f "._Config_grab_storage."/$grb_name*";
   do_cmd($cmdRmGrab);
   $SQL = "select distinct(req_output) from request where grb_id=$grb_id";
   $rs = do_sql($SQL);
-  $cmdBrokenLinks = "find "._Config_grab_root." -type l -not -xtype f -name";
+  $cmdBrokenLinks = "find "._Config_grab_root." -type l -not -xtype f";
   while ($row = $rs->FetchRow()) {
+    if (empty($row[0])) {
+      $logdbg->log("Trying to remove request without name: ".$row[0]);
+      break;
+    }
+
     $cmd = $cmdBrokenLinks." -name $row[0]\\* -exec rm {} \;";
   }
   $rs->Close();

@@ -185,7 +185,7 @@ function sendInfoUpdatedAccount($usr_name,$usr_ip,$usr_email, $usr_lang) {
   require_once("lang/lang.$usr_lang.inc.php");
 
   $msg = "user: $usr_name\n";
-  $msg .= _MsgBackendAccountUpdated." $usr_ip\n";
+  $msg .= _MsgBackendAccountUpdated." ip=$usr_ip\n";
   send_mail($usr_email, _MsgBackendAccountUpdatedSub, $msg);
 }
 
