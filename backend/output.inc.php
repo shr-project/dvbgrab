@@ -323,8 +323,8 @@ function report_filesize_warning($size,$free) {
   global $DB;
 
   $msg = _MsgBackendFilesizeWarningSize."\n";
-  $msg = "grab storage size: ".($size/(1024))." MB\n";
-  $msg = "grab storage free: ".($free/(1024))." MB\n";
+  $msg = "grab storage size: ".($size/(1024*1024))." limit: "._Config_grab_storage_size." GB\n";
+  $msg .= "grab storage free: ".($free/(1024*1024))." limit: "._Config_grab_storage_min_size." GB\n";
 
   send_mail(_Config_error_email, _MsgBackendFilesizeWarningSizeSub, $msg);
 }
