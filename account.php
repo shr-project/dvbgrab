@@ -112,7 +112,7 @@ switch ($_GET["action"]) {
     if ($changed) {
       $SQL.= " where usr_id=$usr_id";
       do_sql($SQL);
-      mail($usr_email, "DVBgrab: "._MsgAccountChangesSubject, $msg, "From: "._Config_admin_email."\r\n");
+      send_mail($usr_email, "DVBgrab: "._MsgAccountChangesSubject, $msg);
       echo _MsgAccountChangesNotice."<br />\n";
       echo str_replace("\n","<br />",$msg)."<br />\n";
       echo "<a href=\"index.php\">"._MsgGlobalBack."</a></br>\n";
