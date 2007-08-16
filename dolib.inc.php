@@ -3,21 +3,18 @@
 require_once("config.php");
 require_once("loggers.inc.php");
 require_once("adodb/adodb.inc.php");
+require_once("adodb/adodb-exceptions.inc.php");
 
 // log every SQL call or SYS call to log file
-$logToFile = false;
+$logToFile = true;
+
 
 $DB = NewADOConnection(_Config_db_type);
-if (!$DB->Connect(_Config_db_host, _Config_db_user, _Config_db_pass, _Config_db_name)) {
-  print "Sorry, cannot connect to database";
-  exit;
-}
+connect_db();
+
 if (_Config_auth_db_used == '1') {
   $AuthDB = NewADOConnection(_Config_auth_db_type);
-  if (!$AuthDB->Connect(_Config_auth_db_host, _Config_auth_db_user, _Config_auth_db_pass, _Config_auth_db_name)) {
-    print "Sorry, cannot connect to external auth database";
-    exit;
-  }
+  connect_auth_db();
 }
 
 
@@ -37,6 +34,40 @@ function do_cmd($cmd) {
   return $outputStr;
 }
 
+function connect_db() {
+  global $DB;
+  global $logsql;
+  
+  while (!$DB->IsConnected( )) {
+    try {
+      if (!$DB->Connect(_Config_db_host, _Config_db_user, _Config_db_pass, _Config_db_name)) {
+        $logsql->log("Sorry, cannot connect to database");
+        sleep(300);
+      }
+    } catch (exception $e) {
+      $logsql->log("Exception during connect to database");
+      sleep(300);
+    }
+  }
+}
+
+function connect_auth_db() {
+  global $AuthDB;
+  global $logsql;
+
+  while (!$AuthDB->IsConnected( )) {
+    try {
+      if (!$AuthDB->Connect(_Config_auth_db_host, _Config_auth_db_user, _Config_auth_db_pass, _Config_auth_db_name)) {
+        $logsql->log("Sorry, cannot connect to external auth database");
+        sleep(300);
+      }
+    } catch (exception $e) {
+      $logsql->log("Exception during connect to external auth database");
+      sleep(300);
+    }
+  }
+}
+
 //-----------------------------------------------------------------
 // executes a sql query
 function do_sql($sql) {
@@ -46,18 +77,25 @@ function do_sql($sql) {
   if ($logToFile) {
     $logsql->log("SQL:\"".$sql."\"");
   }
-  if (!($rs = $DB->Execute($sql))) {
-    handle_error("SQL: {$sql}[br]".$DB->ErrorMsg().": ".$DB->ErrorNo());
-    if (!$DB->IsConnected( )) {
-      if (!$DB->Connect(_Config_db_host, _Config_db_user, _Config_db_pass, _Config_db_name)) {
-        $logsql->log("Sorry, cannot connect to database");
-        exit;
+
+  connect_db();
+
+  $tryCount = 0;
+  while (!$rs && $tryCount < 10) {
+    try {  
+      $rs = $DB->Execute($sql);
+      $tryCount++;
+
+      if (!$rs) {
+        handle_error("SQL: {$sql}[br]".$DB->ErrorMsg().": ".$DB->ErrorNo());
+        if (!$DB->IsConnected( )) {
+          connect_db();
+        }
       }
-      if($rs = $DB->Execute($sql)) {
-        return $rs;
-      }
+    } catch (exception $e) {
+      $logsql->log("Exception during SQL:\"".$sql."\"");
+      sleep(300);
     }
-    exit;
   }
   return $rs;
 }
@@ -67,19 +105,30 @@ function do_sql($sql) {
 function do_extern_sql($sql) {
   global $AuthDB;
   global $logsql;
-  $logsql->log("ExternSQL:\"".$sql."\"");
-  if (!($rs = $AuthDB->Execute($sql))) {
-    handle_error("ExternSQL: {$sql}[br]".$AuthDB->ErrorMsg().": ".$AuthDB->ErrorNo());
-    if (!$AuthDB->IsConnected( )) {
-      if (!$AuthDB->Connect(_Config_auth_db_host, _Config_auth_db_user, _Config_auth_db_pass, _Config_auth_db_name)) {
-        $logsql->log("Sorry, cannot connect to database");
-        exit;
+  global $logToFile;
+  
+  if ($logToFile) {
+    $logsql->log("ExternSQL:\"".$sql."\"");
+  }
+
+  connect_auth_db();
+
+  $tryCount = 0;
+  while (!$rs && $tryCount < 10) {
+    try {
+      $rs = $AuthDB->Execute($sql);
+      $tryCount++;
+
+      if (!$rs) {
+        handle_error("ExternSQL: {$sql}[br]".$DB->ErrorMsg().": ".$DB->ErrorNo());
+        if (!$AuthDB->IsConnected( )) {
+          connect_auth_db();
+        }
       }
-      if($rs = $AuthDB->Execute($sql)) {
-        return $rs;
-      }
+    } catch (exception $e) {
+      $logsql->log("Exception during ExternSQL:\"".$sql."\"");
+      sleep(300);
     }
-    exit;
   }
   return $rs;
 }
