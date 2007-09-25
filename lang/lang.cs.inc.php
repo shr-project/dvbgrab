@@ -120,7 +120,7 @@ define("_MsgAccountEncoder","Video kodek:");
 define("_MsgAccountChanges","Na stránkách DVBgrabu byly vyžádány nějaké změny v nastavení účtu:");
 define("_MsgAccountChangeIp","požaduje změnu stahovací IP:");
 define("_MsgAccountChangeIpSubject","požadavek na změnu IP");
-define("_MsgAccountChangeIpNotice","Změna IP adresy pro stahování se neprojeví okamžitě, až bude změna provedena bude zaslán potvrzující email");
+define("_MsgAccountChangeIpNotice","E-mail informující o evidenci požadavku na změnu IP pro stahování byl odeslán. Změna se neprojeví okamžitě, až bude změna provedena bude zaslán druhý e-mail potvrzující provedení změny.");
 define("_MsgAccountChangesSubject","změny v nastavení účtu");
 define("_MsgAccountChangesNotice","Požadované změny byly uloženy a odeslán informační mail.");
 define("_MsgAccountNoChangesNotice","Nebyla zadána žádná změna.");
