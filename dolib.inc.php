@@ -95,6 +95,9 @@ function do_sql($sql) {
     } catch (exception $e) {
       $logsql->log("Exception during SQL:\"".$sql."\"");
       sleep(300);
+      if (!$DB->IsConnected( )) {
+        connect_db();
+      }
     }
   }
   return $rs;
