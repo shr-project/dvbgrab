@@ -1,13 +1,13 @@
 LATEX=pdflatex
 
 all: pdf
-	xpdf dp.pdf &
+	xpdf dp_en.pdf &
 
 pdf : dvi
 #	dvipdf dp.dvi
 
-dvi : dp_instalace.tex dp_macro.tex dp_pouziti.tex dp.tex dp_udrzba.tex
-	${LATEX} dp
+dvi : dp_instalace.tex dp_macro.tex dp_pouziti.tex dp_en.tex dp_udrzba.tex
+	${LATEX} dp_en
 
 clean:  
 	rm -f *.aux
