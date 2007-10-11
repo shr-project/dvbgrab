@@ -1,0 +1,52 @@
+\section{The maintainance of recording server}
+The maintainance is performed by automatically started script clean.php.
+
+\subsection{Removing inactive users}
+Removes users, who didn't sign up to DVBgrab in period of several days (wrt. config option user\_inactivity\_limit) and they didn't request anything. This will provide removing user and releasing his IP address after his moving from the dorm (unless he uses himself the function for immediate removing his account in advance). It removes also all his requests and his user's address book. An e-mail with information about the removing account will be delivered to the user.
+
+\subsection{Users' accounts updating}
+When the user changes the password or distributing IP address, new date of the last change is set in database. This script will always regenerate .htaccess files with every start for all users, who changed their settings between the last running of the script and actual time. Then it will move date of the last updating to the actual time.
+
+\subsection{Control of unknown users' accounts}
+Script will control, if there is appropriate database user for all directories, if not, they can be removed, eventually at least printed on the screen.
+
+\subsection{Removing needless .ts files}
+All records are saved to the file with .ts extension. With every start of the script these files are controlled, if there exists any unsatisfied request for encoding. If not, .ts file is removed. If yes, it is written to the log file, which format is missing yet to prepare.
+
+\subsection{Control of free space}
+In records directory an amount of used space and free space is watched. 
+
+The oldest records start to be removed, if maximum enabled size of records directory is exceeded (wrt. grab\_storage\_size) or if there is less free space than configurated constant (grab\_storage\_min\_size).     
+
+If it is necessary to remove also the records, which are finished for shorter time than planned records keeping (grab\_history), a warning e-mail is sent to admin.
+
+\subsection{Removing old data}
+In a database we don't need to keep television program, that is several years old and it is good to display on the web also the finished records after removing. That's why only data older than three times the period for keeping records (3 x grab\_history days) are removed from database. Users' requests are removed as well as format requests, own records and television program.
+
+\section{The manual maintainance of users}
+Sometimes it is necessary to remove manually those users, who e.g. move from the dorm and don't remove their accounts. If their IP address is given to a new user, who would like to register in DVBgrab before the period for automatic removing original account is exceeded by reason of inactivity, then registration fails by reason of IP conflict. In these cases the best solution is to set manually a date of the last activity of original account e.g. a year ago, and so removing account is provided by the maintainance script, including removing his address book and sending informational e-mail.
+
+For spamming of registered users script backend/send\_user\_info.php might be used, in which we modify the text of the message and by its start we send the message including sign up data to every user of DVBgrab. This is suitable to use e.g. after the conversion of the database from DVBgrab version 1 to version 2, when the changes in the rules for characters in users names were performed.
+
+\section{The maintainance of backend scripts}
+Every start and stop of recording or encoding loops should be provided by script dvbgrab\_service, which is a component of installation package. In this script we check the path to backend directory.
+
+Script dvbgrab\_service supports these parameters:
+\bitem
+\item \textbf{start} -- starts recording and encoding loop
+\item \textbf{startg} -- starts only recording loop
+\item\textbf{starte} -- starts only encoding loop
+\item\textbf{stop} -- stops both loops
+\item\textbf{stopg} -- stops only recording loop
+\item\textbf{stope} -- stops only encoding loop
+\item\textbf{restart} -- restarts both loops
+\item\textbf{restartg} -- restarts only recording loop
+\item\textbf{restarte} -- restarts only encoding loop
+\item\textbf{status} -- shows, if the loops are still running. Then the list of records (which are in the queue and also those which are just saved) is shown for every encoding format.
+\eitem
+
+Stopping of encoding loop is supplemented with restoring of the queue for encoding (by the script backend/encode\_queue\_restore.php). It means that after stop of the loop request status returns from status \quotedblbase Encoding'' to status \quotedblbase Ready'', so they can be queued again after restart of the loop.
+
+Displaying the queue for encoding and currently saved records can be provided also manually by means of the script backend/encode\_queue\_print.php.
+
+We have startup script for operating system (/etc/init.d/dvbgrab), which uses dvbgrab\_service when starting and stopping DVBgrab as system service.

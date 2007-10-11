@@ -1,0 +1,110 @@
+\chapter{User's guide}
+
+User's guide including screenshots will be placed later on the website of the project \linebreak[4] http://dvbgrab.sourceforge.net/, because the environment has black background which is not very suitable for printing.
+
+\section{Registration}
+
+Before the first using it is necessary to register your user's account. The registration is executed on opening site of the application. In the form of registration it is necessary to fill in:
+
+\subsection{User's name}
+
+Only small alphanumeric characters without diacritics (small letters of alphabet a-z a~0-9) are allowed. Then you'll use this user's name when you sign up and it will be also shown by your scheduled records. If such user's name already exists, error will be written. 
+
+If shared passwords with other projects are used (e.g. shared with a password set for network logging), then submit here the same shared user's name. E.g. in Masaryk dorm Joe Smith has his user's name to e-mail and website of dorm \quotedblbase novakp'' and password \quotedblbase 12345''. If he wants to use the same password also on website of DVBgrab, he has to submit again the user's name \quotedblbase novakp'' and password \quotedblbase 12345''. Thereby it is checked that he is really Joe Smith and so-called external password will assign to him (it won't be saved in database of DVBgrab). If he changes later his password to 54321 on website of dorm, this change will appear immediately also in DVBgrab. These users don't have in DVBgrab available function for sending new generated password after forgetting the old one and also they can't change it in menu account (that should be provided elsewhere).
+
+\subsection{User's password}
+
+For used characters there is the same limitation as for user's name (small alphanumeric characters without diacritics). Password can be anything, only those users, who want to use external password (see above the previous paragraph), have to submit their actual password. The password is submitted twice because of the control. Those, who forget their password and don't have external password, can get the new one to e-mail, which is in the next item.
+
+\subsection{E-mail}
+
+User's e-mail, to which announcements about succesful recording of TV show (including links for its downloading) will be sent, eventually about errors. That's why it is necessary to submit valid e-mail. To this e-mail also the password will be send, if u ask for it after forgetting it.
+
+\subsection{IP address for downloading}
+
+It is submitted automatically with IP address, from which you register. Then in menu account it is possible to change it additionaly. From one IP address only one user can be registered. If the application shows error, that already somebody was registered from this address, it is necessary to write message to this user in order that he'll change IP address to his own one, if he doesn't answer, contact admin of application (he can remove conflicting account).
+
+\subsection{Video codec}
+
+Here you set your preferred compression method of finished records. The list of allowed formats is determined by admin of application. Usually MPEG-2 is available, it is format with low compression, suitable more for further modification than for keeping. Then one hour of TV show has approximately the size of 1GB. Then MPEG-4 variants decrease the size to approximately 500MB for an hour and their parameter \quotedblbase scale'' determins ratio, by which the scale will be decreased (MPEG-4 scale 0.125 means, that resulting video will have the size 1/8 from the original and so the resulting file will be much more smaller).
+
+The changes of preferred codec are possible to be executed in menu account and such rule proceeds, that codec which was set in the time of record request will be used for this scheduled record. If MPEG-2 is set and you request TV show ABC and then you find out that you want to record it in MPEG-4, you have to change setting of preferred codec, cancel the request of TV show ABC and request it again.
+
+\subsection{Icq, Jabber}
+
+If you want to let other users contact you, submit please also these data.
+
+If the registration fails for some reason, information with the reason is written. If it succeeds, it is written that the user was successfully registered and he is automatically signed up.
+
+\section{Sign up}
+
+If the user signs up from the other computer or browser than he registered, eventually if validity of signing up expired, he has to submit again his user's name and password. Submitted data are saved to cookies of the browser and they are remembered for a period of 2 years. User's name and password are also removed from cookies of the browser, if you use reference to sign out from DVBgrab. So if you sign up from the computer, which is used by more users, it is necessary to sign out from DVBgrab always before leaving (reference in the upper right corner).
+
+If you forget your password, it is possible to ask for sending new generated password to registered e-mail. It is enough to remember your user's name and e-mail, with which you registered. After signing up with new password it is suitable to change the password to better rememberable one in menu account.
+
+\section{Record request}
+
+The most frequent action is requesting record, this is executed in menu TV program. TV program is displayed for several days in advance, switching day is practised by selection in the upper part of website. In TV program it is also possible to search by submitting part of the name of TV show or its description. Both in program and in search results you request records by click on the name of TV show and confirming dialog window. Then the requested TV show changes colour of its background (showing that record is in scheduled status) and reference to cancel record appears. Number of records in a week is limited, actual number of requested records and limit are displayed in the upper right corner. Procedure is the same, if you want to request also the records, which someone requested already before you. Your scheduled records are differentiated from the others' records by icon of television in the left part of TV show. Further information about TV show is displayed in popup window, which displays after mouse is over the name of TV show. In this additional window both details of TV show and information about scheduled record (if someone requested it) are displayed.
+
+TV show can be requested at latest 30 minutes after its beginning, naturally if nobody requested this TV show before, it will be recorded from the moment of requesting.
+
+Format, in which TV show will be saved, is determined by user's preferred codec, which is set in the moment of requesting (see above section Video codec by user's registration).
+
+\section{Cancelling record}
+
+You can cancel only those grabs, which haven't been telecasted yet. Cancelling can be executed in the list of TV shows by click on the reference \quotedblbase cancel request''. You can quickly switch to actually scheduled records from menu \quotedblbase My records''.
+
+\section{Watching status}
+
+The record after its requesting goes through several statuses, at first it is only scheduled.
+
+Current status of the record is shown by means of background colour and more accurately by means of the text, which is the part of detailed popup window.
+
+Consecution of single statuses of the record:
+\bitem
+\item\textbf{Scheduled} -- from the first request by any user until beginning of recording.
+\item\textbf{Recording} -- it should come into this status several minutes before expected beginning of TV show.
+\item\textbf{Recorded} -- several minutes after expected end of TV show the status should switch to this status (it differentiates from status \quotedblbase Recording'' only by text in window with details).
+\item\textbf{Encoding} -- after some time (it can take also several hours until the old records become encoded) TV show is the first in the queue and encoding to selected format can begin.
+\item\textbf{Encoded} -- after completion of encoding, this status differentiates again only by text in detailed window and usually it doesn't take for a long time.
+\item\textbf{Ready} -- record is published in user's directory and e-mail with this information is sent to the user, also reference for downloading should be displayed in menu \quotedblbase My records''.
+\item\textbf{Deleted} -- records are kept on recording server only for period defined by admin and it can be shortcut in case free space on disc runs short, so by removing record its status switches to this.
+\item\textbf{Missed} -- the first error status signifying that recording server wasn't probably running at all in the period of telecasting TV show. It won't be possible to get these records again.
+\item\textbf{Failed} -- the second error status, which can signify only error by encoding, if it is removable error, it is possible that admin removes error and TV show will be published later and will be in status \quotedblbase Ready''.
+\item\textbf{Undefined} -- the last error status, which happens only in extraordinary situations. All error statuses are marked by the same background colour.
+\eitem
+
+\section{Downloading records}
+The most simple way to download records is to click on link, which comes in informative e-mail. You can download your records also from the list in \quotedblbase My records'', where link is displayed by finished records in the last column. The last possibility is direct access to URL with user's directory (e.g. http://records.domain/smithj), where are also displayed all user's finished files.
+
+There are always 2 files to every record, avi or mpg with own record and XML, in which there is further information.
+
+Error-free downloading can be checked by calculation of MD5 of downloaded file and by matching with MD5 sum listed in XML file, eventually at least the size of downloaded file should be the same as the size listed in XML file.
+
+In XML file you can check also beginning and end of TV show and its recording.
+
+XML file is displayed in web browser in the form of well-arranged chart, which is created from XML file in accordance to XSL template.
+
+It is generated in user's directory (in accordance to the language, which is used by user on the web interface of DVBgrab) in the file dvbgrab.xsl. If you want to display also downloaded XML files, copy also this file to them to the directory.
+
+The name of the file has following structure, \quotedblbase DVB-'' as prefix, then date of recording in format Ymd-Hi (year, month, day, hour, minute) in order that directory with records will be in chronologic and alphabetic sequence. Then follows the name of channel (after removing diacritics) and the name of TV show, either after removing diacritics or only ID of record. The name of series can also contain section defining number of series, episode and part, eventually total count (e.g. S2/5E8P1/2 means that it is 8th episode, 2nd series of 5, 1st part of 2).
+
+\section{Playing record}
+It is the best to play records in a program VLC (VideoLAN Client free to download on http://www.videolan.org/), because it is using the same codecs as DVBgrab. In Linux there are no problems with codecs usually.
+
+\section{Changes in account settings}
+On the web interface you can change several parameters of user's account.
+
+You are not allowed to change your user's name, if you want another one, you have to cancel your account and create the new one.
+
+Changing password isn't allowed by external passwords, see above section registration.
+
+Changing downloading IP address might not approve immediately. If the change doesn't approve until 24 hours, contact your admin.
+
+Changing video codec approves in accordance to description in section registration.
+
+About all executed changes an informative e-mail is sent to user's actual address.
+
+\section{Removing account}
+If you don't want to use or can't use DVBgrab any more, please cancel your user's account in bottom part of website, accessible through menu account. It will release your downloading IP address to user, who can get it after you. Otherwise your account will be removed after e.g. 30 days of inactivity. When you cancel your account, all your scheduled records and user's directory with records for downloading will be removed automatically.
+\vfil

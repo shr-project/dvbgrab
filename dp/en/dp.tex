@@ -1,0 +1,74 @@
+%\documentclass[11pt,oneside,a4paper]{mr}%one-page printing
+\documentclass[11pt,twoside,a4paper]{dp_format_en}%two-page printing
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+%\usepackage[czech]{babel}
+%\usepackage[pdftex]{hyperref,graphicx}
+%\usepackage[pdftex]{hyperref}
+\usepackage[pdftex]{graphicx}
+\RequirePackage[T1]{fontenc}
+%\usepackage[latin2]{inputenc}
+%\usepackage{graphicx}
+\input dp_macro.tex   % specialni makra pro formatovani diplomek
+
+\addcontentsline{toc}{chapter}{\protect\numberline{}{Installation and user manual}}
+
+\begin{document}
+\parskip 10pt
+\begin{center}
+\vfill
+\vglue 30mm
+{\Large\bf DVBgrab 2.0}\\
+\vglue 30mm
+{\Large\bf Installation and user manual}\\
+\vfill
+\end{center}
+
+\mainbodystarts
+\include{dp_instalace}
+\clearpage
+\include{dp_pouziti}
+
+%*************************************************************************
+
+\chapter{Screenshots}
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=12cm]{images/scrPrihlaseni}
+\caption{Login page}
+\label{fig:scr1}
+\end{center}
+\end{figure}
+
+\nopagebreak 
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=12cm]{images/scrProgram}
+\caption{Main page}
+\label{fig:scr2}
+\end{center}
+\end{figure}
+
+\vfil
+\pagebreak
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=12cm]{images/scrSeznam}
+\caption{Records listing}
+\label{fig:scr3}
+\end{center}
+\end{figure}
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=12cm]{images/scrNastaveni}
+\caption{User account settings}
+\label{fig:scr4}
+\end{center}
+\end{figure}
+
+\vfil
+\pagebreak
+\end{document}

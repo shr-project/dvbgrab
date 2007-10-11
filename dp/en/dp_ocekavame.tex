@@ -1,0 +1,16 @@
+\chapter{Co od systému očekáváme}
+\section{Z pohledu uživatele}
+Uživatel není nucen instalovat žádné dodatečné programy, pouze internetovým prohlížečem přistoupí na stránky aplikace a zadá, o jaké pořady má zájem. Před prvním použitím se uživatel na stránkách zaregistruje, čímž je automaticky i přihlášen do systému. Stránky komunikují s~uživatelem pokud možno jeho preferovaným jazykem podle nastavení prohlížeče, případně může zvolit jiný z nabízených. Zvolený jazyk se uchovává dlouhodobě. Uživatelské jméno a~heslo také, takže při dalších návštěvách ze stejného počítače už je není nutné zadávat. Výběr pořadů by měl být k dispozici minimálně na týden dopředu.
+
+V seznamu pořadů stačí kliknout na název pořadu a tím je požadavek zadán. Nahraný pořad se po uložení ještě komprimuje do uživatelem zvoleného formátu.
+
+Po uložení a zkomprimování je do uživatelova adresáře uložen odkaz na pořad a cemž je uživatel informován e-mailem. Odkaz může být na protokol ftp nebo http. O hotových nahrávkách se může také informovat v rámci webového rozhraní, kde je seznam jeho nahrávek včetně odkazů na stažení, objednaných nahrávek a hotových nahrávek všech uživatelů.
+
+Uživatel má možnost měnit některé parametry svého účtu, nechat si zaslat nově vygenerované heslo a také úplně zrušit účet.
+
+\section{Z pohledu správce}
+Potřebujeme přehlednou a automatickou správu uživatelů. Potřebujeme, aby systém korektně reagoval na výpadky spojení s databází nebo na nedostatek diskového prostoru.
+
+Pro možnost použití i mimo Českou republiku je třeba použít ve webovém rozhraní kódování podporující více národních abeced (UTF-8) a podle toho také zajistit správné kódování znaků u dat přicházejících z databáze přes ADOdb (knihovna pro abstraktní přístup k databázovém serveru). 
+
+Televizní program je nutné načítat v nějakém srozumitelném, dobře definovaném a mezinárodně uznávaném formátu jako je XMLTV viz. \cite{xmltvURL}. To značně usnadňuje instalaci v zahraničí, kde je obvykle dostatek zdrojů programu v XMLTV. Přidávání nových kanálů musí být co nejsnadnější a nesmí vyžadovat hlubší znalosti systému.
