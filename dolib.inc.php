@@ -38,6 +38,12 @@ function connect_db() {
   global $DB;
   global $logsql;
   
+  if ($DB->IsConnected( )) {
+    // clean and reconnect
+    $DB->Close();
+    $DB = NewADOConnection(_Config_db_type);
+  }
+
   while (!$DB->IsConnected( )) {
     try {
       if (!$DB->Connect(_Config_db_host, _Config_db_user, _Config_db_pass, _Config_db_name)) {
@@ -54,6 +60,12 @@ function connect_db() {
 function connect_auth_db() {
   global $AuthDB;
   global $logsql;
+
+  if ($AuthDB->IsConnected( )) {
+    // clean and reconnect
+    $AuthDB->Close();
+    $AuthDB = NewADOConnection(_Config_auth_db_type);
+  }
 
   while (!$AuthDB->IsConnected( )) {
     try {
@@ -93,11 +105,9 @@ function do_sql($sql) {
         }
       }
     } catch (exception $e) {
-      $logsql->log("Exception during SQL:\"".$sql."\"");
+      $logsql->log("Exception during SQL:\"".$sql."\"\n".$e->getMessage());
       sleep(300);
-      if (!$DB->IsConnected( )) {
-        connect_db();
-      }
+      connect_db();
     }
   }
   return $rs;
@@ -129,8 +139,9 @@ function do_extern_sql($sql) {
         }
       }
     } catch (exception $e) {
-      $logsql->log("Exception during ExternSQL:\"".$sql."\"");
+      $logsql->log("Exception during ExternSQL:\"".$sql."\"\n".$e->getMessage());
       sleep(300);
+      connect_auth_db();
     }
   }
   return $rs;
