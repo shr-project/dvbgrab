@@ -10,7 +10,12 @@ Stable version is dvbgrab-1.0<br />
 svn export --username anonymous https://dvbgrab.svn.sourceforge.net/svnroot/dvbgrab/tags/dvbgrab-1.0 dvbgrab
 </code>
 <br />
-Development version dvbgrab-2.0<br />
+Recommended version dvbgrab-2.0<br />
+<code class="left">
+svn export --username anonymous https://dvbgrab.svn.sourceforge.net/svnroot/dvbgrab/tags/dvbgrab-2.0 dvbgrab
+</code>
+<br />
+Development trunk<br />
 <code class="left">
 svn export --username anonymous https://dvbgrab.svn.sourceforge.net/svnroot/dvbgrab/trunk dvbgrab
 </code>
