@@ -8,7 +8,7 @@ require_once("dolib.db.inc.php");
 // log every SQL call or SYS call to log file
 $logToFile = true;
 
-$DB_class = new dbClass($logsql, _Config_db_host, _Config_db_user, _Config_db_pass, _Config_db_name, _Config_db_type, 1, $logToFile);
+$DB_class = new dbClass($logsql, _Config_db_host, _Config_db_user, _Config_db_pass, _Config_db_name, _Config_db_type, 10, $logToFile);
 $AuthDB_class = new dbClass($logsql, _Config_auth_db_host, _Config_auth_db_user, _Config_auth_db_pass, _Config_auth_db_name, _Config_auth_db_type, 1, $logToFile);
 
 $DB = $DB_class->getDB();
