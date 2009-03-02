@@ -31,7 +31,7 @@ function is_empty_file($filename) {
  * Returns file size
  */
 function get_file_size($filename) {
-  $cmd = "du ".$filename." | cut -f 1";
+  $cmd = "du -bs ".$filename." | cut -f 1";
   exec($cmd, $output, $retval);
   $outputStr = array_reduce($output,"rappend");
   return ($retval != 0?0:$outputStr);
