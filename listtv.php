@@ -76,7 +76,7 @@ function print_list_tv($usr_id,$tv_date,$query) {
                  t.tel_date_start,
                  g.grb_id,
                  (select min(req_status) from request as r where r.grb_id=g.grb_id) as req_status,
-                 (select usr_id from request as r left join userreq as u using (req_id) where r.grb_id=g.grb_id and u.usr_id=$usr_id) as my_grab,
+                 (select distinct usr_id from request as r left join userreq as u using (req_id) where r.grb_id=g.grb_id and u.usr_id=$usr_id) as my_grab,
                  ".$DB->SQLDate('H','tel_date_start')." as hour,
                  ".$DB->SQLDate('Ymd','tel_date_start')." as day,";
   if (_Config_db_type == "postgres") {
