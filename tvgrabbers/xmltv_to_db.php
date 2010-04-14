@@ -24,6 +24,34 @@ $tel_date_start_raw = "";
 
 $body = "";
 
+/* Hint: We cache also negative results. */
+define ("ErrorNoChn", -1);
+define ("ErrorManyChn", -2);
+
+$channel_cache = array();
+
+function check_channel($channel) {
+	global $channel_cache;
+
+	if (!array_key_exists($channel, $channel_cache)) {
+		$sql = "SELECT chn_id FROM channel WHERE chn_xmltv_name='$channel'";
+		//echo "$sql\n";
+		$rs = do_sql($sql);
+		if ($rs->RecordCount() == 1) {
+			$row = $rs->FetchRow();
+			$channel_cache[$channel] = $row[0];
+		}
+		else if ($rs->RecordCount() == 0) {
+			$channel_cache[$channel] = ErrorNoChn;
+		}
+		else {
+			$channel_cache[$channel] = ErrorManyChn;
+		}
+	}	
+
+	return $channel_cache[$channel];
+}
+
 function parseDate($date, $offset=0) {
   global $DB;
 //  echo "$date => ".$DB->DBTimeStamp(strtotime($date)+$offset)."\n";
@@ -89,21 +117,25 @@ function startElement($parser, $name, $attrs)
     foreach ($attrs as $k => $v) {
       switch($k) {
         case "CHANNEL": 
-          $attr = $v;
-          if (!empty($attr)) {
-            $chn_xmltv_id=$attr;
-            $rs=do_sql("SELECT chn_id FROM channel WHERE chn_xmltv_name='$attr'");
-            if ($rs->RecordCount() == 1) {
-              $row=$rs->FetchRow();
-              $chn_id = $row[0];
-            } else if ($rs->RecordCount() == 0) {
-              $ok = false;
-              $body .= _MsgXmlTvFormatErrorNoChn."\n";
-            } else {
-              $ok = false;
-              $body .= _MsgXmlTvFormatErrorManyChn."\n";
+          if (!empty($v)) {
+		    $chn_xmltv_id = $v;
+
+			$chn_id = check_channel($chn_xmltv_id);
+
+            if ($chn_id < 0) {
+			  /* Error, invalid ID */
+              if ($chn_id == ErrorNoChn) {
+				  $ok = false;
+				  $body .= _MsgXmlTvFormatErrorNoChn."\n";
+              }
+			  else {
+			      /* ErrorManyChn */
+				  $ok = false;
+				  $body .= _MsgXmlTvFormatErrorManyChn."\n";
+              }
             }
-          } else {
+		  } else {
+		    echo "BUGA: No CHANNEL tag ;-/\n";
             $ok = false;
             $body .= _MsgXmlTvFormatErrorNoneChn."\n";
           }
@@ -185,28 +217,14 @@ function checkRow() {
 function insertRow() {
   global $ok,$chn_id,$chn_xmltv_id,$tel_date_start,$tel_date_end,$tel_name,$tel_desc,$tel_typ,$tel_category,$tel_series,$tel_episode,$tel_part;
   global $body;
+
   if (!$ok) {
     $globalOk = false;
     return;
   }
 
-  $SQL = "SELECT * FROM television WHERE chn_id=$chn_id and tel_date_start=$tel_date_start and tel_name=$tel_name";
-  $rs = do_sql($SQL);
-  if ($rs->RecordCount() != 0) {
-    $body .= _MsgXmlTvIgnored.": $chn_xmltv_id\n\t$tel_date_start: $tel_name\n\n";
-    return; // Ignore if programm in this time exists with the same name
-  } 
-
-  $SQL = "SELECT * FROM television WHERE chn_id=$chn_id and tel_date_start=$tel_date_start";
-  $rs = do_sql($SQL);
-  if ($rs->RecordCount() != 0) {
-    $body .= _MsgXmlTvUpdated.": $chn_xmltv_id\n\t$tel_date_start: $tel_name\n\n";
-    $SQL = "UPDATE television SET tel_date_end=$tel_date_end, tel_name = $tel_name, tel_desc=$tel_desc, tel_typ = $tel_typ, tel_category=$tel_category,tel_series=$tel_series,tel_episode=$tel_episode,tel_part=$tel_part WHERE chn_id=$chn_id and tel_date_start=$tel_date_start";
-    do_sql($SQL);
-    return; // Update programm in this time exists programme with different name
-  }
-
-  $SQL  = "INSERT INTO television( chn_id, tel_date_start, tel_date_end, tel_name, tel_desc, tel_typ, tel_category, tel_series, tel_episode, tel_part)";
+  /* We have UNIQUE KEY `idx_tel_chn` (`chn_id`,`tel_date_start`) */
+  $SQL  = "REPLACE INTO television( chn_id, tel_date_start, tel_date_end, tel_name, tel_desc, tel_typ, tel_category, tel_series, tel_episode, tel_part)";
   $SQL .=                " VALUES($chn_id,$tel_date_start,$tel_date_end,$tel_name,$tel_desc,$tel_typ,$tel_category,$tel_series,$tel_episode,$tel_part)";
   do_sql($SQL);
   $body .= _MsgXmlTvInserted.": $chn_xmltv_id\n\t$tel_date_start: $tel_name\n\n";
