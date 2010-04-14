@@ -102,7 +102,7 @@ echo date(" j. n. Y", mktime(0, 0, 0, $tv_month, $tv_day, $tv_year));
 </form>
 
 <?
-$query = $_GET["query"];
+$query = trim($_GET["query"]);
 if (!empty($query)) {
   require_once("search.php");
   print_results($usr_id,$query,$tv_date);
