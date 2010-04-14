@@ -190,7 +190,7 @@ function get_grab_basename($tel_id) {
     $tel_part = $row["tel_part"];
 
 
-    $channel = strtolower(strip_diacritics($row[0]));
+    $channel = strtr(strtolower(strip_diacritics($row[0]))," ","_");
     $timestamp = $DB->UserTimeStamp($DB->UnixTimeStamp($row[1]), "Ymd-Hi");
     if (_Config_grab_backend_strip_diacritics == "1") {
       $tel_name = strip_diacritics($row[2]);
