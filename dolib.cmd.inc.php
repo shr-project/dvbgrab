@@ -98,7 +98,7 @@ function send_mail($to, $subject, $body) {
   $header .= "Mime-Version: 1.0\r\n";
   $header .= "Reply-To: "._Config_admin_email."\r\n";
 
-  mail($to, $subject, $body, $header,"-f"._Config_admin_email);
+  mail($to, '=?UTF-8?Q?'.strtr(imap_8bit($subject)," ","_").'?=', $body, $header,"-f"._Config_admin_email);
 }
 
 
