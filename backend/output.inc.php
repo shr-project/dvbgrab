@@ -24,14 +24,14 @@ function is_valid_file($filename) {
  * Usable size is bigger than 1M.
  */
 function is_empty_file($filename) {
-  return (get_file_size($filename) < 10000);
+  return (get_file_size($filename) < 1000);
 }
 
 /**
  * Returns file size
  */
 function get_file_size($filename) {
-  $cmd = "du -bs ".$filename." | cut -f 1";
+  $cmd = "du -ks \"".$filename."\" | cut -f 1";
   exec($cmd, $output, $retval);
   $outputStr = array_reduce($output,"rappend");
   return ($retval != 0?0:$outputStr);
