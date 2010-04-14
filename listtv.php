@@ -20,7 +20,7 @@ function print_list_tv($usr_id,$tv_date,$query) {
           from channel c, 
                television t
           where c.chn_id=t.chn_id and
-                tel_date_start > $tel_date_from and
+                tel_date_start >= $tel_date_from and
                 tel_date_start < $tel_date_to and
                 c.chn_enabled = 1
           group by c.chn_id, c.chn_name, c.chn_logo, c.chn_order
@@ -87,7 +87,7 @@ function print_list_tv($usr_id,$tv_date,$query) {
   $SQL .="from television t
                left join channel c using (chn_id)
                left join grab g using (tel_id)
-          where tel_date_start > $tel_date_from and
+          where tel_date_start >= $tel_date_from and
                 tel_date_start < $tel_date_to 
           order by day, hour_frac, chn_order, tel_date_start";
 
