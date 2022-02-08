@@ -15,22 +15,22 @@
 function status_update() {
   global $DB;
   
-  $grab_stop_limit = $DB->DBTimeStamp(time()-10*60);
+  $grab_stop_limit = $DB->DBTimeStamp(time()-(10+_Config_grab_date_stop_shift)*60);
 	
   // graby ktere zacaly a nedokoncily se oznac jako 'error'
-  $SQL = "update request
+  $SQL = "update request r
           set req_status='error'
-          where req_status='saving' and
-            grb_id IN ( select g.grb_id 
+          where r.req_status='processing' and
+            r.req_id IN ( select g.req_id 
                           from grab g 
                           where g.grb_date_end < $grab_stop_limit)";
   do_sql($SQL);
 
   // graby ktere se ani nezacaly oznac jako 'missed'
-  $SQL = "update request 
+  $SQL = "update request r 
           set req_status='missed'
-          where req_status='scheduled' and
-            grb_id IN ( select g.grb_id
+          where r.req_status='scheduled' and
+            r.req_id IN ( select g.req_id
                           from grab g
                           where g.grb_date_end < $grab_stop_limit)";
   do_sql($SQL);
@@ -41,11 +41,9 @@ function get_user_grab($usr_id, $week) {
   global $DB;
 //  echo "U$usr_id,W$week";
   $SQL = "select count(*) 
-          from grab g
-               left join request r using (grb_id)
-               left join userreq ur using (req_id)
-          where 
-            ur.usr_id=$usr_id and
+          from grab g, request r 
+          where g.grb_id=r.grb_id and
+            r.usr_id=$usr_id and
             (r.req_status='scheduled' or r.req_status='done') and "
             .$DB->SQLDate('W',"g.grb_date_start")."=$week";
   $rs = do_sql($SQL);

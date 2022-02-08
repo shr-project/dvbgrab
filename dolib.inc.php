@@ -3,81 +3,26 @@
 require_once("config.php");
 require_once("loggers.inc.php");
 require_once("adodb/adodb.inc.php");
-require_once("adodb/adodb-exceptions.inc.php");
 
-// log every SQL call or SYS call to log file
-$logToFile = true;
-
-
+$logsql  = &Log::singleton('file', _Config_dvbgrab_log, 'sql', $logFileConf);
+$logsys  = &Log::singleton('file', _Config_dvbgrab_log, 'sys', $logFileConf);
 $DB = NewADOConnection(_Config_db_type);
-connect_db();
-
-if (_Config_auth_db_used == '1') {
-  $AuthDB = NewADOConnection(_Config_auth_db_type);
-  connect_auth_db();
-}
-
-
-function rappend($v, $w) {
-  $v .= "$w\n";
-  return $v;
+if (!$DB->Connect(_Config_db_host, _Config_db_user, _Config_db_pass, _Config_db_name)) {
+  print "Sorry, cannot connect to database";
+  exit;
 }
 
 function do_cmd($cmd) {
   global $logsys;
-  global $logToFile;
   exec($cmd, $output, $rVal);
+  function rappend($v, $w) {
+    $v .= "$w\n";
+    return $v;
+  }
   $outputStr = array_reduce($output,"rappend");
-  if ($logToFile) {
-    $logsys->log("SYS:\"$cmd\" returned $rVal and \n<output>\n$outputStr\n</output>");
-  }
+
+  $logsys->log("SYS:\"$cmd\" returned $rVal and \n<output>\n$outputStr\n</output>");
   return $outputStr;
-}
-
-function connect_db() {
-  global $DB;
-  global $logsql;
-  
-  if ($DB->IsConnected( )) {
-    // clean and reconnect
-    $DB->Close();
-    $DB = NewADOConnection(_Config_db_type);
-  }
-
-  while (!$DB->IsConnected( )) {
-    try {
-      if (!$DB->Connect(_Config_db_host, _Config_db_user, _Config_db_pass, _Config_db_name)) {
-        $logsql->log("Sorry, cannot connect to database");
-        sleep(300);
-      }
-    } catch (exception $e) {
-      $logsql->log("Exception during connect to database");
-      sleep(300);
-    }
-  }
-}
-
-function connect_auth_db() {
-  global $AuthDB;
-  global $logsql;
-
-  if ($AuthDB->IsConnected( )) {
-    // clean and reconnect
-    $AuthDB->Close();
-    $AuthDB = NewADOConnection(_Config_auth_db_type);
-  }
-
-  while (!$AuthDB->IsConnected( )) {
-    try {
-      if (!$AuthDB->Connect(_Config_auth_db_host, _Config_auth_db_user, _Config_auth_db_pass, _Config_auth_db_name)) {
-        $logsql->log("Sorry, cannot connect to external auth database");
-        sleep(300);
-      }
-    } catch (exception $e) {
-      $logsql->log("Exception during connect to external auth database");
-      sleep(300);
-    }
-  }
 }
 
 //-----------------------------------------------------------------
@@ -85,64 +30,13 @@ function connect_auth_db() {
 function do_sql($sql) {
   global $DB;
   global $logsql;
-  global $logToFile;
-  if ($logToFile) {
-    $logsql->log("SQL:\"".$sql."\"");
-  }
-
-  connect_db();
-
-  $tryCount = 0;
-  while (!$rs && $tryCount < 10) {
-    try {  
-      $rs = $DB->Execute($sql);
-      $tryCount++;
-
-      if (!$rs) {
-        handle_error("SQL: {$sql}[br]".$DB->ErrorMsg().": ".$DB->ErrorNo());
-        if (!$DB->IsConnected( )) {
-          connect_db();
-        }
-      }
-    } catch (exception $e) {
-      $logsql->log("Exception during SQL:\"".$sql."\"\n".$e->getMessage());
-      sleep(300);
-      connect_db();
+  $logsql->log("SQL:\"".$sql."\"");
+  if (!($rs = $DB->Execute($sql))) {
+    handle_error("SQL: {$sql}[br]".$DB->ErrorMsg().": ".$DB->ErrorNo());
+    if (!$DB->Connect(_Config_db_host, _Config_db_user, _Config_db_pass, _Config_db_name)) {
+      print "Sorry, cannot connect to database";
     }
-  }
-  return $rs;
-}
-
-//-----------------------------------------------------------------
-// executes a sql query
-function do_extern_sql($sql) {
-  global $AuthDB;
-  global $logsql;
-  global $logToFile;
-  
-  if ($logToFile) {
-    $logsql->log("ExternSQL:\"".$sql."\"");
-  }
-
-  connect_auth_db();
-
-  $tryCount = 0;
-  while (!$rs && $tryCount < 10) {
-    try {
-      $rs = $AuthDB->Execute($sql);
-      $tryCount++;
-
-      if (!$rs) {
-        handle_error("ExternSQL: {$sql}[br]".$DB->ErrorMsg().": ".$DB->ErrorNo());
-        if (!$AuthDB->IsConnected( )) {
-          connect_auth_db();
-        }
-      }
-    } catch (exception $e) {
-      $logsql->log("Exception during ExternSQL:\"".$sql."\"\n".$e->getMessage());
-      sleep(300);
-      connect_auth_db();
-    }
+    exit;
   }
   return $rs;
 }
@@ -225,12 +119,11 @@ function handle_error_by_email($err) {
  */
 function send_mail($to, $subject, $body) {
   $header = "From: "._Config_admin_email." \r\n";
-  $header .= "Content-Type: text/plain; charset=UTF-8; format=flowed\r\n";
-  $header .= "Content-Transfer-Encoding: 8bit\r\n";
+  $header .= "Content-Type: text/plain; charset=UTF-8\r\n";
   $header .= "Mime-Version: 1.0\r\n";
-  $header .= "Reply-To: "._Config_admin_email."\r\n";
+  $header .= "Content-Transfer-Encoding: 8bit\r\n";
 
-  mail($to, $subject, $body, $header,"-f"._Config_admin_email);
+  mail($to, $subject, $body, $header);
 }
 
 
@@ -244,7 +137,7 @@ function do_xml_grab($grb_id) {
             from grab g,television t,channel c
             where g.tel_id=t.tel_id
               AND t.chn_id=c.chn_id
-              AND g.grb_id=$grb_id";
+              AND g.grb_id=$grab_id";
     $rs = do_sql($SQL);
     $row = $rs->FetchRow();
     if (!$row) {

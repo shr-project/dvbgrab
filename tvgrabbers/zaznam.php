@@ -1,10 +1,11 @@
 #!/usr/bin/php -q
 <?php
 set_time_limit(18000);
-require_once("../../config.php");
-require_once("../../dolib.inc.php");
-require_once("../func.inc.php");
+require_once("../dolib.inc.php");
+require_once("funkce.inc.php");
 require_once("uget.inc.php");
+require_once("../config.php");
+require_once("../status.inc.php");
 
 //-----------------------------------------------------------------
 /**
@@ -68,39 +69,32 @@ function zaznam_tv($stanice_id, $day_offset)
         //NOTE: replace misto insert, protoze tvtip.tiscali.cz neni jistota
         $query = 'replace into television (chn_id, tel_date_start, tel_name, tel_desc) '
             ."values ('$stanice_id', ".$DB->DBTimeStamp($pdate).", '".sql_addslashes($nazev)."', '".sql_addslashes($popis)."')";
-        echo($query);
+        do_sql($query);
     }
 }
 
 //-----------------------------------------------------------------
-echo "<h2>Záznam televizního programu do databáze</h2><br><br>\n";
+echo "<h2>Záznam televizního programu do databáze</h2><br><br>";
 
 // jisty zacatek a konec dne v teleznim poradu
 $day_time_start = "08:00";
 $day_time_end = "23:00";
-
-$tv_days = getenv("tv_days");
-if (empty($tv_days)) {
-  $tv_days=10;
-}
 
 // zaznam televizni poradu na 0 dni zpatky a $tv_days+1 dni dopredu
 for ($day_offset = 0; $day_offset < $tv_days + 1; $day_offset++) {
     $time = time() + $day_offset * 24*3600;
     echo date("Y-m-d", $time)."<br/>\n";
 
-    $offset_day_time_start = $DB->DBTimeStamp(strtotime($day_time_start, $time));
-    $offset_day_time_end = $DB->DBTimeStamp(strtotime($day_time_end, $time));
-    echo "$offset_day_time_start\n";
-    echo "$offset_day_time_end\n";
+    $offset_day_time_start = strtotime($day_time_start, $time);
+    $offset_day_time_end = strtotime($day_time_end, $time);
     // vyber vsechny stanice, ktere na tento den nemaji zaznam
-    $query = "select ch.chn_id as stanice_id from channel ch left join television t on (ch.chn_id=t.chn_id "
-        ."and tel_date_start > $offset_day_time_start and tel_date_start < $offset_day_time_end) "
-        ."where t.chn_id is NULL";
+    $query = "select channel.chn_id as stanice_id from channel left join television "
+        ."on channel.chn_id = television.chn_id "
+        ."and UNIX_TIMESTAMP(tel_date_start) between $offset_day_time_start and $offset_day_time_end "
+        ."where television.chn_id is NULL";
     $dotaz_stanice = do_sql($query);
 
     while ($stanice = $dotaz_stanice->FetchRow()) {
-        echo $stanice['stanice_id'];
         zaznam_tv($stanice['stanice_id'], $day_offset);
     }
     $dotaz_stanice->close();

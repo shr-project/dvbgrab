@@ -10,7 +10,6 @@ require_once("authentication.php");
   $menu[] =_MsgMenuPlanAccount;
   $menu[] =" ";
   $menu[] =_MsgMenuEmailUs;
-  $menu[] ="SourceForge";
   $menu[] =_MsgMenuNews;
 	
   $link[1]="tvprog.php";
@@ -20,7 +19,6 @@ require_once("authentication.php");
   $link[] ="account.php?action=edit";
   $link[] ="";
   $link[] ="mailto:"._Config_admin_email;
-  $link[] ="http://dvbgrab.sourceforge.net";
   $link[] ="news.php";
 ?>
 
@@ -29,13 +27,12 @@ require_once("authentication.php");
 // hodnotu $menuitem predava skript, ktery tento soubor includuje
   for ($i=1; $i<=count($menu); $i++) {
     if ($i == $menuitem) {
-      $class="menuitem_act";
+      echo '<p class="menuitem_act">';
     } else {
-      $class="menuitem";
+      echo '<p class="menuitem">';
     }
-    echo '<p class="'.$class.'">';
-    if (authenticated($_COOKIE["usr_id"], $_COOKIE["usr_pass"]) || $i>=7) {
-      echo ($menu[$i] == " ")?"&nbsp;":"<a class=\"$class\" href=\"$link[$i]\">::&nbsp;$menu[$i]&nbsp;::</a>\n";
+    if (authenticated($_COOKIE["usr_id"], $_COOKIE["usr_pass"])) {
+      echo ($menu[$i] == " ")?"&nbsp;":"<a class=\"menuitem\" href=\"$link[$i]\">::&nbsp;$menu[$i]&nbsp;::</a>\n";
     } else {
       echo ($menu[$i] == " ")?"&nbsp;":"<i>::&nbsp;$menu[$i]&nbsp;::</i>\n";
     }

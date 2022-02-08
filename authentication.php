@@ -1,85 +1,25 @@
 <?php
 require_once("language.inc.php");
 require_once("dolib.inc.php");
-require_once("loggers.inc.php");
 
 // autentizuje uzivatele
 function authenticated($usr_id, $usr_pass_md5) {
-  if (_Config_auth_db_used == '1') {
-    $SQL = "select usr_name from userinfo where usr_id=".(int)$usr_id;
-    $rs = do_sql($SQL);
-    if ($row = $rs->FetchRow()) {
-      $usr_name = $row[0];
-      if (autenticatedExistExtern($usr_name)) {
-        if (authenticatedExtern($usr_name,$usr_pass_md5)) {
-          return true;
-        }
-      }
-      if (_Config_auth_db_used_only == '1') {
-        return false;
-      }
-    } else {
-      return false; // uzivatel s usr_id vubec neexistuje
-    }
-  }
-
-  $SQL = "select usr_id from userinfo
+  $SQL = "select usr_id from usergrb
           where usr_id=".(int)$usr_id." and
-            usr_pass='$usr_pass_md5'";
+            md5(usr_pass)='$usr_pass_md5'";
   $rs = do_sql($SQL);
   return ($rs->recordCount() == 1);
 }
-
-function authenticatedExtern($usr_name,$usr_pass_md5) {
-  $SQL = str_replace('dvbgrab_username',$usr_name,_Config_auth_db_select);
-  $SQL = str_replace('dvbgrab_password',$usr_pass_md5,$SQL);
-  $rs = do_extern_sql($SQL);
-  return ($rs->recordCount() == 1);
-}
-
-function autenticatedExistExtern($usr_name) {
-  $SQL = str_replace('dvbgrab_username',$usr_name,_Config_auth_db_user_select);
-  $rs = do_extern_sql($SQL);
-  // uzivatel existuje tudiz se musi overovat tam
-  return ($rs->FetchRow()); 
-}
-
-function authenticatedUser($usr_name,$usr_pass_md5) {
-  global $logdbg;
-  if (_Config_auth_db_used == '1') {
-    if (autenticatedExistExtern($usr_name)) {
-      $logdbg->log($usr_name." exists in external database");
-      if (authenticatedExtern($usr_name,$usr_pass_md5)) {
-        $logdbg->log($usr_name." password good");
-        return true;
-      }
-    }
-    if (_Config_auth_db_used_only == '1') {
-      return false;
-    }
-  }
-  $SQL = "select usr_id from userinfo
-            where usr_name='$usr_name' and
-              usr_pass='$usr_pass_md5'";
-  $rs = do_sql($SQL);
-  $logdbg->log($usr_name." locally ".($rs->recordCount() == 1));
-  return ($rs->recordCount() == 1);
-}
-
 
 // naloguje uzivatele
-function login($usr_name, $usr_pass_md5) {
-  global $logdbg;
-  if (authenticatedUser($usr_name,$usr_pass_md5)) {
-    $logdbg->log("Setting cookies");
-    $SQL = "select usr_id from userinfo
-              where usr_name='$usr_name'";
-    $rs = do_sql($SQL);
-    $row = $rs->FetchRow();
-    $usr_id = $row[0];
-
-    setcookie("usr_id", $usr_id, time()+60*60*24*365*2);
-    setcookie("usr_pass", $usr_pass_md5, time()+60*60*24*365*2);
+function login($usr_name, $usr_pass) {
+  $SQL = "select usr_id from usergrb 
+          where usr_name='$usr_name' and
+            usr_pass='$usr_pass'";
+  $rs = do_sql($SQL);
+  if ($row = $rs->FetchRow()) {
+    setcookie("usr_id", $row[0], time()+60*60*24*365*2);
+    setcookie("usr_pass", md5($usr_pass), time()+60*60*24*365*2);
     return true;
   } else {
     return false;

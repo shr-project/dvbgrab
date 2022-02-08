@@ -8,9 +8,6 @@ require_once("header.php");
 
 echo "<h2>"._MsgIndex."</h2>\n";
 echo "<p>"._MsgIndexP1."</p>\n";
-echo "<p>"._MsgIndexP3."</p>\n";
-echo "<p class=\"warning\">"._MsgIndexPW1."</p>\n";
-echo "<p class=\"warning\">"._MsgIndexPW3."</p>\n";
 
 if ($usr_name != "" && !isset($_GET["msg"])) {
   echo "<p><b>"._MsgAccountLogged." $usr_name</b></p>";
@@ -26,6 +23,13 @@ if (!authenticated($_COOKIE["usr_id"], $_COOKIE["usr_pass"])) {
   echo _MsgAccountRegistrationTitle."<br />\n";
   printUserRegistration(false,null);
   echo '</div>';
+?>
+  <script type="text/javascript">
+  <!--
+    document.login.usr_name.focus();
+  //-->
+  </script>
+<?php
 } else {
   require_once("news.php");
 }

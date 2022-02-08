@@ -4,7 +4,6 @@ require_once("dolib.inc.php");
 require_once("const.php");
 require_once("config.php");
 require_once("language.inc.php");
-$menuitem=5;
 require_once("header.php");
 require_once("account.inc.php");
 switch ($_GET["action"]) {
@@ -15,15 +14,14 @@ switch ($_GET["action"]) {
     break;
   case "editDo":
     $usr_email=$_POST["usr_email"];
-    $usr_pass1=$_POST["usr_pass1"];
-    $usr_pass2=$_POST["usr_pass2"];
+    $usr_pass=$_POST["usr_pass1"];
     $usr_icq=$_POST["usr_icq"];
     $usr_jabber=$_POST["usr_jabber"];
     $usr_ip=$_POST["usr_ip"];
     $usr_enc_id=(int)$_POST["usr_enc_id"];
 
     $SQL = "select usr_id, usr_name, usr_email, usr_pass, usr_icq, usr_jabber, usr_ip, enc_id
-            from userinfo u 
+            from usergrb u 
             where usr_id=$usr_id";
     $msg = _MsgAccountChanges."\n";
           
@@ -38,24 +36,11 @@ switch ($_GET["action"]) {
     $old_usr_enc_id=$row[7];
 
     $changed = false;
-    $SQL = "update userinfo set ";
-    $usr_pass=md5($usr_pass1);
-    if ($usr_pass1 != "" && $old_usr_pass != $usr_pass) {
-      if (_Config_auth_db_used == '1' && autenticatedExistExtern($usr_name)) {
-        echo '<span class="warning">'._MsgAccountPassExternAuthNoChange."</span>\n";
-        break;
-      } else {
-        // zkontrolujeme, zda obe zadana hesla jsou totozna
-        if ($usr_pass2 != $usr_pass1) {
-          echo '<span class="warning">'._MsgIndexRegFailPass."</span>\n";
-          return;
-        }
-        $SQL .= "usr_pass = '$usr_pass'";
-        $SQL .= ", ";
-        $SQL .= "usr_last_update = ".$DB->DBTimeStamp(time());
-        $changed = true;
-        $msg .= _MsgAccountPass." $old_usr_pass -> $usr_pass1\n";
-      }
+    $SQL = "update usergrb set ";
+    if ($usr_pass != "" && $old_usr_pass != $usr_pass) {
+      $SQL .= "usr_pass = '$usr_pass'";
+      $changed = true;
+      $msg .= _MsgAccountPass." $old_usr_pass -> $usr_pass\n";
     }
     if ($old_usr_email != $usr_email) {
       if ($changed) {
@@ -86,8 +71,6 @@ switch ($_GET["action"]) {
         $SQL .= ", ";
       }
       $SQL .= "usr_ip = '$usr_ip'";
-      $SQL .= ", ";
-      $SQL .= "usr_last_update = ".$DB->DBTimeStamp(time());
       $changed = true;
       $msg .= _MsgAccountIp." $old_usr_ip -> $usr_ip\n";
       $msg .= _MsgAccountChangeIpNotice."\n";
@@ -112,9 +95,8 @@ switch ($_GET["action"]) {
     if ($changed) {
       $SQL.= " where usr_id=$usr_id";
       do_sql($SQL);
-      send_mail($usr_email, "DVBgrab: "._MsgAccountChangesSubject, $msg);
+      mail($usr_email, "DVBgrab: "._MsgAccountChangesSubject, $msg, "From: "._Config_admin_email."\r\n");
       echo _MsgAccountChangesNotice."<br />\n";
-      echo str_replace("\n","<br />",$msg)."<br />\n";
       echo "<a href=\"index.php\">"._MsgGlobalBack."</a></br>\n";
     } else {
        echo _MsgAccountNoChangesNotice."<br />\n";
@@ -122,33 +104,6 @@ switch ($_GET["action"]) {
        echo "<a href=\"account.php?action=edit\">"._MsgGlobalRetry."</a></br>\n";
     }
     echo "</div>\n";
-    break;
-  case "removeAccount":
-    $SQL = "select usr_id, usr_name, usr_email, usr_pass, usr_icq, usr_jabber, usr_ip, enc_id
-            from userinfo u
-            where usr_id=$usr_id";
-    $rs = do_sql($SQL);
-    $row = $rs->FetchRow();
-    if (!$row) {
-      echo _MsgAccountNoChangesNotice."<br />\n";
-      return;
-    }
-    $SQL = "delete from userreq where usr_id=$usr_id";
-    do_sql($SQL);
-    $SQL = "delete from userinfo where usr_id=$usr_id";
-    do_sql($SQL);
-    
-    // posleme email
-    $msg = _MsgBackendAccountCleanedSub."\n";
-    $msg .= _MsgAccountLogin." ".$row[1]."\n";
-    $msg .= _MsgAccountEmail." ".$row[2]."\n";
-    $msg .= _MsgAccountIcq." ".$row[4]."\n";
-    $msg .= _MsgAccountJabber." ".$row[5]."\n";
-    $msg .= _MsgAccountIp." ".$row[6]."\n";
-    send_mail($row[2], _MsgBackendAccountCleanedSub, $msg);
-
-    echo _MsgBackendAccountCleanedSub."<br />\n";
-    //logout();
     break;
 }
 require_once("footer.php");

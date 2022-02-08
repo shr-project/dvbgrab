@@ -21,8 +21,6 @@ define("_MsgIndexRegFailData","Chyba registrace: Je nutné zadat jméno, heslo a
 define("_MsgIndexRegFailEmail","Chyba registrace: Nesprávný formát emailové adresy.");
 define("_MsgIndexRegFailPass","Chyba registrace: Zadaná hesla se neshodují.");
 define("_MsgIndexRegFailName","Chyba registrace: Uživatel s tímto přihlašovacím jménem již existuje, zvolte prosím jiné!");
-define("_MsgIndexLogFailExtern","Chyba při ověřování uživatele v externí databázi. Zadaná špatná kombinace jména a hesla.");
-define("_MsgIndexLogFailExternName","Chyba při ověřování uživatele v externí databázi. Zadáno neexistující jméno.");
 define("_MsgIndexRegOk","byl úspěšně zaregistrován.");
    
 define("_MsgConstsMonday","pondělí");
@@ -103,13 +101,12 @@ define("_MsgAccountRegistrationFormTitle","Registrace");
 define("_MsgAccountRegisterButton","Registrovat");
 define("_MsgAccountChangeButton","Změnit");
 define("_MsgAccountLoginButton","Přihlásit");
-define("_MsgAccountRemove","Úplně zrušit účet a všechny jeho graby");
 
 define("_MsgAccountChangeFormTitle","Nastavení účtu");
 define("_MsgAccountLogin","Přihlašovací jméno:");
+define("_MsgAccountUsername","Přihlašovací jméno:");
 define("_MsgAccountPass","Heslo:");
 define("_MsgAccountPass2","Zopakovat heslo:");
-define("_MsgAccountPassExternAuthNoChange","Heslo u externě ověřovaných uživatelů nelze tady měnit");
 define("_MsgAccountEmail","E-mail:");
 define("_MsgAccountEmailWarning","E-mail vyplňte správný, na tuto adresu Vám budou chodit oznámení o grabu a odkazy na stažení!");
 define("_MsgAccountIp","IP pro stahování:");
@@ -120,7 +117,7 @@ define("_MsgAccountEncoder","Video kodek:");
 define("_MsgAccountChanges","Na stránkách DVBgrabu byly vyžádány nějaké změny v nastavení účtu:");
 define("_MsgAccountChangeIp","požaduje změnu stahovací IP:");
 define("_MsgAccountChangeIpSubject","požadavek na změnu IP");
-define("_MsgAccountChangeIpNotice","E-mail informující o evidenci požadavku na změnu IP pro stahování byl odeslán. Změna se neprojeví okamžitě, až bude změna provedena bude zaslán druhý e-mail potvrzující provedení změny.");
+define("_MsgAccountChangeIpNotice","Změna IP adresy pro stahování se neprojeví okamžitě, až bude změna provedena bude zaslán potvrzující email");
 define("_MsgAccountChangesSubject","změny v nastavení účtu");
 define("_MsgAccountChangesNotice","Požadované změny byly uloženy a odeslán informační mail.");
 define("_MsgAccountNoChangesNotice","Nebyla zadána žádná změna.");
@@ -196,7 +193,6 @@ define("_MsgSendPassNotice1","Heslo uživatele");
 define("_MsgSendPassNotice2","bylo posláno na mail");
 
 define("_MsgSetupChangedOk","Konfigurace v souboru config.php byla úspěšně uložena");
-define("_MsgSetupCronList","Následující text vložte do konfigurace cron démona (crontab -e)");
 define("_MsgSetupWelcome","Vítejte v konfiguračním rozhraní pro projekt DVB grab");
 define("_MsgSetupText","Všechna nastavení se ukládají do souboru config.php. Proto by tento soubor měl být přepisovatelný vlastníkem a po nastavení čitelný jenom vlastníkem. Před upravováním proto spusťte configure.sh a potom secure.sh. Stejny config.php je pak třeba překopírovat do adresáře backend, který se přesune na grabovací stroj.");
 define("_MsgSetupValue","Hodnota");
@@ -206,12 +202,7 @@ define("_MsgSetupDbType","Typ databázového stroje, k dispozici je díky AdoDB:
 define("_MsgSetupDbHost","Název počítače, kde poběží databázový stroj");
 define("_MsgSetupDbUser","Jméno uživatele, jak se budeme přihlašovat do databáze");
 define("_MsgSetupDbPass","Heslo s jakym se budeme přihlašovat do databáze");
-define("_MsgSetupAuth","Dotazy do externí databáze pro ověřování uživatelů. Registrace poté ověří zda takový uživatel existuje v externí databázi a poté není heslo ukládáno lokálně v databázi dvbgrabu, ale používá se vždy z externí.");
-define("_MsgSetupAuthDbUsed","Používat externí databázi nebo ukládat uživatele i s heslem do vlastní userinfo tabulky (0 nepoužít, 1 použít");
-define("_MsgSetupAuthDbUsedOnly","Povolit registraci a používání DVBgrabu POUZE uživatelům z externí databáze (0 ne, 1 ano)");
-define("_MsgSetupAuthDbSelect","SQL dotaz na uživatele, v tomto řetězci se nahradí 2 řetězce dvbgrab_username je nahrazeno zadaným uživatelským jménem a dvbgrab_password je md5 zadaného hesla."); 
-define("_MsgSetupAuthDbUserSelect","SQL dotaz na uživatele, jestli existuje, v tomto řetězci se nahradí pouze dvbgrab_username."); 
-define("_MsgSetupErrorStatus","Množství informací o vzniklé chybě:");
+define("_MsgSetupErrorStatus","Množství informací o vzniké chybě:");
 define("_MsgSetupErrorStatus0","* 0 - Každá chyba je vypsána do stránky");
 define("_MsgSetupErrorStatus1","* 1 - Každá chyba je odeslána na chybový email");
 define("_MsgSetupErrorStatus2","* 2 - Každá chyba je ignorována. Toto je výchozí nastavení");
@@ -238,7 +229,7 @@ define("_MsgSetupSubmitButton","Nastavit");
 define("_MsgSetupTvgDesc","Stahovače televizních programů");
 define("_MsgSetupTvgName","Jméno");
 define("_MsgSetupTvgEnabled","Povolen?");
-define("_MsgSetupTvgRunAt","Kdy spouštět cronem");
+define("_MsgSetupTvgRunAt","Kdy souštět cronem");
 define("_MsgSetupTvgRun","Příkaz");
 define("_MsgSetupTvgNew","Nový");
 define("_MsgSetupTvgFailed","Přidání nového stahovače selhalo, pravděpodobně nebyl zadán kompletně.");
@@ -248,19 +239,13 @@ define("_MsgSetupGrabBackendLang","Jazyk používaný v backend skriptech (cs,en
 define("_MsgSetupBackendStripDiacritics","1 pokud se má zkoušet použít název pořadu bez diakritiky jako název grabu a 0 pokud se má použít tel_id");
 define("_MsgSetupUserInactivityLimit","Po kolika dnech neaktivity bude uživatelský účet zrušen");
 
-define("_MsgBackendGrabError","se nepodařilo uložit");
-define("_MsgBackendGrabErrorSub","DVBgrab: Nepodařené nahrávání");
-define("_MsgBackendEncodeError","se nepodařilo zkomprimovat");
-define("_MsgBackendEncodeErrorSub","DVBgrab: Nepodařené komprimování");
-define("_MsgBackendSuccess","je připravený ke stažení");
-define("_MsgBackendSuccessSub","DVBgrab: Hotový grab");
+define("_MsgBackendGrabError","se nepodarilo ulozit");
+define("_MsgBackendGrabErrorSub","DVBgrab: Nepodarene nahravani");
+define("_MsgBackendEncodeError","se nepodarilo zkomprimovat");
+define("_MsgBackendEncodeErrorSub","DVBgrab: Nepodarene komprimovani");
+define("_MsgBackendSuccess","je pripraveny ke stazeni");
+define("_MsgBackendSuccessSub","DVBgrab: Hotovy grab");
 define("_MsgBackendGrabList","Seznam grabu za");
-define("_MsgBackendAccountCleaned","Uživatelský účet byl zrušen. Počet dnů neaktivity po kterém se účty ruší:");
-define("_MsgBackendAccountCleanedSub","Uživatelský účet byl zrušen");
-define("_MsgBackendAccountUpdated","Požadované změny v nastavení uživatelského účtu byly provedeny");
-define("_MsgBackendAccountUpdatedSub","Aktualizace uživatelského účtu");
-define("_MsgBackendFilesizeWarningSize","Na disku pro uchovávání grabů dochází místo, začínají se mazat i graby, které by ještě měli zůstat dostupné");
-define("_MsgBackendFilesizeWarningSizeSub","Není místo na disku pro graby");
 
 define("_MsgXmlTvFormatErrorNoChn","Nenalezen odpovídající televizní kanál");
 define("_MsgXmlTvFormatErrorManyChn","Odpovídá více televizním kanálům");
@@ -273,4 +258,12 @@ define("_MsgXmlTvInserted","Vložen");
 define("_MsgXmlTvUpdated","Změněn");
 define("_MsgXmlTvSuccess","Tv program úspěšně aktualizován");
 define("_MsgXmlTvFailed","Tv program aktualizován s chybami");
+
+define("_MsgNews1","Opraveno/Přidáno vyhledávání v plánovaných grabech (Velmi užitecné pro grabovače seriálů ;-))");
+define("_MsgNews2","Omezeno zobrazovaní hotových grabů na posledních 100 zaznamů, to samé pro zobrazení mých grabů.");
+define("_MsgNews3","Přidána možnost nechat si poslat nové vygenerované heslo.");
+define("_MsgNews4","Přidána volba \"Nastavení\", pro úpravy uživatelských účtů.");
+define("_MsgNews5","Registrován jubilejní 100. uživatel. Bohužel vůbec nic nevyhrává protože má plnou mailovou schránku.:-P");
+define("_MsgNews6","Přidána možnost zadávat graby rovnou z vyhledávací stránky.");
+define("_MsgNews7","Opravy několika chyb, přidání nových funkcí, změny textů a <a href=\"anketa.php\">anketa.</a>");
 ?>

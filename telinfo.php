@@ -16,16 +16,7 @@ if (empty($tel_id)) {
   return "";
 }
 
-$SQL = "select enc_codec, 
-          req_output, 
-          req_output_md5, 
-          req_output_size, 
-          req_status 
-        from request r
-          left join encoder e using (enc_id)
-          left join grab g using (grb_id)
-          left join television t using (tel_id)
-        where t.tel_id=$tel_id";
+$SQL = "select distinct(enc_codec), req_output, req_output_md5, req_output_size, req_status from request r,encoder e,television t,grab g where g.tel_id=t.tel_id and r.grb_id=g.grb_id and t.tel_id=$tel_id and r.enc_id=e.enc_id order by e.enc_codec";
 $rs = do_sql($SQL);
 $req_outputs = array();
 while ($row = $rs->FetchRow()) {
@@ -33,11 +24,11 @@ while ($row = $rs->FetchRow()) {
   if (!empty($filename)) {
     $pos = strrpos($filename, "/");
     if ($pos !== false) {
-      $filename = substr($filename,$pos+1);
+      $filename = substr($filename,$pos);
     }
   }
   $req_output = array("filename" => $filename,
-                      "size" => $row[3]/(1024),
+                      "size" => $row[3]/(1024 * 1024),
                       "md5" => $row[2],
                       "enc" => $row[0],
                       "status" => $row[4]);
@@ -54,9 +45,7 @@ $SQL = "select t.tel_name,
           t.tel_date_end,
           g.grb_date_start,
           g.grb_date_end
-        from television t 
-             left join grab g using (tel_id ) 
-             left join channel c using (chn_id )
+        from television t left join grab g on (g.tel_id = t.tel_id) natural join channel c
         where t.tel_id=$tel_id";
 $rs = do_sql($SQL);
 $row = $rs->FetchRow();

@@ -25,15 +25,15 @@ function uget($id, $offset) {
 
     //-----------------------------------------------------------------
 
-    if (_Config_proxy_server != "") {
-      $fp = fsockopen(_Config_proxy_server, $proxy_port, &$errno, &$errstr, 5);
+    if ($proxy_server != "") {
+      $fp = fsockopen($proxy_server, $proxy_port, &$errno, &$errstr, 5);
       fputs($fp, 'GET '.$path." HTTP/1.0\n\n");
     } else {
       $fp = fopen($path, "r");
     }
     if (!$fp) {
         echo '$errstr ($errno)<br>';
-        if (_Config_proxy_server != "")
+        if ($proxy_server != "")
           echo '<br>!nejede proxy!<br>';
         else
           echo '<br>!nejede www!<br>';

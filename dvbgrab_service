@@ -8,12 +8,10 @@
 # processname:	encode_loop,grab_loop
 #
 
-DVBGRAB_HOME=/var/www/html/dvbgrab/backend
+DVBGRAB_HOME=/var/lib/dvbgrab
 DVBGRAB_USER=dvbgrab
 GRABLOOP=$DVBGRAB_HOME/grab_loop.php
 ENCODELOOP=$DVBGRAB_HOME/encode_loop.php
-PRINTQUEUE=$DVBGRAB_HOME/encode_queue_print.php
-RESTOREQUEUE=$DVBGRAB_HOME/encode_queue_restore.php
 LOCKFILE_G=$DVBGRAB_HOME/grab_loop.running
 LOCKFILE_E=$DVBGRAB_HOME/encode_loop.running
 STORAGE=/pub/grab/
@@ -27,93 +25,62 @@ status() {
     [ $RETVAL -eq 0 ] || echo "$1 is stopped"
 }
 
-start_grab() {
+start() {
     echo -n $"Starting DVBgrab grab loop: "
     sh -c "$GRABLOOP >/dev/null 2>&1 & disown"
-    RETVAL=$?
-    [ $RETVAL -eq 0 ] || echo "[FAILED}" && echo "[OK]" && touch "$LOCKFILE_G"
-}
-start_encode() {
+    RETVALG=$?
+    echo
+    [ $RETVALG -eq 0 ] && touch "$LOCKFILE_G"
+
+
     rm -f "$STORAGE/frameno.avi"
-    $RESTOREQUEUE >/dev/null
     echo -n $"Starting DVBgrab encode loop: "
     sh -c "$ENCODELOOP >/dev/null 2>&1 & disown"
-    RETVAL=$?
-    [ $RETVAL -eq 0 ] || echo "[FAILED}" && echo "[OK]" && touch "$LOCKFILE_E"
+    RETVALE=$?
+    echo
+    [ $RETVALE -eq 0 ] && touch "$LOCKFILE_E"
+    RETVAL=`expr $RETVALE + $RETVALG`
 }
 
-stop_grab() {
+stop() {
     echo -n $"Stopping DVBgrab grab loop: "
     killall -u $DVBGRAB_USER `basename "$GRABLOOP"`   > /dev/null 2> /dev/null
     killall -u $DVBGRAB_USER grab_process.php         > /dev/null 2> /dev/null
     killall -u $DVBGRAB_USER dumprtp                  > /dev/null 2> /dev/null
-
     rm -f "$LOCKFILE_G";
-    RETVAL=0
-    [ $RETVAL -eq 0 ] || echo "[FAILED}" && echo "[OK]"
-}
-stop_encode() {
+    echo
+    
     echo -n $"Stopping DVBgrab encode loop: "
     killall -u $DVBGRAB_USER `basename "$ENCODELOOP"` > /dev/null 2> /dev/null
     killall -u $DVBGRAB_USER encode_process.php       > /dev/null 2> /dev/null
     killall -u $DVBGRAB_USER mencoder                 > /dev/null 2> /dev/null
-    $RESTOREQUEUE >/dev/null
 
     rm -f "$LOCKFILE_E"
+    echo
     RETVAL=0
-    [ $RETVAL -eq 0 ] || echo "[FAILED}" && echo "[OK]"
 }
 
 
 # See how we were called.
 case "$1" in
     start)
-	start_grab
-	RETVAL=$? 
-	start_encode
-	RETVAL=`expr $RETVAL + $?` 
+	start
 	;;
     stop)
-	stop_grab
-	RETVAL=$? 
-	stop_encode
-	RETVAL=`expr $RETVAL + $?` 
+	stop
 	;;
     status)
         status `basename "$GRABLOOP"`
 	RETVAL=$? 
         status `basename "$ENCODELOOP"`
 	RETVAL=`expr $RETVAL + $?` 
-        $PRINTQUEUE
         ;;
     restart)
-	stop_grab
-        stop_encode
-	start_grab
-        start_encode
-	;;
-    startg)
-	start_grab
-	;;
-    starte)
-	start_encode
-	;;
-    stopg)
-	stop_grab
-	;;
-    stope)
-	stop_encode
-	;;
-    restartg)
-	stop_grab
-	start_grab
-	;;
-    restarte)
-	stop_encode
-	start_encode
+	stop
+	start
 	;;
     *)
-	echo $"Usage: `basename "$0"` {start[eg]|stop[eg]|restart[eg]|status"
+	echo $"Usage: `basename "$0"` {start|stop|status|restart}"
 	;;
 esac
 exit $RETVAL

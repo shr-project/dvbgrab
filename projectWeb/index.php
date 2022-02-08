@@ -3,6 +3,7 @@ require_once("header.php");
 
 echo "<h2>Welcome on DVBgrab pages.</h2>\n";
 echo "<p>DVBgrab is a web-based application allowing registered users to request any tv show to record. When it's done download link is sent to user's e-mail. Tv schedule is from XMLTV, tv stream is saved with dumprtp and encoding is provided with mencoder.</p>\n";
+echo "<p>Some information as my diploma thesis <a href=\"dp.pdf\">czech</a> and <a href=\"dp_en.pdf\">english</a> version.</p>\n";
 
 ?>
 Stable version is dvbgrab-1.0<br />

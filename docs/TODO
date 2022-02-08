@@ -1,4 +1,30 @@
 DVBgrab TODO:
-1) Uzivatelske ucty pro ftp, pokud demonu staci pro definici uzivatele jmeno + md5
-2) Obhajit jako DP
-3) Analyzovat hlavicky prijímaného toku dat. Televize vysila informace o presném casu zacátku a konci poradu. Kdyby se informace získaná z televizního programu dostupného na internetu korigovala podle techto hlavicek, nebylo by treba spoustit nahrávání nekolik minut predem a ukoncovat nekolik minut pozdeji. Podle zástupce Czech Digital Group jsou prý tyto údaje uz dostupné. Pokud jim televize údaje dodá, tak je pouze prevedou do formátu vhodného pro EIT (Event Interface Table) a ulozí do toku dat.
+1) Ruseni uzivatelskych uctu i bez pristupu na stranky projektu (treba mailem na $adminEmail)
+  wrap grabActions in a function
+  remove duplicities between search.php and tvprog.php
+
+  Optimilizovat dotazy,
+    napr. volani funkce na kazdy radek,
+    viz. 'date_add(column, interval) < now()'
+    - zaroven zarucit nezavislost na mysql
+
+  zaznam.php je mozno presunout do backend/
+
+
+2) Locale z prohlizece by melo prepinat jazyk v language.inc.php, zmenitelne ikonou na webu a uchovavat v cookie
+3) Zajistit konverzi dat z/do mysql z kodovani mysql do UTF-8, pro pripad ze bude web prepnuty treba do japonstiny to bude nutne
+4) Modularizace nacitani TV programu
+   - registrovani programu (jmeno,ikona,poradi,nacitaci funkce)
+   - registrovani nacitaci funkce (seznam poradu, ktere umi nacitat, parametrem bude ktere ma skutecne nacist do db)
+5) Udrzba dat v backendu, mazani podle stari grabu, podle zaplnenosti a reakce na dochazejici misto, mazani i linku a oznacovani nefunkcnich odkazu do requestu jako smazane a posilani mailu o smazani, jednou denne projit web root a smazat neexistujici uzivatelske ucty, pregenerovat stahovaci IP
+6) Uprava odkazu na webu pro grabovani (nejak nazorneji) 'grabovat','taky grabovat','do TS','do MPEG4'
+7) Prohnat cely web validatorem a upravit problemy
+8) Analyzovat hlavicky prijímaného toku dat. Televize vysila informace o presném casu zacátku a konci poradu. Kdyby se informace získaná z televizního programu dostupného na internetu korigovala podle techto hlavicek, nebylo by treba spoustit nahrávání nekolik minut predem a ukoncovat nekolik minut pozdeji. Podle zástupce Czech Digital Group jsou prý tyto údaje uz dostupné. Pokud jim televize údaje dodá, tak je pouze prevedou do formátu vhodného pro EIT (Event Interface Table) a ulozí do toku dat.
+9) pri requestu/loginu aktualizovat aktivitu uzivatele, uzivatele se starsi aktivitou mazat
+9) uverejnit na sourceforge ;-)
+10) obhajit jako DP
+
+pri ukladani do userdiru kontrolovat allow na usr_ip
+status u mygrabu 'undefined', 'scheduled', 'done', 'missed', 'deleted', 'error', 'saving', 'saved', 'encoding', 'encoded'
+clean na stare graby + misto
+

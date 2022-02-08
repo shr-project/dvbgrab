@@ -45,7 +45,7 @@ switch ($_GET["action"]) {
           $usr_email=$_POST["usr_email"];
     
           $SQL = "select usr_id, usr_name, usr_email 
-                         from userinfo u 
+                         from usergrb u 
                          where usr_name='$usr_name' and usr_email='$usr_email'";
           $rs = do_sql($SQL);
           $rowCount = $rs->RecordCount();
@@ -56,17 +56,13 @@ switch ($_GET["action"]) {
             echo "<a href=\"sendPass.php?action=sendPassword\">"._MsgGlobalRetry."</a>";
             echo "</div>";
           } else {
-            if (_Config_auth_db_used == '1' && autenticatedExistExtern($usr_name)) {
-              echo _MsgAccountPassExternAuthNoChange."\n";
-              return;
-            }
             $row = $rs->FetchRow();
             $usr_id = $row[0];
             $user = $row[1];
             $mail = $row[2];
             $newPass=get_rand_id(10);
-            $newPassMD5=md5($newPass);
-            $SQL = "update userinfo set usr_pass='$newPassMD5' where usr_id=$usr_id";
+            $SQL = "update usergrb set usr_pass='$newPass'
+                    where usr_id=$usr_id";
             do_sql($SQL);
             $msg = _MsgSendPassEmailStart."\n";
             $msg .= "username: $user\n";

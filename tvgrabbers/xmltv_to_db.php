@@ -2,8 +2,9 @@
 <?php
 require_once "../dolib.inc.php";
 require_once "../config.php";
-require_once "func.inc.php";
+require_once "funkce.inc.php";
 require_once("../lang/lang."._Config_grab_backend_lang.".inc.php");
+
 
 $ok = true;
 $globalOk = true;
@@ -21,8 +22,6 @@ $tel_part = "";
 $tag_name = "";
 $tel_ep_string = "";
 $tel_date_start_raw = "";
-
-$body = "";
 
 function parseDate($date, $offset=0) {
   global $DB;
@@ -83,48 +82,42 @@ function stripSpaces($string) {
 function startElement($parser, $name, $attrs) 
 {
   global $DB, $chn_id, $chn_xmltv_id, $tel_date_start, $tel_date_end, $tel_date_start_raw, $ok, $tag_name, $tel_typ;
-  global $body;
   //echo $name;
   if ($name == "PROGRAMME") {
+/*
     foreach ($attrs as $k => $v) {
-      switch($k) {
-        case "CHANNEL": 
-          $attr = $v;
-          if (!empty($attr)) {
-            $chn_xmltv_id=$attr;
-            $rs=do_sql("SELECT chn_id FROM channel WHERE chn_xmltv_name='$attr'");
-            if ($rs->RecordCount() == 1) {
-              $row=$rs->FetchRow();
-              $chn_id = $row[0];
-            } else if ($rs->RecordCount() == 0) {
-              $ok = false;
-              $body .= _MsgXmlTvFormatErrorNoChn."\n";
-            } else {
-              $ok = false;
-              $body .= _MsgXmlTvFormatErrorManyChn."\n";
-            }
-          } else {
-            $ok = false;
-            $body .= _MsgXmlTvFormatErrorNoneChn."\n";
-          }
-          break;
-        case "START":
-          $attr = $v;
-          if ($attr) {
-            $tel_date_start = parseDate($attr);
-            $tel_date_start_raw = $attr;
-          } else {
-            $ok = false;
-            $body .= _MsgXmlTvFormatErrorNoDateStart."\n";
-          }
-          break;
-        case "STOP":
-          $attr = $v;
-          if ($attr) {
-            $tel_date_end = parseDate($attr);
-          }
-          break;
+      echo "$k => $v\n";
+    }
+*/
+    $attr = $attrs["CHANNEL"];
+    if (!empty($attr)) {
+      $chn_xmltv_id=$attr;
+      $rs=do_sql("SELECT chn_id FROM channel WHERE chn_xmltv_name='$attr'");
+      if ($rs->RecordCount() == 1) {
+        $row=$rs->FetchRow();
+        $chn_id = $row[0];
+      } else if ($rs->RecordCount() == 0) {
+        $ok = false;
+        echo _MsgXmlTvFormatErrorNoChn."\n";
+      } else {
+        $ok = false;
+        echo _MsgXmlTvFormatErrorManyChn."\n";
       }
+    } else {
+      $ok = false;
+      echo _MsgXmlTvFormatErrorNoneChn."\n";
+    }
+    $attr = $attrs["START"];
+    if ($attr) {
+      $tel_date_start = parseDate($attr);
+      $tel_date_start_raw = $attr;
+    } else {
+      $ok = false;
+      echo _MsgXmlTvFormatErrorNoDateStart."\n";
+    }
+    $attr = $attrs["STOP"];
+    if ($attr) {
+      $tel_date_end = parseDate($attr);
     }
   } else if ($name == "EPISODE-NUM" || $name == "CATEGORY" || $name == "TITLE" || $name == "DESC" || $name == "DISPLAY-NAME") {
     $tag_name = $name;
@@ -145,21 +138,19 @@ function endElement($parser, $name) {
 
 function characterData($parser, $data) {
   global $tag_name,$tel_ep_string,$tel_category,$tel_name,$tel_desc,$ok;
-  global $body;
   switch($tag_name) {
     case "EPISODE-NUM" : $tel_ep_string .= $data; break;
     case "CATEGORY"    : $tel_category .= $data; break;
     case "TITLE"       : $tel_name .= $data; break;
     case "DESC"        : $tel_desc .= $data; break;
     case "DISPLAY-NAME": /* ignore */ break;
-    default            : if (!empty($data) && !preg_match('/\s*/',$data)) {$ok = false; $body .= _MsgXmlTvFormatErrorData." tag_name='$tag_name' data='$data'"."\n"; }  break;
+    default            : if (!empty($data) && !preg_match('/\s*/',$data)) {$ok = false; echo _MsgXmlTvFormatErrorData." tag_name='$tag_name' data='$data'"."\n"; }  break;
   }
 //  echo " tag_name='$tag_name' data='$data'"."\n";
 }
 
 function checkRow() {
   global $ok,$chn_id,$tel_date_start,$tel_date_start_raw,$tel_date_end,$tel_name,$tel_desc,$tel_typ,$tel_category,$tel_ep_string;
-  global $body;
   if (!$ok) {
     return;
   }
@@ -170,11 +161,11 @@ function checkRow() {
   $tel_ep_string = ereg_replace("[[:space:]]+", " ", $tel_ep_string);
   if (empty($chn_id) || empty($tel_date_start) || empty($tel_date_end) || empty($tel_name)) {
     $ok=false;
-    $body .= _MsgXmlTvFormatErrorNotAll."\n";
-    $body .= "chn_id: ".$chn_id."\n";
-    $body .= "tel_date_start: ".$tel_date_start."\n";
-    $body .= "tel_date_end: ".$tel_date_end."\n";
-    $body .= "tel_name: ".$tel_name."\n";
+    echo _MsgXmlTvFormatErrorNotAll."\n";
+    echo "chn_id: ".$chn_id."\n";
+    echo "tel_date_start: ".$tel_date_start."\n";
+    echo "tel_date_end: ".$tel_date_end."\n";
+    echo "tel_name: ".$tel_name."\n";
   }
   $tel_name=stripSpaces($tel_name);
   $tel_desc=stripSpaces($tel_desc);
@@ -184,32 +175,31 @@ function checkRow() {
 
 function insertRow() {
   global $ok,$chn_id,$chn_xmltv_id,$tel_date_start,$tel_date_end,$tel_name,$tel_desc,$tel_typ,$tel_category,$tel_series,$tel_episode,$tel_part;
-  global $body;
   if (!$ok) {
     $globalOk = false;
     return;
   }
 
-  $SQL = "SELECT * FROM television WHERE chn_id=$chn_id and tel_date_start=$tel_date_start and tel_name=$tel_name";
+  $SQL = "SELECT * FROM TELEVISION WHERE chn_id=$chn_id and tel_date_start=$tel_date_start and tel_name=$tel_name";
   $rs = do_sql($SQL);
   if ($rs->RecordCount() != 0) {
-    $body .= _MsgXmlTvIgnored.": $chn_xmltv_id\n\t$tel_date_start: $tel_name\n\n";
+    echo _MsgXmlTvIgnored.": $chn_xmltv_id\n\t$tel_date_start: $tel_name\n\n";
     return; // Ignore if programm in this time exists with the same name
   } 
 
-  $SQL = "SELECT * FROM television WHERE chn_id=$chn_id and tel_date_start=$tel_date_start";
+  $SQL = "SELECT * FROM TELEVISION WHERE chn_id=$chn_id and tel_date_start=$tel_date_start";
   $rs = do_sql($SQL);
   if ($rs->RecordCount() != 0) {
-    $body .= _MsgXmlTvUpdated.": $chn_xmltv_id\n\t$tel_date_start: $tel_name\n\n";
-    $SQL = "UPDATE television SET tel_date_end=$tel_date_end, tel_name = $tel_name, tel_desc=$tel_desc, tel_typ = $tel_typ, tel_category=$tel_category,tel_series=$tel_series,tel_episode=$tel_episode,tel_part=$tel_part WHERE chn_id=$chn_id and tel_date_start=$tel_date_start";
+    echo _MsgXmlTvUpdated.": $chn_xmltv_id\n\t$tel_date_start: $tel_name\n\n";
+    $SQL = "UPDATE TELEVISION SET tel_date_end=$tel_date_end, tel_name = $tel_name, tel_desc=$tel_desc, tel_typ = $tel_typ, tel_category=$tel_category,tel_series=$tel_series,tel_episode=$tel_episode,tel_part=$tel_part WHERE chn_id=$chn_id and tel_date_start=$tel_date_start";
     do_sql($SQL);
     return; // Update programm in this time exists programme with different name
   }
 
-  $SQL  = "INSERT INTO television( chn_id, tel_date_start, tel_date_end, tel_name, tel_desc, tel_typ, tel_category, tel_series, tel_episode, tel_part)";
+  $SQL  = "INSERT INTO TELEVISION( chn_id, tel_date_start, tel_date_end, tel_name, tel_desc, tel_typ, tel_category, tel_series, tel_episode, tel_part)";
   $SQL .=                " VALUES($chn_id,$tel_date_start,$tel_date_end,$tel_name,$tel_desc,$tel_typ,$tel_category,$tel_series,$tel_episode,$tel_part)";
   do_sql($SQL);
-  $body .= _MsgXmlTvInserted.": $chn_xmltv_id\n\t$tel_date_start: $tel_name\n\n";
+  echo _MsgXmlTvInserted.": $chn_xmltv_id\n\t$tel_date_start: $tel_name\n\n";
 // echo $SQL."\n\n";
 }
 
@@ -252,11 +242,8 @@ while ($data = fread($fp, 4096)) {
 }
 xml_parser_free($xml_parser);
 if ($globalOk) {
-  $body .= _MsgXmlTvSuccess."\n";
-  send_mail(_Config_report_email, _MsgXmlTvSuccess." ".date("Ymd"), $body);
+  echo _MsgXmlTvSuccess."\n";
 } else {
-  $body .= _MsgXmlTvFailed."\n";
-  send_mail(_Config_report_email, _MsgXmlTvFailed." ".date("Ymd"), $body);
+  echo _MsgXmlTvFailed."\n";
 }
-
 ?>

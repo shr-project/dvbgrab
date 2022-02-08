@@ -3,10 +3,9 @@ require_once("charset.inc.php");
 
 global $DB;  // pripojeni do databaze
 
-function print_results($usr_id,$query,$tv_date) {
+function print_results($usr_id,$query) {
   global $DB;
   $MAX_SEARCH_RESULTS = 50;
-  $addition = "tv_date=$tv_date&query=$query&";
   $query_array = explode(" ", $query);
 
   if (sizeof($query_array) == 0) {
@@ -47,11 +46,11 @@ function print_results($usr_id,$query,$tv_date) {
                  t.tel_part,
                  tel_date_start,
                  g.grb_id,
-                 (select min(req_status) from request as r where r.grb_id=g.grb_id) as req_status,
-                 (select distinct usr_id from request as r left join userreq as u using (req_id) where r.grb_id=g.grb_id and u.usr_id=$usr_id) as my_grab
-          from television t
-               left join channel c using (chn_id)
-               left join grab g using (tel_id)
+                 r.req_status,
+                 ".$DB->IfNull('r.usr_id',"'0'")." as my_grab
+          from channel c inner join television t on (c.chn_id=t.chn_id)
+               left join grab g on (t.tel_id=g.tel_id)
+               left join request r on (g.grb_id=r.grb_id and r.usr_id=$usr_id)
           where $query_sql and
                 tel_date_start>=".$DB->sysTimeStamp."
           order by tel_date_start";
@@ -80,7 +79,7 @@ function print_results($usr_id,$query,$tv_date) {
     $show_link = true;
     $show_logo = true;
     while ($row = $rs->FetchRow()) {
-      show_television_row($row,$addition,$query_array,$use_diacritics,$show_link,$show_logo);
+      show_television_row($row,$query,$query_array,$use_diacritics,$show_link,$show_logo);
       $cur_res++;  
       if ($cur_res > $MAX_SEARCH_RESULTS) {
         break;

@@ -1,33 +1,15 @@
 <?
-/*    
-     WARNING: dont change this file without good reason
-     You have to let define clause formating untouched.
-     setup.php will apply new setting by replacing ^define("variable","old_value"); no spaces!
-*/
-
 /* 
-     supported db_type: all from adodb
-     (access, ado, ado_access, ado_mssql, db2, odbc_db2, vfp, fbsql, ibase, firebird, borland_ibase, informix, informix72, ldap, mssql, mssqlpo, mysql, mysqlt, maxsql, oci8, oci805, oci8po, odbc, odbc_mssql, odbc_oracle, odbtp, odbtp_unicode, netezza. pdo, postgres, postgres64, postgres7, postgres8, sapdb, sqlanywhere, sqlite, sqlitepo, sybase, sybase_ase)
+     supported db_type: all from adodb 
+     (MySQL, PostgreSQL, Interbase, Firebird, Informix, Oracle, MS SQL, 
+      Foxpro, Access, ADO, Sybase, FrontBase, DB2, SAP DB, 
+      SQLite, Netezza, LDAP, and generic ODBC, ODBTP)
 */
 define("_Config_db_name","dvbgrab");
 define("_Config_db_type","postgres");
 define("_Config_db_host","localhost");
 define("_Config_db_user","dvbgrab");
 define("_Config_db_pass","dvbgrab");
-
-/*
-     External authentication
-     Use external database for user authentication.
-*/
-define("_Config_auth_db_used","0");
-define("_Config_auth_db_used_only","1");
-define("_Config_auth_db_name","users");
-define("_Config_auth_db_type","postgres");
-define("_Config_auth_db_host","localhost");
-define("_Config_auth_db_user","dvbgrab");
-define("_Config_auth_db_pass","dvbgrab");
-define("_Config_auth_db_select","select * from users where person='dvbgrab_username' and password='dvbgrab_password'");
-define("_Config_auth_db_user_select","select usr_name,usr_pass_md5,usr_email,usr_ip from users where person='dvbgrab_username'");
 
 /*
     * 0 - Any error is written into the page
@@ -70,6 +52,9 @@ define("_Config_grab_quota","30");
 // logovani udalosti dvb grabu
 define("_Config_dvbgrab_log","/var/www/dvbgrab/dvbgrab.log");
 
+// logovani udalosti dvb grabu
+define("_Config_dvbgrab_encode_log","");
+
 // posun zacatku nahravani v minutach
 define("_Config_grab_date_start_shift","2");
 
@@ -77,10 +62,10 @@ define("_Config_grab_date_start_shift","2");
 define("_Config_grab_date_stop_shift","20");
 
 // jmeno stroje s http serverem dvbgrabu
-define("_Config_hostname","http://dvbgrab.domain");
+define("_Config_hostname","dvbgrab.domain");
 
 // root adresar http grabu
-define("_Config_grab_root","/var/www/dvbgrab/storage/users");
+define("_Config_grab_root","/var/www/dvbgrab/storage");
 
 // prostor pro grabovani
 define("_Config_grab_storage","/var/www/dvbgrab/storage");

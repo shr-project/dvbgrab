@@ -21,8 +21,6 @@ define("_MsgIndexRegFailData","Registration error: Username,password and email i
 define("_MsgIndexRegFailEmail","Registration error: Wrong email address format.");
 define("_MsgIndexRegFailPass","Registration error: Password isn't the same.");
 define("_MsgIndexRegFailName","Registration error: User with this username already exists, choose different one!");
-define("_MsgIndexLogFailExtern","Error with authenticating user in extern database. Bad username or password.");
-define("_MsgIndexLogFailExternName","Error with authenticating user in extern database, Username doesn§t exists.");
 define("_MsgIndexRegOk","was successfuly registred.");
    
 define("_MsgConstsMonday","monday");
@@ -78,7 +76,7 @@ define("_MsgJsonGrbDateEnd","Record stop");
 define("_MsgJsonReqOutput","Name");
 define("_MsgJsonReqOutputMd5","MD5");
 define("_MsgJsonReqOutputEnc","Codec");
-define("_MsgJsonReqOutputSize","Size");
+define("_MsgJsonReqOutputEnc","Size");
 
 define("_MsgAccountValidateLogin","Username required");
 define("_MsgAccountValidatePass","Password required");
@@ -103,13 +101,12 @@ define("_MsgAccountRegistrationFormTitle","Registration");
 define("_MsgAccountRegisterButton","Registr");
 define("_MsgAccountChangeButton","Change");
 define("_MsgAccountLoginButton","Login");
-define("_MsgAccountRemove","Completely remove my account and all my records");
 
 define("_MsgAccountChangeFormTitle","Account Settings");
 define("_MsgAccountLogin","Username:");
+define("_MsgAccountUsername","Username:");
 define("_MsgAccountPass","Password:");
 define("_MsgAccountPass2","Retype password:");
-define("_MsgAccountPassExternAuthNoChange","Password cannot be changed here for externally authenticated users.");
 define("_MsgAccountEmail","E-mail:");
 define("_MsgAccountEmailWarning","E-mail has to be valid, to this address you will receive recording finish notice and download links!");
 define("_MsgAccountIp","IP for download:");
@@ -196,7 +193,6 @@ define("_MsgSendPassNotice1","User password");
 define("_MsgSendPassNotice2","was send to email");
 
 define("_MsgSetupChangedOk","Settings in config.php was successfully saved");
-define("_MsgSetupCronList","Put following lines into cron daemon configuration (crontab -e)");
 define("_MsgSetupWelcome","Welcome in setup interface for DVBgrab project");
 define("_MsgSetupText","All settings are stored in file config.php. This file should be overwritten by owner and after new settings is written only read by his owner. Before setup run configure.sh a then secure.sh. This config.php has to be copied to backend directory, and this directory moved to recording server.");
 define("_MsgSetupValue","Value");
@@ -206,11 +202,6 @@ define("_MsgSetupDbType","Database type, thanks to ADOdb we can use: MySQL, Post
 define("_MsgSetupDbHost","Computer name where is database located");
 define("_MsgSetupDbUser","Database user name");
 define("_MsgSetupDbPass","Password for database user to access our data");
-define("_MsgSetupAuth","External sql query for user authentication. Registration is allowed after user authenticated in external db and password is not stored in dvbgrab table.");
-define("_MsgSetupAuthDbUsed","Using external user/pass or store it in own userinfo table (0 dont use, 1 use)");
-define("_MsgSetupAuthDbUsedOnly","Allow only externaly authenticated users to register and use DVBgrab (0 no, 1 yes)");
-define("_MsgSetupAuthDbSelect","Select used in query, in this string are 2 replaced strings dvbgrab_username is replaced with username used here and dvbgrab_password is md5 of password.");
-define("_MsgSetupAuthDbUserSelect","SQL query looking for user with username raplaced in string dvbgrab_username."); 
 define("_MsgSetupErrorStatus","Verbosity of errors:");
 define("_MsgSetupErrorStatus0","* 0 - Every error is written to page");
 define("_MsgSetupErrorStatus1","* 1 - Every error is send to error mail");
@@ -255,12 +246,6 @@ define("_MsgBackendEncodeErrorSub","DVBgrab: Encoding failed");
 define("_MsgBackendSuccess","ready for download");
 define("_MsgBackendSuccessSub","DVBgrab: Successfull grab");
 define("_MsgBackendGrabList","List of grabs in");
-define("_MsgBackendAccountCleaned","User account was deleted. Number of inactive days before account removal:");
-define("_MsgBackendAccountCleanedSub","User account was deleted");
-define("_MsgBackendAccountUpdated","Required changes in user account settings are done");
-define("_MsgBackendAccountUpdatedSub","Changes in user account settings");
-define("_MsgBackendFilesizeWarningSize","On grab storage area is no free disk space, even records which should be yet available are deleted now");
-define("_MsgBackendFilesizeWarningSizeSub","No disk space on grab storage");
 
 define("_MsgXmlTvFormatErrorNoChn","No channel found");
 define("_MsgXmlTvFormatErrorManyChn","Many channels match given xmltv channel id");
@@ -271,6 +256,16 @@ define("_MsgXmlTvFormatErrorNotAll","Not found all required elements");
 define("_MsgXmlTvIgnored","Ignored, duplicity");
 define("_MsgXmlTvInserted","Inserted");
 define("_MsgXmlTvUpdated","Updated");
-define("_MsgXmlTvSuccess","Tv schedule successfully updated");
-define("_MsgXmlTvFailed","Tv schedule updated with errors");
+define("_MsgXmlTvSuccess;","Tv schedule successfully updated");
+define("_MsgXmlTvFailed;","Tv schedule updated with errors");
+
+define("_MsgNews1","Repair/Add search possibility in tv program (Mostly used for series requests ;-))");
+define("_MsgNews2","Number of showed records limited to 100.");
+define("_MsgNews3","New option for sending new random password.");
+define("_MsgNews4","New option \"Account\", for user account settings.");
+define("_MsgNews5","Anniversery 100. user registred. No price because she has full mailbox.:-P");
+define("_MsgNews6","New option to request record directly from search page.");
+define("_MsgNews7","Bug hunting day!, few new function, new texts and <a href=\"anketa.php\">inquiry</a>");
+
+
 ?>

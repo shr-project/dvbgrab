@@ -19,7 +19,7 @@ function printUserRegistration($update,$usr_id) {
 <script type="text/javascript">
 <!--
   function emailCheck(){
-    var frm = document.getElementById('register');
+    var frm = getDocumentById('register');
     var goodEmail = frm.usr_email.value.match(/\b(^(\S+@).+((\.com)|(\.net)|(\.edu)|(\.mil)|(\.gov)|(\.org)|(\..{2,2}))$)\b/gi);
     if (goodEmail) 
       return true;
@@ -27,20 +27,15 @@ function printUserRegistration($update,$usr_id) {
       return false;
   }     
   function ipCheck(){
-    var frm = document.getElementById('register');
+    var frm = getDocumentById('register');
     var goodIp = frm.usr_ip.value.match(/^\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}$/gi);
     if (goodIp) 
       return true;
-    else {
-      var goodIp6 = frm.usr_ip.value.match(/^[0-9a-fA-F]{0,4}:[0-9a-fA-F]{0,4}:[0-9a-fA-F]{0,4}:[0-9a-fA-F]{0,4}:[0-9a-fA-F]{0,4}:[0-9a-fA-F]{0,4}:[0-9a-fA-F]{0,4}:[0-9a-fA-F]{0,4}$/gi);
-      if (goodIp6) 
-        return true;
-      else
-        return false;
-    }
+    else 
+      return false;
   }     
   function checkRegister() {
-    var frm = document.getElementById('register');
+    var frm = getDocumentById('register');
     if (frm.usr_name.value=='') {
       alert("<?php echo _MsgAccountValidateLogin ?>");
       ret=false;    
@@ -74,44 +69,12 @@ function printUserRegistration($update,$usr_id) {
     } else ret=true;
     return ret;
   }
-  function getkey(e) {
-    var code;
-    if (!e) {
-      var e = window.event; // nastaveni pro IE
-    }
-    
-    if (e.keyCode) {
-      code = e.keyCode;     // IE a Mozilla
-    } else if (e.which) {
-      code = e.which;    // NN4
-    }
-    return code;
-  }
-
-
-  function numericIP(eX) {
-    test=getkey(eX);
-    if ((test>=48 && test<=57) || (test>=97 && test<=102) || (test>=65 && test<=70) || (test==46) || (test==58) || (test==13) || (test==10) || (test>=8 && test<=10)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  function alfanumeric(eX) {
-    test=getkey(eX);
-    if ((test>=48 && test<=57) || (test>=97 && test<=122) || (test==13) || (test==10) || (test>=8 && test<=10)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 -->
 </script>
 <?php
   if ($update) {
     $SQL = "select u.usr_name, u.usr_email, u.usr_icq, u.usr_jabber, u.usr_ip, e.enc_id, e.enc_codec
-            from userinfo u, encoder e
+            from usergrb u, encoder e
             where e.enc_id = u.enc_id and u.usr_id=$usr_id";
     $rs = do_sql($SQL);
     $row = $rs->FetchRow();
@@ -140,15 +103,15 @@ function printUserRegistration($update,$usr_id) {
 </tr>   
 <tr>
   <td class="key"><?php echo _MsgAccountLogin ?></td>
-  <td class="value"><input onkeypress="return alfanumeric(event);" size="30" type="text" class="value" <?php if ($update) { echo " disabled=\"disabled\" "; } ?> name="usr_name" value="<?= $usr_name ?>"/></td>
+  <td class="value"><input size="30" type="text" <?php if ($update) { echo " disabled=\"disabled\" "; } ?> name="usr_name" value="<?= $usr_name ?>"/></td>
 </tr>
 <tr>    
   <td class="key"><?php echo _MsgAccountPass ?></td>
-  <td class="value"><input onkeypress="return alfanumeric(event);" size="30" type="password" name="usr_pass1"/></td>
+  <td class="value"><input size="30" type="password" name="usr_pass1"/></td>
 </tr>   
 <tr>    
   <td class="key"><?php echo _MsgAccountPass2 ?></td>
-  <td class="value"><input onkeypress="return alfanumeric(event);" size="30" type="password" name="usr_pass2"/></td>
+  <td class="value"><input size="30" type="password" name="usr_pass2"/></td>
 </tr>   
 <tr>
   <td class="key"><?php echo _MsgAccountEmail ?></td>
@@ -159,7 +122,7 @@ function printUserRegistration($update,$usr_id) {
 </tr>
 <tr>
   <td class="key"><?php echo _MsgAccountIp ?></td>
-  <td class="value"><input onkeypress="return numericIP(event);" size="30" type="text" <?php if (!$update) { echo " disabled=\"disabled\" "; } ?> name="usr_ip" value="<?= $usr_ip ?>"/></td>
+  <td class="value"><input size="30" type="text" <?php if (!$update) { echo " disabled=\"disabled\" "; } ?> name="usr_ip" value="<?= $usr_ip ?>"/></td>
 </tr>
 <tr>
   <td class="key"><?php echo _MsgAccountEncoder ?></td>
@@ -178,7 +141,7 @@ function printUserRegistration($update,$usr_id) {
   </select></td>
 </tr>
 <tr>
-  <td class="center" colspan="2"><hr /></td>
+  <td class="input center" colspan="2"><hr /></td>
 </tr>
 <tr>
   <td class="key"><?php echo _MsgAccountIcq ?></td>
@@ -189,7 +152,7 @@ function printUserRegistration($update,$usr_id) {
   <td class="value"><input size="30" type="text" name="usr_jabber" value="<?= $usr_jabber ?>"/></td>
 </tr>
 <tr>
-  <td class="center" colspan="2">
+  <td class="input center" colspan="2">
     <input size="30" type="submit" value="<?php if ($update) { 
                                         echo _MsgAccountChangeButton;
                                       } else {
@@ -200,11 +163,7 @@ function printUserRegistration($update,$usr_id) {
 </tr>
 </table>
 </form>
-<? if (authenticated($_COOKIE["usr_id"], $_COOKIE["usr_pass"])) { ?>
-<br/>
-<a href="<?=$PHP_SELF."?action=removeAccount"?>" onclick="return confirm('<?= _MsgAccountRemove ?>');" class="warning"><?= _MsgAccountRemove ?></a>
 <?php 
-}
 } 
 function printUserLogin() {
   global $PHP_SELF;
@@ -212,7 +171,7 @@ function printUserLogin() {
 <script type="text/javascript">
 <!--
   function checkLogin() {
-    var frm = document.getElementById('login');
+    var frm = getDocumentById('login');
     if (frm.usr_name.value=='') {
       ret=false;
       alert("<?php echo _MsgAccountValidateLogin ?>");
@@ -228,28 +187,6 @@ function printUserLogin() {
       }
     }
   }
-  function getkey(e) {
-    var code;
-    if (!e) {
-      var e = window.event; // nastaveni pro IE
-    }
-
-    if (e.keyCode) {
-      code = e.keyCode;     // IE a Mozilla
-    } else if (e.which) {
-      code = e.which;    // NN4
-    }
-    return code;
-  }
-
-  function alfanumeric(eX) {
-    test=getkey(eX);
-    if ((test>=48 && test<=57) || (test>=97 && test<=122) || (test==13) || (test==10) || (test>=8 && test<=10)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 //-->
 </script>
 
@@ -260,11 +197,11 @@ function printUserLogin() {
 </tr>
 <tr>
   <td class="key"><?php echo _MsgAccountLogin ?></td>
-  <td class="value"><input onkeypress="return alfanumeric(event);" size="30" type="text" name="usr_name"/></td>
+  <td class="value"><input size="30" type="text" name="usr_name"/></td>
 </tr>
 <tr>
   <td class="key"><?php echo _MsgAccountPass ?></td>
-  <td class="value"><input onkeypress="return alfanumeric(event);" size="30" type="password" name="usr_pass"/></td>
+  <td class="value"><input size="30" type="password" name="usr_pass"/></td>
 </tr>
 <tr>
   <td colspan="2"><a href="sendPass.php?action=sendPassword"><?php echo _MsgAccountLostPass ?></a></td>
@@ -276,12 +213,6 @@ function printUserLogin() {
 </tr>
 </table>
 </form>
-<script type="text/javascript">
-<!--
-  var frm = document.getElementById('login');
-  frm.usr_name.focus();
-//-->
-</script>
 <?php
 
 }
@@ -292,7 +223,7 @@ function printSendPassword() {
 <script type="text/javascript">
 <!--
   function emailCheck(){
-    var frm = document.getElementById('sendPassword');
+    var frm = getDocumentById('sendPassword');
     var goodEmail = frm.usr_email.value.match(/\b(^(\S+@).+((\.com)|(\.net)|(\.edu)|(\.mil)|(\.gov)|(\.org)|(
 \..{2,2}))$)\b/gi);
     if (goodEmail)
@@ -302,7 +233,7 @@ function printSendPassword() {
   }
 
   function checkSendPassword() {
-    var frm = document.getElementById('sendPassword');
+    var frm = getDocumentById('sendPassword');
     if (frm.usr_name.value=='') {
       alert("<?echo _MsgAccountValidateLogin ?>");
       ret=false;

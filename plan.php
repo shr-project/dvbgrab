@@ -53,12 +53,12 @@ if ($type == "done") {
 
 if ($type == "mygrab") {
   echo "<h2>"._MsgPlanListMygrabTitle."</h2>\n";
-  $SQL = "select count(distinct(grb_id)) from userreq u left join request r using (req_id) where req_status='scheduled' and usr_id=$usr_id";
+  $SQL = "select count(distinct(grb_id)) from request where req_status='scheduled' and usr_id=$usr_id";
   $rs = do_sql($SQL);
   $row = $rs->FetchRow();
   echo _MsgPlanSchedCount.": $row[0]<br />\n";
 
-  $SQL = "select count(distinct(grb_id)) from userreq u left join request r using (req_id) where req_status='done' and usr_id=$usr_id";
+  $SQL = "select count(distinct(grb_id)) from request where req_status='done' and usr_id=$usr_id";
   $rs = do_sql($SQL);
   $row = $rs->FetchRow();
   echo _MsgPlanDoneCount.": $row[0]<br />\n";
@@ -88,18 +88,16 @@ $SQL = "select g.grb_id,
                u.usr_id, 
                u.usr_name, 
                u.usr_email, 
-               ur.urq_output
-        from television t
-               left join channel c using (chn_id)
-               left join grab g using (tel_id)
-               left join request r using (grb_id)
-               left join userreq ur using (req_id)
-               left join userinfo u using (usr_id)
+               r.req_output
+        from channel c inner join television t on (c.chn_id=t.chn_id) 
+             inner join grab g on (t.tel_id=g.tel_id)
+             inner join request r on (g.grb_id=r.grb_id)
+             inner join usergrb u on (r.usr_id=u.usr_id)
         where";
 
 if ($type == "sched")  $SQL .= " r.req_status='scheduled' or r.req_status='processing'";
 if ($type == "done")   $SQL .= " r.req_status='done'";
-if ($type == "mygrab") $SQL .= " u.usr_id=$usr_id";
+if ($type == "mygrab") $SQL .= " r.req_status<>'deleted' and u.usr_id=$usr_id";
 // and g.grb_date_start >='$grab_datetime'";
 
 $SQL .= " order by g.grb_date_start".(($type=="sched")?"":" desc").", c.chn_order";
@@ -140,23 +138,16 @@ if ($res->RecordCount() == 0) {
       }
       echo "<tr><th colspan=\"6\">&nbsp;&nbsp;&nbsp;$grb_day</th></tr>\n";
     }
-    if (!empty($row[1])) {
-      $hi="Hi";
-    } else {
-      $hi="";
-    }
-
     $old_grb_day = $grb_day;
 
 
     echo "  <tr";
-    show_grab_class($grb_id, $row['req_status'], false);
-    echo ">";
-    echo "    <td ";
     show_grab_class($grb_id, $row['req_status'], $row['usr_id'] == $usr_id);
-    echo " width=\"30\">&nbsp;</td>\n";
+    echo " onmouseover=\"grabinfos.show($grb_id); setTimeout('grabinfos.loadMe($grb_id)',200);\"";
+    echo " onmouseout=\"grabinfos.hide($grb_id)\">\n";
+    echo "    <td width=\"30\">&nbsp;</td>\n";
     echo "    <td><img class=\"programLogo\" alt=\"".$row["chn_name"]."\" title=\"".$row["chn_name"]."\" src=\"images/logos/".$row["chn_logo"]."\"></td>\n";
-    echo "    <td width=\"110\" class=\"programDate".$hi."\">";
+    echo "    <td width=\"110\">";
 //    if ($row["req_status"] == "missed") {
 //      echo "&nbsp;&nbsp;&nbsp;"._MsgPlanGrabMissed;
 //    } else {
@@ -164,24 +155,21 @@ if ($res->RecordCount() == 0) {
 //    }
     echo "    </td>\n";
   
-    echo "    <td";
-    echo " onmouseover=\"grabinfos.show($grb_id); setTimeout('grabinfos.loadMe($grb_id)',200);\"";
-    echo " onmouseout=\"grabinfos.hide($grb_id)\"";
-    echo "><a class=\"programName".$hi."\" href=\"tvprog.php?tv_date=".date("Ymd", $grb_timeStamp).
-      "#".$row["tel_id"]."\">".htmlspecialchars($row["tel_name"])."</a><div class=\"grabInfo\" style=\"margin-left: 30pt; margin-top: 20pt; display:none; position: absolute\" id=\"grabinfo_".$grb_id."\"></div></td>\n";
+    echo "    <td><a href=\"tvprog.php?tv_date=".date("Ymd", $grb_timeStamp).
+      "#".$row["tel_id"]."\">".htmlspecialchars($row["tel_name"])."</a><div class=\"grabInfo\" style=\"margin-left: 30pt; display:none; position: absolute\" id=\"grabinfo_".$grb_id."\"></div></td>\n";
   
     if ($type != "mygrab") {
 //      echo "    <td width=\"20\">&nbsp;</td>\n";
-      echo "    <td><a class=\"programLink\" href=\"mailto:".str_replace("@", "@NOSPAM.", $row["usr_email"])."\">".$row["usr_name"]."</a></td>\n";
+      echo "    <td><a href=\"mailto:".str_replace("@", "@NOSPAM.", $row["usr_email"])."\">".$row["usr_name"]."</a></td>\n";
     } else {
       if ($row["req_status"] == "done") {
-        if ($row["urq_output"] != "") {
-          echo "    <td><a class=\"programLink\" href=\"".$row["urq_output"]."\">"._MsgPlanGrabLink."</a></td>\n";
+        if ($row["req_output"] != "") {
+          echo "    <td><a href=\"".$row["req_output"]."\">"._MsgPlanGrabLink."</a></td>\n";
         } else {
-          echo "    <td class=\"programLink\">"._MsgPlanGrabLinkNone."</td>\n";
+          echo "    <td>"._MsgPlanGrabLinkNone."</td>\n";
         }
       } else if ($row["req_status"] == "deleted") {
-        echo "    <td class=\"programLink\">"._MsgPlanGrabDeleted."</td>\n";
+        echo "    <td>"._MsgPlanGrabDeleted."</td>\n";
       } else {
         echo "    <td>&nbsp;</td>\n";
       }
@@ -192,7 +180,7 @@ if ($res->RecordCount() == 0) {
   echo "</table>\n";
 }
 echo "</td>\n";
-echo "<td valign=\"top\" class=\"legend\">\n";
+echo "<td class=\"legend\">\n";
 require_once("legend.inc.php");
 echo "</td>\n";
 echo "</tr>\n</table>\n";
