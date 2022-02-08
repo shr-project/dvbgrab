@@ -8,6 +8,6 @@ fi
 
 chmod 666 config.php
 
-echo "Please setup dvbgrab with pointing browser to setup."
+echo "Please setup Tvgrab with pointing browser to setup."
 echo "Then make configfiles private by executing secure.sh"
 echo ""

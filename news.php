@@ -1,33 +1,32 @@
 <?php
-require_once("authentication.php");
-require_once("dolib.inc.php");
+require("authentication.php");
+require_once("dblib.php");
 require_once("language.inc.php");
+require("header.php");
 
-$menuitem=8;
-require_once("header.php");
+$menuitem = 8;
+require("menu.php");
 ?>
 
-<h2><? echo _MsgMenuNews?></h2>
+<td valign="top">
 <table left="0" width="100%" border="0" cellspacing="5" cellpadding="5">
 <col width="20%">
 <col width="80%">
-<?
-$SQL = "select * from news order by news_date desc";
-
-$rs = do_sql($SQL);
-while ($row = $rs->FetchRow()) {
-  echo '<tr>';
-  echo '<td align="right">';
-  echo $DB->UserTimeStamp($row[0],"Y-m-d H:i");
-  echo '</td>';
-  echo '<td align="left">';
-  echo $row[1];
-  echo '</td>';
-  echo '<tr>';
-}
-echo '</table>';
-echo '</td>';
-
+<tr>
+  <td align="right">&nbsp;15. &nbsp;10. 2006</td>
+  <td align="left">Pøehlednìj¹í zobrazení hotových a plánovaných grabù.</td>
+</tr>
+<tr>
+  <td align="right">&nbsp;17. &nbsp;4. 2006</td>
+  <td align="left">Zku¹ební provoz na tvgrab.sh.cvut.cz</td>
+</tr>
+<tr>
+  <td align="right">&nbsp;23. &nbsp;1. 2006</td>
+  <td align="left">Zku¹ební provoz na Kvikovi</td>
+</tr>
+</table>
+</td>
+<?php
 require("footer.php");
 
 // vim: noexpandtab tabstop=4

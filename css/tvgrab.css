@@ -1,0 +1,273 @@
+	p.prHl {
+		padding: 0px;
+		bottom: 0px;
+		border: 0px;
+		margin: 0px;
+		text-align: right;
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-size: 10px;
+	}
+
+	body {
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-size: 10pt;
+		background-color: #cbe9ff;
+		color: #333333;
+	}
+
+	table {
+		border: 0px;
+		border-width: 0px;
+		border-collapse: collapse;
+	}
+	table.registration {
+		position: relative;
+		left: 30%;
+	  text-align: center; 
+		background-color: #a0d7ff;
+		width: 300px;
+	}
+  table.config {
+    position: relative;
+    width: 90%;
+    border: 2px;
+    border-style: groove;
+    text-align: left;
+  }
+  td.key {
+    color: #0000FF;
+    width: 30%;
+    font-weight: bold;
+    border-bottom-width: 1px;
+    border-color: #FF0000;
+    border-bottom-style: double;
+  }
+  td.desc {
+    color: #000033;
+    text-align: center;
+  }
+  th.value {
+    color: #006600;
+    width: 70%;
+    text-align: center;
+    border-bottom-width: 4px;
+    border-color: #00FFFF;
+    border-bottom-style: groove;
+  }
+  th.key {
+    color: #0000DD;
+    width: 30%;
+    text-align: center;
+    border-bottom-width: 4px;
+    border-color: #00FFFF;
+    border-bottom-style: groove;
+  }
+    
+  td.value {
+    color: #008800;
+    width: 70%;
+    border-bottom-width: 1px;
+    border-color: #FF0000;
+    border-bottom-style: double;
+    text-align: left;
+  }
+  input.value {
+    color: #008800;
+    width: 100%;
+    text-align: left;
+  }
+	table.grabList {
+		border: 1px;
+		width: "90%";
+	}
+	h2.planList {
+		color: #aaaa00;
+		font-weight: bold;
+	}
+  .inputCenter {
+		text-align: center;
+		background-color: #41afff;
+	}
+	.warning {
+		color: #ff0000;
+		font-weight: bold;
+	}
+	.info {
+		color: #0000ff;
+		font-weight: bold;
+	}
+	.item {
+		color: #00aaaa;
+		font-weight: bold;
+	}
+	.value {
+		color: #0000ff;
+	}
+
+	tr {
+		border: 0px;
+		border-width: 0px;
+	}
+
+	th   {
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-size: 11pt; 
+		font-weight: bold;
+		text-align: left;
+	}
+
+	th.index {
+		text-align: center;
+		background-color: #41afff;
+	}
+
+	td   {  
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-size: 10pt;
+		border-width: 0px;
+	}
+
+	td.male {  
+		font-family: Verdana, Arial, Helvetica, sans-serif; 
+		font-size: 1pt;
+	}
+
+	.datum {
+		color: red;
+		text-valign: top;
+	}
+
+	.status-scheduled {
+		background-color: #FFDDCC;
+	}
+
+	.status-myscheduled {
+		background-color: #AAFFBB;
+	}
+
+	.status-mynocomprim { 
+		background-color: #CCFFDD;
+	}
+	.status-done { 
+		background-color: #AAFFFF;
+	}
+
+	.status-deleted { 
+		background-color: #AAFFFF;
+	}
+
+	.status-processing { 
+		background-color: #FFFF00;
+	}
+
+	.status-error { 
+		background-color: #a0a0a0;
+	}
+
+	option.today {
+		background-color: #ff6666;
+	}
+
+	form   {  
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-size: 10pt
+	}
+
+	h1   {  
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-size: 20pt; 
+		font-weight: bold;
+		color: #6467c5;
+	}
+
+	h2   {
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-size: 14pt;
+		color: #6467c5;
+	}
+
+	A:link,A:link.nobold,A:visited,A:visited.nobold,A:link.h,A:visited.h  {
+		font-family: Verdana, Arial, Helvetica, sans-serif; 
+		font-size: 10pt; 
+		text-decoration: none;
+		color: #6467c5;
+	}
+	
+	A:hover, .actual   {
+		font-family: Verdana, Arial, Helvetica, sans-serif; 
+		font-size: 10pt;
+		background-color: #a0d7ff;
+		color: #6467c5;
+	}
+
+	A:hover.h   {
+		color: #a0d7ff;
+		text-decoration: none;
+		background: none;
+	}
+
+	A:hover.nobold {
+		color:#a0d7ff;
+		font-weight: normal;
+	}
+
+	A:link.program, A:link.visited {
+		text-decoration: none;
+		color: #6467c5;
+		background-color: none;
+	}
+
+	A:hover.program {
+		text-decoration: underline;
+		color: red;
+		background: transparent;
+	}
+
+	.sloupec {
+		position: relative;
+		text-align: justify;
+		width: 100%;
+	}
+
+	.levy {
+		float: left;
+		margin-left: 30px;
+	}
+	
+	.sl1 {
+		background-color: #f9f9c6;
+	}
+
+	.sl0 {
+		background-color: #ffffdd;
+	}    
+	
+	input {
+		background-color: #b6daff;
+	}
+
+	select {
+		background-color: #b6daff;
+
+	}
+
+	hr {
+		height: 1px;
+		width: 40%;
+	}
+
+	div.top {
+ 		text-align: right;
+		position: relative;
+	}
+	.status {
+		float: right;
+                right: 20px;
+		position: relative;
+	}
+		
+	img.top {
+ 		width: 780px;
+		height: 145px;
+		border: 0;
+	}

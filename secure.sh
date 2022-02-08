@@ -6,6 +6,6 @@ fi
 
 chmod 600 setup.php
 
-echo "Dvbgrab configuration files are private now."
+echo "Tvgrab configuration files are private now."
 echo "If you wish to change configureation execute configure.sh."
 echo ""

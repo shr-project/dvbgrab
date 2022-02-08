@@ -1,7 +1,0 @@
-Dependencies:
-
-Apache (Apache 1.x or Apache 2.2, with Apache 2.0 is LFS = Large File Support sometimes broken and grabs > 2GB cannot be downloaded)
-PHP (php4 or php5)
-php-pear-Log
-php-json
-xmltv - optional for downloading tv schedule

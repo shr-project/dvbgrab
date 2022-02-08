@@ -1,0 +1,55 @@
+//-----------------------------------------------------------------
+Dle prority:
+
+- Print the grab only once in the plan page. Different requests should be grouped together.
+    - Show only number of requstors + provide javascript to unhide email addresses.
+    - Provide diffrent color for not yet encoded grabs.
+        - Create grab status encoded = all requests are encoded.
+        (Think about it, how to display request statuses.)
+
+- Allow to configure URLs and regexp that defines where to find TV schedule.
+
+- wrap grabActions in a function
+- remove duplicities between search.php and tvprog.php
+
+- Optimilizovat dotazy,
+    napr. volani funkce na kazdy radek,
+    viz. 'date_add(column, interval) < now()'
+    - zaroven zarucit nezavislost na mysql
+
+- zaznam.php je mozno presunout do backend/
+
+- NOTE: charset databaze musi byt latin1, protoze AdoDb to tak pouziva. Nelze pak data menit jinym klientem, nez s take s latin1 kodovanim (jako binarni data).
+
+- Zabalit kod do funkci, aby nevznikaly globalni promenne.
+
+//-----------------------------------------------------------------
+Done:
+- k proxy_serveru je vhodné zadávat také proxy_port (3128 na strahove)
+- Dát do názvu hotového grabu i minuty.
+- vyzit system(command, ret_val) k testovani existence souboru (misto 'echo true')
+- Pouze requestor muze zrusit grab.
+- Fixed grabbing at search page.
+- Remove the 'my' dot.gif. It is now redundant.
+- The requested encoder will be property of user. Change the DB schema.
+- Write new loop that will delete removed grabs from database.
+- Allow to users to choose their prefered encoders (mpeg2 or mpeg4).
+- Ensure that magic_quotes_gpc is enabled (escapes GET/POST/Cookies).
+- Publish the grab_user_stroge over HTTP. Ensure proper .htaccess in every directory.
+- Store usernames as lowercased and striped of special characters.
+
+//-----------------------------------------------------------------
+DVBgrab TODO (JaMa):
+1) Ruseni uzivatelskych uctu i bez pristupu na stranky projektu (treba mailem na $adminEmail)
+2) Locale z prohlizece by melo prepinat jazyk v language.inc.php, zmenitelne ikonou na webu a uchovavat v cookie
+3) Zajistit konverzi dat z/do mysql z kodovani mysql do UTF-8, pro pripad ze bude web prepnuty treba do japonstiny to bude nutne
+4) Modularizace nacitani TV programu
+   - registrovani programu (jmeno,ikona,poradi,nacitaci funkce)
+   - registrovani nacitaci funkce (seznam poradu, ktere umi nacitat, parametrem bude ktere ma skutecne nacist do db)
+5) Udrzba dat v backendu, mazani podle stari grabu, podle zaplnenosti a reakce na dochazejici misto, mazani i linku a oznacovani nefunkcnich odkazu do requestu jako smazane
+6) Uprava odkazu na webu pro grabovani (nejak nazorneji) 'grabovat','taky grabovat','do TS','do MPEG4'
+7) Prohnat cely web validatorem a upravit problemy
+8) Analyzovat hlavicky prijímaného toku dat. Televize vysila informace o presném casu zacátku a konci poradu. Kdyby se informace získaná z televizního programu dostupného na internetu korigovala podle techto hlavicek, nebylo by treba spoustit nahrávání nekolik minut predem a ukoncovat nekolik minut pozdeji. Podle zástupce Czech Digital Group jsou prý tyto údaje uz dostupné. Pokud jim televize údaje dodá, tak je pouze prevedou do formátu vhodného pro EIT (Event Interface Table) a ulozí do toku dat.
+9) uverejnit na sourceforge ;-)
+10) obhajit jako DP
+

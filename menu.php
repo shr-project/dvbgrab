@@ -1,45 +1,49 @@
 <?php
 require_once("language.inc.php");
 require_once("config.php");
-require_once("authentication.php");
 
-  $menu[1]=_MsgMenuTvProgram;
-  $menu[] =_MsgMenuPlanSched;
-  $menu[] =_MsgMenuPlanDone;
-  $menu[] =_MsgMenuPlanMygrab;
-  $menu[] =_MsgMenuPlanAccount;
-  $menu[] =" ";
-  $menu[] =_MsgMenuEmailUs;
-  $menu[] ="SourceForge";
-  $menu[] =_MsgMenuNews;
+	$menu[1]=$msgMenuTvProgram;
+	$menu[] =$msgMenuPlanSched;
+	$menu[] =$msgMenuPlanDone;
+	$menu[] =$msgMenuPlanMygrab;
+	$menu[] =$msgMenuPlanAccount;
+	$menu[] =" ";
+	$menu[] =$msgMenuInfo;;
+//	$menu[] =$msgMenuEmailUs;
+	$menu[] =$msgMenuNews;
+//	$menu[] =$msgMenuDocs;
+//	$menu[] =$msgMenuLogout;
 	
-  $link[1]="tvprog.php";
-  $link[] ="plan.php?type=sched";
-  $link[] ="plan.php?type=done";
-  $link[] ="plan.php?type=mygrab";
-  $link[] ="account.php?action=edit";
-  $link[] ="";
-  $link[] ="mailto:"._Config_admin_email;
-  $link[] ="http://dvbgrab.sourceforge.net";
-  $link[] ="news.php";
+	$link[1]="tvprog.php";
+	$link[] ="plan.php?type=sched";
+	$link[] ="plan.php?type=done";
+	$link[] ="plan.php?type=mygrab";
+	$link[] ="account.php?action=edit";
+	$link[] ="";
+	$link[] ="info.php";
+//	$link[] ="mailto:$admin_email";
+	$link[] ="news.php";
+//	$link[] ="http://martinja.mk.cvut.cz/tvgrab";
+//	$link[] ="index.php?action=logout";
 ?>
 
 <!-- menu -->
+<table width="100%" cellpadding="10">
+<tr>
+	<td width="150" valign="top" align="center">
 <?php
 // hodnotu $menuitem predava skript, ktery tento soubor includuje
-  for ($i=1; $i<=count($menu); $i++) {
-    if ($i == $menuitem) {
-      $class="menuitem_act";
-    } else {
-      $class="menuitem";
-    }
-    echo '<p class="'.$class.'">';
-    if (authenticated($_COOKIE["usr_id"], $_COOKIE["usr_pass"]) || $i>=7) {
-      echo ($menu[$i] == " ")?"&nbsp;":"<a class=\"$class\" href=\"$link[$i]\">::&nbsp;$menu[$i]&nbsp;::</a>\n";
-    } else {
-      echo ($menu[$i] == " ")?"&nbsp;":"<i>::&nbsp;$menu[$i]&nbsp;::</i>\n";
-    }
-    echo '</p>';
-  }
+	for ($i=1; $i<=count($menu); $i++) {
+        if (authenticated($_COOKIE["usr_id"], $_COOKIE["usr_pass"])) {
+            if ($i == $menuitem) {
+                echo "<div class=\"actual\"><a href=\"$link[$i]\">::&nbsp;$menu[$i]&nbsp;::</a></div><br>";       
+            } else {
+                echo ($menu[$i] == " ")?"<br><br>":"<a href=\"$link[$i]\">::&nbsp;$menu[$i]&nbsp;::</a><br><br>";
+            }
+        } else {
+            echo ($menu[$i]==" ")?"<br><br>":"<i>::&nbsp;$menu[$i]&nbsp;::</i><br><br>";
+        }
+	}
 ?>
+  </td>
 <!-- konec menu -->

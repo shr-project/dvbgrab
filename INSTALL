@@ -1,0 +1,55 @@
+
+Install plan
+============
+Setup:
+    - apache2
+    - mysql
+    - php + mysql extension
+    - php-cli + mysql extension
+    - phpmyadmin
+    - python2.3
+    - dvbstream
+    - mencoder-586
+
+Base:
+* Get the dvbgrab tarball or sources from SVN.
+* Copy them to www directory.
+
+Database:
+* Create database dvbgrab
+$ mysql dvbgrab <sql/mysql.sql
+$ mysql dvbgrab <sql/mysql.data.sql
+
+Crontab:
+* Use backend/crontab.txt as crontab.
+    @reboot cd /var/www/dvbgrab/backend ; ./startBackend.sh
+    @daily cd /var/www/dvbgrab/ ; ./zaznam.php
+
+Configuration:
+* Edit config.php
+* Publish the directory with user grabs on www or ftp.
+
+Grabbing:
+* See port and channel IP addresses in backend/dvbgrab
+* Extend UDP buffer:
+$ sysctl -w net.core.rmem_max=8388608
+ (see http://www.29west.com/docs/THPM/udp-buffer-sizing.html)
+
+//-----------------------------------------------------------------
+Extras:
+    - SVN
+    - mailing list - use it for error reporting
+    - daily report by send_daily_report.php.
+
+    - logrotate the logs with copytruncate option
+    - allow access to register.php only from known IP addresses
+
+//-----------------------------------------------------------------
+Maintenance:
+    - see the logs
+    - see the mail reporting
+    - encoding loop does not skip unencoded grabs.
+    Create not empty fake .avi file when necessary.
+    Example: echo >/path/DVB-....avi
+
+

@@ -1,3 +1,3 @@
 #!/bin/bash
-mencoder "$1" -quiet -ovc lavc -lavcopts vcodec=mpeg4 -vf scale -zoom -xy 0.5 -oac mp3lame -lameopts preset=standard -o "$2"
+exec mencoder "$1" -quiet -ffourcc XVID -ovc lavc -lavcopts vcodec=mpeg4:vbitrate=800:autoaspect -vf scale -zoom -xy 0.5 -oac copy -o "$2"
 

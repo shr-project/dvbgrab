@@ -1,0 +1,10 @@
+
+completed grabs:
+select count(*) from grab g where grb_status in ('deleted', 'done');
+
+completed requests:
+select count(*) from grab g, request r where r.grb_id = g.grb_id and grb_status in ('deleted', 'done');
+
+grabbed_hours:
+select sum(unix_timestamp(grb_date_end) - unix_timestamp(grb_date_start))/3600 grabbed_hours from grab where grb_status in ('deleted', 'done');
+

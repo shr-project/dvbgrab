@@ -1,25 +1,32 @@
 #!/usr/bin/php -q
 <?php
 require_once("config.php");
-require_once("dolib.inc.php");
+require_once("dblib.php");
 require_once("status.inc.php");
-require_once("loggers.inc.php");
+
+function grabLog($text) {
+    global $dvbgrab_log;
+
+    if ($fp = fopen($dvbgrab_log, 'a')) {
+      $msg = "INFO: ".date("Y-m-d G:i")." $text\n";
+      fwrite($fp, $msg);
+      fclose($fp);
+    }
+}
+
+grabLog("starting grab_loop");
 
 while (true) {
   status_update();
   // vyber grab, ktery by se mel prave zacit grabovat
-  $grab_time_limit_lo = time()-30*60;
-  $grab_time_limit_hi = time()+2*60;
-  $SQL ="select g.grb_id from grab g
+  $SQL ="select grb_id from grab
            where
-             grb_date_start >= ".$DB->DBTimeStamp($grab_time_limit_lo)." and grb_date_start <= ".$DB->DBTimeStamp($grab_time_limit_hi)."
-             and exists (select * from request r where req_status='scheduled' and g.grb_id=r.grb_id) order by grb_date_start limit 1";
-  $rs = do_sql($SQL);
+             ".$DB->DBTimeStamp(time()+$grab_date_start_shift*60)." >= grb_date_start and
+             grb_status='scheduled'";
+  $rs = db_sql($SQL);
 
   while($row=$rs->FetchRow()) {
-    $SQL = "update request set req_status='saving' where grb_id=$row[0]";
-    do_sql($SQL);
-    do_cmd("GRB_ID=".$row[0]." ./grab_process.php >/dev/null 2>&1 &");
+    system("GRB_ID=".$row[0]." ./grabId.php >>'$dvbgrab_log' 2>&1 &");
   }
   $rs->Close();
   sleep(30);

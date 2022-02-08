@@ -1,0 +1,107 @@
+#!/bin/bash
+
+UDP_PORT=1234
+# Temporary directory for grabbing. Leave it empty to use the output file path.
+TMP_GRAB_DIR=""
+
+# Waits till given date
+function waitTill {
+    now=`date "+%s"`
+    targetDate=`date --date="$*" "+%s"`
+    if test $now -lt $targetDate ; then
+        delay=`expr $targetDate - $now`
+        sleep $delay
+    fi
+}
+
+# Aborts when given date was already passed.
+function checkMissed {
+    now=`date "+%s"`
+    targetDate=`date --date="$*" "+%s"`
+    if test $now -gt $targetDate ; then
+        echo "MISSED: now (`date`) is too late for '$*'"
+        exit 1
+    fi
+}
+
+
+# Get default begin time
+BEGIN_TIME=`date`
+
+# Get default end time
+END_TIME=`date --date="tomorrow 23:59:59"`
+
+while getopts b:e:i:o: OPT; do
+        case "$OPT" in
+        "b")    BEGIN_TIME="$OPTARG"
+                ;;
+
+        "e")    END_TIME="$OPTARG"
+                ;;
+
+        "i")    CHANNEL_NAME="$OPTARG"
+                case "$OPTARG" in
+                "ct1")          INP_CHN="239.194.10.11" ;;
+                "ct2")          INP_CHN="239.194.10.12" ;;
+                "nova")         INP_CHN="239.194.10.13" ;;
+                "prima")        INP_CHN="239.194.10.14" ;;
+                "ct24")         INP_CHN="239.194.10.15" ;;
+                "ocko")         INP_CHN="239.194.10.16" ;;
+                "toptv")        INP_CHN="239.194.10.17" ;;
+                esac
+                ;;
+
+        "o")    OUT_FILE="$OPTARG"
+                ;;
+
+        *)      echo Invalid option -$OPT
+                echo "Usage: -b BEGIN_TIME -e END_TIME -i INPUT_CHANNEL -o OUTPUT_FILE"
+                echo "   Use BEGIN_TIME and END_TIME to specify grabbing interval."
+                echo "   If a program spans midnight, you need to specify date as well."
+                echo "   INPUT_CHANNEL is one of ct1, ct2, nova, prima."
+                exit 1
+                ;;
+        esac
+done
+
+if test -z "$INP_CHN" ; then
+    echo "Error: input channel not specified" >&2
+    exit 1
+fi
+if test -z "$OUT_FILE" ; then
+    echo "Error: output file not specified" >&2
+    exit 1
+fi
+
+echo "Current time is: " `date`
+echo "Grab from: $INP_CHN"
+echo "Grab to file: $OUT_FILE"
+echo "Begin grabbing at: " `date --date="$BEGIN_TIME"`
+echo "End grabbing at: " `date --date="$END_TIME"`
+
+# Wait until the grabbing should start
+waitTill "$BEGIN_TIME"
+
+checkMissed "$END_TIME"
+
+tmp_out_file="$OUT_FILE"
+if test -n "$TMP_GRAB_DIR" ; then
+    tmp_out_file="$TMP_GRAB_DIR/`basename \"$OUT_FILE\"`"
+fi
+
+echo "Starting grabbing $tmp_out_file"
+set -m
+#vlc "udp:@$INP_CHN:$UDP_PORT" --intf logger --logfile "log/vlc_client-$CHANNEL_NAME.log" -v --sout "#std{access=file,mux=ts,url='$tmp_out_file'}" &
+./dumprtp/dumprtp "$INP_CHN" "$UDP_PORT" >"$tmp_out_file" 2>/dev/null &
+
+# Wait until the grabbing should end
+waitTill "$END_TIME"
+
+kill %1
+
+if test "x$tmp_out_file" != "x$OUT_FILE" ; then
+    mv "$tmp_out_file" "$OUT_FILE"
+fi
+
+echo "Finished grabbing $OUT_FILE"
+

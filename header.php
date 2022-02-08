@@ -1,37 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="css/tvgrab.css">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-2">
 <?php
-require_once("header.inc.php");
+require_once("language.inc.php");
+require_once("view.inc.php");
 ?>
+<title><? echo $msgGlobalTitle ?></title>
+</head>
+
 <body>
-<table width="100%" cellspacing="0" cellpadding="0">
-<tr>
-<td class="menu">
-<?php
-//$menuitem = "";
-require_once("menu.php");
-global $PHP_SELF;
-?>
-</td>
-<td class="top">
 <div class="status">
-<table width="100%">
-<tr><td class="left">
-<a href="<?=$PHP_SELF?>"><img class="logo" src="images/top.black.png" alt="logo" /></a>
-</td>
-<td class="right" valign="top">
 <span class="value" id="hodiny"><?=date("d.m. G:i")?></span>
 <?php
 $usr_name = "";
 if (authenticated($_COOKIE["usr_id"], $_COOKIE["usr_pass"])) {
-  $SQL = "select usr_name from userinfo where usr_id=".(int)$_COOKIE["usr_id"];
-  $rs = do_sql($SQL);
-  $row = $rs->FetchRow();
-  $usr_name = $row[0];
-  $SQL = "update userinfo set usr_last_activity = $DB->sysTimeStamp where usr_name='$usr_name'";
-  do_sql($SQL);
-  echo "<span class=\"item\"> :: "._MsgAccountLogged." </span><span class=\"value\">$usr_name</span>";
-  echo " <a class=\"item\" href=\"index.php?action=logout\">("._MsgAccountLogout.")</a>";
-  echo "<br />";
-  echo "<span class=\"item\"> :: "._MsgAccountRecordCount." </span><span class=\"value\">";
+    $SQL = "select usr_name from user where usr_id=".(int)$_COOKIE["usr_id"];
+    $rs = db_sql($SQL);
+    $row = $rs->FetchRow();
+    $usr_name = $row[0];
+    echo "<span class=\"item\"> :: $msgAccountLogged </span><span class=\"value\">$usr_name</span>";
+    echo " <a class=\"item\" href=\"index.php?action=logout\">($msgAccountLogout)</a>";
+    echo "<span class=\"item\"> :: $msgAccountRecordCount </span><span class=\"value\">";
   if ($menuitem != 1) {
     $tv_day = date("d");
     $tv_month = date("m");
@@ -43,21 +34,14 @@ if (authenticated($_COOKIE["usr_id"], $_COOKIE["usr_pass"])) {
   echo "-";
   echo date("j.n.", mktime(0, 0, 0, $tv_month, $tv_day+7-strftime("%u", mktime(0, 0, 0, $tv_month, $tv_day, $tv_year)), $tv_year));
 
-  echo " - ".get_user_grab($_COOKIE["usr_id"], $week)."/"._Config_grab_quota."</span>";
+  echo " - ".get_user_grab($_COOKIE["usr_id"], $week)."/$grab_quota</span>";
 } else {
-  echo "<span class=\"item\"> :: "._MsgAccountNoLogged."</span>";
+    echo "<span class=\"item\"> :: $msgAccountNoLogged</span>";
 }
-
 ?>
-<br />
-<a href="<?=$PHP_SELF."?lang=cs"?>"><img src="images/cs.gif" alt="cs.gif" /></a>
-<a href="<?=$PHP_SELF."?lang=sk"?>"><img src="images/sk.gif" alt="sk.gif" /></a>
-<a href="<?=$PHP_SELF."?lang=en"?>"><img src="images/en.gif" alt="en.gif" /></a>
-<a href="<?=$PHP_SELF."?lang=fr"?>"><img src="images/fr.gif" alt="fr.gif" /></a>
-</td></tr></table>
 </div>
-<div class="main">
-<script type="text/javascript">
+<div>&nbsp;</div>
+<script language="JavaScript1.2" type="text/javascript">
 <!--
 
 function tick() {

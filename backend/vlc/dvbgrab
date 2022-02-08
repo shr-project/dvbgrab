@@ -1,0 +1,21 @@
+#!/bin/sh
+# Decorator around httpGrab.py to start VLC when it crashed.
+
+if killall -s 0 vlc 2>/dev/null ; then
+    true
+else
+    echo "starting VLC"
+    ./vlc/streamDvb.sh -d --extraintf logger --logfile log/vlc.log
+    # give VLC some time to be ready.
+    sleep 10
+fi
+
+./vlc/httpGrab.py "$@"
+
+# Kill VLC when no grabber uses it
+#if lsof -n -P -i tcp@localhost:1234 >/dev/null ; then
+if killall -s 0 python 2>/dev/null ; then
+    true
+else
+    killall vlc
+fi

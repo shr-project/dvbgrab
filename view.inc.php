@@ -1,8 +1,26 @@
 <?php
 
-require_once("dolib.inc.php");
-require_once("charset.inc.php");
+require_once("dblib.php");
 require_once("language.inc.php");
+require_once("const.php");
+
+function str_ascii($str) {
+	return strtr($str, 'áèïéìíòóø¹»úùý¾ÁÈÏÉÌÍÒÓØ©«ÚÙÝ®', 'acdeeinorstuuyzACDEEINORSTUUYZ');
+}
+
+/**
+* Returns how much grabs are scheduled for this week by given user.
+*/
+function get_user_grab($usr_id, $week) {
+	$SQL = "select count(*) from grab g, request r where
+					g.grb_id=r.grb_id and
+					r.usr_id=$usr_id and
+					(g.grb_status='scheduled' or g.grb_status='done' or g.grb_status='processing' or g.grb_status='deleted') and
+					date_format(g.grb_date_start, '%v')=$week";
+	$rs = db_sql($SQL);
+	$row = $rs->FetchRow();
+	return $row[0];
+}
 
 /**
 * Shows HTML for the TV program.
@@ -11,126 +29,50 @@ require_once("language.inc.php");
 * @param tel_name short television name
 * @param tel_desc television description
 * @param grb_id grab id or empty when this television is not grabbed yet
-* @param req_status grab status or empty
+* @param grb_status grab status or empty
 * @param my_grab true when it is grab also for my
-* @param addition GET links (e.g., "tv_date=xxxx")
+* @param query addition to GET links (e.g., "tv_date=xxxx")
 */
-function show_television($tel_id, $tel_date_start, $tel_name, $tel_desc, $tel_category, $grb_id, $req_status, $my_grab, $addition="", $show_logo, $chn_logo, $chn_name,$tv_date, $show_link, $last=false, $datetime, $hi) {
-  echo "<tr";
-    show_grab_class($grb_id, $req_status, false);
-  echo ">\n";
+function show_television($tel_id, $tel_date_start, $tel_name, $tel_desc, $grb_id, $grb_status, $my_grab, $query="") {
+	global $msgGrabLinkStorno;
+	global $msgGrabLinkGrab;
 
-  show_television_date($tel_id, $tel_date_start, $req_status, $my_grab, $grb_id, $datetime, $hi);
-  if ($show_logo) {
-    echo "<td valign=\"top\"><img class=\"programLogo\" alt=\"$chn_name\" title=\"$chn_name\" src=\"images/logos/$chn_logo\"/></td>";
-  }
+	echo "<tr";
+	show_grab_class($grb_id, $grb_status, $my_grab);
+	echo ">";
+	show_television_date($tel_id, $tel_date_start);
 
-  echo "<td valign=\"top\">\n";
-  echo '<span class="programName'.$hi.'"';
-  echo ' onmouseover="telinfos.show('.$tel_id.'); setTimeout(\'telinfos.loadMe('.$tel_id.')\',200);"';
-  echo ' onmouseout="telinfos.hide('.$tel_id.')"';
-  echo ">\n";
-  
-  show_grab_add_link($tel_id, $tel_date_start, $tel_name, $my_grab, $addition, $hi);
-  echo '</span>';
-  echo '<div class="telInfo" style="margin-top: 20pt; margin-left: 30pt; '.(($last)?'right: 5pt; ':'').'display:none; position: absolute" id="telinfo_'.$tel_id.'"></div>';
-  echo "\n<br />\n";
+	echo '<td valign="top"><b>';
+	show_grab_add_link($tel_id, $tel_date_start, htmlspecialchars($tel_name), $my_grab, $query);
+	echo '</b><br>';
 
-  if(!empty($tel_category)) {
-    echo '<span class="programCategory'.$hi.'">'.$tel_category.'</span><br />';
-  }
-  echo '<span class="programDesc'.$hi.'">'.$tel_desc.'</span>';
+	echo '<font size="1"><i>'.htmlspecialchars($tel_desc).'</i></font>';
+	echo '<br>';
+	show_grab_del_link($grb_id, $grb_status, $my_grab, $query);
 
-  echo "\n<br />\n";
-  if (show_grab_del_link($grb_id, $req_status, $my_grab, $addition, $hi)) {
-    echo "\n<br />\n";
-  }
-  if ($show_link) {
-    echo "<a class=\"programLink".$hi."\" href=\"tvprog.php?tv_date=".$tv_date."#".$tel_id."\">"._MsgGrabLinkShow."</a>";
-  }
-  echo "</td>\n</tr>\n";
-}
-
-function show_television_row($row, $addition, $highlight_strings, $use_diacritics, $show_link, $show_logo, $last=false) {
-  global $DB, $usr_id;
-  $grb_id = $row["grb_id"];
-  $req_status = $row["req_status"];
-  $my_grab = ($row["my_grab"]==$usr_id)?true:false;
-  $tel_id = $row["tel_id"];
-  $tel_date_start = $DB->UnixTimeStamp($row["tel_date_start"]);
-  $tv_date = date("Ymd", $tel_date_start-((date("G", $tel_date_start)<_Config_midnight)?1:0)*24*3600);
-  $tel_name = $row["tel_name"];
-  $tel_desc = $row["tel_desc"];
-  $tel_series = $row["tel_series"];
-  $tel_episode = $row["tel_episode"];
-  $tel_part = $row["tel_part"];
-  $tel_typ = $row["tel_typ"];
-  $tel_category = $row["tel_category"];
-  if (!empty($tel_series) || !empty($tel_episode) || !empty($tel_part)) {
-    $tel_name .= " ";
-  }
-  if (!empty($tel_series)) {
-    $tel_name .= "S$tel_series";
-  }
-  if (!empty($tel_episode)) {
-    $tel_name .= "E$tel_episode";
-  }
-  if (!empty($tel_part)) {
-    $tel_name .= "P$tel_part";
-  }
-  if (!empty($tel_typ)) {
-    switch ($tel_typ) {
-      case "PREMIERE": $tel_name .= " "._MsgProgPremiere; break;
-      case "LAST-CHANCE" : $tel_name .= " "._MsgProgLastChance; break;
-      case "PREVIOUSLY-SHOWN" : $tel_name .= " "._MsgProgPreviouslySchown; break;
-      case "NEW" : $tel_name .= " "._MsgProgNew; break;
-      default : $tel_name .= " ".$tel_category; break;
-    }
-  }
-  $tel_name = htmlspecialchars($tel_name);
-  $tel_desc = htmlspecialchars($tel_desc);
-
-  if (!empty($req_status)) {
-    $hi="Hi";
-  } else {
-    $hi="";
-  }
-
-  if (!empty($highlight_strings)) {
-    $tel_name = str_match_array_ascii($tel_name,
-        $highlight_strings, '<span class="match'.$hi.'">','</span>', $use_diacritics);
-  }
-  if (!empty($highlight_strings)) {
-    $tel_desc = str_match_array_ascii($tel_desc,
-        $highlight_strings, '<span class="match'.$hi.'">','</span>', $use_diacritics);
-  }
-  $chn_name = $row["chn_name"];
-  $chn_logo = $row["chn_logo"];
-
-  show_television($tel_id, $tel_date_start, $tel_name, $tel_desc, $tel_category, $grb_id, $req_status, $my_grab, $addition, $show_logo, $chn_logo, $chn_name, $tv_date, $show_link, $last, (!empty($highlight_strings)), $hi);
+	echo "</td>\n</tr>\n";
 }
 
 /**
 * Shows CSS class for the grab status.
 */
-function show_grab_class($grb_id, $req_status, $my_grab) {
-  if ($grb_id && !empty($req_status)) {
-    echo " class=\"status-".$req_status.(($my_grab)?"-my":"")."\"";
-  }
+function show_grab_class($grb_id, $grb_status, $my_grab) {
+	if ($grb_id) {
+		if ($grb_status != 'scheduled') {
+		  echo " class=\"status-$grb_status\"";
+		} else {
+			if ($my_grab) {
+				echo " class=\"status-myscheduled\"";
+			} else {
+				echo " class=\"status-scheduled\"";
+			}
+		}
+	}
 }
 
-function show_television_date($tel_id, $tel_date_start, $req_status, $my_grab, $grb_id, $datetime, $hi="") {
-  echo "<td class=\"programDate".$hi;
-  if ($grb_id && !empty($req_status)) {
-    echo " status-".$req_status.(($my_grab)?"-my":"");
-  }
-  echo "\">";
-  $format = "H:i";
-  if ($datetime) {
-    $format = "Y-m-d H:i";
-  }
-
-  echo "<a name=\"$tel_id\"></a>".ereg_replace("^0","&nbsp;",date($format, $tel_date_start))."</td>";
+function show_television_date($tel_id, $tel_date_start) {
+	echo "<td class=\"datum\" valign=\"top\" align=\"center\">";
+	echo "<a name=\"$tel_id\"></a>".date("G:i", $tel_date_start)."</td>";
 }
 
 /**
@@ -138,20 +80,22 @@ function show_television_date($tel_id, $tel_date_start, $req_status, $my_grab, $
 * when it is not already my grab.
 * @param text text to display for the link body
 */
-function show_grab_add_link($tel_id, $tel_date_start, $text, $my_grab, $addition="", $hi="") {
-  global $PHP_SELF;
-  $grab_time_limit = time() - _Config_grab_date_stop_shift*60;
-  //if (!$my_grab && $tel_date_start >= $grab_time_limit) {
-  if ($tel_date_start >= $grab_time_limit) {
-    echo "<a onclick=\"return confirm('"._MsgGrabConfirmStart." ".strip_tags($text)." "._MsgGrabConfirmGrab."')\" ".
-      "href=\"$PHP_SELF?action=grab_add&amp;".$addition."tel_id=$tel_id\"".
-      " title=\""._MsgGrabLinkGrab."\" class=\"programName".$hi."\">";
-    echo $text;
-    echo "</a>";
-  }
-  else {
-    echo $text;
-  }
+function show_grab_add_link($tel_id, $tel_date_start, $text, $my_grab, $query="") {
+	global $msgGrabConfirmStart;
+	global $msgGrabConfirmGrab;
+	global $msgGrabLinkGrab;
+	global $grab_date_stop_shift;
+
+	$grab_time_limit = time() - $grab_date_stop_shift*60;
+	if (!$my_grab && $tel_date_start >= $grab_time_limit) {
+		echo "<a onclick=\"return confirm('$msgGrabConfirmStart ".strip_tags($text)." $msgGrabConfirmGrab')\" ".
+			"href=\"$PHP_SELF?action=grab_add&amp;tel_id=$tel_id&amp;$query\"".
+			" title=\"$msgGrabLinkGrab\" class=\"program\">".
+			$text."</a>";
+	}
+	else {
+		echo $text;
+	}
 }
 
 
@@ -159,61 +103,116 @@ function show_grab_add_link($tel_id, $tel_date_start, $text, $my_grab, $addition
 * Shows link to delete my grab.
 * @return true whent the link was added
 */
-function show_grab_del_link($grb_id, $req_status, $my_grab, $addition, $hi="") {
-  $result = false;
-  if ($req_status == 'scheduled' && $grb_id && $my_grab) {
-    echo "<a class=\"programDel".$hi."\" href=\"$PHP_SELF?action=grab_del".
-      "&amp;".$addition."grb_id=$grb_id\">"._MsgGrabLinkStorno."</a>";
-    $result = true;
-  }
-  return $result;
+function show_grab_del_link($grb_id, $grb_status, $my_grab, $query) {
+	global $msgGrabLinkStorno;
+
+	$result = false;
+	if ($grb_status == 'scheduled' && $grb_id && $my_grab) {
+		echo "<a class=\"program\" href=\"$PHP_SELF?action=grab_del".
+			"&amp;grb_id=$grb_id&amp;$query\">$msgGrabLinkStorno</a>";
+		$result = true;
+	}
+	return $result;
 }
 
 /**
-* Returns grab basename.
-* Basename = filename without path and suffix.
-*/
-function get_grab_basename($tel_id) {
-    global $DB;
+ * Returns grab timestamp where midnight is considered.
+ */
+function get_grab_timestamp($grb_date_start) {
+	global $midnight;
 
-    $SQL = "select ch.chn_name, t.tel_date_start, t.tel_name, t.tel_id, t.tel_series, t.tel_episode, t.tel_part
-        from television t
-             left join channel ch on (ch.chn_id=t.chn_id)
-        where t.tel_id = $tel_id";
-    $rs = do_sql($SQL);
-    $row = $rs->FetchRow();
-    if (!$row) {;
-        return false;
-    }
-    $tel_series = $row["tel_series"];
-    $tel_episode = $row["tel_episode"];
-    $tel_part = $row["tel_part"];
+	$grb_timeStamp = $grb_date_start;
+	if (date("G", $grb_timeStamp)<$midnight) {
+		$grb_timeStamp-=24*3600;
+	}
+	return $grb_timeStamp;
+}
 
+/**
+ * Shows new day heading when grab is from new day.
+ * Returns used day.
+ */
+function show_grab_day($grb_date_start, $old_grb_day) {
+	global $dow;
 
-    $channel = strtolower(strip_diacritics($row[0]));
-    $timestamp = $DB->UserTimeStamp($DB->UnixTimeStamp($row[1]), "Ymd-Hi");
-    if (_Config_grab_backend_strip_diacritics == "1") {
-      $tel_name = strip_diacritics($row[2]);
-    } else {
-      $tel_name = $row[3];
-    }
-    if (!empty($tel_series) || !empty($tel_episode) || !empty($tel_part)) {
-      $tel_name .= "_";
-    }
-    if (!empty($tel_series)) {
-      $tel_name .= "S$tel_series";
-    }
-    if (!empty($tel_episode)) {
-      $tel_name .= "E$tel_episode";
-    }
-    if (!empty($tel_part)) {
-      $tel_name .= "P$tel_part";
-    }
+	$grb_timeStamp = get_grab_timestamp($grb_date_start);
+	$grb_day = $dow[date("l", $grb_timeStamp)].date(", d. m. Y", $grb_timeStamp);
+	if ($grb_day != $old_grb_day) {
+		if ($old_grb_day != "") {
+			echo "<tr><td colspan=\"7\">&nbsp;</td></tr>\n";
+		}
+		echo "<tr><th colspan=\"7\">&nbsp;&nbsp;&nbsp;$grb_day</th></tr>\n";
+	}
+	return $grb_day;
+}
 
-    $rs->Close();
+/**
+ * Shows grab on list of planned grabs.
+ * Planned requests contain:
+ * - usr_id
+ * - usr_name
+ * - usr_email
+ * - req_output
+ */
+function show_planned_grab($grb_date_start, $grb_date_end, $grb_id, $grb_status,
+		$chn_name, $tel_id, $tel_name, $planned_requests) {
+	global $usr_id;
+	global $channel_logo;
+	global $grab_user_url;
+	global $grab_storage;
 
-    return "DVB-$timestamp-$channel-".
-        ereg_replace("[/ ()?&:'Â´]", "_", $tel_name);
+	$grb_timeStamp = get_grab_timestamp($grb_date_start);
+	$grb_time = date("H:i", $grb_date_start)."-".date("H:i", $grb_date_end);
+
+	$mygrab = false;
+	$myoutput = "";
+	$myname = "";
+	foreach ($planned_requests as $request) {
+		if ($request["usr_id"] == $usr_id) {
+			$mygrab = true;
+			$myname = $request["usr_name"];
+			$myoutput = $request["req_output"];
+			break;
+		}
+	}
+
+	echo "	<tr>\n";
+	echo "		<td width=\"30\">&nbsp;</td>\n";
+	echo "		<td width=\"12\" align=\"center\"";
+	show_grab_class($grb_id, $grb_status, $mygrab);
+	echo ">&nbsp;</td>\n";
+	echo "		<td width=\"60\">&nbsp;&nbsp;<img alt=\"".$chn_name."\"".
+		" src=\"images/".$channel_logo[$chn_name]."\"></td>\n";
+
+	echo "		<td width=\"110\"><b>";
+	echo $grb_time;
+	echo "</b></td>\n";
+
+	echo "		<td><a href=\"tvprog.php?tv_date=".
+		date("Ymd", $grb_timeStamp).
+		"#".$tel_id."\">".htmlspecialchars($tel_name)."</a>".
+		"</td>\n";
+
+	echo "		<td width=\"20\">&nbsp;</td>\n";
+	echo "		<td>";
+	if ($myoutput != "" && file_exists("$grab_storage/$myoutput")) {
+		$user_url = str_replace('<USER>', $myname, $grab_user_url);
+		echo "[<a href=\"$user_url/$myoutput\">DOWNLOAD</a>]";
+	}
+	else {
+		$first = true;
+		foreach ($planned_requests as $request) {
+			if ($first) {
+				$first = false;
+			}
+			else {
+				echo ", ";
+			}
+			echo "<a href=\"mailto:".str_replace("@", "@NOSPAM.", $request["usr_email"])."\">".$request["usr_name"]."</a>";
+		}
+	}
+	echo "		</td>\n";
+	echo "	</tr>\n";
 }
 
 // vim: noexpandtab tabstop=4
